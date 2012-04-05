@@ -1,0 +1,174 @@
+# /****************************************************************
+# Copyright (C) 1997 Lucent Technologies
+# All Rights Reserved
+#
+# Permission to use, copy, modify, and distribute this software and
+# its documentation for any purpose and without fee is hereby
+# granted, provided that the above copyright notice appear in all
+# copies and that both that the copyright notice and this
+# permission notice and warranty disclaimer appear in supporting
+# documentation, and that the name of Lucent or any of its entities
+# not be used in advertising or publicity pertaining to
+# distribution of the software without specific, written prior
+# permission.
+#
+# LUCENT DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
+# INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS.
+# IN NO EVENT SHALL LUCENT OR ANY OF ITS ENTITIES BE LIABLE FOR ANY
+# SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
+# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
+# ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
+# THIS SOFTWARE.
+# ****************************************************************/
+
+# For making minos.a on Unix systems.
+
+.SUFFIXES: .c .f .o
+F77 = f77
+CC = cc
+CFLAGS = -O
+FFLAGS = -O
+# When using an "f77" based on f2c, use
+# FFLAGS = -O m55.P
+L = minos.a
+
+### Note -- we assume the f2c calling conventions.
+### If necessary, use an f77 script based on f2c, or
+### change the .f.o: rule below to
+
+#.f.o:
+#	f2c -c -g $*.f
+#	$(CC) -c $(CFLAGS) $*.c
+#	rm $*.c
+
+
+# Add -DKR_headers to CFLAGS if your C compiler does not
+# understand ANSI C function headers, e.g.
+#	CFLAGS = -O -DKR_headers
+# If things don't run right, you may need to change -O to -g
+# so you can poke around with a debugger.
+
+# For Sun systems, try
+# CFLAGS = -O -DKR_headers
+
+.c.o:
+	$(CC) -c $(CFLAGS) $*.c
+.f.o:
+	$(F77) -c $(FFLAGS) $*.f
+
+a = mi10unix.f mi15blas.f mi20amat.f mi25bfac.f mi30spec.f\
+ mi35inpt.f mi40bfil.f mi50lp.f mi60srch.f mi65rmod.f mi70nobj.f\
+ mi80ncon.f d_funcon.c d_funobj.c d_matmod.c minos2.c minos4.f\
+ mi11unix.f mi31spec.f Malloc.c mi21amat.f minoss.f\
+ sprintf.c xectim.c
+
+# The last 2 files, sprintf.c and xectim.c, duplicate
+# definitions in amplsolver.a; the last 8 and are
+# only needed for stand-alone use of minos.a.
+
+# Routines moved from mi10unix.f to mi11unix.f:
+#	minos1, minos3, mispec, m1clos.
+# Routines moved from mi10unix to minoss.f: minos, minoss.
+# Routine removed from mi10unix.f (replaced by minos2.c): minos2.
+# Routine  moved from mi20amat.f to mi21amat.f: matcol.
+# Routines moved from mi30spec.f to mi31spec.f: miopt, miopti, mioptr.
+
+# Change to mi10unix.f, subroutine m1file: uncomment the call on gfname
+# and assign "method = 4" rather than 2.
+# Change to minos1 in mi11unix.f: change
+#      ispecs = 4
+#      iprint = 9
+#      isumm  = 6
+# to
+#      ispecs = 5
+#      iprint = 0
+#      isumm  = 6
+#      call envopt
+#*	*** envopt sets iprint = 7 if 7=filename is on the command line.
+
+# Bug fix to mi80ncon.f: in m8setj, protect "write(iprint, 1200)"
+# with "if (prnt0)" and protect "write(isumm , 1210)" with "if (summ0)".
+
+# Change to m1cpu in mi10unix.f: omit tarray declaration; add
+#	double precision xectim
+#	external xectim
+# and change
+#	time = etime ( tarray )
+# to
+#	time = xectim()
+
+minos.a: $a
+	for i in $?;do case $$i in *.f) $(F77) -c $(FFLAGS) $$i;; *.c) $(CC) -c $(CFLAGS) $$i;;esac;done
+	ar ruv minos.a `echo $? | sed 's/\.[cf]/.o/g'`
+	rm `echo $? | sed 's/\.[cf]/.o/g'`
+	ranlib minos.a || true
+
+###### MINOS examples ######
+
+e = mi00main.o mi05funs.o
+a.out: $e $L
+	$(F77) -o $@ $e $L
+
+s = minost.o mi05funs.o
+minost: $s $L
+	$(F77) -o $@ $s $L
+
+l = minosl.o
+minosl: $l $L
+	$(F77) -o $@ $l $L
+
+examples: t1diet.out t2banana.out t3qp.out t4manne.out\
+ t5weapon.out t6wood.out minost.out
+
+t1diet.out: a.out
+	a.out <t1diet.spc 10=t1diet.mps >$@
+
+t2banana.out: a.out
+	a.out <t2banana.spc 10=t2banana.mps >$@
+
+t3qp.out: a.out
+	a.out <t3qp.spc 10=t3qp.mps >$@
+
+t4manne.out: a.out
+	a.out <t4manne.spc 10=t4manne.mps 11=t4manne.nbas >$@
+
+t5weapon.out: a.out
+	a.out <t5weapon.spc 10=t5weapon.mps 11=t5weapon.nbas >$@
+
+t6wood.out: a.out
+	a.out <t6wood.spc 10=t6wood.mps >$@
+
+minost.out: minost
+	rm -f fort.4 fort.9 fort.10
+	ln t4manne.spc fort.4
+	ln t4manne.mps fort.10
+	minost >minost.sum
+	mv fort.9 $@
+	rm -f fort.4 fort.10 fort.11
+
+# make xsum.out to check for transmission errors.
+# This assumes you have the xsum program, whose source
+# you can get by asking netlib@research.bell-labs.com to
+#	send xsum.c from f2c/src
+
+x = README Malloc.c disclaimer d_funcon.c d_funobj.c d_matmod.c\
+ mi00main.f mi05funs.f mi10pc.f mi10unix.f mi11unix.f mi15blas.f\
+ mi20amat.f mi21amat.f mi25bfac.f\
+ mi30spec.f mi31spec.f mi35inpt.f mi40bfil.f mi50lp.f mi60srch.f mi65rmod.f\
+ mi70nobj.f mi80ncon.f minos2.c minos4.f minosl.f minosm.f minoss.f minost.f\
+ mpsout.f t1diet.mps t1diet.spc t2banana.mps t2banana.spc t3qp.mps t3qp.spc\
+ t4manne.mps t4manne.spc t5weapon.mps t5weapon.spc t6wood.mps t6wood.spc\
+ sprintf.c xectim.c
+
+xsum.out: $x
+	xsum $x >xsum.out
+	cmp xsum0.out xsum.out || diff xsum0.out xsum.out
+
+clean:
+	rm -f t1diet.out t2banana.out t3qp.out t4manne.out\
+ t5weapon.out t6wood.out minost.out minost.sum a.out minost\
+ t4manne.nbas t5manne.nbas
+
+veryclean: clean
+	rm -f xsum.out

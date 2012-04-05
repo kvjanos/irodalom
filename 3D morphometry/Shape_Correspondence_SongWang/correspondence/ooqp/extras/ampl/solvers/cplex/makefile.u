@@ -1,0 +1,83 @@
+# /****************************************************************
+# Copyright (C) 1997, 2000 Lucent Technologies
+# All Rights Reserved
+#
+# Permission to use, copy, modify, and distribute this software and
+# its documentation for any purpose and without fee is hereby
+# granted, provided that the above copyright notice appear in all
+# copies and that both that the copyright notice and this
+# permission notice and warranty disclaimer appear in supporting
+# documentation, and that the name of Lucent or any of its entities
+# not be used in advertising or publicity pertaining to
+# distribution of the software without specific, written prior
+# permission.
+#
+# LUCENT DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
+# INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS.
+# IN NO EVENT SHALL LUCENT OR ANY OF ITS ENTITIES BE LIABLE FOR ANY
+# SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
+# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
+# ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
+# THIS SOFTWARE.
+# ****************************************************************/
+
+.SUFFIXES: .c .o
+CC = cc
+CFLAGS = -O
+# Under AIX, try
+#	CFLAGS = -O -qfloat=nomaf -qmaxmem=100000
+# Under HP-UX, try
+#	CFLAGS = -O -Aa -Ae
+S = ..
+# "S = .." assumes this directory is solvers/cplex .
+
+# If things don't run right, you may need to change -O to -g
+# so you can poke around with a debugger.
+# See $S/makefile for other comments about CFLAGS.
+
+# If you do not have the CPLEX Mixed Integer Option, add -DNO_CPLEX_MIP
+# to CFLAGS (i.e., to the right-hand side of the CFLAGS = assignment).
+
+# If you do not have the CPLEX Barrier Option, add -DNO_BARRIER
+# to CFLAGS, and change qpcheck to linedagread below.
+
+.c.o:
+	$(CC) -c $(CFLAGS) -I$S $*.c
+
+o = cplex.o $S/funcadd0.o $S/amplsolver.a libcplex.a
+
+cplex: $o
+	$(CC) -s -o cplex $o -lm
+
+# Under Linux, try
+#	$(CC) -s -o cplex $o -lm -lpthread
+
+# Under Solaris, try
+# "$(CC) -o cplex...", so it becomes
+#	$(CC) -s -o cplex $o -lm -lsocket -lnsl
+
+cplex.o: cplex.h $S/getstub.h $S/nlp.h $S/r_opn.hd
+
+# You must obtain libcplex.a and cplex.h from ILOG.
+# See http://www.cplex.com/
+# It is simplest to link libcplex.a and cplex.h into this directory, e.g.,
+# as in
+#	ln -s /usr/local/cplex70/include/ilcplex/cplex.h cplex.h
+#	ln -s /usr/local/cplex70/lib/system/libtype/libcplex.a libcplex.a
+# with such details as "/usr/local/cplex70" and "system/libtype" suitably
+# adjusted.
+
+$S/amplsolver.a:
+	cd $S; make amplsolver.a
+
+# make xsum.out to check for transmission errors.
+# This assumes you have the xsum program, whose source
+# you can get by asking research!netlib to
+#	send xsum.c from f2c/src
+
+xs0 = README.1st README.cplex cplex.c makefile.u makefile.vc
+
+xsum.out: $(xs0)
+	xsum $(xs0) >xsum1.out
+	cmp xsum0.out xsum1.out && mv xsum1.out xsum.out || diff xsum[01].out

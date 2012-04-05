@@ -1,0 +1,231 @@
+The CDFlist program allows you to selectively list all (or a
+subset of) the variable data values from a CDF.  The values
+can be displayed at the screen, output to a text file, or
+used to create a new CDF (the new CDF may be a subset of the
+original CDF).
+
+The user interface to CDFlist is contained on a single screen
+which is divided into several fixed windows and pop-up windows.
+The "Action Menu" controls the execution of the program. This
+menu allows you to move to a different window, start the data
+output, browse a help file, or exit the program.  You must
+return to this menu each time you want to select a new variable,
+output option, listing type, or input CDF.  This menu may be
+displayed at any time by entering Ctrl-F.  Use the up and down
+arrow keys to highlight a choice in the "Action Menu" and then
+enter a carriage return to execute that function.  Two very
+important windows are the "Keypad Definition" and "Message"
+windows. They contain information on keypad functionality and
+program status/error messages.
+
+                     Entering a CDF name
+                     -------------------
+
+When CDFlist is executed (and a CDF and/or directory is not
+entered on the command line), you must first specify the CDF
+you wish to list.  If you enter a full disk/directory
+specification (without a CDF name), all of the CDFs in the
+specified directory will appear in a separate pop-up window.
+Use the up and down arrow keys to choose a CDF and then enter
+a carriage return to list that CDF.
+
+                     CDFLIST output options
+                     ----------------------
+The "Output" window will then be displayed with the valid
+choices.  Use the up and down arrow keys to scroll up and down
+within the menu and then enter a carriage return to select the
+desired output option.  If output to an ASCII file or CDF is
+selected, you will be prompted for a file/CDF name.  You may
+enter any file/CDF name valid for the o/s being used or accept 
+the default file/CDF name that appears.  Do not enter a file 
+extension (it is automatically appended).  The file extension 
+for a generated text file is ".dat".
+                     
+                     Variable selection window
+                     -------------------------
+The second window that remains constant on the screen is the
+"Variable Selection" window.  This window allows the user to
+select the variables that are to be listed or put into a CDF
+along with any desired filters on the variables.  You will
+automatically be placed in this window after you have entered
+an output option.  You can also enter this window by entering
+Ctrl-F to bring up the "Action Menu" and then select the
+"Select Variables" menu option.
+   
+                     Selecting Variables
+		     -------------------
+There are four fields on each line in the "Variable Selection"
+window: variable name, minimum filter value, maximum filter value,
+and output toggle.  You can move forward to the next field by 
+entering a carriage return or backwards to the previous field with 
+a Ctrl-B.  You may also use the up and down arrow keys to move 
+vertically through the fields.  When the cursor is positioned in a 
+variable name field, entering Ctrl-P will display the variables in 
+the CDF in a pop-up window.  Use the arrow keys to highlight a 
+variable and then enter a carriage return to select it.  You can 
+quit the pop-up window without selecting a variable by entering "q"
+(quit).  You may also use the u and d keys to page up and down in 
+the pop-up window.  The first line in this pop-up menu contains 
+**SELECT ALL**.  Selecting this item causes all of the variables in 
+the CDF to be selected.
+
+                     Selecting filter ranges
+                     -----------------------
+After selecting a variable, the cursor is positioned in the minimum
+filter field.  A filter is simply the range of data that you would
+like to see from the selected variable.  If just specifying a
+minimum filter value is sufficient, a maximum filter value need not
+be entered.  You do not have to enter a filter for each selected
+variable.  For a line of output (a correlated set of CDF variable
+values) to be written for a given record/indices, each filter must
+be passed.  There are two ways to enter minimum and maximum filters.
+The first is by simply entering the desired values in the appropriate
+fields.  The second method can only be used for variables that
+consist of a discrete set of values. This method involves entering
+a Ctrl-P (when in the desired filter field) which displays a pop-up
+window that contains the discrete values for the variable.  The
+desired filter value may then be selected.
+
+                     Turning filter on/off
+                     ---------------------
+The minimum/maximum fields (filters) will initially be highlighted.
+This indicates that the corresponding filter will be used for a
+variable (if filter values were entered).  A filter for a particular
+variable may also be turned off (without erasing the filter values)
+by entering an "f" when on the variable name field.  This will toggle
+off the highlighting of the filter values and indicates that no
+filtering is to be performed on that variable.  Entering an "f" again
+toggles filtering back on for that variable.  Note that erasing the
+filter values is another way to turn off filtering for a variable.
+
+                     Variable display on/off
+                     -----------------------   
+The output toggle field simply gives the user the option not to view 
+a variable they have selected.  A user may only wish to filter on a 
+variable and not view it.  When positioned on this field the user 
+simply enters a "y" to display the variable or "n" to not display. 
+The default will always be to display.  Note that the user may enter 
+"y" or "n" from the variable name field.
+
+                     Starting output
+                     ---------------
+When all of the desired variables and filters have been selected,
+enter Ctrl-F to display the "Action Menu".  Selecting "Generate Output"
+will cause the listing or new CDF to be generated.  When CDFlist
+completes the generation of the output, the "Action Menu" is
+redisplayed.  It may then be used to select a new CDF to list,
+respecify the output option, select new variables/filters, get
+online help, select special options, or exit the program.
+
+Note that the amount of time needed to generate the output will in 
+most cases be significantly reduced if the MONOTON attribute and
+corresponding entries are present in the CDF (and the variables being
+filtered are monotonic).  See the section entitled Specifying Monotonic 
+Variables for more information on monotonic variables.
+
+
+On MS-DOS systems, a listing may be terminated early by entering "q".
+
+                     Save/Restore selections
+                     -----------------------
+When on the "Action Menu" options are available to save/restore the
+current selections on the variable selection window.  A user may wish 
+to exit the program and upon returning restore the current selections
+quickly to the window.  When selecting the "Save" option the user is 
+prompted for a file name (no extension) and all information from the 
+variable selection screen is stored in that file.  A default file name
+of "cdflist" is available by just entering a <CR> at the prompt.  When 
+selecting "Restore" the user is again prompted for a file name and the 
+variables are restored to the variable selection window for that file.
+CDFLIST will check the the current CDF for the existance of each 
+variable.
+
+                     r/z/zMODE
+                     --------- 
+Another option on the "Action Menu" is to "Select r/z/zMODE variables".
+CDFLIST groups variables in three separate manners, "r" variables,
+"z" variables, and in "zMODE".  "z" variables are grouped together by
+dimensionality.  "zMODE" makes all variables in a CDF a "z" variable.
+"zMODE" contains two different listing types selectable from the 
+"CDF Listing options" window (described below).  For more information on 
+r/z variables and zMODE see the CDF Users Guide.
+
+                    Special Options
+                    ---------------
+Also on the "Action Menu" are three items for selecting CDFLIST special 
+Options.  Selecting "Select CDF Input Options"  causes a menu to be 
+displayed with the following options...
+
+     1. Whether to erase the selected variables each time a new 
+        input CDF is selected.  If a user selects a CDF that 
+        contains duplicate variables they may wish to reuse the 
+        current selections.  If the user selects "Don't Erase...",
+        CDFLIST will check to make sure that the current variables
+        actually exist in the new CDF.
+
+Selecting "CDF Output Options" causes a menu to be displayed with the 
+following options...
+
+     1) When selecting output to a CDF, whether the file format of the
+	the new CDF is single-file or multi-file.
+
+     2) When selecting output to a CDF, whether the encoding of the new
+	CDF is network or host.
+
+Selecting "CDF Listing Options" causes a menu to be displayed with the 
+following options...
+
+     1. The format used when displaying CDF_EPOCH values may be
+        selected (the FORMAT attribute is always ignored when
+        displaying CDF_EPOCH values).
+
+     2. Whether or not to use the FORMAT attribute when displaying
+        values may be selected (the FORMAT attribute and
+        corresponding entries must exist in the CDF of course).
+
+     3. Whether or not to ignore all of the filters when generating
+        the output.  This is a more convenient way to turn off
+        filtering than to do so manually for each variable on the
+        "Variable Selection" window.
+
+     4. Whether or not to use the FILLVAL attribute when filtering
+        may be selected (assuming the FILLVAL attribute exists).
+        If the FILLVAL attribute is to be used, fill values are
+        considered valid when determining whether or not to filter
+        out a set of variable values (ie. fill values outside the
+        filter range will appear in the output).
+
+     5. Whether to use a Vertical or Horizontal listing type for a
+        variable.  The user must have selected "zMODE" for this 
+        option to be valid.  In both of these listing types no data
+        will be replicated as in the standard mode.  Therefore a 
+        scalar variable is only displayed once per record.  The
+        difference in the two types is that in the vertical type
+        multi-dimensional data are displayed vertically down a page and
+        in the horizontal type this data is display horizontally with 
+        the line being wrapped at 80 characters.  Please note that 
+        under "zMODE" a single line of output will not always 
+        correlate.
+
+     6. Whether or not to convert -0.0 to 0.0 when read from or written
+        to a CDF.  -0.0 is an illegal floating point value on VAXes and
+        DEC Alphas running OpenVMS.
+
+                    Specifying Monotonic Variables
+                    ------------------------------
+When on the Action Menu the option Specify Monotonic Variables gives 
+the user the opportunity to specify that a variable is monotonic.
+This is useful when a CDF does not contain the attribute MONOTON or 
+has the attribute incorrectly specified.  When executing this option 
+a pop-up window is displayed containing all of the variables in the 
+CDF and their monotonicities. If a MONOTON attribute entry exists 
+for a variable it is set accordingly.  An I is displayed if the values 
+increase, D if the values decrease, and F if the variable is not 
+monotonic (or if an entry does not exist).  If a variable varies with 
+more than 1 "dimension" N/A is displayed -- these variables can 
+never be specified monotonic.  Once inside the pop-up window, the user 
+traverses through the window as in any other pop-up window but with 
+one exception -- the cursor is positioned to the monotonic value of 
+the variable.  The user then may change that value by entering the
+INCREASE key for increasing values, the DECREASE key for decreasing 
+values, or the FALSE key for not monotonic.

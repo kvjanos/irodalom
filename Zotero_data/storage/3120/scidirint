@@ -1,0 +1,159 @@
+
+
+var jsStr = '';
+jsStr+='<script>';
+jsStr+='</script>';
+var cssStr = '';
+cssStr+='<style>';
+cssStr+='</style>';
+
+var htmlStr='';
+// begin help infobubble
+
+htmlStr+='                        <div class="collab_infobubble-container">';
+htmlStr+='                            <div class="collab_infobubble" id="comment_bubble1" onmouseover="InfoBubble.show(\'comment_bubble1\')" onmouseout="InfoBubble.timeout()">';
+htmlStr+='                                <div style="float:right;">&nbsp;';
+htmlStr+='                                  <a onclick="InfoBubble.hide()"><img src="/scidirimg/btn_xclose.gif" onmouseover="javascript:this.src=\'/scidirimg/btn_xclose_hov.gif\';" onmouseout="javascript:this.src=\'/scidirimg/btn_xclose.gif\';"></a>';
+htmlStr+='                                </div>';
+htmlStr+='                                <div style="float:left; padding-bottom:4px;">';
+htmlStr+='                                    <a href="http://www.2collab.com"  onclick="collabKE(\'http%3A%2F%2Fwww.2collab.com\'); openNS(\'http://www.2collab.com\', document.body.offsetWidth, document.body.offsetHeight); return false;"><img alt="2collab - The research collaboration tool" src="/scidirimg/2collablogo.gif" border="0" style="padding:0px;margin:0px;vertical-align:middle; background-image:none;"></a>&nbsp;<b>About 2collab</b>';
+                                htmlStr+='</div><br clear="all">';
+htmlStr+='                                <div class="collabScroll">';
+htmlStr+='                                  <div style="text-align: left;">2collab is a social bookmarking site where you can store and organize your favorite internet resources.<br><a href="http://www.2collab.com/about" onclick="collabKE(\'http%3A%2F%2Fwww.2collab.com%2Fabout\'); openNS(\'http://www.2collab.com/about\', document.body.offsetWidth, document.body.offsetHeight); return false;">More information about 2collab</a></div>';
+htmlStr+='                                </div><br>';
+htmlStr+='                             </div>';
+htmlStr+='                        </div>';
+// end help infobubble
+htmlStr+='<div id="colint_box" class="collab_infobox">';
+htmlStr+='  <table cellpadding="0" cellspacing="0" class="collab_grayTable" width="100%" style="border:1px;">';
+htmlStr+='            <tr style="border-bottom:1px solid #cccccc;">';
+htmlStr+='                <td class="collab_collabHeader" width="1" style="padding:2px; background-image:url(/scidirimg/right_gradient.gif);">';
+htmlStr+='                    <a href="http://www.2collab.com" onclick="collabKE(\'http%3A%2F%2Fwww.2collab.com\'); openNS(\'http://www.2collab.com\', document.body.offsetWidth, document.body.offsetHeight); return false;"><img alt="2collab - The research collaboration tool" title="2collab - The research collaboration tool" src="/scidirimg/2collablogo.gif" border="0" style="padding:0px;margin:0px;"></a>';
+htmlStr+='                </td>';
+htmlStr+='                <td class="collab_collabHeader" width="80%" style="background-image:url(/scidirimg/right_gradient.gif);">';
+htmlStr+='                    <strong>&nbsp;The research collaboration tool</strong>';
+htmlStr+='                </td>';
+htmlStr+='                <div id="_collab1">';
+htmlStr+='                  <td class="collab_collabHeader" width="20" align="left" style="background-image:url(/scidirimg/right_gradient.gif);">';
+htmlStr+='                      <img src="/scidirimg/clear.gif" width="3" alt=""> <a style="cursor: pointer;" onclick="InfoBubble.show(\'comment_bubble1\', \'_collab1\')"><img src="/scidirimg/icon_help.gif" alt="about 2collab" title="about 2collab"></a>';
+htmlStr+='                  </td>';
+htmlStr+='                </div>';
+htmlStr+='            </tr>';
+htmlStr+='           <tr class="show2collab" id="2collaspe">';
+htmlStr+='              <td colspan="3" style="padding:2px;">';
+htmlStr+='<table cellpadding="0" cellspacing="0">';
+            
+              
+              
+                
+htmlStr+='                <tr class="show2collab">';
+htmlStr+='                    <td width="40" align="center" style="padding:2px 2px 6px 2px;" valign="middle"><img src="/scidirimg/rating.gif" name="rating" width="16" height="16" border="0" id="rating" alt="No user rating" title="No user rating"/></td>';
+htmlStr+='                    <td valign="middle" nowrap="nowrap">';
+
+
+htmlStr+='<img src="/scidirimg/star_empty.gif" width="11" height="11" style="text-decoration: none;" alt="votes" title="votes" />';
+
+htmlStr+='<img src="/scidirimg/star_empty.gif" width="11" height="11" style="text-decoration: none;" alt="votes" title="votes" />';
+
+htmlStr+='<img src="/scidirimg/star_empty.gif" width="11" height="11" style="text-decoration: none;" alt="votes" title="votes" />';
+
+htmlStr+='<img src="/scidirimg/star_empty.gif" width="11" height="11" style="text-decoration: none;" alt="votes" title="votes" />';
+
+htmlStr+='<img src="/scidirimg/star_empty.gif" width="11" height="11" style="text-decoration: none;" alt="votes" title="votes" />';
+ 
+htmlStr+='                    &nbsp;&nbsp;No user rating</td>';
+htmlStr+='                </tr>';
+                
+                            
+            
+            
+            
+            
+htmlStr+='                <tr class="show2collab">';
+htmlStr+='                    <td align="center" style="padding:2px 2px 6px 2px;" valign="middle">';
+htmlStr+='                        <img src="/scidirimg/tagged.gif" width="16" height="16" alt="No user tags yet" title="No user tags yet">';
+htmlStr+='                    </td>';
+htmlStr+='                    <td colspan="2" valign="middle" >';
+htmlStr+='                        <div id="_collab2">';
+htmlStr+='                            No user tags yet';
+htmlStr+='                        </div>';
+htmlStr+='                    </td>';
+htmlStr+='                </tr>';
+            
+            
+htmlStr+='                <tr class="show2collab">';
+
+ 
+htmlStr+='                    <td align="center" style="padding:2px 2px 6px 2px;" >';
+htmlStr+='                        <img src="/scidirimg/bookmarked.gif" width="16" height="16" alt="This article has not yet been bookmarked"  title="This article has not yet been bookmarked">';
+htmlStr+='                    </td>';
+
+
+htmlStr+='                    <td colspan="2" valign="middle" >';
+htmlStr+='                        This article has not yet been bookmarked';
+htmlStr+='                    </td>';
+
+
+
+htmlStr+='                </tr>';
+            
+            
+            
+              
+                
+                
+                  <!-- JSB - not sure about this one logic:greaterThan name="collabBkInfo" property="bkCount" value="0" -->
+htmlStr+='                <tr class="show2collab" >';
+htmlStr+='                    <td align="center" style="padding:2px 2px 6px 2px;">';
+htmlStr+='                        <img src="/scidirimg/comments.gif" width="16" height="16" alt="No comments on this article yet" title="No comments on this article yet">';
+htmlStr+='                    </td>';
+htmlStr+='                    <td colspan="2" valign="middle">';
+htmlStr+='                        <div id="_collab3">';
+htmlStr+='                            No comments on this article yet<br/>';
+htmlStr+='                        </div>';
+htmlStr+='                    </td>';
+htmlStr+='                </tr>';  
+                  <!-- /logic:greaterThan -->            
+                
+              
+            
+            
+            
+              
+              
+htmlStr+='            <tr class="show2collab">';
+htmlStr+='                <td align="center" style="padding:2px 2px 6px 2px;">';
+htmlStr+='                    <img src="/scidirimg/shared_with_group.gif" width="16" height="16" alt="Not yet shared with any groups" title="Not yet shared with any groups">';
+htmlStr+='                </td>';
+htmlStr+='                <td colspan="2" valign="middle" >';
+htmlStr+='                    Not yet shared with any groups';
+htmlStr+='              </td>';
+htmlStr+='            </tr>';
+                            
+            
+            
+
+htmlStr+='</table>';
+htmlStr+=' </td>';        
+htmlStr+='            </tr>';
+//Add to 2collab link
+
+
+htmlStr+='            <tr class="show2collab">';
+htmlStr+='                <td style="background-color:#f6f6f6;border-top:1px dashed #cccccc;" colspan="3">';
+htmlStr+='                    <div id="2collabAdd" style="background-color:#f6f6f6; padding-top:6px;padding-bottom:7px;padding-left:16px;vertical-align:bottom;"><a href="http://www.2collab.com/bookmark/addsd?pii=S0165027008000034"  onclick="collabKE(\'www.2collab.com%2Fbookmark%2Faddsd%3Fpii%3DS0165027008000034\'); openNS(\'http://www.2collab.com/bookmark/addsd?pii=S0165027008000034\', document.body.offsetWidth, document.body.offsetHeight); return false;"><img src="/scidirimg/be_the_first.gif" border="0" alt="Be the first to add this article in 2collab" title="Be the first to add this article in 2collab"></a></div>';
+htmlStr+='                </td>';
+htmlStr+='            </tr>';
+
+//End Add to 2collab link            
+
+htmlStr+='        </table>';
+htmlStr+='        </div>';
+
+htmlStr+='        <? } ?>'; 
+
+//document.write(htmlStr);
+collabJsStr = jsStr;
+collabCssStr = cssStr;
+collabHtmlStr = htmlStr;
+stop2CollabTimeout();

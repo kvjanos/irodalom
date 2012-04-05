@@ -1,0 +1,130 @@
+/--------------------------/
+/  CDF V3.1 Release Notes  /
+/--------------------------/
+
+1. Compatibility with CDF 2.7.2 and Earlier Versions
+
+CDF V3.1 is backward compatible with the previous versions of CDF, and it 
+can read CDF files that were created with CDF 3.0 or CDF 2.7.2 or earlier.  
+If a file was created with CDF 2.7 and read and modified by CDF 3.1, the 
+resultant file will be saved in the CDF 2.7 format, not CDF 3.1.  The same 
+principle applies to files that were created with CDF 2.5 and 2.6.  CDF 
+files that are created from scratch with CDF V3.1 are compatible with CDF 3.0, 
+but not compatible (due to a 64-bit file offsets used in CDF 3.0 or later 
+versions) with CDF 2.7.2 or earlier, and an attempt to read CDF 3.0 or 3.1 
+files from CDF 2.7.2 or earlier will produce an error.
+
+Users of CDF 3.1 or later versions will be able to create CDF files that 
+can be read by CDF 2.7.2 or earlier by using the CDFsetFileBackward 
+function (in C) or CDF_set_FileBackward subroutine  (in Fortran), or using 
+the CDF_FILE_BACKWARD environment variable.  See Section 4.18 of the CDF C 
+Reference Manual and the CDF Fortran Reference Manual for details on how to 
+create CDF 2.7-compatible files.
+
+The command-line version of the CDFedit and CDFexport utility programs can 
+now create CDF files that can be read by CDF 2.7.2 or earlier.
+
+The <GET_, CDF_INFO_> routine now returns the data type of 64-bit off_t 
+(or __int64 on Windows) for the compressed file size (cSize) and uncompressed 
+file size (uSize) parameters in V3.1 while they used to return as 32-bit long 
+integer in V2.5, 2.6 or 2.7.  Thus, if you have a legacy application that 
+calls the <GET_, CDF_INFO_> routine, you MUST change the data type of the 
+cSize and uSize parameters to off_t (or __int64 on Windows) from long to 
+access files that were created with V3.1.  If the file accessed was created 
+with V2.5, V2.6, or V2.7, you should always use 'long' instead of off_t to 
+get the correct results.  Using off_t for non-3.0 files in V3.1 may or may 
+not return the correct results depending upon what operating system it is 
+executed under. 
+
+
+
+2. Changes
+
+The following features have been added to CDF 3.1:
+
+* Ability to create a CDF file that is compatible with CDF 2.7.2 or earlier.
+
+* Addition of the easy-to-use New Standard Interface that allows almost all 
+  of the CDF operations which were previously only available through the 
+  Internal Interface.
+
+* Retrofit of CDFedit and CDFexport to create a CDF file that is compatible 
+  with CDF 2.7.2 or earlier
+
+* Addition of the MinGW (Minimalist GNU for Windows) support for PC
+
+* Many miscellaneous bug fixes
+
+
+
+3. How to Obtain the CDF 3.1 Software
+
+The CDF V3.1 software distribution is available either via anonymous FTP or
+Web (HTTP).  Below describes how to obtain the latest CDF 3.1 software. 
+
+    For OpenVMS systems via anonymous FTP:
+
+        ANONYMOUS account on NSSDCA.GSFC.NASA.GOV (128.183.241.14)
+        in [.CDF.DIST.CDF31].  The files you need are README.VMS and
+        CDF31-DIST.BCK.
+
+        The CDF Java APIs and tools are not fully tested for the
+        VMS/OpenVMS operating system, and they'll be made available at 
+        the place where the new CDF 3.1 library is located once fully 
+        tested. The new CDF 3.1 library is available now.
+
+
+    For UNIX/POSIX shell (including Windows running Cygwin or MingW) systems 
+
+        1) via anonymous FTP from the command line:
+           "anonymous" account on nssdcftp.gsfc.nasa.gov (128.183.114.83) in
+           `standards/cdf/dist/cdf31/unix'.  The files you need vary depending 
+           on what your needs are.  Download the AAREADME.txt file first and 
+           determine which tar file and installation instructions are needed.  
+
+        2) via browse: 
+           a. Go to ftp://nssdcftp.gsfc.nasa.gov/standards/cdf/dist/cdf31/unix
+           b. Browse the AAREADME.txt file first and determine which tar 
+              file suits your needs.
+
+        There are 3 gzipped tar files (i.e. cdf31-dist-all.tar.gz, 
+        cdf31-dist-cdf.tar.gz, cdf31-dist-java.tar.gz).  cdf-31-dist-all.tar.gz
+        contains everything CDF offers, and this file is recommended for both
+        CDF novice and expert users.
+
+
+    For Macintosh OS X Version 10.2 or newer
+        a. Go to http://nssdcftp.gsfc.nasa.gov/standards/cdf/dist/cdf31/macOSx
+        b. Download the cdf31_setup.tar.gz file.  Upon completion of the 
+           download, the Web browser will automatically uncompress the file and
+           initiate the installation process.
+
+    For 32-bit or 64-bit Windows NT/2000/XP
+        a. Go to ftp://nssdcftp.gsfc.nasa.gov/standards/cdf/dist/cdf31/w32
+        b. Download the cdf31_setup.exe file.  Double-click the downloaded
+           file for installation.
+
+
+The CDF documents are available at ftp://nssdcftp.gsfc.nasa.gov/standards/cdf/doc/cdf31 
+in Adobe Portable Document Format (PDF) files.  The documentation set consists 
+of the followings:
+
+        cdf31ug.pdf  (CDF User's Guide)
+        cdf31crm.pdf (CDF C Reference Manual)
+        cdf31frm.pdf (CDF Fortran Reference Manual)
+        cdf31jrm.pdf (CDF Java Reference Manual)
+        cdf31ifd.pdf (CDF Internal Format Description)
+
+Documentation for the CDF Java APIs is also available at
+http://cdf.gsfc.nasa.gov/cdfjava_doc
+
+We have a user support office for CDF that you should contact when you need
+assistance.  For Email requests send to:
+
+  Internet -- cdfsupport@listserv.gsfc.nasa.gov
+
+Please let us know (via Email to CDFSUPPORT) if you get the distribution.
+We would like to know who has the distribution so we know who to contact
+when updates are available.
+
+CDFsupport

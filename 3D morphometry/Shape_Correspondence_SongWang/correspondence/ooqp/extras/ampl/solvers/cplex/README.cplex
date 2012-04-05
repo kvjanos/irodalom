@@ -1,0 +1,1148 @@
+The solver "cplex" uses CPLEX (a trademark of CPLEX Optimization,
+Inc.) to solve integer, mixed-integer, and linear programming
+problems.  Normally cplex is invoked by AMPL's solve command,
+which gives the invocation
+
+     cplex stub -AMPL
+
+in which stub.nl is an AMPL generic output file (possibly written
+by "ampl -obstub" or "ampl -ogstub").  After solving the problem,
+cplex writes a stub.sol file for use by ampl's solve and solution
+commands.  When you run ampl, this all happens automatically if you
+give the AMPL commands
+
+     option solver cplex;
+     solve;
+
+You can control cplex by setting the environment variable cplex_options
+appropriately (either by using ampl's option command, or by using the
+shell's set and export commands before you invoke ampl).  You can put
+one or more (white-space separated) phrases in $cplex_options.  A few
+of the phrases are single words:
+
+     Phrase       Meaning
+
+     baropt       Use the barrier algorithm (unless there are discrete
+                  variables).
+
+     bestnode     For MIP problems, return the best node value in
+                  suffix .bestnode of the current objective and problem.
+                  For non-MIP problems, set .bestnode to Infinity for
+                  minimization, -Infinity for maximization.  If CPLEX
+                  has not found a best node value for a MIP problem, it
+                  similarly supplies 1e75 or -1e75 as the best node value.
+
+     dual         Solve the dual problem.
+     dualopt      Use a dual simplex algorithm.
+     maximize     Maximize the objective, regardless of model specification.
+     minimize     Minimize the objective, regardless of model specification.
+
+     primal       Solve the primal problem (default, via "dualthresh"
+                  described below).  Note that "primal", "dual", and
+                  "dualthresh" determine what problem is presented to
+                  CPLEX, whereas "dualopt" instructs CPLEX to use a dual
+                  rather than a primal simplex algorithm.  Thus "dualopt"
+                  is orthogonal to "primal", "dual", and "dualthresh".
+                  The best settings are problem-dependent.
+
+     relax        Ignore integrality: treat integer variables as continuous.
+     version      Show the current version.
+
+Others are name-value pairs, possibly separated by '=', as in
+
+     iterations 600
+or
+     iterations=600
+or
+     iterations = 600
+
+any of which limits cplex to 600 iterations.  The following names may
+occur in name-value pairs.  For convenience, the list also repeats the
+above single-word phrases, denoting them with "Single-word phrase".
+
+     Name               Comment
+
+     absmipgap          Absolute mixed-integer optimality gap tolerance
+                        (for difference between current best integer solution
+                        and optimal value of LP relaxation).  Default 0.
+
+     advance            Whether to use advance basis information (initial
+                        primal and dual variable values and basis indicators).
+                        Default 1 (yes).
+
+     aggcutlim          Bound on the number of constraints aggregated to
+                        generate flow-cover and mixed-integer-rounding cuts;
+                        default = 3.
+
+     aggfill            Synonym for "agglim".
+
+     aggregate          0 or 1 (default 1): Whether to make substitutions
+                        to reduce the number of rows.
+
+     agglim             Variables that appear in more than agglim rows
+                        (default 10) will not be substituted away by the
+                        "aggregate" algorithm.
+
+     aggtol             Pivot tolerance for aggregating.  It seldom needs
+                        fiddling.  Default = .05; must be in [1e-10, .99].
+
+     backtrack          Tolerance (> 0, default 0.85) for when to backtrack
+                        during branch & bound.  Low values tend to pure
+                        best-bound search.  High values (> 1) tend to pure
+                        depth-first search.  Values less than the default
+                        are often good when subproblems are expensive.
+
+     baralg             How to start the barrier algorithm:
+                                0 (default) = 1 for MIP subproblems, else 3
+                                1 = infeasibility-estimate start
+                                2 = infeasibility-constant start
+                                3 = standard start
+
+     barcorr            Limit on centering corrections in each iteration
+                        of the barrier algorithm:
+                                -1 = decide automatically (default)
+                                nonnegative = at most that many
+
+     bardisplay         Specifies how much the barrier algorithm chatters:
+                                0 = no output (default)
+                                1 = one line per iteration
+                                2 = more output
+
+     bargrowth          Tolerance for detecting unbounded faces in the
+                        barrier algorithm: higher values make the test
+                        for unbounded faces harder to satisfy.
+                        Default = 1e6.
+
+     bariterlim         Maximum barrier iterations allowed (default 200).
+
+     barobjrange        Limit on the absolute objective value before the
+                        barrier algorithm considers the problem unbounded.
+                        Default = 1e15.
+
+     baropt             Single-word phrase:  use the barrier algorithm
+                        (unless there are discrete variables).
+
+     barstart           Barrier starting-point algorithm:
+                                1 = dual is 0 (default)
+                                2 = estimate dual
+                                3 = average of primal estimate, 0 dual
+                                4 = average of primal and dual estimates
+
+     barstartalg        Synonym for "barstart".
+
+     baroutofcore       New in CPLEX 7.1:  whether the barrier solver should
+                        use disk (out-of-core) storage for Cholesky factors:
+                                0 = no (default)
+                                1 = yes.
+
+     barthreads         Maximum threads for the barrier algorithm
+                        (1 unless you have a CPLEX license for multiple
+                        threads).
+
+     barvarup           Upper bound imposed by barrier algorithm on
+                        variables with infinite upper bound; used to
+                        prevent trouble with problems having unbounded
+                        optimal faces.  Default = 1e20.
+
+     basisinterval      Number of interations between savings of current
+                        simplex basis to a file.  Default = 50000.
+
+     bbinterval         For nodeselect = 2, select the best-bound node,
+                        rather than the best-estimate node, every
+                        bbinterval iterations (default 7); 0 means
+                        always use the best-estimate node.
+
+     bestnode           Single-word phrase requesting return of .bestnode
+                        suffix.  See the description above.
+
+     boundstr           Whether to use bound strengthening in solving MIPs:
+                                -1 (default) = automatic choice
+                                0 = never
+                                1 = always
+
+     branch             Branching direction for integer variables:
+                       -1 = down, 0 = algorithm decides, 1 = up;
+                        default = 0.
+
+     branchdir          Synonym for "branch".
+
+     cliquecuts         Synonym for "cliques".
+
+     cliques            Whether to use clique cuts in solving MIPs:
+                                -1 = never
+                                0 = automatic choice (default)
+                                1 = at root node only
+                                2 = at all nodes
+
+     clocktype          Kind of times CPLEX reports during the solution
+                        process:
+                                1 = CPU time (default)
+                                2 = wall clock time (total elapsed time)
+
+     coeffreduce        Whether to use coefficient reduction when
+                        preprocessing MIPS:
+                                0 = no
+                                1 = yes (default)
+
+     comptol            Convergence tolerance for barrier algorithm:
+                        the algorithm stops when the relative
+                        complementarity is < bartol (default 1e-8).
+
+     covercuts          Synonym for "covers".
+
+     covers             Whether to use cover cuts in solving MIPs:
+                                -1 = never
+                                0 = automatic choice (default)
+                                1 = at root node only
+                                2 = at all nodes
+
+     crash              Crash strategy (used to obtain starting basis);
+                        possible values = -1, 0, 1; default = 1.
+                        The best setting is problem-dependent and
+                        can only be found by experimentation.
+                        0 completely ignores the objective.
+
+     crossover          Causes the barrier algorithm to be run (in the
+                        absence of discrete variables) and specifies
+                        whether to "crossover" to an optimal simplex
+                        basis afterwards:
+                                0 = no crossover
+                                1 = crossover with primal simplex
+                                    (default for baropt)
+                                2 = crossover with dual simplex
+
+     cutpass            Number of passes permitted when generating MIP
+                        cutting plane:
+                                -1 = none
+                                 0 = automatic choice (default)
+                                 positive = at most that many passes
+
+     cutsfactor         Limit MIP cuts added to (cutsfactor-1)*m, where m
+                        is the original number of rows (after presolve).
+                        Default = 4.
+
+     dgradient          Pricing algorithm for dual simplex (default 0):
+                                0 = choose automatically
+                                1 = standard dual pricing
+                                2 = steepest-edge pricing
+                                3 = steepest-edge pricing in slack space
+                                4 = steepest-edge with unit initial norms.
+
+     dense              Synonym for "densecol".
+
+     densecol           If positive, minimum nonzeros in a column for
+                        the barrier algorithm to consider the column dense.
+                        If 0 (default), this tolerance is selected
+                        automatically.
+
+     dependency         Whether to use CPLEX's presolve dependency
+                        checker:
+                                0 = no (default)
+                                1 = yes
+
+     disjcuts           Whether to generate MIP disjunctive cuts:
+                                -1 = no
+                                 0 = automatic choice (default)
+                                 1, 2, 3 = ever more aggressive generation
+
+     display            Frequency of displaying LP progress information:
+                        0 (default) = never; 1 = each factorization;
+                        2 = each iteration.
+
+     doperturb          1 means initially perturb the problem (by an
+                        amount governed by "perturbation", which is
+                        described below).  0 (default) means let the
+                        algorithm decide.  Setting doperturb to 1
+                        is occasionally helpful for highly degenerate
+                        problems.
+
+     dual               Single-word phrase:  solve the dual problem.
+
+     dualopt            Single-word phrase:  use a dual simplex algorithm.
+
+     dualthresh         Let m = number of rows, n = number of columns;
+                        if m - n > dualthresh, solve the dual;
+                        default = 32000.
+
+     endbasis           "endbasis foo" writes the final basis to
+                        file "foo" (in BAS format).
+
+     endtree            File for writing final branch & bound search tree.
+
+     endvector          File for writing solution from barrier algorithm
+                        without crossover:  only meaningful with
+                        "baropt crossover=0".
+
+     feasibility        Amount by which basic variables can violate
+                        their bounds.  Default = 1e-6; possible
+                        values are between 1e-9 and 1e-4.
+
+     file               Synonym for "writeprob".
+
+     flowcuts           Whether to use flow cuts in solving MIPs:
+                                -1 = never
+                                0 = automatic choice (default)
+                                1 = at root node only
+                                2 = at all nodes
+
+     flowpathcuts       Whether to generate MIP flow-path cuts:
+                                -1 = no
+                                 0 = automatic choice (default)
+                                 1 = moderate generation
+                                 2 = aggressive generation
+
+     fraccand           Limit on number of candidate variables when
+                        generating Gomory cuts for MIP problems:
+                                default = 200
+
+     fraccuts           Whether to generate MIP fractional Gomory
+                        cuts:
+                                -1 = no
+                                 0 = decide automatically (default)
+                                 1 = generate moderately
+                                 2 = generate aggressively
+
+     fracpass           Limit on number of passes to generate MIP
+                        fractional Gomory cuts:
+                                0 = automatic choice (default)
+                                positive = at most that many passes
+
+     fractionalcuts     Synonym for "fracpass".
+
+     growth             Synonym for "bargrowth".
+
+     gubcuts            Whether to use GUB cuts in solving MIPs:
+                                -1 = never
+                                0 = automatic choice (default)
+                                1 = at root node only
+                                2 = at all nodes
+
+     heurfreq           How often to apply "node heuristics" for MIPS:
+                                -1 = never
+                                0 = automatic choice (default)
+                                n > 0 = every n nodes
+
+     heuristic          Deprecated: may be removed from subsequent
+                        versions of CPLEX.
+                        What heuristic to use on MIPS for finding an
+                        initial integer solution:
+                                -1 = none
+                                 0 = decide automatically (default)
+                                 1 = use a rounding heuristic at node 0
+
+     heuristicfreq      Synonym for "heurfreq".
+
+     iisfind            Whether to find and return an IIS (irreducible
+                        infeasible set of variables and constraints) if
+                        the problem is infeasible:
+                                0 = no (default)
+                                1 = find an IIS quickly
+                                2 = try to find a small IIS.
+                        IIS details are returned in suffix .iis, which
+                        assumes one of the values "non" for variables
+                        and constraints not in the IIS; "low" for
+                        variables or inequality constraint bodies whose lower
+                        bounds are in the IIS; "upp" for variables and
+                        inequality constraint bodies whose upper bounds are
+                        in the IIS; and "fix" for equality constraints that
+                        are in the IIS.
+
+     impliedcuts                Whether to use implied cuts in solving MIPs:
+                                -1 = never
+                                0 = automatic choice (default)
+                                1 = at root node only
+                                2 = at all nodes
+
+     integrality        Amount by which an integer variable can differ
+                        from the nearest integer and still be considered
+                        feasible.  Default = 1e-5; must be >= 1e-9.
+
+     iterations         Limit on total LP iterations; default 5000000.
+
+     iterlim            Synonym for "iterations".
+
+     limitperturb       Synonym for "perturblimit".
+
+     logfile            Name of file to receive all CPLEX messages.
+
+     lowercutoff        For maximization problems involving integer
+                        variables, skip any branch whose LP relaxation's
+                        optimal value is less than lowercutoff.  Warning:
+                        if lowercutoff is too large, the problem will
+                        appear infeasible.  Default = -Infinity.
+
+     lowerobj           Stop minimizing when the objective value
+                        goes below lowerobj.  Default = -1e75.
+
+     lowerobjlim        Synonym for "lowerobj".
+
+     lpdisplay          Synonym for "display".
+
+     lpiterlim          Synonym for "iterations".
+
+     lptimelim          Synonym for "time".
+
+     markowitz          Pivot tolerance; default = 0.01; must be between
+                        0.0001 and 0.99999.  Bigger values may improve
+                        numerical properties of the solution (and may
+                        take more time).
+
+     maximize           Single-word phrase:  maximize the objective,
+                        regardless of model specifications.
+
+     minimize           Single-word phrase:  minimize the objective,
+                        regardless of model specifications.
+
+     mipalg             Algorithm used on mixed-integer subproblems
+                        (default 2):
+                                1 = primal simplex
+                                2 = dual simplex (plus primal, if dual fails)
+                                3 = network alg., then dual simplex
+                                4 = barrier with crossover
+                                5 = dual to iteration limit, then barrier
+                                6 = barrier without crossover
+
+     mipalgorithm       Synonym for "mipalg".
+
+     mipcrossover       Crossover method used when using the barrier
+                        method for MIP subproblems:
+                                -1 = no crossover
+                                 0 (default) = automatic choice
+                                 1 = primal
+                                 2 = dual
+
+     mipcuts            Sets all nine of cliques, covers, disjcuts,
+                        flowcuts, flowpathcuts, fraccuts, gubcuts,
+                        impliedcuts and mircuts to the specified value.
+
+     mipdisplay         Frequency of displaying branch-and-bound
+                        information (for optimizing integer variables):
+                                0 (default) = never
+                                1 = each integer feasible solution
+                                2 = every "mipinterval" nodes
+                                3 = every "mipinterval" nodes plus
+                                    information on LP relaxations
+                                    (as controlled by "display")
+                                4 = same as 2, plus LP relaxation info.
+                                5 = same as 2, plus LP subproblem info.
+
+     mipemphasis        Whether to emphasize seeking optimality (0 =
+                        default) or finding feasible solutions (1).
+
+     mipgap             Relative tolerance for optimizing integer
+                        variables: stop if
+                              abs((best bound) - (best integer))
+                                  < mipgap * (1 + abs(best bound)).
+                        Default = 1e-4; must be between 1e-9 and 1.
+
+     mipinterval        Frequency of node logging for mipdisplay 2 or 3.
+                        Default = 1.
+
+     mipordertype       Synonym for "ordertype".
+
+     mipsolutions       Stop branch-and-bound for integer variables
+                        after finding "mipsolutions" feasible solutions.
+                        Default = 2100000000.
+
+     mipstart           Synonym for "mipstartvalue".
+
+     mipstartalg        Which LP algorithm to use in solving the initial
+                        MIP subproblem:
+                                1 = primal simplex
+                                2 = dual simplex (default)
+                                3 = netopt
+                                4 = barrier with crossover
+                                5 = dual simplex to iteration limit,
+                                    then barrier
+                                6 = barrier without crossover
+
+     mipstartstatus     Whether to use incoming variable and constraint
+                        statuses if the problem has integer variables:
+                                0 = no
+                                1 = yes (default).
+
+     mipstartvalue      Whether to use initial guesses in problems with
+                        integer variables:
+                                0 = no
+                                1 = yes (default).
+
+     mipsubalg          Synonym for "mipalg".
+
+     mipthreads         Maximum threads for the MIP algorithm
+                        (1 unless you have a CPLEX license for multiple
+                        threads).
+
+     mircuts            Whether to generate MIP rounding cuts:
+                                -1 = no
+                                 0 = automatic choice (default)
+                                 1 = moderate generation
+                                 2 = aggressive generation
+
+     nameround          Whether to mangle variable and constraint names
+                        by turning [ and ] into ( and ), respectively:
+                                0 = no (default)
+                                1 = yes.
+                        This only matters if you specify endbasis=...
+                        or startbasis=... or perhaps writeprob=something.lp
+                        and have instructed AMPL to write .row and .col files.
+                        (It is usually better to let AMPL's status facilities
+                        convey basis information.)  An alternative under Unix
+                        is to use the "tr" command to make the above changes
+                        if they are needed.
+
+     netdisplay         Which objective value to show when using the
+                        network simplex algorithm with display > 0:
+                                0 = none
+                                1 = true objective
+                                2 = penalized objective (default)
+
+     netfeasibility     Feasibility tolerance for the network simplex
+                        algorithm.  Default = 1e-6; possible values are
+                        between 1e-11 and 1e-1.
+
+     netfind            Algorithm for finding embedded networks:
+                                1 = extract only the natural network (default)
+                                2 = use reflection scaling
+                                3 = use general scaling
+
+     netfinder          Synonym for "netfind".
+
+     netiterations      Limit on network simplex iterations.
+                        Default = large (e.g., 2100000000).
+
+     netopt             0 means never invoke the network optimizer.
+                        1 (default) means invoke the network optimizer
+                          only if the model had node and arc declarations.
+                        2 means always invoke the network optimizer
+                          (unless there are integer variables); the network
+                          optimizer may be able to find and exploit an
+                          embedded network.
+
+     netoptimality      Tolerance for optimality of reduced costs in the
+                        network simplex algorithm.  Default 1e-6; must be
+                        between 1e-11 and 1e-1.
+
+     netpricing         How to price in the network simplex algorithm:
+                                0 = automatic choice (default)
+                                1 = partial pricing
+                                2 = multiple partial pricing
+                                3 = multiple partial pricing with sorting
+
+     node               Synonym for "nodes".
+
+     nodefile           Whether to save node information in a temporary file:
+                                0 = no
+                                1 (default) = compressed node file in memory
+                                2 = node file on disk
+                                3 = compressed node file on disk.
+
+     nodefiledir        Synonym for workfiledir.  Prior to CPLEX 7.1,
+                        this directory is just for node information files.
+
+     nodefilelim        Maximum size for the node file.  Default 1e75.
+                        Removed from CPLEX 7.1.  See workfilelim.
+
+     nodefilesize       Synonym for "nodefilelim".
+
+     nodelim            Synonym for "nodes".
+
+     nodes              Stop branch-and-bound for integer variables
+                        after "nodes" LP relaxations.  Default = 2100000000.
+
+     nodesel            Strategy for choosing next node while optimizing
+                        integer variables:
+                          0 = depth-first search;
+                          1 = breadth-first search (default);
+                          2 = best-estimate search;
+                          3 = alternate best-estimate search.
+
+     nodeselect         Synonym for "nodesel".
+
+     objdifference      Amount added to (for maximizing) or subtracted
+                        from (for minimizing) the best (so far) feasible
+                        objective value while optimizing integer variables.
+                        Subsequent nodes will be ignored if their LP
+                        relaxations have optimal values worse than this
+                        sum.  Default = 0.  Positive values may speed
+                        the search -- and may cause the optimal solution
+                        to be missed.
+
+     objno              0 (default) = first objective, 1 = second, etc.
+                        This only matters if you declare several
+                        objectives and do not use AMPL's drop or objective
+                        commands to select a single objective for the solver
+                        (CPLEX) to see.
+
+     optimality         Tolerance for optimality of reduced costs.
+                        Default 1e-6; must be between 1e-9 and 1e-1.
+
+     optimize           Synonym for "primal".
+
+     ordering           Ordering algorithm used by the barrier algorithm
+                        0 = automatic choice (default)
+                        1 = approximate minimum degree
+                        2 = approximate minimum fill
+                        3 = nested disection.
+
+     ordertype          How to generate default priorities for integer
+                        variables when no .priority suffix is specified:
+                                0 = do not generate priorities (default)
+                                1 = use decreasing costs
+                                2 = use increasing bound range
+                                3 = use coefficient count.
+
+     outlev             Synonym for "display".
+
+     pdswitch           Whether to switch algorithms (from primal to dual
+                        or vice versa) when undoing perturbations or shifts
+                        made during the primal or dual simplex algorithm:
+                                -1 = no
+                                 0 = automatic choice (default)
+                                 1 = yes
+                        pdswitch=1 may help if there are many cycles
+                        of undoing perturbations.  New in CPLEX 7.0,
+                        hidden in CPLEX 7.1.
+
+     perturb            Synonym for "doperturb".
+
+     perturbation       Amount by which to perturb variable bounds
+                        when perturbing problems (see "doperturb").
+                        Default 1e-6; must be positive.
+
+     perturbconst       Synonym for "perturbation".
+
+     perturblim         Number of stalled simplex iterations before the
+                        problem is perturbed.  Default = 0 = automatic.
+
+     perturblimit       Synonym for "perturblim".
+
+     pgradient          Pricing algorithm for primal simplex (default 0):
+                                -1 = reduced-cost pricing
+                                 0 = hybrid reduced-cost and Devex pricing
+                                 1 = Devex pricing
+                                 2 = steepest-edge pricing
+                                 3 = steepest-edge with slack initial norms
+                                 4 = full pricing.
+
+     plconpri           Priority (default 1) for SOS2 constraints for nonconvex
+                        piecewise-linear terms in constraints.
+
+     plobjpri           Priority (default 2) for SOS2 constraints for nonconvex
+                        piecewise-linear terms in objectives.
+
+     precompress        New in CPLEX 7.1:  whether to compress the original
+                        problem after CPLEX's presolve:
+                                -1 = no
+                                 0 = automatic choice (default)
+                                 1 = yes.
+
+     predual            Whether CPLEX's presolve phase should present the
+                        CPLEX solution algorithm with the primal (-1) or
+                        dual (1) problem or (default = 0) should decide
+                        which automatically.  Specifying "predual=1" often
+                        gives better performance than specifying just "dual",
+                        but sometimes "dual predual=1" is still better.
+
+     prereduce          Kinds of reductions permitted during CPLEX presolve:
+                                0 = none
+                                1 = only primal
+                                2 = only dual
+                                3 = both primal and dual (default)
+
+     prerelax           Whether to use CPLEX's presolve on the initial LP
+                        relaxation of a MIP:
+                                0 = no (default)
+                                1 = yes.
+
+     presolve           0 or 1 (default 1): Whether to run CPLEX's presolve
+                        algorithm.
+
+     presolvedual       Synonym for "predual".
+
+     presolvenode       -1, 0, or 1 (default 0): Whether to run CPLEX's
+                        presolve at each node of the MIP branch-and-bound
+                        tree: -1 = no; 1 = yes; 0 = automatic choice.
+
+     prestats           0 or 1 (default 0): Whether to print results of
+                        and time for CPLEX's "aggregate" and "presolve"
+                        algorithms.
+
+     pricing            Size of pricing candidate list (for partial pricing).
+                        0 (default) means the algorithm decides.
+
+     primal             Single-word phrase:  solve the primal problem.
+
+     primalopt          Synonym for "primal".
+
+     priorities         Whether to consider priorities for MIP branching:
+                                0 = no
+                                1 = yes (default)
+
+     probe              Whether to do variable probing when solving MIPs
+                        (which sometimes dramatically affects performance,
+                        for better or worse):
+                                -1 = no
+                                0 = automatic choice (default)
+                                1, 2, or 3 = ever more probing.
+
+     readbasis          BAS file containing starting basis.
+
+     readvector         VEC file containing starting point for barrier alg.
+
+     refactor           LP iterations between refactorizing the basis.
+                        0 (default) means the algorithm decides.
+
+     relax              Single-word phrase:  ignore integrality.
+
+     relaxpresolve      Synonym for "prerelax".
+
+     relobjdif          Synonym for "relobjdiff".
+
+     relobjdiff         If the objdifference parameter is 0,
+                        relobjdiff times the absolute value of the objective
+                        value is added to (for maximizing) or subtracted
+                        from (for minimizing) the best (so far) feasible
+                        objective value while optimizing integer variables.
+                        Subsequent nodes will be ignored if their LP
+                        relaxations have optimal values worse than this
+                        sum.  Default = 0.  Positive values may speed
+                        the search -- and may cause the optimal solution
+                        to be missed.
+
+     relpresolve        Synonym for "prerelax".
+
+     rootheuristic      Synonym for "heuristic".  Deprecated.
+
+     round              Whether to round integer variables to integral
+                        values before returning the solution, and whether
+                        to report that CPLEX returned noninteger values
+                        for integer values (default 1):  sum of
+                                1 ==> round nonintegral integer variables
+                                2 ==> do not modify solve_result
+                                4 ==> do not modify solve_message
+                                8 ==> modify even if maxerr < 1e-9
+                        Modifications take place only if CPLEX assigned
+                        nonintegral values to one or more integer variables,
+                        and (for round < 8) only if the maximum deviation
+                        from integrality (maxerr) exceeded the minimum
+                        "integrality" tolerance (1e-9).
+
+     scale              How to scale the problem:
+                        -1 = no scaling
+                        0 (default) = equilibration
+                        1 = a more aggressive scheme that sometimes helps.
+
+     sensitivity        Whether to return sensitivy information for the
+                        objective (in suffixes .up for the largest value
+                        of a variable's cost coefficient or constraint's
+                        right-hand side before the optimal basis changes,
+                        .down for the smallest such value, and .current for
+                        the current cost coefficient or right-hand side):
+                                0 = no (default)
+                                1 = yes.
+
+     simthreads         Maximum threads for the dual simplex algorithm
+                        (currently always 1).
+
+     singular           Maximum number of times CPLEX should try to
+                        repair the basis when it encounters singularities.
+                        Default = 10.
+
+     singularlim        Synonym for "singular".
+
+     solutionlim        Synonym for "mipsolutions".
+
+     sos                0 or 1 (default 1):  Whether to honor declared
+                        suffixes .sosno and .ref describing SOS sets.
+                        Each distinct nonzero .sosno value designates an SOS
+                        set, of type 1 for positive .sosno values and of type
+                        2 for negative values.  The .ref suffix contains
+                        corresponding reference values.
+
+     sos2               0 or 1 (default 1): Whether to tell CPLEX about SOS2
+                        constraints for nonconvex piecewise-linear terms.
+
+     startalg           Synonym for "mipstartalg".
+
+     startalgorithm     Synonym for "mipstartalg".
+
+     startbasis         "startbasis foo" reads the initial basis
+                        (in BAS format) from file "foo".
+
+     starttree          File for reading initial branch-and-bound search tree.
+
+     strongcand         Length of the candidate list for "strong branching"
+                        when solving MIPs: default 10.
+
+     strongit           Number of simplex iterations on each variable in
+                        the candidate list during strong branching.
+                        Default = 0 = automatic choice.
+
+     strongthreads      Maximum threads during strong branching.
+                        Default = 1.
+
+     subalg             Synonym for "mipalg".
+
+     subalgorithm       Synonym for "mipalg".
+
+     time               Time limit in seconds; default = 1e75.
+
+     timelimit          Synonym for "time".
+
+     timing             1 means write time to stdout, 2 to stderr,
+                        3 to both stdout and stderr, 0 to neither.
+                        Default = 0.
+
+     tranopt            Synonym for "dualopt".
+
+     treelimit          Synonym for "treememory".
+
+     treememlim         Synonym for "treememory".
+
+     treememory         Max. megabytes of memory (default 128) to use for
+                        branch-and-bound tree.
+
+     uppercutoff        For minimization problems involving integer
+                        variables, skip any branch whose LP relaxation's
+                        optimal value is more than uppercutoff.  Warning:
+                        if uppercutoff is too small, the problem will
+                        appear infeasible.  Default = Infinity.
+
+     upperobj           Stop maximizing when the objective value
+                        goes above upperobj.  Default = 1e75.
+
+     upperobjlim        Synonym for "upperobj".
+
+     varsel             Strategy for selecting the next branching
+                        variable during integer branch-and-bound:
+                        -1 = branch on variable with smallest
+                             integer infeasibility;
+                         0 = algorithm decides (default);
+                         1 = branch on variable with largest
+                             integer infeasibility;
+                         2 = branch based on pseudo costs (new in CPLEX 6.5);
+                         3 = strong branching;
+                         4 = branch based on pseudo reduced costs
+                             (with CPLEX 6.5; varsel 2 had this meaning
+                             with earlier versions of CPLEX).
+
+     varselect          Synonym for "varsel".
+
+     version            Single-word phrase:  show the current version.
+
+     wantsol            In a stand-alone invocation (no -AMPL on the
+                        command line), what solution information to write.
+                        Sum of
+                                1 = write .sol file
+                                2 = primal variables to stdout
+                                4 = dual variables to stdout
+                                8 = suppress solution message
+
+     workfiledir        Directory where CPLEX creates a temporary
+                        subdirectory for temporary files, e.g., for
+                        node information and Cholesky factors.
+
+     workfilelim        Maximum size in megabytes for in-core work "files".
+                        Default 128.
+
+     writebas           Synonym for "endbasis".
+
+     writeprob          Name of file to which the problem is written
+                        in a format determined by the name's suffix:
+                                .sav = binary SAV file;
+                                .mps = MPS file, original names;
+                                .lp = LP file, original names;
+                                .rmp = MPS file, generic names;
+                                .rew = MPS file, generic names;
+                                .rlp = LP file, generic names.
+                        SAV and LP formats are peculiar to CPLEX.
+
+     writevector        Synonym for "endvector".
+
+     xxxstart           Whether to read .xxx files to resume an
+                        interupted run of CPLEX:
+                                0 = no (default)
+                                1 = yes.
+
+When CPLEX finds the problem unbounded and a basis is available,
+a ray is returned in suffix unbdd.
+
+For problems with several integer (or binary) variable declarations,
+it sometimes helps to specify branching priorities for the integer
+variables.  When CPLEX has a choice of which integer variable to
+bound (or fix) during its branch-and-bound algorithm, it chooses
+a variable with the highest priority.  You can declare suffix priority
+and assign individual priorities (between 0 and 2147483647) to each
+integer variable.  Assigning .priority values is the preferred
+approach, but you can also use the older and less flexible scheme of
+specifying priorities in the environment variable $mip_priorities,
+which should contain zero or more white-space separated pairs of the
+form
+        variable-name priority
+Each priority should be an integer between 1 and 2147483647.
+All components of an indexed variable have the same priority;
+the variable-name should not have a subscript.
+
+If suffix priority is present, option mip_priorities is ignored.
+
+You can also declare suffix direction and use it to convey
+individual branching directions (-1, 0, or 1, as with the branch
+keyword described above) for each integer variable.  If suffix
+direction is present, the branch keyword applies only to variables
+whose .direction is 0.
+
+When using $mip_priorities, you must arrange for AMPL to write a .col
+file.  See the discussion of auxiliary files on p. 333 of the AMPL book:
+unless $cplex_auxfiles already contains 'c', issue the AMPL command
+        option cplex_auxfiles c;
+before saying "solve;".  Similarly, if you use AMPL's write command,
+first make sure $auxfiles contains 'c'; if not, issue the AMPL command
+        option auxfiles c;
+The keywords '!quit' and '!echo' may appear at the beginning of
+$mip_priorities.  If cplex finds an error in $mip_priorities, it bails
+out unless '!quit' appears in $mip_priorities before the error.
+Normally cplex reports the priorities it acquires from $mip_priorities,
+but '!echo' suppresses this reporting.  For example, if Buy is an
+integer variable, you might try the AMPL commands
+        option mip_priorities 'Buy 3', cplex_auxfiles ''; solve;
+        option mip_priorities '!quit Buy 3'; solve;
+        option cplex_auxfiles c; solve;
+        option mip_priorities '!echo Buy 3'; solve;
+        option mip_priorities '!quit !echo Buy 3'; solve;
+
+-----------------------
+solve_result_num values
+=======================
+
+Here is a table of solve_result_num values that "cplex" can return
+to an AMPL session, along with the text that appears in the associated
+solve_message.
+
+        Value   Message
+
+          0     optimal solution
+          1     primal has unbounded optimal face
+          2     optimal integer solution
+          3     optimal integer solution within mipgap or absmipgap
+          4     optimal solution in 0 simplex iterations
+        100     best solution found, primal-dual feasible
+        102     optimal (non-)integer solution
+        103     optimal (non-)integer solution within mipgap or absmipgap
+        110     optimal with unscaled infeasibilities
+        111     integer optimal with unscaled infeasibilities
+        200     infeasible problem
+        201     infeasible with phase II singularities
+        202     infeasible with phase I singularities
+        204     converged, dual feasible, primal infeasible
+        205     converged, primal and dual infeasible
+        206     best solution found, primal infeasible
+        207     best solution found, primal-dual infeasible
+        208     infeasible or unbounded in presolve
+        220     integer infeasible
+        300     unbounded problem
+        301     converged, primal feasible, dual infeasible
+        302     best solution found, dual infeasible
+        400     objective limit exceeded in phase II
+        401     iteration limit in phase II
+        402     iteration limit in phase I
+        403     time limit in phase II
+        404     time limit in phase I
+        405     primal objective limit reached
+        406     dual objective limit reached
+        410     node limit with no integer solution
+        411     time limit with no integer solution
+        412     treememory limit with no integer solution
+        413     node file limit with no integer solution
+        420     mixed-integer solutions limit
+        421     node limit with integer solution
+        422     time limit with integer solution
+        423     treememory limit with integer solution
+        424     node file limit with integer solution
+        500     unrecoverable failure
+        501     aborted in phase II
+        502     aborted in phase I
+        503     aborted in barrier, dual infeasible
+        504     aborted in barrier, primal infeasible
+        505     aborted in barrier, primal and dual infeasible
+        506     aborted in barrier, primal and dual feasible
+        507     aborted in crossover
+        508     solution found, numerical difficulties
+        509     solution found, inconsistent equations
+        510     unrecoverable failure with no integer solution
+        511     aborted, no integer solution
+        512     out of memory, no tree; no integer solution
+        520     unrecoverable failure with integer solution
+        521     aborted, integer solution exists
+        523     out of memory, no tree; solution may exist
+        530     bug? problem has no variables
+        531     bug? Error return from named CPLEX routine
+        540     Diagonal QP Hessian has elements of the wrong sign
+        541     QP Hessian has diag. elements of the wrong sign
+        542     QP Hessian is not positive definite
+        550     problem has nonlinear constraints
+        551     problem has a nonlinear objective
+        552     problem has nonlinear integer variables
+        553     problem has integer variables and a quadratic objective
+        554     problem has unlinearized piecewise-linear terms
+        555     problem has a quadratic objective involving division by 0
+        556     nonlinear objective without CPLEX Barrier option (for QPs)
+        557     CPLEX MIP option needed to handle piecewise-linear terms
+        560     error in $cplex_options
+        570     CPLEX licensing problem
+
+
+-------------------
+
+If you have a CPLEX 4.0 manual, you may find the following table
+helpful.  It relates the above names (in name-value pairs) to
+SET commands described in chapters 8 and 9 of the CPLEX 4.0 manual.
+
+     Name               CPLEX SET command
+
+     agglim             PREPROCESSING colnonzeros
+     bardisplay         SET BARRIER display
+     bargrowth          SET BARRIER limits growth
+     bariterlim         SET BARRIER limits iterations
+     barobjrange        SET BARRIER limits objrange
+     barthreads         SET BARRIER LIMIT THREADS
+     barvarup           SET BARRIER LIMITS varupper
+     branch             SET MIP STRATEGY branch
+     cliques            MIP STRATEGY cliques
+     coeffreduce        PREPROCESSING coeffreduce
+     comptol            SET BARRIER convergetol
+     covers             MIP STRATEGY covers
+     crash              SET SIMPLEX crash
+     dense              SET BARRIER colnonzeros
+     dependency         PREPROCESSING dependency
+     dgradient          SET SIMPLEX dgradient
+     display            SET SIMPLEX display
+     doperturb          SET SIMPLEX perturbation
+     feasibility        SET SIMPLEX TOLERANCE feasibility
+     heuristic          MIP STRATEGY heuristic
+     integrality        SET MIP TOLERANCE integrality
+     iterations         SET SIMPLEX LIMIT iterations
+     iterlim            SET SIMPLEX LIMIT iterations
+     lowercutoff        SET MIP STRATEGY lowercutoff
+     lowerobj           SET SIMPLEX LIMIT lowerobj
+     markowitz          SET SIMPLEX TOLERANCE markowitz
+     mipdisplay         SET MIP display
+     mipgap             SET MIP TOLERANCE mipgap
+     mipinterval        SET MIP interval
+     mipsolutions       SET MIP LIMIT solutions
+     mipstartalg        MIP STRATEGY startalgorithm
+     mipsubalg          MIP STRATEGY subalgorithm
+     mipthreads         SET MIP LIMIT THREADS
+     netfind            SIMPLEX netfind
+     nodefile           SET MIP STRATEGY FILE
+     nodes              SET MIP LIMIT nodes
+     nodesel            SET MIP STRATEGY nodeselect
+     objdifference      SET MIP TOLERANCE objdifference
+     optimality         SET SIMPLEX TOLERANCE optimality
+     ordering           SET BARRIER ordering
+     outlev             SET SIMPLEX display
+     perturbation       SET SIMPLEX perturbation <number>
+     pgradient          SET SIMPLEX pgradient
+     pricing            SET SIMPLEX pricing
+     priorities         MIP STRATEGY order
+     refactor           SET SIMPLEX refactor
+     relobjdiff         MIP TOLERANCES relobjdifference
+     scale              SET read scale
+     simthreads         SET SIMPLEX LIMIT THREADS
+     singular           SET SIMPLEX LIMIT singular
+     sosmin             MIP LIMITS minsossize
+     time               SET timelimit
+     uppercutoff        SET MIP TOLERANCE uppercutoff
+     upperobj           SET SIMPLEX LIMIT upperobj
+     varsel             SET MIP STRATEGY variableselect
+
+-------------------
+
+Keywords added for CPLEX 6.5:
+
+        barstart
+        bbinterval
+        boundstr
+        cutsfactor
+        flowcuts
+        gubcuts
+        heuristicfreq
+        impliedcuts
+        mipcrossover
+        mipcuts
+        nodefilelim
+        ordertype
+        perturblimit
+        prerelax
+        probe
+        strongcand
+        strongit
+        strongthreads
+
+Keywords no longer available in CPLEX 6.5:
+
+     reducecostfix      Whether to use reduced cost fixing in MIP problems:
+                                0 = no
+                                1 = yes (default)
+
+     sosmin             Minimum number of members in a set for the
+                        set to be considered of SOS type 3.
+
+     sosscan            0 or 1 (default 0): Whether to scan for SOS3 sets.
+
+Keywords added for CPLEX 7.0:
+
+        aggcutlim
+        barstartalg
+        cutpass
+        disjcuts
+        flowpathcuts
+        fraccand
+        fracpass
+        heurfreq
+        limitperturb
+        mipemphasis
+        mipordertype
+        mipstart
+        mircuts
+        nodefiledir
+        nodefilesize
+        pdswitch
+        perturblim
+        prereduce
+        presolvedual
+        presolvenode
+        relaxpresolve
+        relpresolve
+
+-------------------
+
+If you invoke "cplex stub -AMPL" or "cplex stub", you can also supply
+additional command-line arguments of the form name=value.  Such
+arguments override specifications in $cplex_options.  Example:
+
+     ampl -obfoo foo.model foo.data
+     nohup cplex foo timing=2 2>>times&
+
+to solve a problem whose solution will take a while; after cplex
+finishes,
+
+     ampl foo.model foo.data -
+     solution foo.sol;
+     display ... /* things involving the computed solution */;
+
+(Here, - denotes standard input, and ampl reads the "solution..."
+and "display..." lines.)
+
+When invoked with no arguments, cplex either operates as described
+in the CPLEX manual (when compiled with -DStand_alone on systems
+where the CPLEX callable library provides cpxmain()), or complains
+about not having a stub.
+
+*************************
+
+If you have questions about or find bugs with this stuff,
+please contact:
+
+     David M. Gay
+     dmg@bell-labs.com
+     +1-908-582-5623

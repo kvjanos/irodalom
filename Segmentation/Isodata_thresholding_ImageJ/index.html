@@ -1,0 +1,713 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<!-- This document was created from RTF source by rtftohtml version 3.0.1 -->
+<title>Image Processing Fundamentals - Segmentation</title></head>
+<body text="#000080" vlink="#0000b0" alink="#ff0000" bgcolor="#ffffff" link="#0000e0"><font face="Helvetica">
+<a href="http://www.ph.tn.tudelft.nl/Courses/FIP/noframes/fip-Basic.html"><img src="leftg.gif" alt="&lt;&lt; " border="0"></a>
+ <a href="http://www.ph.tn.tudelft.nl/Courses/FIP/noframes/fip-Acknowle.html"><img src="rightg.gif" alt="&gt;&gt; " border="0"></a>
+ <a href="http://www.ph.tn.tudelft.nl/Courses/FIP/noframes/fip-Techniqu.html"><img src="upg.gif" alt="Up " border="0"></a>
+ <a href="http://www.ph.tn.tudelft.nl/Courses/FIP/noframes/fip.html"><img src="topg.gif" alt="Title " border="0"></a>
+ <a href="http://www.ph.tn.tudelft.nl/Courses/FIP/noframes/fip-Contents.html"><img src="contg.gif" alt="Contents " border="0"></a>
+ <a href="http://www.ph.tn.tudelft.nl/Courses/FIP/noframes/fip-Index.html"><img src="indexg.gif" alt="Index" border="0"></a>
+<img src="hr.gif"></font><p>
+</p><h2>
+<font face="Helvetica">Segmentation</font></h2>
+<ul>
+<font face="Helvetica"><li><a href="#Heading118">Thresholding</a>
+</li><li><a href="#Heading119">Edge finding</a>
+</li><li><a href="#Heading120">Binary mathematical morphology</a>
+</li><li><a href="#Heading121">Gray-value mathematical morphology</a>
+</li></font></ul>
+<font face="Helvetica"><img src="hr.gif"></font><p>
+<font face="Helvetica"><b></b>
+In the analysis of the objects in images it is essential that we can
+distinguish between the objects of interest and "the rest." This latter group
+is also referred to as the background. The techniques that are used to find the
+objects of interest are usually referred to as <i>segmentation</i>
+<i>techniques</i> - segmenting the foreground from background. In this section
+we will two of the most common techniques--<i>thresholding</i> and <i>edge</i>
+<i>finding</i>-- and we will present techniques for improving the quality of
+the segmentation result. It is important to understand that:</font></p><p>
+<font face="Helvetica"><tt>*	</tt>there is no universally applicable segmentation technique that will
+work for all images, and,</font></p><p>
+<font face="Helvetica"><tt>*	</tt>no segmentation technique is perfect.
+
+</font></p><h3>
+<font face="Helvetica"><a name="Heading118">Thresholding</a></font></h3>
+
+<font face="Helvetica"><b></b>
+This technique is based upon a simple concept. A parameter
+<tt><i><img src="theta.gif"></i></tt> called the <i>brightness</i> <i>threshold</i> is chosen
+and applied to the image <i>a</i>[<i>m</i>,<i>n</i>] as follows:</font><p>
+
+</p><center>
+<font face="Helvetica">		<sub>
+<img src="fip354.gif"></sub>
+</font></center>
+<p>
+</p><p>
+<font face="Helvetica">This version of the algorithm assumes that we are interested in light objects
+on a dark background. For dark objects on a light background we would use:</font></p><p>
+
+</p><center>
+<font face="Helvetica">		<sub>
+<img src="fip355.gif"></sub>
+</font></center>
+<p>
+</p><p>
+<font face="Helvetica">The output is the label "object" or "background" which, due to its dichotomous
+nature, can be represented as a Boolean variable "1" or "0". In principle, the
+test condition could be based upon some other property than simple brightness
+(for example, <i>If</i> (<i>Redness</i>{<i>a</i>[<i>m</i>,<i>n</i>]} &gt;=
+<tt><img src="theta.gif"></tt><sub><i>red</i></sub>), but the concept is clear.</font></p><p>
+</p><p>
+<font face="Helvetica">The central question in thresholding then becomes: ow do we choose the
+threshold <tt><i><img src="theta.gif"></i></tt>? While there is no universal procedure for
+threshold selection that is guaranteed to work on all images, there are a
+variety of alternatives.</font></p><p>
+</p><p>
+<font face="Helvetica"><i>* Fixed threshold </i>- One alternative is to use a threshold that is
+chosen independently of the image data. If it is known that one is dealing with
+very high-contrast images where the objects are very dark and the background is
+homogeneous (Section 10.1) and very light, then a constant threshold of 128 on
+a scale of 0 to 255 might be sufficiently accurate. By accuracy we mean that
+the number of falsely-classified pixels should be kept to a minimum.</font></p><p>
+</p><p>
+<font face="Helvetica"><i>* istogram-derived thresholds </i>- In most cases the threshold is
+chosen from the brightness histogram of the region or image that we wish to
+segment. (See Sections 3.5.2 and 9.1.) An image and its associated brightness
+histogram are shown in Figure 51.</font></p><p>
+</p><p>
+<font face="Helvetica">A variety of techniques have been devised to automatically choose a threshold
+starting from the gray-value histogram, {<i>h</i>[<i>b</i>] | <i>b</i> = 0, 1,
+... , 2<sup><i>B</i></sup>-1}. Some of the most common ones are presented
+below. Many of these algorithms can benefit from a smoothing of the raw
+histogram data to remove small fluctuations but the smoothing algorithm must
+not shift the peak positions. This translates into a zero-phase smoothing
+algorithm given below where typical values for <i>W</i> are 3 or 5:</font></p><p>
+
+</p><center>
+<font face="Helvetica">		<sub>
+<img src="fip356.gif"></sub>
+</font></center>
+<p>
+
+</p><center>
+<font face="Helvetica"><img src="fip357.gif">
+<img src="fip358.gif"></font></center>
+<p>
+</p><center>
+<font face="Helvetica">	<b>(a)</b> Image to be <i>thresholded</i>	<b>(b)</b> Brightness histogram of
+the image</font></center>
+<p>
+<font face="Helvetica"><b>Figure 51</b>: Pixels below the threshold (<i>a</i>[<i>m</i>,<i>n</i>] &lt;
+<tt><i><img src="theta.gif"></i></tt>) will be labeled as object pixels; those above the
+threshold will be labeled as background pixels.
+</font></p><p>
+<font face="Helvetica"><i>* Isodata algorithm </i>- This iterative technique for choosing a
+threshold was developed by Ridler and Calvard . The histogram is initially
+segmented into two parts using a starting threshold value such as
+<tt><i><img src="theta.gif"></i></tt><sub><i>0</i></sub> = 2<sup><i>B</i>-1</sup>, half the
+maximum dynamic range. The sample mean (<i>m<sub>f,0</sub></i>) of the gray
+values associated with the foreground pixels and the sample mean
+(<i>m<sub>b,0</sub></i>) of the gray values associated with the background
+pixels are computed. A new threshold value
+<tt><i><img src="theta.gif"></i></tt><sub><i>1</i></sub> is now computed as the average of
+these two sample means. The process is repeated, based upon the new threshold,
+until the threshold value does not change any more. In formula:</font></p><p>
+
+</p><center>
+<font face="Helvetica">		<sub>
+<img src="fip359.gif"></sub>
+</font></center>
+<p>
+</p><p>
+<font face="Helvetica"><i>* Background-symmetry algorithm </i>- This technique assumes a distinct
+and dominant peak for the background that is symmetric about its maximum. The
+technique can benefit from smoothing as described in eq. . The maximum peak
+(<i>maxp</i>) is found by searching for the maximum value in the histogram. The
+algorithm then searches on the <i>non-object pixel side</i> of that maximum to
+find a <i>p</i>% point as in eq. (39).</font></p><p>
+</p><p>
+<font face="Helvetica">In Figure 51b, where the object pixels are located to the <i>left</i> of the
+background peak at brightness 183, this means searching to the right of that
+peak to locate, as an example, the 95% value. At this brightness value, 5% of
+the pixels lie to the <i>right</i> (are above) that value. This occurs at
+brightness 216 in Figure 51b. Because of the assumed symmetry, we use as a
+threshold a displacement to the <i>left</i> of the maximum that is equal to the
+displacement to the right where the <i>p</i>% is found. For Figure 51b this
+means a threshold value given by 183 - (216 - 183) = 150. In formula:</font></p><p>
+
+</p><center>
+<font face="Helvetica">		<sub>
+<img src="fip360.gif"></sub>
+</font></center>
+<p>
+</p><p>
+<font face="Helvetica">This technique can be adapted easily to the case where we have light objects on
+a dark, dominant background. Further, it can be used if the object peak
+dominates and we have reason to assume that the brightness distribution around
+the object peak is symmetric. An additional variation on this symmetry theme is
+to use an estimate of the sample standard deviation (<i>s</i> in eq. (37))
+based on one side of the dominant peak and then use a threshold based on
+<tt><i><img src="theta.gif"></i></tt> = <i>maxp</i> +/- 1.96<i>s</i> (at the 5% level) or
+<tt><i><img src="theta.gif"></i></tt> = <i>maxp</i> +/- 2.57<i>s</i> (at the 1% level). The
+choice of "+" or "-" depends on which direction from <i>maxp</i> is being
+defined as the object/background threshold. Should the distributions be
+approximately Gaussian around <i>maxp</i>, then the values 1.96 and 2.57 will,
+in fact, correspond to the 5% and 1 % level.</font></p><p>
+</p><p>
+<font face="Helvetica"><i>* Triangle algorithm </i>- This technique due to Zack [36] is
+illustrated in Figure 52. A line is constructed between the maximum of the
+histogram at brightness <i>b<sub>max</sub></i> and the lowest value
+<i>b<sub>min</sub></i> = (<i>p</i>=0)% in the image. The distance <b>d</b>
+between the line and the histogram <i>h</i>[<i>b</i>] is computed for all
+values of <i>b</i> from <i>b</i> =<i> b<sub>min</sub></i> to <i>b</i> =<i>
+b<sub>max</sub></i>. The brightness value <i>b<sub>o</sub></i> where the
+distance between <i>h</i>[<i>b<sub>o</sub></i>] and the line is maximal is the
+threshold value, that is, <tt><i><img src="theta.gif"></i></tt> = <i>b<sub>o</sub></i>. This
+technique is particularly effective when the object pixels produce a weak peak
+in the histogram.</font></p><p>
+
+</p><center>
+<font face="Helvetica"><b>
+<img src="fip361.gif"></b>
+<b></b></font><center><font face="Helvetica"><b></b></font></center>
+<p>
+<font face="Helvetica"><b>Figure 52</b>: The triangle algorithm is based on finding the value of
+<i>b</i> that gives the maximum distance <b>d</b>.</font></p><p>
+</p></center>
+<p>
+<font face="Helvetica">The three procedures described above give the values <tt><i><img src="theta.gif"></i></tt> =
+139 for the Isodata algorithm, <tt><i><img src="theta.gif"></i></tt> = 150 for the background
+symmetry algorithm at the 5% level, and <tt><i><img src="theta.gif"></i></tt> = 152 for the
+triangle algorithm for the image in Figure 51a.</font></p><p>
+</p><p>
+<font face="Helvetica">Thresholding does not have to be applied to entire images but can be used on a
+region by region basis. Chow and Kaneko  developed a variation in which the
+<i>M</i> <tt>x</tt> <i>N</i> image is divided into non-overlapping regions. In
+each region a threshold is calculated and the resulting threshold values are
+put together (interpolated) to form a thresholding surface for the entire
+image. The regions should be of "reasonable" size so that there are a
+sufficient number of pixels in each region to make an estimate of the histogram
+and the threshold. The utility of this procedure--like so many others--depends
+on the application at hand.
+
+</font></p><h3>
+<font face="Helvetica"><a name="Heading119">Edge finding</a></font></h3>
+
+<font face="Helvetica"><b></b>
+Thresholding produces a segmentation that yields all the pixels that, in
+principle, belong to the object or objects of interest in an image. An
+alternative to this is to find those pixels that belong to the borders of the
+objects. Techniques that are directed to this goal are termed <i>edge</i>
+<i>finding</i> <i>techniques</i>. From our discussion in Section 9.6 on
+mathematical morphology, specifically eqs. , , and , we see that there is an
+intimate relationship between edges and regions.</font><p>
+</p><p>
+<font face="Helvetica"><i>* Gradient-based procedure </i>- The central challenge to edge finding
+techniques is to find procedures that produce <i>closed</i> contours around the
+objects of interest. For objects of particularly high <i>SNR</i>, this can be
+achieved by calculating the gradient and then using a suitable threshold. This
+is illustrated in Figure 53.</font></p><p>
+
+</p><center>
+<font face="Helvetica"><b>	
+<img src="fip362.gif">
+<img src="fip363.gif"></b>
+<b>	<tt><img src="arrowdown.gif"></tt>	<tt><img src="arrowdown.gif"></tt></b>	<b>	
+<img src="fip364.gif">
+<img src="fip365.gif"></b>
+<b></b>	<b>(a)</b> <i>SNR</i> = 30 dB	<b>(b)</b> <i>SNR</i> = 20 dB</font></center>
+<p>
+<font face="Helvetica"><b>Figure 53</b>: Edge finding based on the Sobel gradient, eq. (110), combined
+with the Isodata thresholding algorithm eq. .
+</font></p><p>
+<font face="Helvetica">While the technique works well for the 30 dB image in Figure 53a, it fails to
+provide an accurate determination of those pixels associated with the object
+edges for the 20 dB image in Figure 53b. A variety of smoothing techniques as
+described in Section 9.4 and in eq.  can be used to reduce the noise effects
+before the gradient operator is applied.</font></p><p>
+</p><p>
+<font face="Helvetica"><i>* Zero-crossing based procedure </i>- A more modern view to handling the
+problem of edges in noisy images is to use the zero crossings generated in the
+Laplacian of an image (Section 9.5.2). The rationale starts from the model of
+an ideal edge, a step function, that has been blurred by an <i>OTF</i> such as
+Table 4 T.3 (out-of-focus), T.5 (diffraction-limited), or T.6 (general model)
+to produce the result shown in Figure 54.</font></p><p>
+
+</p><center>
+<font face="Helvetica"><b>
+<img src="fip366.gif"></b>
+<b></b></font><center><font face="Helvetica"><b></b></font></center>
+<p>
+<font face="Helvetica"><b>Figure 54</b>: Edge finding based on the zero crossing as determined by the
+second derivative, the Laplacian. The curves are not to scale.</font></p><p>
+</p></center>
+<p>
+<font face="Helvetica">The edge location is, according to the model, at that place in the image where
+the Laplacian changes sign, the zero crossing. As the Laplacian operation
+involves a second derivative, this means a potential enhancement of noise in
+the image at high spatial frequencies; see eq. (114). To prevent enhanced noise
+from dominating the search for zero crossings, a smoothing is necessary.</font></p><p>
+</p><p>
+<font face="Helvetica">The appropriate smoothing filter, from among the many possibilities described
+in Section 9.4, should according to Canny  have the following properties:</font></p><p>
+</p><p>
+<font face="Helvetica">	* In the frequency domain, (<i>u</i>,<i>v</i>) or
+(<tt><img src="omega.gif"></tt>,<tt><img src="psi.gif"></tt>), the filter should be as narrow as possible
+to provide suppression of high frequency noise, and;</font></p><p>
+</p><p>
+<font face="Helvetica">	* In the spatial domain, (<i>x</i>,<i>y</i>) or [<i>m</i>,<i>n</i>], the
+filter should be as narrow as possible to provide good localization of the
+edge. A too wide filter generates uncertainty as to precisely where, within the
+filter width, the edge is located.</font></p><p>
+</p><p>
+<font face="Helvetica">The smoothing filter that simultaneously satisfies both these
+properties--minimum bandwidth and minimum spatial width--is the Gaussian filter
+described in Section 9.4. This means that the image should be smoothed with a
+Gaussian of an appropriate <tt><img src="sigma.gif"></tt> followed by application of the
+Laplacian. In formula:</font></p><p>
+
+</p><center>
+<font face="Helvetica">		<sub>
+<img src="fip367.gif"></sub>
+</font></center>
+<p>
+</p><p>
+<font face="Helvetica">where <i>g<sub>2D</sub></i>(<i>x</i>,<i>y</i>) is defined in eq. (93). The
+derivative operation is linear and shift-invariant as defined in eqs. (85) and
+(86). This means that the order of the operators can be exchanged (eq. (4)) or
+combined into one single filter (eq. (5)). This second approach leads to the
+Marr-ildreth formulation of the "Laplacian-of-Gaussians" (<i>LoG</i>) filter
+:</font></p><p>
+
+</p><center>
+<font face="Helvetica">		<sub>
+<img src="fip368.gif"></sub>
+</font></center>
+<p>
+<font face="Helvetica">where
+</font></p><center>
+<font face="Helvetica">		<sub>
+<img src="fip369.gif"></sub>
+</font></center>
+<p>
+</p><p>
+<font face="Helvetica">Given the circular symmetry this can also be written as:</font></p><p>
+
+</p><center>
+<font face="Helvetica">		<sub>
+<img src="fip370.gif"></sub>
+</font></center>
+<p>
+</p><p>
+<font face="Helvetica">This two-dimensional convolution kernel, which is sometimes referred to as a
+"Mexican hat filter", is illustrated in Figure 55.
+</font></p><center>
+<font face="Helvetica"><b>
+<img src="fip371.gif">
+<img src="fip372.gif"></b></font></center>
+<p>
+<font face="Helvetica">	<b>(a) -</b><i>LoG</i>(<i>x</i>,<i>y</i>)	<b>(b) </b><i>LoG</i>(<i>r</i>)</font></p><p>
+</p><center>
+<font face="Helvetica"><b>Figure 55</b>: <i>LoG</i> filter with <tt><img src="sigma.gif"></tt> = 1.0.</font><p>
+</p></center>
+<p>
+<font face="Helvetica"><i>*PLUS-based procedure </i>- Among the zero crossing procedures for edge
+detection, perhaps the most accurate is the <i>PLUS</i> filter as developed by
+Verbeek and Van Vliet . The filter is defined, using eqs. (121) and (122),
+as:</font></p><p>
+
+</p><center>
+<font face="Helvetica">		<sub>
+<img src="fip373.gif"></sub>
+</font></center>
+<p>
+</p><p>
+<font face="Helvetica">Neither the derivation of the <i>PLUS</i>'s properties nor an evaluation of its
+accuracy are within the scope of this section. Suffice it to say that, for
+positively curved edges in gray value images, the Laplacian-based zero crossing
+procedure <i>overestimates</i> the position of the edge and the
+<i>SDGD</i>-based procedure <i>underestimates</i> the position. This is true in
+both two-dimensional and three-dimensional images with an error on the order of
+(<tt><img src="sigma.gif"></tt>/<i>R</i>)<sup>2</sup> where <i>R</i> is the radius of
+curvature of the edge. The <i>PLUS</i> operator has an error on the order of
+(<tt><img src="sigma.gif"></tt>/<i>R</i>)<sup>4</sup> if the image is sampled at, at least,
+3<tt>x</tt> the usual Nyquist sampling frequency as in eq. (56) <i>or</i> if we
+choose <tt><img src="sigma.gif"></tt> &gt;= 2.7 and sample at the usual Nyquist frequency.</font></p><p>
+</p><p>
+<font face="Helvetica">All of the methods based on zero crossings in the Laplacian must be able to
+distinguish between zero <i>crossings</i> and zero <i>values</i>. While the
+former represent edge positions, the latter can be generated by regions that
+are no more complex than bilinear surfaces, that is,
+<i>a</i>(<i>x</i>,<i>y</i>) = <i>a<sub>0</sub></i> +
+<i>a<sub>1</sub></i>*<i>x</i> + <i>a<sub>2</sub></i>*<i>y</i> +
+<i>a<sub>3</sub></i>*<i>x</i>*<i>y</i>. To distinguish between these
+two situations, we first find the zero crossing positions and label them as "1"
+and all other pixels as "0". We then multiply the resulting image by a measure
+of the <i>edge</i> <i>strength</i> at each pixel. There are various measures
+for the edge strength that are all based on the gradient as described in
+Section 9.5.1 and eq. . This last possibility, use of a morphological gradient
+as an edge strength measure, was first described by Lee, aralick, and Shapiro
+and is particularly effective. After multiplication the image is then
+thresholded (as above) to produce the final result. The procedure is thus as
+follows :
+</font></p><center>
+<font face="Helvetica"><b>
+<img src="fip374.gif"></b>
+<b></b></font><center><font face="Helvetica"><b></b>Figure 56: General strategy for edges based on zero crossings.
+</font></center></center>
+<p>
+</p><p>
+<font face="Helvetica">The results of these two edge finding techniques based on zero crossings,
+<i>LoG</i> filtering and <i>PLUS</i> filtering, are shown in Figure 57 for
+images with a 20 dB <i>SNR</i>.</font></p><p>
+
+</p><center>
+<font face="Helvetica"><img src="fip375.gif">
+<img src="fip376.gif">
+<img src="fip377.gif"></font></center>
+<p>
+</p><center>
+<font face="Helvetica">	<b>a)</b> Image <i>SNR</i> = 20 dB <tt><img src="arrowup.gif"><img src="arrowdown.gif"></tt>	<b>b)</b>
+<i>LoG</i> filter <tt><img src="arrowup.gif"><img src="arrowdown.gif"></tt>	<b>c)</b> <i>PLUS</i> filter
+<tt><img src="arrowup.gif"><img src="arrowdown.gif"></tt></font></center>
+<p>
+</p><center>
+<font face="Helvetica"><img src="fip378.gif">
+<img src="fip379.gif">
+<img src="fip380.gif"></font></center>
+<p>
+<font face="Helvetica"><b>Figure 57</b>: Edge finding using zero crossing algorithms <i>LoG</i> and
+<i>PLUS</i>. In both algorithms <tt><img src="sigma.gif"></tt> = 1.5.
+</font></p><p>
+<font face="Helvetica">Edge finding techniques provide, as the name suggests, an image that contains a
+collection of edge pixels. Should the edge pixels correspond to objects, as
+opposed to say simple lines in the image, then a region-filling technique such
+as eq.  may be required to provide the complete objects.
+
+</font></p><h3>
+<font face="Helvetica"><a name="Heading120">Binary mathematical morphology</a></font></h3>
+
+<font face="Helvetica"><b></b>
+The various algorithms that we have described for mathematical morphology in
+Section 9.6 can be put together to form powerful techniques for the processing
+of binary images and gray level images. As binary images frequently result from
+segmentation processes on gray level images, the morphological processing of
+the binary result permits the improvement of the segmentation result.</font><p>
+</p><p>
+<font face="Helvetica"><i>* Salt-or-pepper filtering </i>- Segmentation procedures frequently
+result in isolated "1" pixels in a "0" neighborhood (salt) or isolated "0"
+pixels in a "1" neighborhood (pepper). The appropriate neighborhood definition
+must be chosen as in Figure 3. Using the lookup table formulation for Boolean
+operations in a 3 <tt>x</tt> 3 neighborhood that was described in association
+with Figure 43, <i>salt</i> <i>filtering</i> and <i>pepper filtering</i> are
+straightforward to implement. We weight the different positions in the 3
+<tt>x</tt> 3 neighborhood as follows:</font></p><p>
+
+</p><center>
+<font face="Helvetica">		<sub>
+<img src="fip381.gif"></sub>
+</font></center>
+<p>
+</p><p>
+<font face="Helvetica">For a 3 <tt>x</tt> 3 window in <i>a</i>[<i>m</i>,<i>n</i>] with values "0" or
+"1" we then compute:</font></p><p>
+
+</p><center>
+<font face="Helvetica">		<sub>
+<img src="fip382.gif"></sub>
+</font></center>
+<p>
+</p><p>
+<font face="Helvetica">The result, <i>sum</i>, is a number bounded by 0 &lt;= <i>sum</i> &lt;= 511.</font></p><p>
+</p><p>
+<font face="Helvetica"><i>* Salt Filter </i>- The 4-connected and 8-connected versions of this
+filter are the same and are given by the following procedure:</font></p><p>
+
+</p><center>
+<font face="Helvetica">	i)	Compute <i>sum</i>				ii)	<b>If</b> ( (<i>sum</i> == 1)
+<i>c</i>[<i>m</i>,<i>n</i>] = 0			<b>Else			</b><i>c</i>[<i>m</i>,<i>n</i>] =
+<i>a</i>[<i>m</i>,<i>n</i>]</font></center>
+<p>
+</p><p>
+<font face="Helvetica"><i>* Pepper Filter </i>- The 4-connected and 8-connected versions of this
+filter are the following procedures:</font></p><p>
+
+</p><center>
+<font face="Helvetica"><i>		4-connected		8-connected</i>	<i></i>	i)	Compute <i>sum</i>	i) 	Compute
+<i>sum</i>			ii)	<b>If</b> ( (<i>sum</i> == 170)	ii) 	<b>If</b> ( (<i>sum</i>
+== 510)				<i>c</i>[<i>m</i>,<i>n</i>] = 1			<i>c</i>[<i>m</i>,<i>n</i>] = 1
+<b>Else</b>				<b>Else</b>				<i>c</i>[<i>m</i>,<i>n</i>] =
+<i>a</i>[<i>m</i>,<i>n</i>] 			<i>c</i>[<i>m</i>,<i>n</i>] =
+<i>a</i>[<i>m</i>,<i>n</i>]</font></center>
+<p>
+</p><p>
+<font face="Helvetica"><i>* Isolate objects with holes </i>- To find objects with holes we can use
+the following procedure which is illustrated in Figure 58.</font></p><p>
+
+</p><center>
+<font face="Helvetica">	i)	<i>Segment</i> image to produce binary mask representation			ii)	Compute
+<i>skeleton </i>without<i> </i>end<i> </i>pixels - eq. 		iii)	Use <i>salt</i>
+filter to remove single skeleton pixels		iv)	<i>Propagate</i> remaining
+skeleton pixels into original binary mask - eq. </font></center>
+<p>
+
+</p><center>
+<font face="Helvetica"><img src="fip383.gif">
+<img src="fip384.gif">
+<img src="fip385.gif"></font></center>
+<p>
+</p><center>
+<font face="Helvetica">	<b>a)</b> Binary image	<b>b)</b> Skeleton after salt filter	<b>c)</b> Objects
+with holes	</font><center></center>
+<p>
+<font face="Helvetica"><b>Figure 58:</b> Isolation of objects with holes using morphological
+operations.</font></p><p>
+</p></center>
+<p>
+<font face="Helvetica">The binary objects are shown in gray and the skeletons, after application of
+the salt filter, are shown as a black overlay on the binary objects. Note that
+this procedure uses no parameters other then the fundamental choice of
+connectivity; it is free from "magic numbers." In the example shown in Figure
+58, the 8-connected definition was used as well as the structuring element
+<b><i>B</i></b> = <b><i>N<sub>8</sub></i></b>.</font></p><p>
+</p><p>
+<font face="Helvetica"><i>* Filling holes in objects </i>- To fill holes in objects we use the
+following procedure which is illustrated in Figure 59.</font></p><p>
+
+</p><center>
+<font face="Helvetica">	i)	<i>Segment</i> image to produce binary representation of objects			ii)
+Compute <i>complement</i> of binary image as a <i>mask</i> <i>image</i>		iii)
+Generate a <i>seed</i> <i>image</i> as the border of the image		iv)
+<i>Propagate</i> the <i>seed</i> into the <i>mask</i> - eq. 		v)
+<i>Complement</i> result of propagation to produce final result</font></center>
+<p>
+
+</p><center>
+<font face="Helvetica"><b>	
+<img src="fip386.gif">
+<img src="fip387.gif"></b>
+<b></b>	<b>a) </b>Mask and Seed images	<b>b)</b> Objects with holes filled
+</font><center></center>
+<p>
+<font face="Helvetica"><b>Figure 59:</b> Filling holes in objects.</font></p><p>
+</p></center>
+<p>
+<font face="Helvetica">The <i>mask</i> <i>image</i> is illustrated in <i>gray</i> in Figure 59a and
+the <i>seed</i> <i>image</i> is shown in <i>black</i> in that same
+illustration. When the object pixels are specified with a connectivity of
+<i>C</i> = 8, then the propagation into the mask (background) image should be
+performed with a connectivity of <i>C</i> = 4, that is, dilations with the
+structuring element <b><i>B</i></b> = <b><i>N<sub>4</sub></i></b>. This
+procedure is also free of "magic numbers."</font></p><p>
+</p><p>
+<font face="Helvetica"><i>* Removing border-touching objects </i>- Objects that are connected to
+the image border are not suitable for analysis. To eliminate them we can use a
+series of morphological operations that are illustrated in Figure 60.</font></p><p>
+
+</p><center>
+<font face="Helvetica">	i)	<i>Segment</i> image to produce binary <i>mask</i> <i>image</i> of objects
+ii)	Generate a <i>seed</i> <i>image</i> as the border of the image		iv)
+<i>Propagate</i> the <i>seed</i> into the <i>mask</i> - eq. 		v)	Compute
+<i>XOR</i> of the propagation result and the <i>mask</i> <i>image</i> as final
+result</font></center>
+<p>
+
+</p><center>
+<font face="Helvetica"><b>	
+<img src="fip388.gif">
+<img src="fip389.gif"></b>
+<b></b>	<b>a)</b> Mask and Seed images	<b>b)</b> Remaining objects
+</font><center></center>
+<p>
+<font face="Helvetica"><b>Figure 60:</b> Removing objects touching borders.</font></p><p>
+</p></center>
+<p>
+<font face="Helvetica">The <i>mask</i> <i>image</i> is illustrated in <i>gray</i> in Figure 60a and
+the <i>seed</i> <i>image</i> is shown in <i>black</i> in that same
+illustration. If the structuring element used in the propagation is
+<b><i>B</i></b> = <b><i>N<sub>4</sub></i></b>, then objects are removed that
+are 4-connected with the image boundary. If <b><i>B</i></b> =
+<b><i>N<sub>8</sub></i></b> is used then objects that 8-connected with the
+boundary are removed.</font></p><p>
+</p><p>
+<font face="Helvetica"><i> * Exo-skeleton </i>- The <i>exo-skeleton </i>of a set of objects is the
+skeleton of the background that contains the objects. The exo-skeleton produces
+a partition of the image into regions each of which contains one object. The
+actual skeletonization (eq. ) is performed without the preservation of end
+pixels and with the border set to "0." The procedure is described below and the
+result is illustrated in Figure 61.</font></p><p>
+
+</p><center>
+<font face="Helvetica">	i)	<i>Segment</i> image to produce binary image					ii)	Compute
+<i>complement</i> of binary image		iii)	Compute <i>skeleton</i> using eq.
+<i>i+ii</i> with border set to "0"</font></center>
+<p>
+
+</p><center>
+<font face="Helvetica"><b>
+<img src="fip390.gif"></b>
+<b></b></font><center><font face="Helvetica"><b></b></font></center>
+<p>
+<font face="Helvetica"><b>Figure 61:</b> Exo-skeleton.</font></p><p>
+</p></center>
+<p>
+<font face="Helvetica"><i>* Touching objects </i>- Segmentation procedures frequently have
+difficulty separating slightly touching, yet distinct, objects. The following
+procedure provides a mechanism to separate these objects and makes minimal use
+of "magic numbers." The exo-skeleton produces a partition of the image into
+regions each of which contains one object. The actual skeletonization is
+performed without the preservation of end pixels and with the border set to
+"0." The procedure is illustrated in Figure 62.</font></p><p>
+
+</p><center>
+<font face="Helvetica">	i)	<i>Segment</i> image to produce binary image							ii)	Compute a "small
+number" of <i>erosions</i> with <b><i>B</i></b> = <b><i>N<sub>4</sub></i></b>
+iii)	Compute <i>exo</i>-<i>skeleton</i> of eroded result		iv)	Complement
+<i>exo</i>-<i>skeleton</i> result		iii)	Compute <i>AND</i> of original binary
+image and the complemented exo-skeleton</font></center>
+<p>
+
+</p><center>
+<font face="Helvetica"><b>	
+<img src="fip391.gif">
+<img src="fip392.gif"></b>
+<b></b>	<b>a)</b> Eroded and exo-skeleton images	<b>b)</b> Objects separated
+(detail)	</font><center></center>
+<p>
+<font face="Helvetica"><b>Figure 62:</b> Separation of touching objects.</font></p><p>
+</p></center>
+<p>
+<font face="Helvetica">The <i>eroded</i> <i>binary</i> <i>image</i> is illustrated in <i>gray</i> in
+Figure 62a and the <i>exo-skeleton</i> <i>image</i> is shown in <i>black</i> in
+that same illustration. An enlarged section of the final result is shown in
+Figure 62b and the separation is easily seen. This procedure involves choosing
+a small, minimum number of erosions but the number is not critical as long as
+it initiates a coarse separation of the desired objects. The actual separation
+is performed by the exo-skeleton which, itself, is free of "magic numbers." If
+the exo-skeleton is 8-connected than the background separating the objects will
+be 8-connected. The objects, themselves, will be disconnected according to the
+4-connected criterion. (See Section 9.6 and Figure 36.)
+
+</font></p><h3>
+<font face="Helvetica"><a name="Heading121">Gray-value mathematical morphology</a></font></h3>
+
+<font face="Helvetica"><b></b>
+As we have seen in Section 10.1.2, gray-value morphological processing
+techniques can be used for practical problems such as shading correction. In
+this section several other techniques will be presented.</font><p>
+</p><p>
+<font face="Helvetica"><i>* Top-hat transform </i>- The isolation of gray-value objects that are
+convex can be accomplished with the <i>top</i>-<i>hat</i> <i>transform</i> as
+developed by Meyer . Depending upon whether we are dealing with light objects
+on a dark background or dark objects on a light background, the transform is
+defined as:</font></p><p>
+
+</p><center>
+<font face="Helvetica">	<i>Light objects -</i> 	<sub>
+<img src="fip393.gif"></sub>
+</font></center>
+<p>
+
+</p><center>
+<font face="Helvetica">	<i>Dark objects -</i> 	<sub>
+<img src="fip394.gif"></sub>
+</font></center>
+<p>
+</p><p>
+<font face="Helvetica">where the structuring element <b><i>B</i></b> is chosen to be bigger than the
+objects in question and, if possible, to have a convex shape. Because of the
+properties given in eqs.  and , <i>Topat</i>(<b><i>A</i></b>,<b><i>B</i></b>)
+&gt;= 0. An example of this technique is shown in Figure 63.</font></p><p>
+</p><p>
+<font face="Helvetica">The original image including shading is processed by a 15 <tt>x</tt> 1
+structuring element as described in eqs.  and  to produce the desired result.
+Note that the transform for dark objects has been defined in such a way as to
+yield "positive" objects as opposed to "negative" objects. Other definitions
+are, of course, possible.</font></p><p>
+</p><p>
+<font face="Helvetica"><i>* Thresholding </i>- A simple estimate of a locally-varying threshold
+surface can be derived from morphological processing as follows:</font></p><p>
+
+</p><center>
+<font face="Helvetica">	<i>Threshold surface -</i> 	<sub>
+<img src="fip395.gif"></sub>
+</font></center>
+<p>
+</p><p>
+<font face="Helvetica">Once again, we suppress the notation for the structuring element
+<b><i>B</i></b> under the <i>max</i> and <i>min</i> operations to keep the
+notation simple. Its use, however, is understood.</font></p><p>
+
+</p><center>
+<font face="Helvetica">	
+<img src="fip396.gif"><sup>
+<b>(a)</b> Original</sup>		<tt><img src="arrowdown.gif"></tt>	<tt><img src="arrowdown.gif"></tt></font></center>
+<p>
+</p><center>
+<font face="Helvetica"><img src="fip397.gif">
+<img src="fip398.gif"></font></center>
+<p>
+</p><center>
+<font face="Helvetica">	<b>(a)</b> Light object transform	<b>(b)</b> Dark object transform
+</font><center></center>
+<p>
+<font face="Helvetica"><b>Figure 63:</b> Top-hat transforms.</font></p><p>
+</p></center>
+<p>
+<font face="Helvetica"><i>* Local contrast stretching </i>- Using morphological operations we can
+implement a technique for <i>local</i> <i>contrast</i> <i>stretching</i>. That
+is, the amount of stretching that will be applied in a neighborhood will be
+controlled by the original contrast in that neighborhood. The morphological
+gradient defined in eq.  may also be seen as related to a measure of the local
+contrast in the window defined by the structuring element <b><i>B</i></b>:</font></p><p>
+
+</p><center>
+<font face="Helvetica">		<sub>
+<img src="fip399.gif"></sub>
+</font></center>
+<p>
+</p><p>
+<font face="Helvetica">The procedure for local contrast stretching is given by:</font></p><p>
+
+</p><center>
+<font face="Helvetica">		<sub>
+<img src="fip400.gif"></sub>
+</font></center>
+<p>
+</p><p>
+<font face="Helvetica">The <i>max</i> and <i>min</i> operations are taken over the structuring element
+<b><i>B</i></b>. The effect of this procedure is illustrated in Figure 64. It
+is clear that this <i>local</i> operation is an extended version of the
+<i>point</i> operation for contrast stretching presented in eq. (77).</font></p><p>
+
+</p><center>
+<font face="Helvetica"><img src="fip401.gif">
+<img src="fip402.gif">
+<img src="fip403.gif"></font></center>
+<p>
+</p><center>
+<font face="Helvetica">	<tt><b><img src="arrowup.gif"></b></tt>  before	after  <tt><b><img src="arrowup.gif"></b></tt>
+<tt><b><img src="arrowup.gif"></b></tt><b> </b> before	after  <tt><b><img src="arrowup.gif"></b></tt><b>
+<tt><img src="arrowup.gif"></tt> </b> before	after  <tt><b><img src="arrowup.gif"></b></tt>
+</font><center></center>
+<p>
+<font face="Helvetica"><b>Figure 64:</b> Local contrast stretching.</font></p><p>
+</p></center>
+<p>
+<font face="Helvetica">Using standard test images (as we have seen in so many examples) illustrates
+the power of this local morphological filtering approach.
+</font></p><p><font face="Helvetica"><img src="hr.gif"></font></p><p>
+<font face="Helvetica"><a href="http://www.ph.tn.tudelft.nl/Courses/FIP/noframes/fip-Basic.html"><img src="leftg.gif" alt="&lt;&lt; " border="0"></a>
+ <a href="http://www.ph.tn.tudelft.nl/Courses/FIP/noframes/fip-Acknowle.html"><img src="rightg.gif" alt="&gt;&gt; " border="0"></a>
+ <a href="http://www.ph.tn.tudelft.nl/Courses/FIP/noframes/fip-Techniqu.html"><img src="upg.gif" alt="Up " border="0"></a>
+ <a href="http://www.ph.tn.tudelft.nl/Courses/FIP/noframes/fip.html"><img src="topg.gif" alt="Title " border="0"></a>
+ <a href="http://www.ph.tn.tudelft.nl/Courses/FIP/noframes/fip-Contents.html"><img src="contg.gif" alt="Contents " border="0"></a>
+ <a href="http://www.ph.tn.tudelft.nl/Courses/FIP/noframes/fip-Index.html"><img src="indexg.gif" alt="Index" border="0"></a>
+</font>
+</p></body>
+</html>

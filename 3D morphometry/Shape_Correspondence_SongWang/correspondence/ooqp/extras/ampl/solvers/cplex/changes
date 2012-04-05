@@ -1,0 +1,489 @@
+Tue Nov 17 12:45:15 EST 1992
+Adjust message printed for "Unknown keyword" so it
+echoes just the keyword, not the remaining $cplex_options.
+
+Tue Nov 24 13:04:58 EST 1992
+Fix glitches with -DNO_CPLEX_MIP .
+
+Sun Jan  3 15:41:31 EST 1993
+In .sol file, report network simplex iterations before rather
+than after simplex iterations (since the network solver runs first).
+
+Fri Jan  8 13:49:53 EST 1993
+Tweak to invoke edagread rather than edag_read.
+
+Wed Mar  3 15:12:28 EST 1993
+Code around cplex bug in handling problems with no general constraints.
+
+Mon Mar 22 15:51:08 EST 1993
+Tweaks to cplex.c:
+1. Omit decl. of xectim_() (now in ../nlp1.h).
+2. Change solution msg (in .sol file) for MIP problems from, e.g.,
+	0 simplex iterations
+	609 integer iterations
+to
+	609 simplex iterations
+	127 branch-and-bound nodes
+
+Thu May  6 19:46:56 EDT 1993
+Add "varselect" as a synonym for "varsel" (as the Student Booklet
+erroneously says "varselect").
+
+Sat Jun  5 08:02:43 EDT 1993
+  Paragraph about $mip_priorities added to README.cplex (giving details
+omitted from the first printings of the Student Booklet):
+
+  When using $mip_priorities, you must arrange for AMPL to write a .col
+  file.  See the discussion of auxiliary files on p. 333 of the AMPL book:
+  unless $cplex_auxfiles already contains 'c', issue the AMPL command
+  	option cplex_auxfiles c;
+  before saying "solve;".  Similarly, if you use AMPL's write command,
+  first make sure $auxfiles contains 'c'; if not, issue the AMPL command
+  	option auxfiles c;
+  The keywords '!quit' and '!echo' may appear at the beginning of
+  $mip_priorities.  If cplex finds an error in $mip_priorities, it bails
+  out unless '!quit' appears in $mip_priorities before the error.
+  Normally cplex reports the priorities it acquires from $mip_priorities,
+  but '!echo' suppresses this reporting.  For example, if Buy is an
+  integer variable, you might try the AMPL commands
+  	option mip_priorities 'Buy 3', cplex_auxfiles ''; solve;
+  	option mip_priorities '!quit Buy 3'; solve;
+  	option cplex_auxfiles c; solve;
+  	option mip_priorities '!echo Buy 3'; solve;
+  	option mip_priorities '!quit !echo Buy 3'; solve;
+
+Wed Jun 16 14:50:34 EDT 1993
+  cplex.c: change long to fint (in accord with changes to solvers/*.h).
+
+Fri Jun 18 14:07:47 EDT 1993
+  Tweak comments in makefile and $S/makefile.
+
+Wed Aug 25 12:30:11 EDT 1993
+  Adjust cplex.c, README.cplex, version.c, makefile for CPLEX 2.1.
+
+Wed Sep 22 02:34:31 EDT 1993
+  Do not try to return solutions for "node limit with no integer
+solution" or "time limit with no integer solution".
+
+Mon May  9 19:43:58 EDT 1994
+  Fix glitches in cplex.c: "agglim" was misplaced, rendering it
+unfindable by binary search; two new return codes (for treememory
+limit) weren't recognized.
+  Adjust README.cplex to correct the defaults for aggregate,
+presolve, and sosscan.
+
+Sun May 15 20:22:13 EDT 1994
+  Make "aggregate 1" and "presolve 1" the defaults; add new
+phrase "verbose 1" to print messages written on CPLEX's "results"
+channel (e.g., results of and time for CPLEX's "aggregate" and
+"presolve" algorithms).
+  Allow optional spaces around '=' in keyword phrases (in single
+command-line arguments or $cplex_options).  This relies on a new
+function, pr_unknown, just added to amplsolver.a.
+
+Thu Jun  9 09:36:28 EDT 1994
+  Change "verbose" to "prestats".
+  Introduce "mipalgorithm" as a synonym for "algorithm" (which may
+eventually be withdrawn).
+  Fix glitch introduced 15 May in handling positive mipdisplay values.
+
+Fri Jun 10 19:32:12 EDT 1994
+  Don't zero need_nl when $cplex_options == "".
+  Omit calls on setlogfile (which were unnecessary and somehow made
+log lines extra long with mipdisplay=2).
+  With the default prestats=0 and (nondefault) netopt=2, suppress
+extraction statistics.
+
+Sat Jun 11 19:18:30 EDT 1994
+  Recognize CPLEX's (undocumented) return -5 from netopt(), and report
+"netopt found an infeasible or unbounded problem" in response to it.
+  Supply a "problem name" based on problem statistics rather than
+the stub (so starttree=filename will work across AMPL sessions).
+  Under netopt=2, don't suppress netopt=2 when dual is specified.
+
+Fri Aug 12 02:20:11 EDT 1994
+  Fix bugs in handling nonconvex piecewise-linear terms when there
+is a constant term in the (presolved) objective.
+Example:
+	var x{1..2} >= 0;
+	convex: sum{i in 1..2} x[i] = 1;
+	var y >= 0 <= 10;
+	minimize zot: sum{i in 1..2}i*x[i]
+		+ <<1,2,4,7,8;-1,1, -1,1, -1,1>>y + 4;
+	option solver cplex;
+	# works right without +4
+  Adjust handling of nonconvex piecewise-linear terms so CPLEX sees
+a smaller problem.
+  Adjust cplex.c to work with CPLEX version 3.0 without special -D
+settings in the makefile's CFLAGS.  For CPLEX version 2.1, -DV2_1
+is now necessary.  (Further enhancements for CPLEX 3.0, such as
+support of the barrier solver, will appear when time permits.)
+
+Sat Sep 24 01:26:28 EDT 1994
+  Allow command-line options that do not involve a value to appear
+without a trailing =, so the invocations
+	cplex foo relax=
+and
+	cplex foo relax
+behave the same.  Previously "relax" in the latter invocation was
+quietly ignored.
+  Report usage with invocation
+	cplex -?
+  Adjust version.c to say Version 2.1 under -DV2_1, Version 3.0
+otherwise, and to make "grep Version osl" work nicely.
+  Fix glitches (involving nodecnt and treeio) with -DNO_CPLEX_MIP.
+
+Fri Sep 30 16:48:28 EDT 1994
+  cplex.c: fix bug in "option cplex_options dual;" on problems with
+nontrivial range constraints: a <= A*x <= b with a < b both finite.
+
+Tue Oct 18 17:56:50 EDT 1994
+  cplex.c: round "integer" variables to integral values when returning
+an "optimal" solution.
+
+Fri Oct 28 11:36:19 EDT 1994
+  Fix bug in handling problems with integer variables and
+convex (resp. concave) piecewise-linear terms that are
+linearized without the addition of new integer variables.
+Example (that caused a bus error in "cplex"):
+	var x;
+	minimize zot: <<1,2; -1, -.5, 1>> x;
+	var y integer >= 0;
+	c: x + y <= 5;
+  Add freeprob invocation (needed for rapid multiple solves
+with CPLEX 3.0).
+  Fix bugs in handling problems with both general integer variables
+and general piecewise-linear terms, and with general piecewise-linear
+terms when "relax" is specified.
+
+Tue Nov  1 23:09:56 EST 1994
+  Fix another glitch in the handling of nonconvex piecewise-linear
+terms: the array ctype was not fully initialized.
+  Avoid allocating ctype when no integer variables (or general
+piecewise-linear terms) are present.
+  Under -DNO_CPLEX_MIP, complain and abort execution if any general
+piecewise-linear terms are present.
+
+Mon Dec 12 16:52:16 EST 1994
+  Fix bug in handling nonconvex (resp. nonconcave) piecewise-linear
+terms (those that require integer programming): an incorrect weight
+was supplied for the first breakpoint if the term appeared in a
+constraint and its value at the breakpoint was nonzero.
+
+Wed Feb  8 01:15:31 EST 1995
+  Adjust solution message logic to reflect return codes that are
+new with CPLEX version 3.0.
+
+Mon Mar 20 18:50:03 EST 1995
+  Under -DKR_headers, declare extern double strtod();
+
+Thu May  4 11:34:18 EDT 1995
+  Fix glitch (invisible on Unix systems) in the startbasis and
+endbasis directives.  It caused a fault on PCs.
+
+Fri Oct  6 17:35:03 EDT 1995
+  Adjust some keywords to keep synch with CPLEX Corp.
+
+Mon Jan 15 13:52:20 EST 1996
+  Fix bug that prevented returning integer solutions for return
+messages other than "optimal integer solution" and "optimal
+integer solution within mipgap or absmipgap".
+
+Thu May  2 13:42:00 EDT 1996
+  README.cplex, cplex.c, makefile and version.c updated for CPLEX 4.0.
+The old versions are temporarily still available in subdirectory 3.0.
+
+Wed Jun 19 15:00:01 EDT 1996
+  Fix a few glitches in cplex.c: failure to echo some keywords;
+failure to accept netopt=2 or reducecostfix=; better handling of
+prestats=1 (when display=0 or mipdisplay=0).
+
+Thu Jul 11 17:59:10 EDT 1996
+  More tweaks to cplex.c, to improve the solution message it reports
+and fix some printing glitches.
+
+Mon Aug 19 11:59:43 EDT 1996
+  Add keywords "barthreads", "mipthreads", "simthreads" to control the
+number of threads for the barrier, MIP, and dual simplex algorithms.
+
+Tue Oct  1 15:49:04 EDT 1996
+  README.cplex: correct (expand) details of bardisplay, crossover,
+varsel, and mip_priorities.
+
+Fri Dec 13 16:31:39 EST 1996
+  When the barrier solver is used, transmit initial primal and dual
+values to it.  New keyword "advance=0" suppresses use of this
+information.
+
+Mon Apr 21 22:43:06 EDT 1997
+  Update for revised amplsolver.a and "Hooking Your Solver to AMPL".
+
+Mon Jun 23 11:04:37 EDT 1997
+  New keyword "nodefile" controls whether a temporary node file is
+written by the MIP solver: 0 (default) = no, 1 = yes.
+This corresponds to "SET MIP STRATEGY FILE".
+
+Tue Jul 22 09:23:14 EDT 1997
+  Fix fault with the "version" keyword.
+
+Tue Jul 22 16:13:01 EDT 1997
+  Recognize error return for "infeasible or unbounded in presolve".
+
+Wed Jul 23 10:59:27 EDT 1997
+  Add recognition of ? as a keyword value in more cases (to show the
+keyword's current setting).
+  For problems with integer (or binary) variables, if endbasis is
+specified, change the problem type to permit writing a final basis.
+
+Fri Oct 10 19:59:12 EDT 1997
+  Tweak to illustrate use of setjmp/longjmp and mainexit to make sure
+CPXfreeprob and CPXcloseCPLEX are always called (when necessary); add
+call on ASL_free (gratuitous unless you turn cplex.c into a DLL that
+solves multiple problems for one process).
+
+Mon Nov  3 23:48:57 EST 1997
+  cplex.c: complain about "nonlinear integer variables" in QPs that
+have binary or integer variables.
+
+Fri Nov  7 09:28:41 EST 1997
+  cplex.c: where appropriate, change Malloc to M1alloc (to free memory
+in the ASL_free call at the end).
+
+Tue Nov 11 00:17:23 EST 1997
+  cplex.c: free LUv array when exiting "prematurely" (before it is
+recorded for freeing by ASL_free).
+
+Tue Nov 11 16:27:51 EST 1997
+ cplex.c: another tweak to LUv, invisible for all practical purposes,
+except that it requires today's update to amplsolver.a .
+
+Thu Mar 26 17:42:00 EST 1998
+  cplex.c, version.c: updated for CPLEX 5.0, and to support AMPL's new
+facilities for constraint and variable statuses, user-defined
+suffixes, and solver return codes.  For infeasible problems, you
+can request that an IIS (irreducible infeasible set of constraints
+and variables) be computed and returned by setting iisfind = 1
+or iisfind = 2 in $cplex_options.  Other new keywords for $cplex_options
+are mipstartstatus, mipstartvalue, sensitivity, and writeprob.  See
+the updated README.cplex for details.
+  cplex.c: when "primal" or "dual" is not explicitly specified (in
+$cplex_options or on the command line), assume "primal" if either
+netopt == 1 (the default) and the problem involves explicitly
+declared nodes and arcs, or netopt == 2.
+  New scheme for getting SOS2 information (for nonconvex piecewise-
+linear terms), using .sos and .sosref suffixes.  The old scheme is
+still available (for use with older AMPL processors), and the present
+changes fix a bug in the old scheme, which didn't adjust variable and
+constraint bounds correctly.
+
+Tue Mar 31 16:50:43 EST 1998
+  cplex.c: minor tweak to reflect an addition to asl.h: change
+solve_code to solve_result_num (a more suggestive name and the name
+of this value in the AMPL session).
+
+Fri May 22 17:58:13 EDT 1998
+  cplex.c: fix botch in handling "baropt" -- something freed too soon.
+
+Thu Jun  4 18:05:24 EDT 1998
+  cplex.c: Code around a bug in CPXgetbase ('L' rows may be given
+status 0 rather than 2).  Adjust returned variable and constraint
+statuses to indicate "btw" rather than "sup" and, where appropriate,
+to indicate "equ" rather than "low" or "upp".  Fix bugs in handling
+incoming and outgoing statuses when "dual" is specified.  Adjust
+cplex.c so in theory it will work with both CPLEX 5 and 6.
+
+Tue Jun  9 13:40:05 EDT 1998 and Wed Jun 10 12:31:53 EDT 1998
+  cplex.c: more tweaks for CPLEX 6 (that should be invisible with
+CPLEX 5).
+
+Tue Jul 14 18:46:46 EDT 1998
+  cplex.c: fix glitch in handling nonconvex piecewise-linear terms;
+when supplying integer starting guesses, project them onto the interval
+of their bounds (since CPLEX surprisingly neglects this detail and
+leaves integer variables fixed if given starting values outside their
+bounds).
+
+Tue Jul 28 22:21:00 EDT 1998
+  README.cplex: add table of possible solve_result_num values.
+
+Sat Aug  1 00:10:14 EDT 1998
+  cplex.c: add sos_kludge() to cope with CPLEX's undocumented
+requirement that SOS reference-row values differ by at least 1e-10.
+
+Sun Sep 13 12:52:55 EDT 1998
+  cplex.c, README.cplex: adjust some solve_result_num values -- see the
+table near the end of README.cplex.  Provide more error returns this
+way, e.g., for bad QPs and CPLEX licensing problems.
+
+Tue Oct  6 15:48:41 EDT 1998
+  cplex.c: after return 1101 ("infeasible or unbounded in presolve"),
+turn CPLEX's presolver and aggregator off and try again -- to get a
+more precise error return and perhaps return IIS information (for an
+infeasible problem) or a ray of unboundedness (.unbdd suffix).
+
+Wed Oct 28 18:39:52 EST 1998
+  cplex.c: restore default values for plconpri and plobjpri to their
+advertised values.  They somehow got interchanged earlier this year.
+This only matters if your problem has nonconvex (resp. nonconcave)
+piecewise-linear terms.
+
+Tue Nov 24 15:04:20 EST 1998
+  cplex.c: "invisible" changes to help ensure freeing resources when,
+e.g., SIGINT interrupts reading of the .nl file.
+
+Wed Jan  6 09:19:13 EST 1999
+  cplex.c, README.cplex: add "predual" keyword: predual=1 causes CPLEX's
+presolver to present the CPLEX solution algorithm with the dual problem.
+Often this works better than the "dual" keyword, but there exist problems
+on which "dual predual=1" is the best way to go.
+
+Fri Jan 15 17:40:51 EST 1999
+  cplex.c: fix bug in handling incoming statuses when nonconvex
+piecewise-linear terms are present.
+
+Sat Jan 16 16:50:09 EST 1999
+  cplex.c: correct botch in yesterday's changes (potential trouble if
+AMPL's presolve is off).
+
+Wed Jan 20 23:09:44 EST 1999
+  cplex.c: various revisions to use new facilities in amplsolver.a
+(the AMPL/solver interface library); requires amplsolver.a version
+>= 19990118.
+  README.1st, README.cplex: minor edits.
+
+Sat Feb  6 18:04:17 EST 1999
+  cplex.c: minor adjustments to reflect changes in suf_sos() in the
+AMPL/solver interface library, which must be recompiled due to changes
+in asl.h.  New keyword in $cplex_options: sos = 0 or 1 (default 1):
+whether to honor declared suffixes .sosno and .ref; see the updated
+README.cplex.
+
+Mon Mar  8 12:49:05 EST 1999
+  cplex.c: "invisible" changes that should have no affect on the usual
+stand-alone use of "cplex", but that shorten the source a bit and use
+M1record() to automate freeing of some arrays.
+
+Thu Apr 15 12:52:08 EDT 1999
+  cplex.c: fix possible fault with unbounded problems.
+
+Tue Apr 20 17:42:05 EDT 1999
+  cplex.c: fix glitch with incoming statuses when a constant must be
+added to the objective (for CPLEX to print correct objective values):
+the variable introduced to adjust the objective should be basic.
+Without this, CPLEX may take many more iterations than necessary.
+
+Wed Apr 21 09:35:00 EDT 1999
+  cplex.c: fix botch in the change of 19990415.
+
+Tue May  4 16:57:44 EDT 1999
+  cplex.c, README.cplex: updated for CPLEX 6.5.
+The previous cplex.c (for CPLEX 5 and 6.0) is now cplex60.c,
+with version60.c the corresponding variant of version.c.
+
+Mon May 17 18:32:41 EDT 1999
+  cplex.c: try to duplicate the functionality of CPLEX 6.0's CPXnetopt.
+Oddly, the "optimal" basis found by CPLEX 6.5's new CPXNETprimopt is
+sometimes not seen as optimal by CPXprimopt and CPXdualopt, but
+sometimes it still pays to specify netopt=2 (to find an embedded
+network and solve it first).
+
+Sat May 22 14:37:09 EDT 1999
+  cplex.c: explicitly report 0 iterations when the problem is solved
+by the primal or dual simplex algorithm in 0 iterations.
+
+Tue May 25 16:25:08 EDT 1999
+  cplex.c: fix glitch in processing incoming basis statuses when
+"dual" is specified.
+
+Tue Jun  1 23:47:49 EDT 1999
+  When there is no basis, do not return .sstatus.
+  Fix more glitches in processing basis statuses when "dual" is
+specified.
+  Fix glitch (possible fault or worse) with "relax".
+
+Fri Jul 23 18:02:15 EDT 1999
+  cplex.c: Add an error message for "Expired CPLEX license".
+  makefile: add comments for linking under Solaris.
+
+Mon Aug 30 22:08:40 EDT 1999
+  cplex.c: recognize some new CPLEX return codes.
+
+Thu Sep  9 16:41:37 EDT 1999
+  README.cplex: add new solve_result_num values to README.cplex.
+
+Wed Oct 27 10:20:46 EDT 1999
+  cplex.c: fix glitch (fault in the bowels of CPLEX) in handling QPs
+with constant terms in the objective.
+
+Thu Oct 28 16:05:58 EDT 1999
+  cplex.c: fix a botch in yesterday's change.
+
+Tue Nov  2 18:29:48 EST 1999
+  cplex.c: minor tweak to solution message 542.
+
+Wed Mar  1 23:22:08 EST 2000
+  cplex.c: fix undersize allocation (possibly leading to a fault)
+connected with "sensitivity".  New keywords "fraccuts" and synonym
+"fractionalcuts" for CPLEX 6.6.  For earlier versions of CPLEX,
+compile with -DNO_CPLEX66.
+  README.cplex: minor tweak for CPLEX 6.5.
+
+Wed Jul 26 22:38:13 EDT 2000
+  cplex.c: fix glitches with compilation under -DNO_BARRIER; version.c
+not changed.
+
+Tue Aug  1 16:03:27 EDT 2000
+  cplex.c: add recognition of keyword "bestnode" (in $cplex_options
+or on the command line), which causes suffix .bestnode on the objective
+and problem to be returned: for MIP problems, this is the "best node"
+value found by CPLEX; for problems without integer or binary variables,
+it is +-Infinity.
+
+Wed Sep 13 23:10:01 EDT 2000
+  cplex.c: add keyword "round" (in $cplex_options or on the command
+line) telling whether to round integer variables to integers (as has
+hitherto been the practice):  0 ==> no, 1 (default) ==> yes.
+Finer control is also possible:  see the updated README.cplex.
+
+Mon Dec 11 15:47:56 EST 2000
+  Updates for CPLEX 7.0:  the former cplex.c and version.c are
+renamed cplex66.c and version66.c, respectively; cplex.c is now
+for CPLEX 7.0 and version.c is gone (folded into cplex.c);
+makefile is updated and renamed makefile.u (for Unix systems)
+and there is a new makefile.vc for use with Microsoft's Visual C/C++.
+
+Tue Dec 19 11:26:57 EST 2000
+  cplex.c, README.cplex:  withdraw solve_result_num values 571, 572,
+and 573; all license failures now get solve_result_num = 570, with
+text in solve_message providing details (provided by a CPLEX routine,
+CPXgeterrorstring(), that knows them).
+  New file courtesy of ILOG/CPLEX:  ampl70.pdf, a PDF file for the
+booklet "ILOG AMPL CPLEX System Version 7.0 User's Guide" that ILOG
+provides to customers.  (Though not as nicely formatted, README.cplex
+is more complete in some respects.)  Only available by ftp or http.
+
+Fri Jan  5 16:53:58 EST 2001
+  cplex.c, README.cplex:  have mipcuts=n set disjcuts, flowpathcuts,
+fraccuts and mircuts (as well as cliques, covers, flowcuts, gubcuts,
+and impliedcuts) to n.
+
+Thu Feb 15 14:10:18 EST 2001
+  cplex.c, README.cplex:  use .row and .col files if present (via
+con_name() and var_name(), which are to be documented when "Hooking
+Your Solver to AMPL" gets updated).  Associated new keyword for
+$cplex_options:  nameround, now described in README.cplex.
+  cplex.c, README.cplex:  new solve_result_num value: 4 ==> optimal
+with 0 (primal or dual) simplex iterations.  In a nested decomposition
+algorithm, solve_result_num == 4 means that a new cut is not needed.
+
+Thu Mar 22 14:08:15 EST 2001
+  cplex.c:  when logfile=... is specified, circumvent spurious Error
+1217 messages and close the logfile after solving the problem.
+
+Thu May 31 18:14:15 EDT 2001
+  cplex.c, README.cplex: updated for CPLEX 7.1; cplex.c still works
+with CPLEX 7.0.
+
+Mon Jun 18 23:21:46 EDT 2001
+  cplex.c: correct timestamp in cplex_version[].
+  Update /netlib/ampl/student/*/cplex* to CPLEX 7.1.

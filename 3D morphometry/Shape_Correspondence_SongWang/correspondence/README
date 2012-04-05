@@ -1,0 +1,271 @@
+***********************************************************
+****** Shape correspondence Package C implementation ******
+********************** Version 2.0 ************************
+***********************************************************
+
+This package implements the shape correspondence method
+between a template shape and a set of target shapes. It was
+developed in Linux (Fedora Core 5). Part of this package
+uses the Object-Oriented Quadratic Programming (OOQP)
+software developed by Gertz and Wright. This work is
+covered by Copyright (c) University of South Carolina. This
+C package is developed by
+
+Habib Moukalled, Kenton Oliver, and Song Wang
+Computer Vision Lab
+Department of Computer Science and Engineering
+University of South Carolina.
+
+The details of the shape-correspondence method can be found
+from 
+
+Song Wang, Toshiro Kubota, Theodor Richardson. Shape 
+Correspondence through Landmark Sliding, IEEE Conference on 
+Computer Vision and Pattern Recognition (CVPR), I:143-150, 
+Washington, DC, 2004.
+
+This paper is also enclosed as "document.pdf." Note that 
+this version (2.0) supports the correspondence of both
+CLOSED-curve (default) and OPEN-curve shape instances.
+Please check Program Usage for how to handle the two cases.
+
+10/26/2006
+
+
+***********************************************************
+******************* Build Instructions ********************
+***********************************************************
+
+After unpacking the package, from the "correspondence"
+folder follow these steps to install:
+
+(1) The file "Makefile" contains a line that points to the
+    location of libg2c.a in your system. This line looks
+    like
+
+    LIBG2C=/usr/lib/gcc-lib/<distrib>/<ver>/libg2c.a
+
+    This needs to be modified according to your own Linux
+    distribution. In general, one can find the location
+    of this library by executing the following command from
+    the command shell
+
+    find /usr/lib -name libg2c.a
+
+    however on non-standard distributions the path /usr/lib
+    may need to be substituted.
+
+(2) Use the command
+
+    make
+
+    to build all the necessary files.
+
+
+
+***********************************************************
+********************* Program Usage ***********************
+***********************************************************
+
+This code uses the CDF (Common Data Format) file format to
+store the shape instances information. CDF is a widely
+supported format brought to the open source community by
+NASA. (For more information on the cdf format, visit
+http://cdf.gsfc.nasa.gov/)
+
+In order to use CDF, the location of the CDF runtime
+libraries (included in this package) needs to be specified.
+From the "correspondence" folder, use the following command
+from a BASH shell
+
+export LD_LIBRARY_PATH=$PWD/cdf/lib
+
+or from a TCSH/CSH shell
+
+setenv LD_LIBRARY_PATH $PWD/cdf/lib
+
+to set the environment variable.
+
+A CDF input file should contain first the template shape,
+followed by all the shape instances to be corresponded.
+To process an input, e.g. foo.cdf, use
+
+bin/2dcor [options] foo.cdf
+
+this will produce the following output files:
+
+foo.fig               - display of the results.
+foo_corresponded.cdf  - result of the correspondence.
+
+(Note: CDF does not allow overwriting files, to rerun an
+experiment using the same output files, the old target .cdf
+files need to be deleted).
+
+By default, the program assumes that the shapes are
+closed contours.
+Additional options that can be used with the program are:
+
+
+ -c             tells the program that the dataset consists of
+                open contour shape instances.  This option must
+                be used for open contours to be corresponded
+                correctly.  If left off open contours will be
+                treated as if they were closed.
+
+ -e             print error messages to
+                correspondence_error.log. Alternatively use
+                -eo to print to stdout or -ee to print to
+                stderr instead.
+
+ -o <filename>  specify the output cdf filename. For an
+                input foo.cdf, default is
+                foo_corresponded.cdf
+
+ -s #           specify the number of times the code is
+                iterated. Default value is 20.
+
+ -v             print verbose information of the current
+                calculations on the shapes being worked on.
+
+ -x <filename>  specify the xfig output filename. For an
+                input foo.cdf, default is foo.fig
+
+
+For example, the following command
+
+./2dcor foo.cdf -v -s 100 -x myfile.fig
+
+will iterate the algorithm 100 times for each shape instance
+in foo.cdf, while displaying the progress, and store the display
+on "myfile.fig". For testing purpose, in the "shapes" folder 
+we enclose four sample data sets, two closed contour:
+callosums.cdf and metacarpals.cdf; and two open contours:
+femur.cdf and kidney.cdf that contain 1,000 shape instances
+each.
+
+After running the correspondence program on a data set,
+you can do a general procrustes anaylsis on the results.
+For this, use
+
+bin/ss2d [options] foo_corresponded.cdf
+
+This will produce the following output files:
+
+foo_corresponded_statistics.cdf    - result of applying general
+                                     procrustes analysis. Including
+                                     mean shape, and the covariance
+                                     matrix.
+foo_corresponded_shape_space.fig   - display of all the results
+                                     superimposed and the mean shape.
+                                     A visual representation of the
+                                     deformation space.
+
+The available options are:
+
+ -f <filename>  specify the procrustes cdf filename. For an
+                input foo.cdf, default is
+                foo_statistics.cdf
+
+ -x <filename>  specify the shape_space xfig filename. For
+                an input foo.cdf, default is
+                foo_shape_space.fig
+
+ -v             print verbose information of the current
+                calculations on the shapes being worked on.
+
+ -c             tells the program that the dataset consists of
+                open contour shape instances.  This option must
+                be used for open contours to be corresponded
+                correctly.  If left off open contours will be
+                treated as if they were closed.
+
+We have also included a tool that allows the conversion from
+ascii text files to the CDF format, bin/a2cdf, of the
+correspondence distribution.
+
+The general format the converter expects is:
+
+<label> n
+X1 Y1
+X2 Y2
+.. ..
+Xn Yn
+
+that is, a string with the label for the current shape, and
+the number of landmarks in the shape, followed by the list
+of coordinates of each landmark. This construct is then
+repeated for each shape, e.g.
+
+template 4
+1 1
+2 3
+4 4
+3 2
+shape01 5
+1 1
+2 3
+5 5
+4 3
+3 2
+shape02 5
+1 1
+2 4
+4 5
+3 2
+2 3
+
+The correspondence code expects the first shape in the set
+to be labeled "template", all the other shapes can have
+any label formed by alphanumeric characters (no blanks).
+For the input CDF file for correspondence, the landmarks in 
+any non-template shape are in fact a sequence of control 
+points that will be interpolated by Catmull-Rom spline to 
+represent the underlying shape contour. Therefore, the 
+number of landmarks in each non-template shape might be 
+different from the number of landmarks in the template. 
+This correspondence code then identifies the corresponded 
+landmarks in each non-template shape so that they have 
+a one-to-one mapping to the landmarks in the template. 
+Therefore, in the output CDF file, the number of landmarks 
+in each non-template shape will be exactly the same as 
+the number of landmarks in the template. In the folder 
+"shapes" we included a small sample file "sample.txt" that 
+can be used as an example. One can input the following 
+commands from the correspondence folder:
+
+bin/a2cdf shapes/sample.txt shapes/sample.cdf
+bin/2dcor shapes/sample.cdf -v
+bin/ss2d  shapes/sample_corresponded.cdf -v
+
+and observe the output in the "shapes" folder. 
+
+To convert a foo.cdf file into a simple foo.txt file that 
+contains all the landmarks along the shape instances,
+you can run
+
+cdf/bin/cdfexport -simple -text foo.txt foo.cdf
+
+and follow the instructions to accomplish this
+file conversion.
+
+We have provided our own small program that accomplishes
+the same goal, but the oputput is in the same form as the
+input to bin/a2cdf.  To perform the same conversion as
+above run
+
+bin/cdf2a foo.cdf foo.txt
+ 
+
+********************
+CONTACT & BUG REPORT
+********************
+Song Wang
+Computer Vision Lab
+Department of Computer Science and Engineering
+University of South Carolina
+Columbia, SC 29208
+Email: songwang@cse.sc.edu
+TEL: 1-803-777-2487
+FAX: 1-803-777-3767
+http://www.cse.sc.edu/~songwang
+

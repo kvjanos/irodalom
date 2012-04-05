@@ -1,0 +1,46 @@
+The source files in this directory create cplex, a variant of CPLEX
+that works with AMPL's solve command and also can be used stand-alone.
+
+You need to obtain libcplex.a (or libcplex.lib) and cplex.h from
+
+	ILOG CPLEX Division
+	889 Alder Avenue, Suite 200
+	Incline Village, Nevada  89451
+
+	phone	+1-775-831-7744
+	fax	+1-775-831-7755
+	E-mail	info@ilog.com
+	web	http://www.ilog.com/
+
+File makefile.u is a generic Unix makefile with comments about changes
+necessary for some systems.  The recommended procedure is to
+
+	cp makefile.u makefile
+
+and then edit makefile if necessary -- see the comments.
+
+File makefile.vc is a corresponding makefile for use with Microsoft's
+Visual C++, e.g., via the invocation "nmake -f makefile.vc".
+
+README.cplex and the makefiles call the resulting solver "cplex", in
+accordance with examples in the AMPL book.  Unrestricted versions sold
+by ILOG/CPLEX are called "cplexamp" when delivered.  You are free to
+name things as you wish (with suitable changes to "option solver"
+lines in AMPL scripts if necessary).  One approach that avoids changes
+to AMPL scripts is to call the interactive CPLEX front end provided by
+ILOG/CPLEX "icplex" rather than "cplex", and to use "cplex" for the
+solver that works with AMPL.
+
+File README.cplex summarizes the use of solver "cplex".
+
+File ampl70.pdf is courtesy of ILOG/CPLEX.  It is a PDF file for the
+booklet "ILOG AMPL CPLEX System Version 7.0 User's Guide" that ILOG
+provides to its customers.  (Though not as nicely formatted, the plain
+text file README.cplex is more complete in some respects.)
+
+File cplex.c is for versions 7.0 and 7.1; version.c is now folded into
+cplex.c.
+Files cplex66.c and version66.c are for version 6.6.* of CPLEX and
+(under compilation with -DNO_CPLEX66) for version 6.5.*.
+Files cplex60.c and version60.c are for version 5.0 and 6.0 of CPLEX.
+Files cplex4.c and version4.c are for CPLEX 4.0.

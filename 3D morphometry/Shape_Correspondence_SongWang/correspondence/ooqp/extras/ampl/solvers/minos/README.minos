@@ -1,0 +1,330 @@
+Minos is a solver based on MINOS versions 5.4 and 5.5 that can be used
+either "stand-alone" or with AMPL's -ob and -og options to solve
+linear and nonlinear problems expressed in AMPL.
+
+To use minos with AMPL, you have several options.  You can invoke
+it within an AMPL session by saying
+
+	solve;
+
+or, if $solver is not already minos,
+
+	option solver minos;
+	solve;
+
+Minos understands AMPL's -ob and -og output formats; you can thus
+use stand-alone invocations like
+
+	ampl -obfoo foo.mod foo.dat
+	minos foo [assignments]
+
+With no stub argument, minos tries to read a SPECS file on stdin,
+followed (unless the SPECS files dictates otherwise) by an MPS file,
+so you also can invoke
+
+	cat foo.specs foo.mps | minos [assignment ...]
+
+Invocation, in general, is
+
+	minos [options] [stub [-AMPL]] [assignment ...]
+
+where stub is from `ampl -obstub` or `ampl -ogstub`.
+Assignments have the form spec_phrase=value or n=filename
+(where n is a 1 or 2 digit Fortran unit number, presumably one
+mentioned in a spec_phrase=value assignment or the SPECS file).
+No spaces may appear in either form of assignment; spec_phrases
+are phrases that can appear in a SPECS file, with _ (underscore)
+substituted for blank.  An assignment n=filename attaches filename
+to Fortran unit n.  Assignments can also appear in the environment
+variable $minos_options; minos first reads the SPECS file (if any),
+then $minos_options, then the command-line assignments.  For example
+
+	minos foo backup_basis_file=2 2=zip new_basis_file=3 3=zap
+
+will make minos behave as though it read a SPECS file containing
+
+	BACKUP BASIS FILE 2
+	NEW BASIS FILE 3
+
+and will connect files zip and zap with the Fortran units 2 and 3.
+(It's unfortunate that you must explicitly mention Fortran unit
+numbers, but this is not onerous.)  The default file name for Fortran
+unit u is fort.u .
+
+Specifying objno=n in $minos_options or the command line is the
+same as specifying problem_number=n-1 (i.e., objno=2 is the
+same as problem_number=1), and objno=0 means "ignore the objectve;
+just seek a feasible point".
+
+Similar comments apply to a.out's you create to solve nonlinear
+problems by calling MINOS.
+
+The argument -AMPL causes minos to emit a one-line banner; when
+$solver has its default value (minos), AMPL's solve command invokes
+
+	minos stub -AMPL
+
+If a stub is present, minos tries to write the computed solution to
+stub.sol unless the -s option was specified.  Execute
+
+	minos '-?'
+
+for a summary of other options.
+
+Minos determines how much scratch storage it will need from the
+stub.nl or the SPECS file and obtains it from malloc.  For
+details not given here, see the "MINOS 5.1 User's Guide"
+(by B. A. Murtagh and M. A. Saunders, Tech. Rep. SOL 83-20R).
+In particular, the User's Guide gives full details about the "specs"
+and MPS files mentioned below.
+
+Default file assignments (Fortran units) are:
+	5 = stdin (for "specs" and MPS files when no basename is given)
+	6 = stdout (for MINOS summary file)
+	7 = MINOS summary file (only if an assignment 7=filename
+		appears on the command line or in $minos_options)
+
+For invocations from AMPL's solve command or of the form
+
+	minos stub ...
+
+(where stub.nl is from AMPL's -ob or -og output options), you can use
+outlev= to control the amount and kind of output:
+	outlev=0	no chatter on stdout
+	outlev=1	only report options on stdout
+	outlev=2	summary file on stdout
+	outlev=3	log file on stdout, no solution
+	outlev=4	log file, including solution, on stdout
+
+Source for MINOS is available from
+
+	Stanford Business Software
+	Phone:	+1 415-962-8719
+	Fax:	+1 415-962-1869
+	2680 Bayshore Parkway, Suite 304
+	Mountain View, CA 94043
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+CHANGES RELATIVE TO MINOS 5.1 (by Michael Saunders)
+=============================
+
+ 1. Upper and lower case may be used in the SPECS file.
+    Numerical values may contain up to 16 characters. For example,
+
+       Iterations limit           2000
+       Lower bound        -1.23456E+07
+
+ 2. Some default values have changed:
+
+       LU Factor tolerance       100.0
+       Factorize frequency         100
+       Check frequency              60
+       Partial price                10   for LPs
+                                     1   for nonlinear problems
+       Scale option                  2   for LPs
+                                     1   for nonlinear problems
+       Print level                   0
+       Log frequency               100
+       Summary frequency           100
+
+ 3. The EXPAND anti-cycling procedure has been implemented,
+    as described in "A practical anti-cycling procedure for
+    linearly constrained optimization", by
+    P. E. Gill, W. Murray, M. A. Saunders and M. H. Wright,
+    Mathematical Programming 45 (1989), pp. 437-474.
+    The default number of iterations between resets is defined
+    in the SPECS file by
+
+       Expand frequency          10000
+
+ 4. Two new parameters have the following default values:
+
+       LU Density tolerance            0.6
+       LU Singularity tolerance    1.0e-11  (approximately)
+
+    The LU Density tolerance is used during LU factorization of
+    the basis matrix.  Columns of L and rows of U are formed
+    one at a time, and the remaining rows and columns of the
+    basis are altered appropriately.  At any stage, if the density
+    of the remaining matrix exceeds the specified LU Density tolerance,
+    the Markowitz strategy is terminated and the remaining parts of
+    L and U are computed by the LINPACK subroutine dgefa
+    (slightly modified), using dense matrices and the maximum pivot
+    in each column.
+
+    The switch to dense code will occur sooner if the default
+    tolerance of 0.6 is reduced (e.g. to 0.4 or less).
+    On vector machines, this may increase the speed of the
+    LU factorization.  The stability will also be improved.
+    The switch to dense code can be turned off by setting the
+    LU Density tolerance greater than 1.0.
+
+    The LU Singularity tolerance helps guard against ill-conditioned
+    basis matrices.  When the basis is refactorized, if a diagonal
+    element of U is smaller than the tolerance (in an absolute
+    sense as well as relative to other nonzeros in the same column
+    of U), the corresponding column of the basis is replaced by
+    the associated slack variable.  (This is most likely to occur
+    after a restart, or at the start of a major iteration.)
+
+    In some cases, the Jacobian may converge to values that make the
+    basis exactly singular.  (For example, a whole row of the Jacobian
+    could be zero at an optimal solution.)  Before exact singularity
+    occurs, the basis could become very ill-conditioned and the
+    optimization could progress very slowly (if at all).
+    Setting      LU Singularity tolerance 1.0e-5 (say)
+    may help cause a judicious change of basis.
+
+ 5. The LU factorization code has the following restriction.
+    On machines using integer*2 (most machines except Cray and Convex),
+    the number of general constraints should not exceed 16383.
+
+    If larger problems need to be run, change all occurrences of
+          "integer*2"  to  "integer  "
+    in all the Fortran source files, and set  nwordh = 2
+    in subroutine m1init.
+
+ 6. The "hard-wired" file numbers in MIFILE have been altered.
+    As always, these can be changed to suit your system.
+
+ 7. MIFILE now opens most files by calling M1OPEN.
+    Some of the OPEN statements in M1OPEN may need to be altered
+    to suit your system.
+
+ 8. As before, if Cycle limit = 0, the user routine MATMOD is never called.
+    Now,       if Cycle limit > 0, MATMOD is called with ncycle = 0
+    BEFORE any problem is solved.  This allows MATMOD to initialize
+    problem-dependent quantities.  If you do not wish to do anything
+    before solving the initial problem, the first line of MATMOD should be
+
+          if (ncycle .eq. 0) return
+
+    In general, if Cycle limit > 0, MATMOD is called with ncycle = k
+    at the END of cycle k (after k problems have been solved, k >= 0).
+
+ 9. The first two lines of Old and New Basis files are slightly different
+    to accommodate larger problems.
+
+10. The Crash routine finds an initial basis by applying a triangular
+    crash procedure to various subsets of the columns of ( A  I ).
+    It proceeds as follows:
+
+     1. (As before) Insert free rows.
+     2. (As before) Apply triangular crash to free columns.
+     3. (New)       Look at columns with exactly one nonzero entry
+                    (ignoring free rows). The entry is required to be
+                    larger than 1.0D-3.
+     4. (New)       Look at columns with exactly two nonzeros
+                    (ignoring free rows).
+     5. (New)       Insert slacks on unpivoted L or G rows.
+     6. (As before) Apply triangular crash to remaining columns.
+
+    Crash option  0,  1,  2,  3  or  4  is now the same as
+    Crash option  0, -1, -2, -3  or -4  respectively, except that
+    step 5 is omitted when the option is negative.
+
+    A negative crash option may be more efficient
+    if a problem has many inequality constraints (L or G rows)
+    and most of the inequalities are expected to be ACTIVE,
+    i.e., if the optimal basis is expected to contain mostly
+    structural variables (rather than slacks).
+
+11. MINOS is now callable as a subroutine.
+    See subroutine minoss   in file mi10mach.for
+    and the example program in file minoss.for.
+
+12. Derivative level 0 requests a function-only search,
+    even if funobj and fungrd compute all gradients.
+    Function calls during the linesearch are now done with mode = 0,
+    not mode = 2.  An extra call with mode = 2 is needed after the search,
+    but the net cost may be less if gradients are very expensive
+    (e.g. if the user is estimating them by differences).
+
+13. It is possible to turn off all output to the Print and Summary files.
+    The Print and Summary options are now as follows:
+
+    Print file          0    No output to Print file.
+                       >0    Output to specified file.
+    Print level         0    One line per major iteration.
+                       >0    Full output as before.
+    Print frequency     0    No minor iteration log.
+                        i    A minor iteration line every i itns.
+   (Print frequency means the same as Log frequency)
+
+    Summary file        0    No output to Summary file.
+                       >0    Output to specified file.
+    Summary level       0    One line per major iteration.
+                       >0    More output.
+    Summary frequency   0    No minor iteration log.
+                        i    A minor iteration line every i itns.
+
+14. The default Hessian dimension and Superbasics limit have been changed
+    from 30 to 50.
+
+15. Subroutine matmod has been slightly altered.
+    The parameters id1 and id2 are called name1 and name2,
+    and there are two additional parameters nname and rc.
+    nname gives the length of name1 and name2.
+
+    If MINOS is being used as a stand-alone system reading MPS files,
+    nname = nb and the names are the same as id1 and id2
+    as described in the 5.1 manual.
+    If MINOS is being called via subroutine minoss,
+    nname = 1  and the names are not defined.
+
+    The parameter list is
+
+      subroutine matmod( ncycle, nprob, finish,
+     $                   m, n, nb, ne, nka, ns, nscl, nname,
+     $                   a, ha, ka, bl, bu,
+     $                   ascale, hs, name1, name2,
+     $                   x, pi, rc, z, nwcore )
+
+      integer            name1(nname), name2(nname)
+      double precision   rc(n)
+
+    with all other parameters the same as before.
+    When ncycle ge 1, rc(*) contains the reduced costs for the n
+    structural variables x, as printed in the COLUMNS section of
+    the solution output.
+
+-----------------------
+solve_result_num values
+=======================
+
+Here is a table of solve_result_num values that "minos" can return
+to an AMPL session, along with the text that appears in the associated
+solve_message.
+
+	Value	Message
+
+	0	optimal solution found
+	100	optimal solution found?  Optimality
+		tests satisfied, but reduced gradient is large
+	200	infeasible problem
+	200	infeasible problem (or bad starting guess)
+	201	numerical error: the general constraints
+		cannot be satisfied accurately
+	300	unbounded (or badly scaled) problem
+	400	too many iterations
+	401	too many major iterations
+	500	the objective has not changed for the last %ld iterations
+	501	the current point cannot be improved
+	510	singular basis after several factorization attempts
+	520	the superbasics limit (%ld) is too small
+	521	error evaluating nonlinear expressions
+	522	not enough storage for the basis factors.
+		Try rerunning with workspace_(total)=nnn in $minos_options 
+	530	incorrect gradients from funobj
+	531	incorrect gradients from funcon
+	532	cannot find superbasic to replace basic variable
+	533	basis factorization requested twice in a row
+	534	error in basis package
+	535	input basis had wrong dimensions
+	536	unexpected return code (nnn)
+	540	solution aborted
+
+-----------------------
+
+Questions about this stuff? Contact dmg@bell-labs.com (David M. Gay).

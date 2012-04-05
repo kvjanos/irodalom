@@ -1,0 +1,357 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE>Computing Hierarchical Curve-Skeletons of 3D Objects</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.3  (Linux)">
+	<META NAME="CREATED" CONTENT="0;0">
+	<META NAME="CHANGED" CONTENT="20080327;9473900">
+	<META NAME="DESCRIPTION" CONTENT="Extracting hierarchical curve-skeletons from general 3D objects using a potential field based approach">
+	<META NAME="KEYWORDS" CONTENT="skeleton, curve-skeleton, skeletonization, 3D, code, download, source code, curve, potential, field, implementation, repulsive force">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { size: 8.27in 11.69in }
+		P { color: #000000 }
+		TD P { color: #000000 }
+		H1 { color: #000000 }
+		H2 { color: #000000 }
+		H2.western { font-family: "Albany", sans-serif; font-size: 14pt; font-style: italic }
+		H2.cjk { font-family: "HG Mincho Light J"; font-size: 14pt; font-style: italic }
+		H2.ctl { font-family: "Arial Unicode MS"; font-size: 14pt; font-style: italic }
+		A:link { color: #000099 }
+		A:visited { color: #990000 }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-SG" TEXT="#000000" LINK="#000099" VLINK="#990000" BGCOLOR="#ffffff" DIR="LTR">
+<CENTER>
+	<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=2 STYLE="page-break-before: always">
+		<TR>
+			<TD>
+				<P><A HREF="http://www.caip.rutgers.edu/%7Ecornea/"><FONT COLOR="#000000"><IMG SRC="Computing%20Hierarchical%20Curve-Skeletons%20of%203D%20Objects/home.gif" NAME="graphics1" ALIGN=BOTTOM WIDTH=30 HEIGHT=30 BORDER=1></FONT></A></P>
+			</TD>
+			<TD>
+				<P><BR>
+				</P>
+			</TD>
+			<TD>
+				<P><BR>
+				</P>
+			</TD>
+		</TR>
+	</TABLE>
+</CENTER>
+<H1 ALIGN=CENTER><FONT FACE="Helvetica, Arial, sans-serif">Computing
+Hierarchical Curve-Skeletons of 3D Objects</FONT></H1>
+<P ALIGN=JUSTIFY STYLE="font-weight: medium"><FONT FACE="TlwgTypewriter, monospace">fpSkel
+parameterezese:</FONT></P>
+<P ALIGN=JUSTIFY STYLE="font-weight: medium"><FONT FACE="TlwgTypewriter, monospace">$./pfSkel
+t07o11z17_meta_Chaincode-based.raw.vol 87 104 17 0 6 25 meta</FONT></P>
+<P ALIGN=JUSTIFY STYLE="font-weight: medium"><BR><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="font-weight: medium"><FONT FACE="TlwgTypewriter, monospace">pfSkel.cpp-ből:</FONT></P>
+<P ALIGN=JUSTIFY STYLE="font-weight: medium"><FONT FACE="TlwgTypewriter, monospace">-
+87 = x 104 = y 17 = z</FONT></P>
+<P ALIGN=JUSTIFY STYLE="font-weight: medium"><BR><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="font-weight: medium"><FONT FACE="TlwgTypewriter, monospace">-
+0 = distance of charges (should be &gt;= 0): (&quot;distCharges&quot;
+v&aacute;ltoz&oacute;) distance from object boundary where to place
+the charges (&gt;=0)</FONT></P>
+<P ALIGN=JUSTIFY STYLE="font-weight: medium"><BR><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="font-weight: medium"><FONT FACE="TlwgTypewriter, monospace">-
+6 = potential field strength (must be between 1-10, recommended 4-9):
+(&quot;fieldStrenght&quot; v&aacute;ltoz&oacute;)</FONT></P>
+<P ALIGN=JUSTIFY STYLE="font-weight: medium"><BR><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="font-weight: medium"><FONT FACE="TlwgTypewriter, monospace">-
+25 = percentage of high divergence points to use</FONT></P>
+<P ALIGN=JUSTIFY><BR><BR>
+</P>
+<P ALIGN=JUSTIFY>We introduce the concept of hierarchical
+curve-skeleton and describe a general and robust methodology which
+computes a family of increasingly detailed curve-skeletons. The
+algorithm is based upon computing a repulsive force field over a
+discretization of the 3D object (voxelized representation) and using
+topological characteristics of the resulting vector field, such as
+critical points and critical curves, to extract the curve-skeleton.
+The algorithm consists of 5&nbsp;steps:</P>
+<OL>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in">Identify the
+	<B>boundary voxels</B> of the 3D object as the source of the
+	repulsive force field.&nbsp; 
+	</P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in">Compute the
+	<A HREF="#RepulsiveForce"><B>repulsive force function</B></A> at
+	each object voxel. After computation, a 3D vector-field results. 
+	</P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in">Detect the <A HREF="#CritPts"><B>critical
+	points</B></A> of the vector field and connect them using path-lines
+	by integrating over the vector-field. This step&nbsp;produces the
+	<A HREF="#CritPts"><B>core skeleton</B></A>. 
+	</P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in">Compute the
+	<A HREF="#LowDiv"><B>divergence</B></A> of the vector-field at each
+	voxel. Points with low divergence values are selected as new seeds
+	for new skeleton segments. Varying the divergence threshold (given
+	as a percentage, i.e., the top 20%) creates the <A HREF="#LowDiv"><B>level
+	1 hierarchy</B></A> after the core skeleton. 
+	</P>
+	<LI><P ALIGN=JUSTIFY>Compute the <A HREF="#HighCurv"><B>curvature</B></A>
+	at every boundary voxel and select new seed points based on a
+	user-supplied curvature threshold, given again as a percentage of
+	the highest curvature value in the dataset (i.e. top 30%). This adds
+	another level of hierarchy to the core and divergence skeletons, the
+	<A HREF="#HighCurv"><B>level 2 skeleton hierarchy</B></A>.&nbsp; 
+	</P>
+</OL>
+<H2 CLASS="western" ALIGN=JUSTIFY><A NAME="RepulsiveForce"></A>Repulsive
+Force Function</H2>
+<P ALIGN=JUSTIFY><IMG SRC="Computing%20Hierarchical%20Curve-Skeletons%20of%203D%20Objects/potfield.png" NAME="graphics2" ALIGN=BOTTOM WIDTH=968 HEIGHT=483 BORDER=0>
+</P>
+<P ALIGN=JUSTIFY>We use a generalized potential field approach <A HREF="#ref_1">[1]</A>.
+The key idea behind the potential field approach is to generate a
+vector field inside the object by charging the object’s boundary. 
+</P>
+<P ALIGN=JUSTIFY>We place electrical point charges on the object's
+boundary, considering each boundary voxel to be a point charge (a
+boundary voxel is an object voxel which has a background neighbor).
+The repulsive force at an interior object voxel due to a nearby point
+charge is defined as a force pushing the voxel away from the charge
+with a strength that is inverse proportional to the distance between
+the voxel and the charge,&nbsp;raised at a certain power <I>m</I>
+which we call <I><B>&quot;</B></I><B>the field strength</B><I><B>&quot;</B></I>.
+The <I>&quot;field strength&quot;</I> is a parameter of the program.
+The final repulsive force at each interior voxel is computed by
+summing the influences of all the point charges. The resulting vector
+field is also called a force field.</P>
+<P ALIGN=JUSTIFY>A high <I>&quot;field strength&quot;</I> (<I>m</I>)
+will cause the local point chanrges to have a higher influence on a
+given interior voxel than the more distant charges, thus creating a
+vector field with sharper path-lines because it follows the local
+boundary topology more closely. A low value for the <I>m</I>
+parameter will produce a smoother vector field, with more rounded
+corners, since the vector direction at a particular point is now
+influenced by more point charges.</P>
+<P ALIGN=JUSTIFY>Because the algorithm uses all&nbsp;the point
+charges for force computation at each interior voxel, <I>visibility
+errors</I> can result for objects with tapered limbs (like a comb)
+since individual voxels within each prong of the comb cannot “see”
+the charges corresponding to the other prongs and those charges
+should not be considered in the force field calculation. Using a high
+<I>&quot;field strenght&quot;</I>&nbsp;minimizes this effect by
+reducing the influence of more distant point charges.</P>
+<P ALIGN=JUSTIFY>Resolution/discretization is an important external
+factor affecting the performance of the algorithm and changing the
+accuracy of the solution. Clearly a 4<SUP>3</SUP> grid will yield a
+less accurate result than a 60<SUP>3</SUP> grid. A 1 or 2 voxels
+thick object region will not have enough resolution to properly
+compute the repulsive force field in that region (this is a common
+simulation issue). For such regions, the repulsive force field is
+extremely sensitive to even small boundary perturbations, resulting
+in discontinuities of the flow pattern inside the object’s
+boundaries. As a result, the interior skeleton can become
+disconnected just because the force-following algorithm becomes stuck
+in these perturbed regions of the force field (see the next
+sections). To overcome this problem, one can either increase the
+resolution of the voxelization or <I>&quot;pad&quot;</I> the object
+with a number of extra layers of voxels (dilation), making the object
+thicker (this is another parameter of the program). &quot;<B>Padding</B>&quot;
+produces a smoothing effect of the object’s boundary, which makes
+it suitable for noisy objects, but can also merge object features
+that are very close to each other.</P>
+<H2 CLASS="western" ALIGN=JUSTIFY><A NAME="CritPts"></A>Critical
+points and the “core skeleton” 
+</H2>
+<P ALIGN=JUSTIFY><IMG SRC="Computing%20Hierarchical%20Curve-Skeletons%20of%203D%20Objects/critpts.png" NAME="graphics3" ALIGN=BOTTOM WIDTH=967 HEIGHT=485 BORDER=0>
+</P>
+<P ALIGN=JUSTIFY>Critical points are important vector field topology
+components and are often used in vector field visualization. These
+are the points where the magnitude of the force vector vanishes.
+Critical points are difficult to locate in a vector field,
+particularly because they do not necessarily occur at the given
+sample locations, but often occur in between sampling points. We use
+a sub-division scheme to locate all the critical points in the vector
+field (see paper for details). Once extracted, the critical points
+are classified into&nbsp;<B>attracting nodes</B> (where all vectors
+are pointing towards the critical point), <B>repelling nodes</B>
+(where all the vectors are pointing away from the critical point) and
+<B>saddles</B> (where some vectors are pointing towards the critical
+point and others away from it).&nbsp;Saddle points will occur between
+attracting or repelling nodes directing the flow towards one or
+another and can be used to connect them. Intuitively, the outward
+flow directed away from a saddle point, can only reach an attracting
+node or another saddle inside the object since the vector field was
+generated by the closed boundary of the object and points towards the
+interior.</P>
+<P ALIGN=JUSTIFY>Path-lines are&nbsp;seeded from saddles in the
+directions of the outward flow and a path-line <B>force-following</B>
+algorithm is applied which stops at another critical point or when it
+arrives at a previously visited location. The force-following
+algorithm evaluates the force value at each point along a path and
+moves in the force direction with small steps. Samples taken along
+the integration path started at a saddle point form a <B>skeleton
+segment</B>. Skeleton segments connecting all the critical points of
+the force field are known as <I>critical-curves</I> and form the <B>core
+skeleton</B>.</P>
+<P ALIGN=JUSTIFY>The core skeleton represents <I><B>level 0</B></I>
+in the skeleton hierarchy. However, the core skeleton contains only
+part of the central curve-skeleton for a given object. The next
+level-of-detail is added by considering another important feature of
+the force field: the divergence.</P>
+<H2 CLASS="western" ALIGN=JUSTIFY><A NAME="LowDiv"></A>Low divergence
+points and the “level 1 skeleton hierarchy”</H2>
+<P ALIGN=JUSTIFY><IMG SRC="Computing%20Hierarchical%20Curve-Skeletons%20of%203D%20Objects/lowdiv.png" NAME="graphics4" ALIGN=BOTTOM WIDTH=956 HEIGHT=439 BORDER=0>
+</P>
+<P ALIGN=JUSTIFY>The divergence of a vector field in a given region
+of space is a scalar quantity that characterizes the rate of flow
+leaving that region. Divergence is an interesting property because it
+measures the “sinkness” of a point. A negative divergence value
+at a point indicates that the flow is moving mainly towards the given
+point. Of interest are points with low divergence values, which
+indicate a “sink”. A threshold on the divergence value (the
+<B>divergence threshold</B>) is used to identify new seed points. The
+threshold is given as a percentage of the lowest divergence value in
+the entire vector field.&nbsp;From each of these new seed points, a
+new field-line is generated which will connect to the core skeleton.&nbsp;</P>
+<P ALIGN=JUSTIFY>By varying the <I>divergence threshold </I>(another
+parameter of our progam) the user varies the number of seed points
+selected and correspondingly the number of new skeleton segments,
+generating an entire hierarchy of skeletons that we call the <B>level
+1 skeleton</B>. Different thresholds can be chosen based upon the
+application of the curve-skeleton.</P>
+<H2 CLASS="western" ALIGN=JUSTIFY><A NAME="HighCurv"></A>High
+Curvature points and the &quot;level 2 skeleton hierarchy&quot;</H2>
+<P ALIGN=JUSTIFY>Another set of seed points for new skeletal segments
+consists of the convex corners of the object. These will create paths
+from the boundary to the skeleton and generate the “tendrils”
+found in medial axis representations. The curvature of every&nbsp;boundary
+voxel can be computed and areas of high curvature can be used to seed
+new path-lines, using a threshold similar to the <I>divergence
+threshold</I>.&nbsp;</P>
+<P ALIGN=JUSTIFY>A disadvantage of boundary seeding based on the
+curvature is that it is affected even by small amounts of noise
+present on the object’s boundary. A possible solution to this
+problem is to consider an extended neighborhood when computing the
+curvature at boundary voxels, not just the face, edge and vertex
+neighbors. For certain applications, such as virtual navigation,
+boundary seeds could be used differently, i.e., to specifically
+generate certain navigation paths.</P>
+<P ALIGN=JUSTIFY>The skeleton segments originated at seed points on
+the boundary will create another level of hierarchy for each
+curve-skeleton computed thus far. Each of the <I>level-1 skeletons</I>
+will form the root of a new hierarchy developed by varying the number
+of boundary-seeded segments (via the user specified curvature
+threshold). We call this new hierarchy level the <B>level 2 skeleton
+hierarchy</B>.</P>
+<P ALIGN=JUSTIFY>Note that the boundary seeds can be added either
+directly to the core skeleton or to a level 1 skeleton. However, a
+strict hierarchy is achieved only if the hierarchy levels below the
+current level are fixed: for example, in order to generate a strict
+level 2 hierarchy, the core skeleton and the number of divergence
+seeds must be fixed and only the number of boundary seeds be allowed
+to vary.&nbsp;</P>
+<P ALIGN=JUSTIFY><I>Note:</I> the bundary seeding is not included in
+the downloadable programs.</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in"><BR>
+</P>
+<P ALIGN=JUSTIFY>Run the program like this (version
+1.2.1.1):<BR><FONT FACE="courier new, courier, monospace"><BR>./pfSkel
+cow.85x31x54.vol 85 31 54 0 6 0 cow</FONT><BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; This should
+give you the &quot;core&quot; skeleton which looks like this:</P>
+<P ALIGN=CENTER>&nbsp;<IMG SRC="Computing%20Hierarchical%20Curve-Skeletons%20of%203D%20Objects/cow-fs-6-hd-0.png" NAME="graphics6" ALIGN=BOTTOM WIDTH=259 HEIGHT=200 BORDER=0>
+download skeleton file: <A HREF="http://www.caip.rutgers.edu/%7Ecornea/Skeletonization/Cow/cow-fs6-hd0.skel">cow-fs6-hd0.skel</A></P>
+<P ALIGN=JUSTIFY>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Note that we have no skeleton
+segments for the tail, the horns and the ears.</P>
+<P ALIGN=JUSTIFY>Or try:</P>
+<P ALIGN=JUSTIFY><FONT FACE="courier new, courier, monospace">./pfSkel
+cow.85x31x54.vol 85 31 54 0 6 25 cow</FONT><BR>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; This should
+give you a more detailed skeleton, using 25% divergence seeds, which
+looks like this:</P>
+<P ALIGN=CENTER><IMG SRC="Computing%20Hierarchical%20Curve-Skeletons%20of%203D%20Objects/cow-fs-6-hd-25.png" NAME="graphics7" ALIGN=BOTTOM WIDTH=259 HEIGHT=200 BORDER=0>
+download skeleton file: <A HREF="http://www.caip.rutgers.edu/%7Ecornea/Skeletonization/Cow/cow-fs6-hd25.skel">cow-fs6-hd25.skel</A></P>
+<P ALIGN=JUSTIFY>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Now we have a tail, horns and
+ears. 
+</P>
+<P ALIGN=JUSTIFY>Note:<BR>&nbsp; I use <A HREF="http://www.avs.com/">AVS/Express</A>
+to visualize the skeletons and make these pretty pictures. It's a
+great tool but it's not free.<BR>My suggestion is to try <A HREF="http://vtk.org/">VTK</A>
+to visualize the skeletons. Here is a small vtk program that renders
+the skeleton together with the volume: <A HREF="http://www.caip.rutgers.edu/%7Ecornea/Code/vtkSkelViewer.tar.gz">vtkSkelViewer.tar.gz</A>.<BR>Note
+that the name of the volume needs to be of the same format as the cow
+volume mentioned above: name.size.vol.</P><A NAME="Results"></A>
+<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=2 BGCOLOR="#cccccc">
+	<TR>
+		<TD>
+			<P><A NAME="Results1"></A><B>Results</B></P>
+		</TD>
+	</TR>
+</TABLE>
+<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=2>
+	<TR>
+		<TD>
+			<UL>
+				<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in"><A HREF="http://www.caip.rutgers.edu/%7Ecornea/Skeletonization/Cow/index.html"><FONT FACE="Helvetica, Arial, sans-serif"><FONT SIZE=2><B>Cow</B></FONT></FONT></A>
+								</P>
+				<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in"><A HREF="http://www.caip.rutgers.edu/%7Ecornea/Skeletonization/Aneurism/index.html"><FONT FACE="Helvetica, Arial, sans-serif"><FONT SIZE=2><B>Aneurism</B></FONT></FONT></A>
+								</P>
+				<LI><P ALIGN=JUSTIFY><A HREF="http://www.caip.rutgers.edu/%7Ecornea/Skeletonization/Torus/index.html"><FONT FACE="Helvetica, Arial, sans-serif"><FONT SIZE=2><B>Torus</B></FONT></FONT></A>
+								</P>
+			</UL>
+		</TD>
+		<TD>
+			<UL>
+				<LI><P><A HREF="http://www.caip.rutgers.edu/%7Ecornea/Skeletonization/Art/index.html"><FONT FACE="Helvetica, Arial, sans-serif"><FONT SIZE=2><B>Art</B></FONT></FONT></A><FONT FACE="Helvetica, Arial, sans-serif"><B>
+				</B></FONT>
+				</P>
+			</UL>
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+</TABLE>
+<P ALIGN=JUSTIFY><FONT FACE="Helvetica, Arial, sans-serif"><FONT SIZE=4>References:</FONT></FONT><FONT SIZE=4><BR><BR></FONT><FONT FACE="Times New Roman"><FONT SIZE=3>[1]
+Chuang J-H, Tsai C, Ko M-C (2000) Skeletonization of
+Three-Dimensional Object Using Generalized Potential Field. IEEE
+Trans. Pattern Analysis and Machine Intelligence, 22(11):1241-1251</FONT></FONT></P>
+<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=2 BGCOLOR="#cccccc">
+	<TR>
+		<TD>
+			<P><A NAME="Publications"></A><B>Publications</B></P>
+		</TD>
+	</TR>
+</TABLE>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0in"><BR><FONT FACE="Helvetica, Arial, sans-serif"><FONT SIZE=1>Cornea
+N.D., Silver D., Min P. (2005). </FONT></FONT><FONT FACE="Helvetica, Arial, sans-serif"><FONT SIZE=1><B>Curve-Skeleton
+Applications.</B></FONT></FONT><FONT FACE="Helvetica, Arial, sans-serif"><FONT SIZE=1>
+In Proceedings IEEE Visualization, pp. 95-102, 2005. [ <A HREF="http://www.caip.rutgers.edu/%7Ecornea/Publications/index.html#vis05">here</A>
+]<BR><BR>Cornea N.D.,Silver D., Yuan X., Balasubramanian R. (2005).
+</FONT></FONT><FONT FACE="Helvetica, Arial, sans-serif"><FONT SIZE=1><B>Computing
+Hierarchical Curve-Skeletons of 3D Objects.</B></FONT></FONT><FONT FACE="Helvetica, Arial, sans-serif"><FONT SIZE=1>
+The Visual Computer 21(11):945-955, Springer-Verlag, October, 2005. [
+<A HREF="http://www.caip.rutgers.edu/%7Ecornea/Publications/index.html#vc05">here</A>
+]</FONT></FONT></P>
+<HR>
+<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=2>
+	<TR>
+		<TD>
+			<P><FONT SIZE=2>Nicu D. Cornea</FONT></P>
+		</TD>
+		<TD>
+			<P ALIGN=RIGHT><FONT SIZE=2>Nov 4, 2005</FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR><BR>
+</P>
+</BODY>
+</HTML>

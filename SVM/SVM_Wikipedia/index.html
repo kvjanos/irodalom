@@ -1,0 +1,377 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" dir="ltr" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+	
+		
+				<meta name="keywords" content="Support vector machine,Space,Kernel (integral operator),Dot product,Gaussian,Radial basis function,Regularization (mathematics),Hilbert space,Kernel trick,Vladimir Vapnik,Lagrange multipliers">
+		<link rel="shortcut icon" href="favicon.ico">
+		<link rel="search" type="application/opensearchdescription+xml" href="http://en.wikipedia.org/w/opensearch_desc.php" title="Wikipedia (English)">
+		<link rel="copyright" href="http://www.gnu.org/copyleft/fdl.html"><title>Support vector machine - Wikipedia, the free encyclopedia</title>
+		
+		
+		<!--[if lt IE 5.5000]><style type="text/css">@import "/skins-1.5/monobook/IE50Fixes.css?97";</style><![endif]--><!--[if IE 5.5000]><style type="text/css">@import "/skins-1.5/monobook/IE55Fixes.css?97";</style><![endif]--><!--[if IE 6]><style type="text/css">@import "/skins-1.5/monobook/IE60Fixes.css?97";</style><![endif]--><!--[if IE 7]><style type="text/css">@import "/skins-1.5/monobook/IE70Fixes.css?97";</style><![endif]--><!--[if lt IE 7]><script type="text/javascript" src="/skins-1.5/common/IEFixes.js?97"></script>
+		<meta http-equiv="imagetoolbar" content="no" /><![endif]-->
+		
+		
+		
+		
+		
+		
+		
+                
+		
+		
+		<!-- Head Scripts -->
+		
+		
+<link rel="stylesheet" type="text/css" href="index.css" media="all">
+</head>
+<body class="mediawiki ns-0 ltr page-Support_vector_machine">
+	<div id="globalWrapper">
+		<div id="column-content">
+	<div id="content">
+		<a name="top" id="top"></a>
+				<h1 class="firstHeading">Support vector machine</h1>
+		<div id="bodyContent">
+			<h3 id="siteSub">From Wikipedia, the free encyclopedia</h3>
+			<div id="contentSub"></div>
+									<div id="jump-to-nav">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>			<!-- start content -->
+			<div class="messagebox cleanup metadata plainlinks">
+<table style="background: transparent none repeat scroll 0% 50%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+<tbody><tr>
+<td style="padding: 0.3em; width: 60px; text-align: center; vertical-align: top;"><a href="http://en.wikipedia.org/wiki/Image:Questionmark.svg" class="image" title="Info icon"><img alt="Info icon" src="40px-questionmark.svg.png" border="0" height="40" width="40"></a></td>
+<td style="width: 100%; text-align: center;"><b>This article or section may be <a href="http://en.wikipedia.org/wiki/Wikipedia:Please_clarify" title="Wikipedia:Please clarify">confusing or unclear</a> for some readers.</b><br>
+<small>Please <span class="plainlinks"><a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;action=edit" class="external text" title="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;action=edit" rel="nofollow">improve the article</a></span> or discuss this issue on the <a href="http://en.wikipedia.org/wiki/Talk:Support_vector_machine" title="Talk:Support vector machine">talk page</a>. This article has been tagged since <b>January 2007</b>.</small></td>
+</tr>
+</tbody></table>
+</div>
+<p><b>Support vector machines (SVMs)</b> are a set of related <a href="http://en.wikipedia.org/wiki/Supervised_learning" title="Supervised learning">supervised learning</a> methods used for <a href="http://en.wikipedia.org/wiki/Statistical_classification" title="Statistical classification">classification</a> and <a href="http://en.wikipedia.org/wiki/Regression_analysis" title="Regression analysis">regression</a>. They belong to a family of generalized <a href="http://en.wikipedia.org/wiki/Linear_classifier" title="Linear classifier">linear classifiers</a>. They can also be considered a special case of <a href="http://en.wikipedia.org/wiki/Tikhonov_regularization" title="Tikhonov regularization">Tikhonov regularization</a>. A special property of SVMs is that they simultaneously minimize the empirical classification error and maximize the geometric margin; hence they are also known as <b>maximum margin classifiers</b>.</p>
+<p>Support vector machines map input vectors to a higher dimensional space where a maximal separating <a href="http://en.wikipedia.org/wiki/Hyperplane" title="Hyperplane">hyperplane</a> is constructed. Two parallel hyperplanes are constructed on each side of the hyperplane that separates the data. The separating hyperplane is the hyperplane that maximizes the distance between the two parallel hyperplanes. An assumption is made that the larger the margin or distance between these parallel hyperplanes the better the generalisation error of the classifier will be. An excellent tutorial has been produced by C.J.C Burges <sup id="_ref-0" class="reference"><a href="#_note-0" title="">[1]</a></sup>. A comparison of the SVM to other classifiers has been made by van der Walt and Barnard <sup id="_ref-1" class="reference"><a href="#_note-1" title="">[2]</a></sup>.</p>
+<table id="toc" class="toc" summary="Contents">
+<tbody><tr>
+<td>
+<div id="toctitle">
+<h2>Contents</h2>
+</div>
+<ul>
+<li class="toclevel-1"><a href="#Motivation"><span class="tocnumber">1</span> <span class="toctext">Motivation</span></a></li>
+<li class="toclevel-1"><a href="#Formalization"><span class="tocnumber">2</span> <span class="toctext">Formalization</span></a></li>
+<li class="toclevel-1"><a href="#Primal_Form"><span class="tocnumber">3</span> <span class="toctext">Primal Form</span></a></li>
+<li class="toclevel-1"><a href="#Dual_Form"><span class="tocnumber">4</span> <span class="toctext">Dual Form</span></a></li>
+<li class="toclevel-1"><a href="#Soft_margin"><span class="tocnumber">5</span> <span class="toctext">Soft margin</span></a></li>
+<li class="toclevel-1"><a href="#Non-linear_classification"><span class="tocnumber">6</span> <span class="toctext">Non-linear classification</span></a></li>
+<li class="toclevel-1"><a href="#Regression"><span class="tocnumber">7</span> <span class="toctext">Regression</span></a></li>
+<li class="toclevel-1"><a href="#Implementation"><span class="tocnumber">8</span> <span class="toctext">Implementation</span></a></li>
+<li class="toclevel-1"><a href="#Fast_Training_Algorithms"><span class="tocnumber">9</span> <span class="toctext">Fast Training Algorithms</span></a></li>
+<li class="toclevel-1"><a href="#See_also"><span class="tocnumber">10</span> <span class="toctext">See also</span></a></li>
+<li class="toclevel-1"><a href="#References"><span class="tocnumber">11</span> <span class="toctext">References</span></a></li>
+<li class="toclevel-1"><a href="#Bibliography"><span class="tocnumber">12</span> <span class="toctext">Bibliography</span></a></li>
+<li class="toclevel-1"><a href="#External_links"><span class="tocnumber">13</span> <span class="toctext">External links</span></a>
+<ul>
+<li class="toclevel-2"><a href="#General"><span class="tocnumber">13.1</span> <span class="toctext">General</span></a></li>
+<li class="toclevel-2"><a href="#Software"><span class="tocnumber">13.2</span> <span class="toctext">Software</span></a></li>
+<li class="toclevel-2"><a href="#Interactive_SVM_applications"><span class="tocnumber">13.3</span> <span class="toctext">Interactive SVM applications</span></a></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+</tbody></table>
+
+<p><a name="Motivation" id="Motivation"></a></p>
+<h2><span class="editsection">[<a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;action=edit&amp;section=1" title="Edit section: Motivation">edit</a>]</span> <span class="mw-headline">Motivation</span></h2>
+<div class="thumb tright">
+<div class="thumbinner" style="width: 182px;"><a href="http://en.wikipedia.org/wiki/Image:Classifier.png" class="image" title="Many linear classifiers (hyperplanes) separate the data. However, only one achieves maximum separation."><img alt="Many linear classifiers (hyperplanes) separate the data. However, only one achieves maximum separation." src="180px-classifier.png" class="thumbimage" border="0" height="151" width="180"></a>
+<div class="thumbcaption">
+<div class="magnify" style="float: right;"><a href="http://en.wikipedia.org/wiki/Image:Classifier.png" class="internal" title="Enlarge"><img src="magnify-clip.png" alt="" height="11" width="15"></a></div>
+Many linear classifiers (hyperplanes) separate the data. However, only one achieves maximum separation.</div>
+</div>
+</div>
+<p>Often we are interested in classifying data as a part of a machine-learning process. Each data point will be represented by a <span class="texhtml"><i>p</i></span>-dimensional vector (a list of <span class="texhtml"><i>p</i></span> numbers). Each of these data points belongs to only one of two classes. We are interested in whether we can separate them with an "p minus 1" dimensional <a href="http://en.wikipedia.org/wiki/Hyperplane" title="Hyperplane">hyperplane</a>. This is a typical form of <a href="http://en.wikipedia.org/wiki/Linear_classifier" title="Linear classifier">linear classifier</a>. There are many linear classifiers that might satisfy this property. However, we are additionally interested in finding out if we can achieve maximum separation (<a href="http://en.wikipedia.org/wiki/Margin" title="Margin">margin</a>) between the two classes. By this we mean that we pick the hyperplane so that the distance from the hyperplane to the nearest data point is maximized. That is to say that the nearest distance between a point in one <i>separated</i> hyperplane and a point in the other <i>separated</i> hyperplane is maximized. Now, if such a hyperplane exists, it is clearly of interest and is known as the <i><a href="http://en.wikipedia.org/wiki/Maximum-margin_hyperplane" title="Maximum-margin hyperplane">maximum-margin hyperplane</a></i> and such a linear classifier is known as a <b>maximum margin</b> classifier.</p>
+<p><a name="Formalization" id="Formalization"></a></p>
+<h2><span class="editsection">[<a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;action=edit&amp;section=2" title="Edit section: Formalization">edit</a>]</span> <span class="mw-headline">Formalization</span></h2>
+<p>We consider data points of the form:</p>
+<dl>
+<dd><img class="tex" alt="\{ (\mathbf{x}_1, c_1), (\mathbf{x}_2, c_2), \ldots, (\mathbf{x}_n, c_n)\}" src="73c2271c2efadc59ca11fea82796020c.png"></dd>
+</dl>
+<p>where the <i>c</i><sub><i>i</i></sub> is either 1 or −1, a constant denoting the class to which the point <img class="tex" alt="\mathbf{x}_i " src="3f052ba8a0742f689f895fd252fa157f.png"> belongs. Each <img class="tex" alt=" \mathbf{x}_i " src="3f052ba8a0742f689f895fd252fa157f.png"> is a <span class="texhtml"><i>p</i></span>-dimensional <a href="http://en.wikipedia.org/wiki/Real_number" title="Real number">real</a> vector, usually of normalised (<a href="http://en.wikipedia.org/wiki/Normalizing_constant" title="Normalizing constant">Normalizing constant</a>) [0,1] or [-1,1] values. The scaling is important to guard against variables (attributes) with larger variance that might otherwise dominate the classification. We can view this as <i>training data</i>, which denotes the correct classification which we would like the SVM to eventually distinguish, by means of the dividing (or separating) hyperplane, which takes the form</p>
+<div class="thumb tright">
+<div class="thumbinner" style="width: 182px;"><a href="http://en.wikipedia.org/wiki/Image:SVM_margins.png" class="image" title="Maximum-margin hyperplanes for a SVM trained with samples from two classes. Samples along the hyperplanes are called the support vectors."><img alt="Maximum-margin hyperplanes for a SVM trained with samples from two classes. Samples along the hyperplanes are called the support vectors." src="180px-svm_margins.png" class="thumbimage" border="0" height="220" width="180"></a>
+<div class="thumbcaption">
+<div class="magnify" style="float: right;"><a href="http://en.wikipedia.org/wiki/Image:SVM_margins.png" class="internal" title="Enlarge"><img src="magnify-clip.png" alt="" height="11" width="15"></a></div>
+Maximum-margin hyperplanes for a SVM trained with samples from two classes. Samples along the hyperplanes are called the support vectors.</div>
+</div>
+</div>
+<dl>
+<dd><img class="tex" alt="\mathbf{w}\cdot\mathbf{x} - b=0." src="4875c57f22ae0726fe413a3be97da5df.png"></dd>
+</dl>
+<p>The vector <img class="tex" alt="\mathbf{w}" src="2c5a3544056eab0411512e37fedea46d.png"> points perpendicular to the separating hyperplane. Adding the offset parameter <i>b</i> allows us to increase the margin. In its absence, the hyperplane is forced to pass through the origin, restricting the solution.</p>
+<p>As we are interested in the maximum margin, we are interested in the support vectors and the parallel hyperplanes (to the optimal hyperplane) closest to these support vectors in either class. It can be shown that these parallel hyperplanes can be described by equations (by scaling w and b if not)</p>
+<dl>
+<dd><img class="tex" alt="\mathbf{w}\cdot\mathbf{x} - b=1," src="f34af0e1112d160e98feffbceb7d110a.png"></dd>
+<dd><img class="tex" alt="\mathbf{w}\cdot\mathbf{x} - b=-1." src="03034da6a72ea9fbed8496cf3e3e9294.png"></dd>
+</dl>
+<p>If the training data are <a href="http://en.wikipedia.org/wiki/Linearly_separable" title="Linearly separable">linearly separable</a>, we can select these hyperplanes so that there are no points between them and then try to maximize their distance. By using geometry, we find the distance between the hyperplanes is 2/|<i><b>w</b></i>|, so we want to minimize |<i><b>w</b></i>|. To exclude data points, we need to ensure that for all <span class="texhtml"><i>i</i></span> either</p>
+<dl>
+<dd><img class="tex" alt="\mathbf{w}\cdot\mathbf{x_i} - b \ge 1\qquad\mathrm{or}" src="9d692015b7c3120ba24d6b4ed69e7fe3.png"></dd>
+<dd><img class="tex" alt="\mathbf{w}\cdot\mathbf{x_i} - b \le -1\qquad\mathrm{}" src="ff60a9e0368a9230d64b4a0bd593d038.png"></dd>
+</dl>
+<p>This can be rewritten as:</p>
+<dl>
+<dd><img class="tex" alt="c_i(\mathbf{w}\cdot\mathbf{x_i} - b) \ge 1, \quad 1 \le i \le n.\qquad\qquad(1)" src="e25615c8322690f31073b67037a9dffa.png"></dd>
+</dl>
+<p><a name="Primal_Form" id="Primal_Form"></a></p>
+<h2><span class="editsection">[<a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;action=edit&amp;section=3" title="Edit section: Primal Form">edit</a>]</span> <span class="mw-headline">Primal Form</span></h2>
+<p>The problem now is to minimize |<i><b>w</b></i>| subject to the constraint (1). This is a <a href="http://en.wikipedia.org/wiki/Quadratic_programming" title="Quadratic programming">quadratic programming</a> (QP) <a href="http://en.wikipedia.org/wiki/Optimization_%28mathematics%29" title="Optimization (mathematics)">optimization</a> problem. More clearly,</p>
+<dl>
+<dd>minimize <img class="tex" alt="(1/2)||\mathbf{w}||^2" src="da64d98503f3465a78bd02c916ca0490.png">, subject to <img class="tex" alt="c_i(\mathbf{w}\cdot\mathbf{x_i} - b) \ge 1, \quad 1 \le i \le n." src="35299c944f7732a9b377dfac7f84b2f1.png">.</dd>
+</dl>
+<p>The factor of 1/2 is used for mathematical convenience.</p>
+<p><a name="Dual_Form" id="Dual_Form"></a></p>
+<h2><span class="editsection">[<a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;action=edit&amp;section=4" title="Edit section: Dual Form">edit</a>]</span> <span class="mw-headline">Dual Form</span></h2>
+<p>Writing the classification rule in its <a href="http://en.wikipedia.org/wiki/Duality_%28mathematics%29" title="Duality (mathematics)">dual form</a> reveals that classification is only a function of the <i>support vectors</i>, i.e., the training data that lie on the margin. The dual of the SVM can be shown to be:</p>
+<dl>
+<dd><img class="tex" alt="\max \sum_{i=1}^n \alpha_i - \sum_{i,j} \alpha_i \alpha_j c_i c_j \mathbf{x}_i^T \mathbf{x}_j" src="a3442be76787f51d2fc31257a5827797.png"> subject to <img class="tex" alt=" \alpha_i \geq 0 " src="bae2ffcc08632bc0f338422bee19e235.png">,</dd>
+</dl>
+<p>where the <span class="texhtml">α</span> terms constitute a dual representation for the weight vector in terms of the training set:</p>
+<dl>
+<dd><img class="tex" alt="\mathbf{w} = \sum_i \alpha_i c_i \mathbf{x}_i" src="0d7789389735d0415918cf4ee297278e.png"></dd>
+</dl>
+<p><a name="Soft_margin" id="Soft_margin"></a></p>
+<h2><span class="editsection">[<a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;action=edit&amp;section=5" title="Edit section: Soft margin">edit</a>]</span> <span class="mw-headline">Soft margin</span></h2>
+<p>In <a href="http://en.wikipedia.org/wiki/1995" title="1995">1995</a>, <a href="http://en.wikipedia.org/w/index.php?title=Corinna_Cortes&amp;action=edit" class="new" title="Corinna Cortes">Corinna Cortes</a> and <a href="http://en.wikipedia.org/wiki/Vladimir_Vapnik" title="Vladimir Vapnik">Vladimir Vapnik</a> suggested a modified maximum margin idea that allows for mislabeled examples <sup id="_ref-2" class="reference"><a href="#_note-2" title="">[3]</a></sup>. If there exists no hyperplane that can split the "yes" and "no" examples, the <i>Soft Margin</i> method will choose a hyperplane that splits the examples as cleanly as possible, while still maximizing the distance to the nearest cleanly split examples. This work popularized the expression <i>Support Vector Machine</i> or <i>SVM</i>. The method introduces slack variables, <span class="texhtml">ξ<sub><i>i</i></sub></span>, which measure the degree of misclassification of the datum <span class="texhtml"><i>x</i><sub><i>i</i></sub></span></p>
+<dl>
+<dd><img class="tex" alt="c_i(\mathbf{w}\cdot\mathbf{x_i} - b) \ge 1 - \xi_i \quad 1 \le i \le n \quad\quad(2)" src="a488b29a2187d7443084565d09e4abf5.png">.</dd>
+</dl>
+<p>The objective function is then increased by a function which penalises non-zero <span class="texhtml">ξ<sub><i>i</i></sub></span>, and the optimisation becomes a trade off between a large margin, and a small error penalty. If the penalty function is linear, the equation (3) now transforms to</p>
+<dl>
+<dd><img class="tex" alt=" \min ||\mathbf{w}||^2 + C \sum_i \xi_i \quad \mbox{such  that}\quad c_i(\mathbf{w}\cdot\mathbf{x_i} - b) \ge 1 - \xi_i \quad 1 \le i \le n. " src="fc6384d3b5fbd6f6eb0c71f01341a198.png"></dd>
+</dl>
+<p>This constraint in (2) along with the objective of minimizing |<i><b>w</b></i>| can be solved using <a href="http://en.wikipedia.org/wiki/Lagrange_multipliers" title="Lagrange multipliers">Lagrange multipliers</a>. The key advantage of a linear penalty function is that the slack variables vanish from the dual problem, with the constant <i>C</i> appearing only as an additional constraint on the Lagrange multipliers. Non-linear penalty functions have been used, particularly to reduce the effect of outliers on the classifier, but unless care is taken, the problem becomes non-convex, and thus it is considerably more difficult to find a global solution.</p>
+<p><a name="Non-linear_classification" id="Non-linear_classification"></a></p>
+<h2><span class="editsection">[<a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;action=edit&amp;section=6" title="Edit section: Non-linear classification">edit</a>]</span> <span class="mw-headline">Non-linear classification</span></h2>
+<p>The original optimal hyperplane algorithm proposed by <a href="http://en.wikipedia.org/wiki/Vladimir_Vapnik" title="Vladimir Vapnik">Vladimir Vapnik</a> in <a href="http://en.wikipedia.org/wiki/1963" title="1963">1963</a> was a <a href="http://en.wikipedia.org/wiki/Linear_classifier" title="Linear classifier">linear classifier</a>. However, in <a href="http://en.wikipedia.org/wiki/1992" title="1992">1992</a>, <a href="http://en.wikipedia.org/w/index.php?title=Bernhard_Boser&amp;action=edit" class="new" title="Bernhard Boser">Bernhard Boser</a>, <a href="http://en.wikipedia.org/w/index.php?title=Isabelle_Guyon&amp;action=edit" class="new" title="Isabelle Guyon">Isabelle Guyon</a> and Vapnik suggested a way to create non-linear classifiers by applying the <a href="http://en.wikipedia.org/wiki/Kernel_trick" title="Kernel trick">kernel trick</a> (originally proposed by Aizerman et al..<sup id="_ref-3" class="reference"><a href="#_note-3" title="">[4]</a></sup> ) to maximum-margin hyperplanes<sup id="_ref-4" class="reference"><a href="#_note-4" title="">[5]</a></sup>. The resulting algorithm is formally similar, except that every <a href="http://en.wikipedia.org/wiki/Dot_product" title="Dot product">dot product</a> is replaced by a non-linear <a href="http://en.wikipedia.org/wiki/Kernel_%28integral_operator%29" title="Kernel (integral operator)">kernel</a> function. This allows the algorithm to fit the maximum-margin hyperplane in the transformed feature <a href="http://en.wikipedia.org/wiki/Space#Mathematics" title="Space">space</a>. The transformation may be non-linear and the transformed space high dimensional; thus though the classifier is a hyperplane in the high-dimensional feature space it may be non-linear in the original input space.</p>
+<p>If the kernel used is a <a href="http://en.wikipedia.org/wiki/Gaussian" title="Gaussian">Gaussian</a> <a href="http://en.wikipedia.org/wiki/Radial_basis_function" title="Radial basis function">radial basis function</a>, the corresponding feature space is a <a href="http://en.wikipedia.org/wiki/Hilbert_space" title="Hilbert space">Hilbert space</a> of infinite dimension. Maximum margin classifiers are well <a href="http://en.wikipedia.org/wiki/Regularization_%28mathematics%29" title="Regularization (mathematics)">regularized</a>, so the infinite dimension does not spoil the results. Some common kernels include,</p>
+<ul>
+<li>Polynomial (homogeneous): <img class="tex" alt="k(\mathbf{x},\mathbf{x}')=(\mathbf{x} \cdot \mathbf{x'})^d" src="cc483406802fdfedb72fe9c791111927.png"></li>
+<li>Polynomial (inhomogeneous): <img class="tex" alt="k(\mathbf{x},\mathbf{x}')=(\mathbf{x} \cdot \mathbf{x'} + 1)^d" src="aeb9f53871490c36edd060467561e755.png"></li>
+<li>Radial Basis Function: <img class="tex" alt="k(\mathbf{x},\mathbf{x}')=\exp(-\gamma \|\mathbf{x} - \mathbf{x'}\|^2)" src="508e7ed51de7e928ff94928a34da8a5d.png">, for <span class="texhtml">γ &gt; 0</span></li>
+<li>Gaussian Radial basis function: <img class="tex" alt="k(\mathbf{x},\mathbf{x}')=\exp\left(- \frac{\|\mathbf{x} - \mathbf{x'}\|^2}{2 \sigma^2}\right)" src="0b3d9be1cf5a2c63783d14dfe46917ac.png"></li>
+<li><a href="http://en.wikipedia.org/wiki/Sigmoid_function" title="Sigmoid function">Sigmoid</a>: <img class="tex" alt="k(\mathbf{x},\mathbf{x}')=\tanh(\kappa \mathbf{x} \cdot \mathbf{x'}+c)" src="da53edd0b82cb58bae1c43f6360c554a.png">, for some (not every) <span class="texhtml">κ &gt; 0</span> and <span class="texhtml"><i>c</i> &lt; 0</span></li>
+</ul>
+<p><a name="Regression" id="Regression"></a></p>
+<h2><span class="editsection">[<a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;action=edit&amp;section=7" title="Edit section: Regression">edit</a>]</span> <span class="mw-headline">Regression</span></h2>
+<p>A version of a SVM for regression was proposed in <a href="http://en.wikipedia.org/wiki/1996" title="1996">1996</a> by <a href="http://en.wikipedia.org/wiki/Vladimir_Vapnik" title="Vladimir Vapnik">Vladimir Vapnik</a>, Harris Drucker, Chris Burges, Linda Kaufman and Alex Smola<sup id="_ref-5" class="reference"><a href="#_note-5" title="">[6]</a></sup>. This method is called <a href="http://en.wikipedia.org/w/index.php?title=Support_vector_regression&amp;action=edit" class="new" title="Support vector regression">support vector regression</a> (SVR). The model produced by support vector classification (as described above) only depends on a subset of the training data, because the cost function for building the model does not care about training points that lie beyond the margin. Analogously, the model produced by SVR only depends on a subset of the training data, because the cost function for building the model ignores any training data that are close (within a threshold <span class="texhtml">ε</span>) to the model prediction.</p>
+<p><a name="Implementation" id="Implementation"></a></p>
+<h2><span class="editsection">[<a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;action=edit&amp;section=8" title="Edit section: Implementation">edit</a>]</span> <span class="mw-headline">Implementation</span></h2>
+<p>The parameters of the maximum-margin hyperplane are derived by solving the optimization. There exist several specialized algorithms for quickly solving the QP problem that arises from SVMs, mostly reliant on heuristics for breaking the problem down into smaller, more-manageable chunks. A common method for solving the QP problem is Platt's <a href="http://research.microsoft.com/users/jplatt/smo.html" class="external text" title="http://research.microsoft.com/users/jplatt/smo.html" rel="nofollow">SMO algorithm</a>, which breaks the problem down into 2-dimensional sub-problems that may be solved analytically, eliminating the need for a numerical optimization algorithm such as <a href="http://en.wikipedia.org/wiki/Conjugate_gradient" title="Conjugate gradient">conjugate gradient</a> methods.</p>
+<p><a name="Fast_Training_Algorithms" id="Fast_Training_Algorithms"></a></p>
+<h2><span class="editsection">[<a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;action=edit&amp;section=9" title="Edit section: Fast Training Algorithms">edit</a>]</span> <span class="mw-headline">Fast Training Algorithms</span></h2>
+<p>There has been some recent work by <a href="http://en.wikipedia.org/w/index.php?title=Thorsten_Joachims&amp;action=edit" class="new" title="Thorsten Joachims">Thorsten Joachims</a> that won the best paper award in <a href="http://en.wikipedia.org/wiki/KDD" title="KDD">KDD</a> 2006, which gives a cutting plane algorithm for training Support Vector Machines.</p>
+<p>It is the first algorithm that optimizes the traditional hinge-loss SVM formulation in time that is linear in the size of the training data (where training data is represented in the Sparse Format with zero valued attributes not included). This is available in SVMPerf, which is a freely downloadable off-the-shelf package.</p>
+<p><a name="See_also" id="See_also"></a></p>
+<h2><span class="editsection">[<a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;action=edit&amp;section=10" title="Edit section: See also">edit</a>]</span> <span class="mw-headline">See also</span></h2>
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Predictive_analytics" title="Predictive analytics">Predictive analytics</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Relevance_Vector_Machine" title="Relevance Vector Machine">Relevance Vector Machine</a>, a probabilistic sparse kernel model identical in functional form to SVM.</li>
+</ul>
+<p><a name="References" id="References"></a></p>
+<h2><span class="editsection">[<a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;action=edit&amp;section=11" title="Edit section: References">edit</a>]</span> <span class="mw-headline">References</span></h2>
+<ol class="references">
+<li id="_note-0"><b><a href="#_ref-0" title="">^</a></b> Christopher J. C. Burges. "A Tutorial on Support Vector Machines for Pattern Recognition". Data Mining and Knowledge Discovery 2:121 - 167, 1998 <a href="http://research.microsoft.com/%7Ecburges/papers/SVMTutorial.pdf" class="external free" title="http://research.microsoft.com/~cburges/papers/SVMTutorial.pdf" rel="nofollow">http://research.microsoft.com/~cburges/papers/SVMTutorial.pdf</a></li>
+<li id="_note-1"><b><a href="#_ref-1" title="">^</a></b> (C.M. van der Walt and E. Barnard,“Data characteristics that determine classifier performance”, Proc., Sixteenth Annual Symposium of the Pattern Recognition Association of South Africa, pp.160-165, 2006.) <a href="http://www.meraka.org.za/pubs/CvdWalt.pdf" class="external free" title="http://www.meraka.org.za/pubs/CvdWalt.pdf" rel="nofollow">http://www.meraka.org.za/pubs/CvdWalt.pdf</a></li>
+<li id="_note-2"><b><a href="#_ref-2" title="">^</a></b> Corinna Cortes and V. Vapnik, "Support-Vector Networks<i>, Machine Learning, 20, 1995. <a href="http://www.springerlink.com/content/k238jx04hm87j80g/" class="external free" title="http://www.springerlink.com/content/k238jx04hm87j80g/" rel="nofollow">http://www.springerlink.com/content/k238jx04hm87j80g/</a></i></li>
+<li id="_note-3"><b><a href="#_ref-3" title="">^</a></b> <cite style="font-style: normal;">M. Aizerman, E. Braverman, and L. Rozonoer (1964). "Theoretical foundations of the potential function method in pattern recognition learning". <i>Automation and Remote Control</i> <b>25</b>: 821-837.</cite><span class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.atitle=Theoretical+foundations+of+the+potential+function+method+in+pattern+recognition+learning&amp;rft.jtitle=Automation+and+Remote+Control&amp;rft.date=1964&amp;rft.volume=25&amp;rft.au=M.+Aizerman%2C+E.+Braverman%2C+and+L.+Rozonoer&amp;rft.pages=821-837">&nbsp;</span></li>
+<li id="_note-4"><b><a href="#_ref-4" title="">^</a></b> B. E. Boser, I. M. Guyon, and V. N. Vapnik. <i>A training algorithm for optimal margin classifiers</i>. In D. Haussler, editor, 5th Annual ACM Workshop on COLT, pages 144-152, Pittsburgh, PA, 1992. ACM Press</li>
+<li id="_note-5"><b><a href="#_ref-5" title="">^</a></b> Harris Drucker, Chris J.C. Burges, Linda Kaufman, Alex Smola and Vladimir Vapnik (1997). "Support Vector Regression Machines". <i>Advances in Neural Information Processing Systems 9, NIPS 1996</i>, 155-161, MIT Press.</li>
+</ol>
+<p><a name="Bibliography" id="Bibliography"></a></p>
+<h2><span class="editsection">[<a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;action=edit&amp;section=12" title="Edit section: Bibliography">edit</a>]</span> <span class="mw-headline">Bibliography</span></h2>
+<ul>
+<li>Nello Cristianini and John Shawe-Taylor. <i>An Introduction to Support Vector Machines and other kernel-based learning methods</i>. Cambridge University Press, 2000. <a href="http://en.wikipedia.org/w/index.php?title=Special:Booksources&amp;isbn=0521780195" class="internal">ISBN 0-521-78019-5</a> <i>(<a href="http://www.support-vector.net/" class="external autonumber" title="http://www.support-vector.net" rel="nofollow">[1]</a> SVM Book)</i></li>
+<li>Huang T.-M., Kecman V., Kopriva I. (2006), Kernel Based Algorithms for Mining Huge Data Sets, Supervised, Semi-supervised, and Unsupervised Learning, Springer-Verlag, Berlin, Heidelberg, 260 pp. 96 illus., Hardcover, <a href="http://en.wikipedia.org/w/index.php?title=Special:Booksources&amp;isbn=3540316817" class="internal">ISBN 3-540-31681-7</a><a href="http://learning-from-data.com/" class="external autonumber" title="http://learning-from-data.com" rel="nofollow">[2]</a></li>
+<li>Vojislav Kecman: "Learning and Soft Computing - Support Vector Machines, Neural Networks, Fuzzy Logic Systems", The MIT Press, Cambridge, MA, 2001.<a href="http://www.support-vector.ws/" class="external autonumber" title="http://www.support-vector.ws" rel="nofollow">[3]</a></li>
+<li>Bernhard Schölkopf and A. J. Smola: <i>Learning with Kernels</i>. MIT Press, Cambridge, MA, 2002. <i>(Partly available on line: <a href="http://www.learning-with-kernels.org/" class="external autonumber" title="http://www.learning-with-kernels.org" rel="nofollow">[4]</a>.)</i> <a href="http://en.wikipedia.org/w/index.php?title=Special:Booksources&amp;isbn=0262194759" class="internal">ISBN 0-262-19475-9</a></li>
+<li>Bernhard Schölkopf, Christopher J.C. Burges, and Alexander J. Smola (editors). "Advances in Kernel Methods: Support Vector Learning". MIT Press, Cambridge, MA, 1999. <a href="http://en.wikipedia.org/w/index.php?title=Special:Booksources&amp;isbn=0262194163" class="internal">ISBN 0-262-19416-3</a>. <a href="http://www.kernel-machines.org/nips97/book.html" class="external autonumber" title="http://www.kernel-machines.org/nips97/book.html" rel="nofollow">[5]</a></li>
+<li>John Shawe-Taylor and Nello Cristianini. <i>Kernel Methods for Pattern Analysis</i>. Cambridge University Press, 2004. <a href="http://en.wikipedia.org/w/index.php?title=Special:Booksources&amp;isbn=0521813972" class="internal">ISBN 0-521-81397-2</a> <i>(<a href="http://www.kernel-methods.net/" class="external autonumber" title="http://www.kernel-methods.net" rel="nofollow">[6]</a> Kernel Methods Book)</i></li>
+<li>P.J. Tan and <a href="http://www.csse.monash.edu.au/%7Edld" class="external text" title="http://www.csse.monash.edu.au/~dld" rel="nofollow">D.L. Dowe</a> (2004), <a href="http://www.csse.monash.edu.au/%7Edld/David.Dowe.publications.html#TanDowe2004" class="external text" title="http://www.csse.monash.edu.au/~dld/David.Dowe.publications.html#TanDowe2004" rel="nofollow">MML Inference of Oblique Decision Trees</a>, Lecture Notes in Artificial Intelligence (LNAI) 3339, Springer-Verlag, <a href="http://www.csse.monash.edu.au/%7Edld/Publications/2004/Tan+DoweAI2004.pdf" class="external text" title="http://www.csse.monash.edu.au/~dld/Publications/2004/Tan+DoweAI2004.pdf" rel="nofollow">pp1082-1088</a>. (This paper uses <a href="http://en.wikipedia.org/wiki/Minimum_message_length" title="Minimum message length">minimum message length</a> (<a href="http://en.wikipedia.org/wiki/Minimum_Message_Length" title="Minimum Message Length">MML</a>) and actually incorporates probabilistic support vector machines in the leaves of <a href="http://en.wikipedia.org/wiki/Decision_tree" title="Decision tree">decision trees</a>.)</li>
+<li>Vladimir Vapnik. <i>The Nature of Statistical Learning Theory</i>. Springer-Verlag, 1995. <a href="http://en.wikipedia.org/w/index.php?title=Special:Booksources&amp;isbn=0387987800" class="internal">ISBN 0-387-98780-0</a></li>
+<li>Vladimir Vapnik, S.Kotz "Estimation of Dependences Based on Empirical Data" Springer, 2006. ISBN: 0387308652, 510 pages [this is a reprint of Vapnik's early book describing philosophy behind SVM approach. The 2006 Appendix describes recent development].</li>
+<li>Dmitriy Fradkin and Ilya Muchnik "Support Vector Machines for Classification" in J. Abello and G. Carmode (Eds) "Discrete Methods in Epidemiology", DIMACS Series in Discrete Mathematics and Theoretical Computer Science, volume 70, pp. 13-20, 2006. <a href="http://paul.rutgers.edu/%7Edfradkin/papers/svm.pdf" class="external autonumber" title="http://paul.rutgers.edu/~dfradkin/papers/svm.pdf" rel="nofollow">[7]</a>. Succinctly describes theoretical ideas behind SVM.</li>
+<li>Kristin P. Bennett and Colin Campbell, "Support Vector Machines: Hype or Hallelujah?", SIGKDD Explorations, 2,2, 2000, 1-13. <a href="http://www.acm.org/sigs/sigkdd/explorations/issue2-2/bennett.pdf" class="external autonumber" title="http://www.acm.org/sigs/sigkdd/explorations/issue2-2/bennett.pdf" rel="nofollow">[8]</a>. Excellent introduction to SVMs with helpful figures.</li>
+<li>Ovidiu Ivanciuc, "Applications of Support Vector Machines in Chemistry", In: <i>Reviews in Computational Chemistry</i>, Volume 23, 2007, pp. 291–400. Reprint available: <a href="http://www.ivanciuc.org/Files/Reprint/Ivanciuc_SVM_CCR_2007_23_291.pdf" class="external autonumber" title="http://www.ivanciuc.org/Files/Reprint/Ivanciuc_SVM_CCR_2007_23_291.pdf" rel="nofollow">[9]</a></li>
+</ul>
+<p><a name="External_links" id="External_links"></a></p>
+<h2><span class="editsection">[<a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;action=edit&amp;section=13" title="Edit section: External links">edit</a>]</span> <span class="mw-headline">External links</span></h2>
+<p><a name="General" id="General"></a></p>
+<h3><span class="editsection">[<a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;action=edit&amp;section=14" title="Edit section: General">edit</a>]</span> <span class="mw-headline">General</span></h3>
+<ul>
+<li><a href="http://www.pascal-network.org/" class="external text" title="http://www.pascal-network.org" rel="nofollow">www.pascal-network.org</a> <i>(EU Funded Network on Pattern Analysis, Statistical Modelling and Computational Learning)</i></li>
+<li><a href="http://www.kernel-machines.org/" class="external text" title="http://www.kernel-machines.org" rel="nofollow">www.kernel-machines.org</a> <i>(general information and collection of research papers)</i></li>
+<li><a href="http://www.kernel-methods.net/" class="external text" title="http://www.kernel-methods.net" rel="nofollow">www.kernel-methods.net</a> <i>(News, Links, Code related to Kernel methods - Academic Site)</i></li>
+<li><a href="http://www.support-vector.net/" class="external text" title="http://www.support-vector.net" rel="nofollow">www.support-vector.net</a> <i>(News, Links, Code related to Support Vector Machines - Academic Site)</i></li>
+<li><a href="http://www.support-vector-machines.org/" class="external text" title="http://www.support-vector-machines.org" rel="nofollow">www.support-vector-machines.org</a> <i>(Literature, Review, Software, Links related to Support Vector Machines - Academic Site)</i></li>
+<li><a href="http://www.support-vector.ws/" class="external text" title="http://www.support-vector.ws" rel="nofollow">www.support-vector.ws</a> <i>(Free educational MATLAB based software for SVMs, NN and FL , Links, Publications downloads, Semisupervised learning software SemiL, Links)</i></li>
+</ul>
+<p><a name="Software" id="Software"></a></p>
+<h3><span class="editsection">[<a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;action=edit&amp;section=15" title="Edit section: Software">edit</a>]</span> <span class="mw-headline">Software</span></h3>
+<ul>
+<li><a href="http://www.terborg.net/research/kml/" class="external text" title="http://www.terborg.net/research/kml/" rel="nofollow">The Kernel-Machine Library</a> (GNU) C++ template library for Support Vector Machines</li>
+<li><a href="http://lush.sourceforge.net/" class="external text" title="http://lush.sourceforge.net/" rel="nofollow">Lush</a> -- a Lisp-like interpreted/compiled language with C/C++/Fortran interfaces that has packages to interface to a number of different SVM implementations. Interfaces to LASVM, LIBSVM, mySVM, SVQP, SVQP2 (SVQP3 in future) are available. Leverage these against Lush's other interfaces to machine learning, hidden markov models, numerical libraries (LAPACK, BLAS, GSL), and builtin vector/matrix/tensor engine.</li>
+<li><a href="http://svmlight.joachims.org/" class="external text" title="http://svmlight.joachims.org/" rel="nofollow">SVMlight</a> -- a popular implementation of the SVM algorithm by Thorsten Joachims; it can be used to solve classification, regression and ranking problems.</li>
+<li><a href="http://jing.cz3.nus.edu.sg/cgi-bin/svmprot.cgi/" class="external text" title="http://jing.cz3.nus.edu.sg/cgi-bin/svmprot.cgi/" rel="nofollow">SVMProt</a> -- Protein Functional Family Prediction.</li>
+<li><a href="http://www.csie.ntu.edu.tw/%7Ecjlin/libsvm/" class="external text" title="http://www.csie.ntu.edu.tw/~cjlin/libsvm/" rel="nofollow">LIBSVM</a> -- A Library for Support Vector Machines, Chih-Chung Chang and Chih-Jen Lin</li>
+<li><a href="http://en.wikipedia.org/wiki/YALE" title="YALE">YALE</a> -- a powerful machine learning toolbox containing wrappers for SVMLight, LibSVM, and MySVM in addition to many evaluation and preprocessing methods.</li>
+<li><a href="http://www.esat.kuleuven.ac.be/sista/lssvmlab" class="external text" title="http://www.esat.kuleuven.ac.be/sista/lssvmlab" rel="nofollow">LS-SVMLab</a> - Matlab/C SVM toolbox - well-documented, many features</li>
+<li><a href="http://microarray.cu-genome.org/gist" class="external text" title="http://microarray.cu-genome.org/gist" rel="nofollow">Gist</a> -- implementation of the SVM algorithm with feature selection.</li>
+<li><a href="http://en.wikipedia.org/wiki/Weka_%28machine_learning%29" title="Weka (machine learning)">Weka</a> -- a machine learning toolkit that includes an implementation of an SVM classifier; Weka can be used both interactively though a graphical interface or as a software library. (The SVM implementation is called "SMO". It can be found in the Weka Explorer GUI, under the "functions" category.)</li>
+<li><a href="http://sourceforge.net/projects/svm/" class="external text" title="http://sourceforge.net/projects/svm/" rel="nofollow">OSU SVM</a> - Matlab implementation based on LIBSVM</li>
+<li><a href="http://www.torch.ch/" class="external text" title="http://www.torch.ch/" rel="nofollow">Torch</a> - C++ machine learning library with SVM</li>
+<li><a href="http://www.shogun-toolbox.org/" class="external text" title="http://www.shogun-toolbox.org" rel="nofollow">Shogun</a> - Large Scale Machine Learning Toolbox that provides several SVM implementations (like libSVM, SVMlight) under a common framework and interfaces to Octave, Matlab, Python, R</li>
+<li><a href="http://www.kyb.tuebingen.mpg.de/bs/people/spider/" class="external text" title="http://www.kyb.tuebingen.mpg.de/bs/people/spider/" rel="nofollow">Spider</a> - Machine learning library for Matlab</li>
+<li><a href="http://cran.r-project.org/src/contrib/Descriptions/kernlab.html" class="external text" title="http://cran.r-project.org/src/contrib/Descriptions/kernlab.html" rel="nofollow">kernlab</a> - Kernel-based Machine Learning library for R</li>
+<li><a href="http://cran.r-project.org/src/contrib/Descriptions/e1071.html" class="external text" title="http://cran.r-project.org/src/contrib/Descriptions/e1071.html" rel="nofollow">e1071</a> - Machine learning library for R</li>
+<li><a href="http://asi.insa-rouen.fr/%7Egloosli/simpleSVM.html" class="external text" title="http://asi.insa-rouen.fr/~gloosli/simpleSVM.html" rel="nofollow">SimpleSVM</a> - SimpleSVM toolbox for Matlab</li>
+<li><a href="http://cmp.felk.cvut.cz/cmp/software/stprtool/" class="external text" title="http://cmp.felk.cvut.cz/cmp/software/stprtool/" rel="nofollow">Statistical Pattern Recognition Toolbox for Matlab</a>.</li>
+<li><a href="http://asi.insa-rouen.fr/%7Earakotom/toolbox/index.html" class="external text" title="http://asi.insa-rouen.fr/~arakotom/toolbox/index.html" rel="nofollow">SVM and Kernel Methods Matlab Toolbox</a></li>
+<li><a href="http://pcp.sourceforge.net/" class="external text" title="http://pcp.sourceforge.net/" rel="nofollow">PCP</a> -- C program for supervised pattern classification. Includes LIBSVM wrapper.</li>
+<li><a href="http://chasen.org/%7Etaku/software/TinySVM/" class="external text" title="http://chasen.org/~taku/software/TinySVM/" rel="nofollow">TinySVM</a> -- a small SVM implementation, written in C++</li>
+<li><a href="http://www.procoders.net/" class="external text" title="http://www.procoders.net" rel="nofollow">pcSVM</a> is an object oriented SVM framework written in C++ and provides wrapping to Python classes. The site provides a stand alone <a href="http://www.procoders.net/?p=22" class="external text" title="http://www.procoders.net/?p=22" rel="nofollow">demo tool</a> for experimenting with SVMs.</li>
+<li><a href="http://pyml.sourceforge.net/" class="external text" title="http://pyml.sourceforge.net" rel="nofollow">PyML</a> -- a Python machine learning package. Includes: SVM, nearest neighbor classifiers, ridge regression, Multi-class methods (one-against-one and one-against-rest), Feature selection (filter methods, RFE, multiplicative update, Model selection, Classifier testing (cross-validation, error rates, ROC curves, statistical test for comparing classifiers).</li>
+<li><a href="http://search.cpan.org/%7Elairdm/Algorithm-SVM-0.11/lib/Algorithm/SVM.pm" class="external text" title="http://search.cpan.org/~lairdm/Algorithm-SVM-0.11/lib/Algorithm/SVM.pm" rel="nofollow">Algorithm::SVM</a> -- Perl bindings for the libsvm Support Vector Machine library</li>
+<li><a href="http://www.patternrecognition.co.za/applet.html" class="external text" title="http://www.patternrecognition.co.za/applet.html" rel="nofollow">SVM Classification Applet</a> -- Performs classification on any given data set and gives 10-fold cross-validation error rate</li>
+</ul>
+<p><a name="Interactive_SVM_applications" id="Interactive_SVM_applications"></a></p>
+<h3><span class="editsection">[<a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;action=edit&amp;section=16" title="Edit section: Interactive SVM applications">edit</a>]</span> <span class="mw-headline">Interactive SVM applications</span></h3>
+<ul>
+<li><a href="http://mips.gsf.de/proj/est/" class="external text" title="http://mips.gsf.de/proj/est/" rel="nofollow">ECLAT</a> classification of <a href="http://en.wikipedia.org/wiki/Expressed_Sequence_Tag" title="Expressed Sequence Tag">Expressed Sequence Tag</a> (EST) from mixed EST pools using codon usage</li>
+<li><a href="http://mips.gsf.de/proj/este/" class="external text" title="http://mips.gsf.de/proj/este/" rel="nofollow">EST3</a> classification of <a href="http://en.wikipedia.org/wiki/Expressed_Sequence_Tag" title="Expressed Sequence Tag">Expressed Sequence Tag</a> (EST) from mixed EST pools using nucleotide triples</li>
+<li><a href="http://www.patternrecognition.co.za/svmapplet.html" class="external text" title="http://www.patternrecognition.co.za/svmapplet.html" rel="nofollow">Interactive SVM Applet</a> Illustrates interactively how the SVM finds decision boundaries on any artificial data set</li>
+</ul>
+
+<!-- 
+Pre-expand include size: 7762 bytes
+Post-expand include size: 2917 bytes
+Template argument size: 1454 bytes
+Maximum: 2048000 bytes
+-->
+
+<!-- Saved in parser cache with key enwiki:pcache:idhash:65309-0!1!0!default!!en!2 and timestamp 20070908031144 -->
+<div class="printfooter">
+Retrieved from "<a href="http://en.wikipedia.org/wiki/Support_vector_machine">http://en.wikipedia.org/wiki/Support_vector_machine</a>"</div>
+			<div id="catlinks"><p class="catlinks"><a href="http://en.wikipedia.org/wiki/Special:Categories" title="Special:Categories">Categories</a>: <span dir="ltr"><a href="http://en.wikipedia.org/wiki/Category:Cleanup_from_January_2007" title="Category:Cleanup from January 2007">Cleanup from January 2007</a></span> | <span dir="ltr"><a href="http://en.wikipedia.org/wiki/Category:Wikipedia_articles_needing_clarification" title="Category:Wikipedia articles needing clarification">Wikipedia articles needing clarification</a></span> | <span dir="ltr"><a href="http://en.wikipedia.org/wiki/Category:Classification_algorithms" title="Category:Classification algorithms">Classification algorithms</a></span> | <span dir="ltr"><a href="http://en.wikipedia.org/wiki/Category:Ensemble_learning" title="Category:Ensemble learning">Ensemble learning</a></span> | <span dir="ltr"><a href="http://en.wikipedia.org/wiki/Category:Machine_learning" title="Category:Machine learning">Machine learning</a></span> | <span dir="ltr"><a href="http://en.wikipedia.org/wiki/Category:Kernel_methods_for_machine_learning" title="Category:Kernel methods for machine learning">Kernel methods for machine learning</a></span></p></div>			<!-- end content -->
+			<div class="visualClear"></div>
+		</div>
+	</div>
+		</div>
+		<div id="column-one">
+	<div id="p-cactions" class="portlet">
+		<h5>Views</h5>
+		<div class="pBody">
+			<ul>
+					 <li id="ca-nstab-main" class="selected"><a href="http://en.wikipedia.org/wiki/Support_vector_machine" title="View the content page [c]" accesskey="c">Article</a></li>
+					 <li id="ca-talk"><a href="http://en.wikipedia.org/wiki/Talk:Support_vector_machine" title="Discussion about the content page [t]" accesskey="t">Discussion</a></li>
+					 <li id="ca-edit"><a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;action=edit" title="You can edit this page. Please use the preview button before saving. [e]" accesskey="e">Edit this page</a></li>
+					 <li id="ca-history"><a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;action=history" title="Past versions of this page [h]" accesskey="h">History</a></li>
+				</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-personal">
+		<h5>Personal tools</h5>
+		<div class="pBody">
+			<ul>
+				<li id="pt-login"><a href="http://en.wikipedia.org/w/index.php?title=Special:Userlogin&amp;returnto=Support_vector_machine" title="You are encouraged to log in, it is not mandatory however. [o]" accesskey="o">Sign in / create account</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-logo">
+		<a style="background-image: url(wiki-en.png);" href="http://en.wikipedia.org/wiki/Main_Page" title="Visit the Main Page [z]" accesskey="z"></a>
+	</div>
+	
+		<div class="portlet" id="p-navigation">
+		<h5>Navigation</h5>
+		<div class="pBody">
+			<ul>
+				<li id="n-Main-page"><a href="http://en.wikipedia.org/wiki/Main_Page">Main page</a></li>
+				<li id="n-Contents"><a href="http://en.wikipedia.org/wiki/Wikipedia:Contents">Contents</a></li>
+				<li id="n-Featured-content"><a href="http://en.wikipedia.org/wiki/Wikipedia:Featured_content">Featured content</a></li>
+				<li id="n-currentevents"><a href="http://en.wikipedia.org/wiki/Portal:Current_events" title="Find background information on current events">Current events</a></li>
+				<li id="n-randompage"><a href="http://en.wikipedia.org/wiki/Special:Random" title="Load a random page [x]" accesskey="x">Random article</a></li>
+			</ul>
+		</div>
+	</div>
+		<div class="portlet" id="p-interaction">
+		<h5>interaction</h5>
+		<div class="pBody">
+			<ul>
+				<li id="n-About-Wikipedia"><a href="http://en.wikipedia.org/wiki/Wikipedia:About">About Wikipedia</a></li>
+				<li id="n-portal"><a href="http://en.wikipedia.org/wiki/Wikipedia:Community_Portal" title="About the project, what you can do, where to find things">Community portal</a></li>
+				<li id="n-recentchanges"><a href="http://en.wikipedia.org/wiki/Special:Recentchanges" title="The list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li>
+				<li id="n-contact"><a href="http://en.wikipedia.org/wiki/Wikipedia:Contact_us">Contact Wikipedia</a></li>
+				<li id="n-sitesupport"><a href="http://wikimediafoundation.org/wiki/Fundraising" title="Support us">Donate to Wikipedia</a></li>
+				<li id="n-help"><a href="http://en.wikipedia.org/wiki/Help:Contents" title="Guidance on how to use and edit Wikipedia">Help</a></li>
+			</ul>
+		</div>
+	</div>
+		<div id="p-search" class="portlet">
+		<h5><label for="searchInput">Search</label></h5>
+		<div id="searchBody" class="pBody">
+			<form action="http://en.wikipedia.org/wiki/Special:Search" id="searchform"><div>
+				<input id="searchInput" name="search" title="Search Wikipedia [f]" accesskey="f" value="" type="text">
+				<input name="go" class="searchButton" id="searchGoButton" value="Go" type="submit">&nbsp;
+				<input name="fulltext" class="searchButton" id="mw-searchButton" value="Search" type="submit">
+			</div></form>
+		</div>
+	</div>
+	<div class="portlet" id="p-tb">
+		<h5>Toolbox</h5>
+		<div class="pBody">
+			<ul>
+				<li id="t-whatlinkshere"><a href="http://en.wikipedia.org/wiki/Special:Whatlinkshere/Support_vector_machine" title="List of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+				<li id="t-recentchangeslinked"><a href="http://en.wikipedia.org/wiki/Special:Recentchangeslinked/Support_vector_machine" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+<li id="t-upload"><a href="http://en.wikipedia.org/wiki/Wikipedia:Upload" title="Upload images or media files [u]" accesskey="u">Upload file</a></li>
+<li id="t-specialpages"><a href="http://en.wikipedia.org/wiki/Special:Specialpages" title="List of all special pages [q]" accesskey="q">Special pages</a></li>
+				<li id="t-print"><a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;printable=yes" title="Printable version of this page [p]" accesskey="p">Printable version</a></li>				<li id="t-permalink"><a href="http://en.wikipedia.org/w/index.php?title=Support_vector_machine&amp;oldid=156410187" title="Permanent link to this version of the page">Permanent link</a></li><li id="t-cite"><a href="http://en.wikipedia.org/w/index.php?title=Special:Cite&amp;page=Support_vector_machine&amp;id=156410187">Cite this article</a></li>			</ul>
+		</div>
+	</div>
+	<div id="p-lang" class="portlet">
+		<h5>In other languages</h5>
+		<div class="pBody">
+			<ul>
+				<li class="interwiki-cs"><a href="http://cs.wikipedia.org/wiki/Support_vector_machines">Česky</a></li>
+				<li class="interwiki-de"><a href="http://de.wikipedia.org/wiki/Support_Vector_Machine">Deutsch</a></li>
+				<li class="interwiki-es"><a href="http://es.wikipedia.org/wiki/M%C3%A1quinas_de_soporte_vectorial">Español</a></li>
+				<li class="interwiki-fr"><a href="http://fr.wikipedia.org/wiki/Machine_%C3%A0_vecteurs_de_support">Français</a></li>
+				<li class="interwiki-ko"><a href="http://ko.wikipedia.org/wiki/%EC%84%9C%ED%8F%AC%ED%8A%B8_%EB%B2%A1%ED%84%B0_%EB%A8%B8%EC%8B%A0">한국어</a></li>
+				<li class="interwiki-it"><a href="http://it.wikipedia.org/wiki/Macchine_a_vettori_di_supporto">Italiano</a></li>
+				<li class="interwiki-ja"><a href="http://ja.wikipedia.org/wiki/%E3%82%B5%E3%83%9D%E3%83%BC%E3%83%88%E3%83%99%E3%82%AF%E3%82%BF%E3%83%BC%E3%83%9E%E3%82%B7%E3%83%B3">日本語</a></li>
+				<li class="interwiki-sl"><a href="http://sl.wikipedia.org/wiki/Metoda_podpornih_vektorjev">Slovenščina</a></li>
+				<li class="interwiki-fi"><a href="http://fi.wikipedia.org/wiki/Tukivektorikone">Suomi</a></li>
+				<li class="interwiki-sv"><a href="http://sv.wikipedia.org/wiki/St%C3%B6dvektormaskin">Svenska</a></li>
+				<li class="interwiki-zh"><a href="http://zh.wikipedia.org/wiki/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA">中文</a></li>
+			</ul>
+		</div>
+	</div>
+		</div><!-- end of the left (by default at least) column -->
+			<div class="visualClear"></div>
+			<div id="footer">
+				<div id="f-poweredbyico"><a href="http://www.mediawiki.org/"><img src="poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki"></a></div>
+				<div id="f-copyrightico"><a href="http://wikimediafoundation.org/"><img src="wikimedia-button.png" alt="Wikimedia Foundation" border="0"></a></div>
+			<ul id="f-list">
+				<li id="lastmod"> This page was last modified 13:27, 5 September 2007.</li>
+				<li id="copyright">All text is available under the terms of the <a class="internal" href="http://en.wikipedia.org/wiki/Wikipedia:Text_of_the_GNU_Free_Documentation_License" title="Wikipedia:Text of the GNU Free Documentation License">GNU Free Documentation License</a>. (See <b><a class="internal" href="http://en.wikipedia.org/wiki/Wikipedia:Copyrights" title="Wikipedia:Copyrights">Copyrights</a></b> for details.) <br> Wikipedia® is a registered trademark of the <a href="http://www.wikimediafoundation.org/">Wikimedia Foundation, Inc</a>., a U.S. registered <a class="internal" href="http://en.wikipedia.org/wiki/501%28c%29#501.28c.29.283.29" title="501(c)(3)">501(c)(3)</a> <a href="http://wikimediafoundation.org/wiki/Deductibility_of_donations">tax-deductible</a> <a class="internal" href="http://en.wikipedia.org/wiki/Non-profit_organization" title="Non-profit organization">nonprofit</a> <a href="http://en.wikipedia.org/wiki/Charitable_organization" title="Charitable organization">charity</a>.<br></li>
+				<li id="privacy"><a href="http://wikimediafoundation.org/wiki/Privacy_policy" title="wikimedia:Privacy policy">Privacy policy</a></li>
+				<li id="about"><a href="http://en.wikipedia.org/wiki/Wikipedia:About" title="Wikipedia:About">About Wikipedia</a></li>
+				<li id="disclaimer"><a href="http://en.wikipedia.org/wiki/Wikipedia:General_disclaimer" title="Wikipedia:General disclaimer">Disclaimers</a></li>
+			</ul>
+		</div>
+		
+	
+		
+</div>
+<!-- Served by srv15 in 0.074 secs. -->
+</body>
+</html>

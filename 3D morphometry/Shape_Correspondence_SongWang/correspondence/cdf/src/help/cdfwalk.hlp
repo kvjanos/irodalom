@@ -1,0 +1,125 @@
+The CDFwalk program allows direct access to related variable data values.
+The data values of up to 27 variables may be displayed at once (the CDF
+can have more variables but only 27 may be viewed at any one time).  The
+data value for each variable at a given record/indices location within the
+CDF conceptual view is displayed.  The user can "walk" from one
+record/ indices location to another sequentially (in any "direction") or
+a particular record/indices location can be "jumped" to directly.  Variable
+values may also be used to directly "jump" to a record/indices location.
+
+The user interface to CDFwalk is contained on a single screen which is
+divided into several fixed windows and pop-up windows.  The "Action Menu"
+controls the execution of the program. This menu allows you to "walk"
+through a CDF, select a new CDF through which to "walk", browse online help,
+or exit the program.  This menu may be displayed at any time by entering
+Ctrl-F.  Use the up and down arrow keys to highlight a choice in the
+"Action Menu" and then enter a carriage return to execute that function.
+Two very important windows are the "Keypad Definition" and "Message"
+windows.  They contain information on keypad functionality and program
+status/error messages.
+
+When CDFwalk is executed (and a CDF and/or directory is not entered on the
+command line), you must first specify the CDF through which you wish to
+"walk".  If you enter a full disk/directory specification (without a CDF
+name), all of the CDFs in the specified directory will appear in a separate
+pop-up window.  Use the up and down arrow keys to choose a CDF and then
+enter a carriage return to "walk" throught that CDF.
+
+After the input CDF is selected, the "Record/Indices" window appears.  The
+size of this window depends on the dimensionality of the input CDF.
+Vertically the window will contain one row for the record number and one
+row for each dimension of the CDF.   Horizontally, each line of the window
+contains three fields.  The first field contains a variable name, the second
+field contains a data value for the variable, and the third field contains
+a record number or dimension index. 
+
+The variable selected for the record number line will be one that only
+varies from record to record (not varying along any of the dimensions).
+If more than one variable of that type exists in the CDF, a pop-up window
+will be displayed containing the list of varibles.  Select one of the
+variables keeping in mind that you will have an opportunity to use it for
+positioning by value to a desired record.  If a variable does not exist
+meeting the requirements mentioned above, only the record number field will
+be used.
+
+The variable selected for each dimension line will be one that only varys
+along the corresponding dimension (and does not vary from record to
+record).  Again, if more than one variable of that type exists in the CDF,
+a pop-up window will be displayed to allow you to select the variable to
+use for that dimension.  Keep in mind that you will be able to use it to
+position by value to a desired index along that dimension.  If, for a
+particular dimension, a variable does not exist meeting the requirements
+mentioned above, only the dimension index field will be used.
+
+After the "Record/Indices" window has been specified (which will usually
+occur automatically), the "Variable Values" window will be displayed.  It
+contains up to 27 variable names and the associated data values for the
+record/indices shown in the "Record/Indices" window.
+
+Initially the cursor will be positioned at the data value field of the 
+record number line in the Record/Indices window (assuming that a variable
+was found meeting the above requirements - if not, the cursor will start
+at the record number field).  You may now begin to "walk" through the CDF
+by using the right arrow to increment to and the left arrow to decrement
+to a new record.  For each new record, the data for each variable is
+updated in both the "Record/Indices" and "Variable Values" windows.  If
+the CDF contains many records, you may want to quickly advance to a
+desired record.  You may do this by entering the "i" key.  CDFwalk enters
+an input mode and prompts for the value to which to advance.  If the exact
+value is not in the CDF for the variable, the record number is changed to
+correspond to the closest possible value.  Another method of advancing to
+a desired value is by entering Ctrl-P.  This will cause a pop-up window
+containing all of the values for the variable to be displayed.  You may
+select the value desired as you would with any other pop-up window and
+CDFwalk will automatically position the record number to the corresponding
+value.
+
+After positioning to a desired record (and the CDF is multi-dimensional)
+you may now wish to "walk" through the dimension indices.  This is done by
+entering the up and down arrow keys to position the cursor to the desired
+dimension line.  "Walking" through dimensions is done in the same way as
+"walking" through the record numbers.
+
+You may also wish to "walk" through the CDF by using the actual record
+number or dimension indices rather than data values (this would also be
+necessary if variables meeting the above requirements were not found in
+the CDF).  This is done by entering a carriage return which causes the
+cursor to advance to the next field (ie. from the data value field to the
+record number/indices field).  Entering Ctrl-B causes the cursor to move
+back to the previous field.  "Walking" through the CDF using the record
+number/indices fields is the same as using the data value fields but with
+a few exceptions.  First, no Ctrl-P option is available with these fields.
+Also, when in input mode (after entering "i"), you may input either an
+absolute record number/index to which to move or a relative offset for
+the record number/index.  Prefixing the value with a +/- will increment or
+decrement the record number/index by that amount.
+
+If the CDF contains more than 27 variables and a particular variable is
+not currently displayed in the "Variable Values" window, an option is
+provided to scroll new variables into that window.  This is done by
+entering a "v" key.  A small pop-up window is displayed in which you may
+use the up and down arrow keys to scroll in or scroll out variables.  If
+the CDF contains a very large number of variables, entering a "u" or "d"
+key will display a new set of 27 variables (moving up or down through the
+variables in the CDF).  When the desired set of variables is displayed,
+enter a carriage return to continue "walking" thru the CDF.
+
+When you are done "walking" through the CDF, enter Ctrl-F to display the
+"Action Menu".  You may input a new CDF, resume "walking" through the
+current CDF, select r/z variables, select special options, read online 
+help, or exit the program.
+
+When on the "Action Menu" a option is available to "Select r/z variables".
+CDFWALK groups variables in two separate manners, "r" variables and
+"z" variables.  "z" variables are grouped together by dimensionality.  
+A popup menu will appear and the user may select their desired group.
+
+Also on the "Action Menu", selecting Special Options causes a menu to be
+displayed with the following options...
+
+      1. Whether or not to use the FORMAT attribute when displaying values
+         may be selected (the FORMAT attribute and corresponding entries 
+         must exist in the CDF of course).
+      2. Whether or not to convert -0.0 to 0.0 when read from a CDF.  -0.0
+         is an illegal floating point value on VAXes and DEC Alphas running
+         OpenVMS.

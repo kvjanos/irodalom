@@ -1,0 +1,2024 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<meta name="wpd_version" content="0.2">
+<meta name="wpd_baseurl" content="http://www.nabble.com/subtraction-of-ROIs-td10970792.html#a10972489">
+<meta name="wpd_url" content="http://www.nabble.com/subtraction-of-ROIs-td10970792.html#a10972489">
+<meta name="wpd_date" content="2008-05-06T08:31Z">
+
+
+
+
+
+<title>Nabble - ImageJ - subtraction of ROIs</title>
+
+
+
+<script src="jquery.pack.js"></script>
+<script src="javascript.jtp"></script>
+
+<script>
+
+Nabble.setVar("skin",null);
+</script>
+
+
+<script>
+
+	var f = 2618;
+	if (Nabble.isEmbedded) {
+		f = Nabble.embedForumID;
+	}
+	if (f) {
+		Nabble.setVar('customStyle', f);
+		document.write('<link rel="stylesheet" hr' + 'ef="/catalog/CustomStyle.jtp?forum=' + f + '" type="text/css" />');
+	}
+</script>
+
+<script>
+
+	Nabble.setFontSize();
+</script>
+
+<script src="urchin.js" type="text/javascript"></script>
+<script src="analytics.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+	Nabble.page = 'forum.TopicDump';
+</script>
+
+<meta name="description" content="subtraction of ROIs. How can I make a ROI that is the result of the subtraction between two ROIs? Searching docs and list archives I've only found how to...">
+<meta name="keywords" content="java, of, imagej, rois, subtraction, software">
+<meta name="robots" content="index,follow">
+
+
+<script>
+
+
+// flagging
+
+Nabble.setFlag = function(postId) {
+	if( this.user==null ) {
+		if( confirm(
+			"You must be logged in to flag a message.\n"
+			+"Would you like to login now?"
+		) ) {
+			parent.location = "/user/Login.jtp?nextUrl="+encodeURIComponent(parent.location);
+		}
+		return;
+	}
+	this.isFlagged[postId] = !this.isFlagged[postId];
+	parent.location = "/forum/Flag.jtp?post=" + postId + "&flag=" + this.isFlagged[postId];
+	this.showFlag(postId);
+};
+
+Nabble.flaggedImg = new Image();
+Nabble.flaggedImg.src = "/images/icon_flagged.png";
+Nabble.unflaggedImg = new Image();
+Nabble.unflaggedImg.src = "/images/icon_unflagged.png";
+
+Nabble.showFlag = function(postId) {
+	var img = this.get("nabble.flag"+postId);
+	if( this.isFlagged[postId] ) {
+		img.src = this.flaggedImg.src;
+		img.alt = "Flagged, click to clear flag";
+	} else {
+		img.src = this.unflaggedImg.src;
+		img.alt = "Click to flag this post";
+	}
+	this.get("nabble.aflag"+postId).title = img.alt;
+}
+
+// rating
+
+Nabble.emptyStar = new Image();
+Nabble.emptyStar.src = "/images/icon_star_grey.png";
+Nabble.ratedStar = new Image();
+Nabble.ratedStar.src = "/images/icon_star_red.png";
+Nabble.emptySpam = new Image();
+Nabble.emptySpam.src = "/images/icon_blocked_gray.png";
+Nabble.ratedSpam = new Image();
+Nabble.ratedSpam.src = "/images/icon_blocked_red.png";
+
+Nabble.clicked = function(postId,n) {
+	if( this.user==null ) {
+		if( confirm(
+			"You must be logged in to rate a post.\n"
+			+"Would you like to login now?"
+		) ) {
+			parent.location = "/user/Login.jtp?nextUrl="+encodeURIComponent(self.location);
+		}
+		return;
+	}
+	this.ratedStars[postId] = n;
+	Nabble.loadScript("/rating/SetRating.jtp?post="+postId+"&rating="+n+"&pwd="+this.getCookie("password"));
+};
+
+Nabble.mouseover = function(postId,n) {
+	this.get('nabble.spam'+postId).src = n==0 ? this.ratedSpam.src : this.emptySpam.src;
+	for( i=1; i<=n; i++ ) {
+		this.get('nabble.star'+postId+'-'+i).src = this.ratedStar.src;
+	}
+	for( ; i<=5; i++ ) {
+		this.get('nabble.star'+postId+'-'+i).src = this.emptyStar.src;
+	}
+	status = n == -1 ? null : this.get('nabble.star'+postId+'-'+n).alt;
+	this.get("nabble.descriptor"+postId).innerHTML =
+			n == -1 ? "Clear Rating" :
+		[
+			"Spam",
+			"Poor Post",
+			"Below Average Post",
+			"Average Post",
+			"Above Average Post",
+			"Excellent Post",
+		][n];
+};
+
+Nabble.mouseout = function(postId) {
+	this.get('nabble.spam'+postId).src = this.ratedStars[postId]==0 ? this.ratedSpam.src : this.emptySpam.src;
+	for( i=1; i<=this.ratedStars[postId]; i++ ) {
+		this.get('nabble.star'+postId+'-'+i).src = this.ratedStar.src;
+	}
+	for( ; i<=5; i++ ) {
+		this.get('nabble.star'+postId+'-'+i).src = this.emptyStar.src;
+	}
+	status = defaultStatus;
+	this.get("nabble.descriptor"+postId).innerHTML = '- Use ratings to moderate (<a title="Click for more info" href="http://www.nabble.com/help/Answer.jtp?id=16">?</a>)';
+};
+
+Nabble.setEditAlert = function(alertId) {
+    var link = this.get('nabble.alertlink');
+    link.href = "/alerts/EmailAlerts.jtp?id="+alertId+"&from=modify&back="+encodeURIComponent(self.location);
+    link.innerHTML = 'Edit alert';
+};
+
+Nabble.searchterms = Nabble.getSearchterms();
+if( Nabble.gquery!=null && Nabble.hideAd )
+	Nabble.hasAdSense = false;
+
+Nabble.tview = "dump";
+
+Nabble.setView = function(newView,post) {
+	Nabble.setVar("tview",newView);
+	if (newView=="newthreaded")
+		var url = "http://www.nabble.com/subtraction-of-ROIs-tt10970792.html";
+	else if (newView=="newchron")
+		var url = "http://www.nabble.com/subtraction-of-ROIs-tc10970792.html";
+	else
+		var url = "http://www.nabble.com/subtraction-of-ROIs-to10970792.html";
+	
+	if( post != null )
+		url += "#a" + post;
+	location.replace(url);
+};
+
+Nabble.cur = location.hash ? location.hash.substr(2) : null;
+
+Nabble.setMarker = function(post) {
+	if( Nabble.cur ) {
+		var t = Nabble.get( "nabble.i" + Nabble.cur );
+		if( t ) {
+			t.style.visibility = "hidden";
+		}
+	}
+	Nabble.cur = post;
+	var t = Nabble.get( "nabble.i" + Nabble.cur );
+	if( t ) {
+		t.style.visibility = "visible";
+	}
+}
+
+Nabble.messageTextWidth();
+
+$(document).ready(function(){
+	hideQuotes();
+});
+
+</script>
+
+<link rel="stylesheet" type="text/css" href="subtraction-of-ROIs-td10970792.css" media="all">
+</head>
+<body embed="fixScroll">
+
+<script>
+
+Nabble.addCssRule(document.styleSheets[0],'.nabble a:link','color:'+document.linkColor);
+Nabble.addCssRule(document.styleSheets[0],'.nabble a:visited','color:'+document.vlinkColor);
+</script>
+
+<div class="nabble" id="nabble">
+	<div class="top-bar light-border-color">
+		<div class="breadcrumbs" style="float: left;">
+			<span id="nabble.root">
+				<a href="http://www.nabble.com/" target="_top" title="Free Forum Hosting">Nabble</a>
+			</span>
+			<span id="nabble.path">
+				<div class="weak-color" style="display: inline;">|&nbsp;</div><nobr><a href="http://www.nabble.com/Software-f94.html" embed="fixTarget[94]" target="_top">Software</a></nobr><div class="weak-color" style="display: inline;">&nbsp;&raquo;&nbsp;</div><nobr><a href="http://www.nabble.com/Java-Software-f787.html" embed="fixTarget[787]" target="_top">Java Software</a></nobr><div class="weak-color" style="display: inline;">&nbsp;&raquo;&nbsp;</div><nobr><a href="http://www.nabble.com/ImageJ-f2618.html" embed="fixTarget[2618]" target="_top">ImageJ</a></nobr>
+</span>
+</div>
+<div style="text-align: right;">
+<span style="white-space: nowrap;" id="nabble-user-header"><select class="favorites" style="width: 10em;" id="nabble.favorites" onchange="Nabble.favoritesSelect();" onmouseover="Nabble.loadFavorites(2618)"><option value="">Favorite Forums</option></select> &nbsp; <a href="http://www.nabble.com/user/UserProfile.jtp?user=1229322" embed="fixTarget" target="_top">KVJanos's Account</a></span>
+</div>
+</div>
+<div style="clear: both;"></div>
+<script>
+
+Nabble.userHeader(2618);
+</script>
+
+<h1 style="margin-top: 0.25em;">subtraction of ROIs</h1>
+
+<table style="margin: 0.5em 0pt 1em; width: 100%; border-collapse: collapse;">
+	<tbody><tr>
+		<td>
+			<div style="float: left; white-space: nowrap;">
+
+				View:
+				<select id="nabble.viewSelect" onchange="Nabble.setView(this.value,Nabble.cur)">
+					<option value="threaded">Threaded</option>
+					<option value="chron">Chronologically</option>
+					<option value="dump">All Messages</option>
+				</select>
+				<script>
+
+				Nabble.selectOption(Nabble.get("nabble.viewSelect"),Nabble.tview);
+				</script>
+				<a href="javascript:Nabble.setView('newthreaded',Nabble.cur)" style="font-size: 80%;">New views</a>
+			</div>
+			<div style="float: right; white-space: nowrap;">
+
+				15 Messages
+				&mdash;
+				<span style="white-space: nowrap;">Rating Filter:</span>
+				<select onchange="Nabble.setTop(this.value);">
+				
+<option value="http://www.nabble.com/subtraction-of-ROIs-td10970792r0.html">0</option>
+
+<option value="http://www.nabble.com/subtraction-of-ROIs-td10970792r1.html">1</option>
+
+<option value="http://www.nabble.com/subtraction-of-ROIs-td10970792.html" selected="selected">2</option>
+
+<option value="http://www.nabble.com/subtraction-of-ROIs-td10970792r3.html">3</option>
+
+<option value="http://www.nabble.com/subtraction-of-ROIs-td10970792r4.html">4</option>
+
+<option value="http://www.nabble.com/subtraction-of-ROIs-td10970792r5.html">5</option>
+
+</select>
+&nbsp;
+<a id="nabble.alertlink" href="http://www.nabble.com/alerts/EmailAlerts.jtp?topic=3872158&from=new" rel="nofollow" embed="fixTarget" target="_top">Alert me</a>
+&nbsp;
+
+<script>
+
+	if( Nabble.user == 226779 || Nabble.user == 792292) {
+		document.writeln('<a href="/forum/MoveTopic.jtp?root=10970792" rel="nofollow" ' + Nabble.embeddedTarget("_top") + '>Move thread</a>');
+	}
+</script>
+
+<span id="nabble.assign"></span>
+</div>
+</td>
+</tr>
+</tbody></table>
+
+
+
+<table class="chron-dump-table" style="width: 100%; border-collapse: collapse;">
+
+
+
+<tbody><tr valign="top">
+<!-- Current Message -->
+<td class="current-message">
+	<span id="nabble.i10970792" style="visibility: hidden;"><img alt="" src="icon_tri.png" width="12" align="absmiddle" height="12"></span><br>
+</td>
+<td>
+<!-- Subject -->
+
+<a name="a10970792">
+	</a><h2><a name="a10970792">subtraction of ROIs</a></h2><a title="Click to flag this post" id="nabble.aflag10970792" href="javascript:%20void%20Nabble.setFlag(10970792);"><img alt="Click to flag this post" id="nabble.flag10970792" src="icon_unflagged.png" onmouseover="status = alt; return true;" onmouseout="status = defaultStatus; return true;" width="15" border="0" height="15"></a>
+<!-- /Subject -->
+<!-- Message Actions -->
+<span id="nabble.rating10970792">
+<script>document.write(Nabble.ratingStars(3));</script><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12">
+</span>
+
+<div class="message-actions weak-color">
+<p class="message-actions1">
+
+by <script>document.write('<a href=\"' +'/user/UserProfile' + '.jtp?'+'user=226779\" rel=\"nofollow\" ' + Nabble.embeddedTarget('_top') + '>');</script><a href="http://www.nabble.com/user/UserProfile.jtp?user=226779" rel="nofollow" target="_top">F Javier Diez Guerra<script>document.write('</a>');</script></a>
+<span class="weak-color"><script>document.write(Nabble.formatDateLong(new Date(1181054026000)));</script>Jun 05, 2007; 10:33pm</span> ::
+Rate this Message:
+<a href="#" title="Click to mark as Spam" onmouseover="Nabble.mouseover(10970792,0); return true;" onmouseout="Nabble.mouseout(10970792); return true;" onclick="Nabble.clicked(10970792,0); return false;"><img src="icon_blocked_gray.png" id="nabble.spam10970792" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to rate as Poor Post" onmouseover="Nabble.mouseover(10970792,1); return true;" onmouseout="Nabble.mouseout(10970792); return true;" onclick="Nabble.clicked(10970792,1); return false;"><img src="icon_star_grey.png" id="nabble.star10970792-1" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Below Average Post" onmouseover="Nabble.mouseover(10970792,2); return true;" onmouseout="Nabble.mouseout(10970792); return true;" onclick="Nabble.clicked(10970792,2); return false;"><img src="icon_star_grey.png" id="nabble.star10970792-2" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Average Post" onmouseover="Nabble.mouseover(10970792,3); return true;" onmouseout="Nabble.mouseout(10970792); return true;" onclick="Nabble.clicked(10970792,3); return false;"><img src="icon_star_grey.png" id="nabble.star10970792-3" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Above Average Post" onmouseover="Nabble.mouseover(10970792,4); return true;" onmouseout="Nabble.mouseout(10970792); return true;" onclick="Nabble.clicked(10970792,4); return false;"><img src="icon_star_grey.png" id="nabble.star10970792-4" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Excellent Post" onmouseover="Nabble.mouseover(10970792,5); return true;" onmouseout="Nabble.mouseout(10970792); return true;" onclick="Nabble.clicked(10970792,5); return false;"><img src="icon_star_grey.png" id="nabble.star10970792-5" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to clear rating" onmouseover="Nabble.mouseover(10970792,-1); return true;" onmouseout="Nabble.mouseout(10970792); return true;" onclick="Nabble.clicked(10970792,-1); return false;"><img id="nabble.star10970792-0" alt="" src="icon_clear_rating.png" style="vertical-align: middle;" border="0"></a>
+<span id="nabble.descriptor10970792">- Use ratings to moderate (<a title="Click for more info" href="http://www.nabble.com/help/Answer.jtp?id=16">?</a>)</span>
+</p>
+<p class="message-actions2">
+
+<script>
+
+document.writeln('<a href="/forum/Reply.jtp?post=10970792" rel="nofollow">Reply</a> | ');
+</script><a href="http://www.nabble.com/forum/Reply.jtp?post=10970792" rel="nofollow">Reply</a> | 
+
+<a href="http://www.nabble.com/user/SendEmail.jtp?type=pm&post=10970792" target="_top" rel="nofollow">Reply to Author</a>   
+<script>
+
+if( Nabble.user == 226779 ) {
+    
+	document.writeln('| <a href="javascript:Nabble.deletePost(10970792,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+else if( Nabble.user == 792292 ) {
+	document.writeln('| <a href="javascript:Nabble.deletePost(10970792,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+document.writeln('| <a href="/forum/PrintPost.jtp?post=10970792" rel="nofollow" target="_new">Print</a>');
+</script>| <a href="http://www.nabble.com/forum/PrintPost.jtp?post=10970792" rel="nofollow" target="_new">Print</a>
+
+
+| <a href="javascript:%20void%20Nabble.setView('newthreaded',10970792);">View Threaded</a>
+| <a href="http://www.nabble.com/subtraction-of-ROIs-p10970792.html">Show Only this Message</a>
+</p>
+
+</div>
+<div class="message-details">
+<div id="nabble.pending10970792"></div>
+<div class="message-text" id="nabble.msgtxt10970792"><span>How can I make a <b class="highlight">ROI</b> that is the result of the subtraction between two <b class="highlight">ROIs</b>?
+</span><br><br><span>Searching docs and list archives I've only found 
+</span><br><span>how to make "composite selections", which are 
+</span><br><span>created by hand (by drawing a <b class="highlight">ROI</b> inside another, while pressing the alt key).
+</span><br><br><span>I have two <b class="highlight">ROIs</b> in the <b class="highlight">ROI</b> manager, one <b class="highlight">ROI</b> 
+</span><br><span>inside the other one. I want to select the area 
+</span><br><span>within the bigger <b class="highlight">ROI</b>, excluding the area of the 
+</span><br><span>smaller <b class="highlight">ROI</b>. If we were talking of two circles 
+</span><br><span>(one inside the other), I want select the area 
+</span><br><span>defined by the <b class="highlight">ring</b> between them.
+</span><br><br><span>Any suggestions?
+</span><br><br><br><br><span>F Javier Diez-Guerra, PhD
+</span><br><span>Profesor Titular
+</span><br><span>Centro de Biologia Molecular Severo Ochoa
+</span><br><span>Facultad de Ciencias, Universidad Aut&oacute;noma
+</span><br><span>Ctra Colmenar Viejo Km 15
+</span><br><span>Cantoblanco, 28049 Madrid
+</span><br><span>SPAIN
+</span><br><br><span>phone: &nbsp;+34 91 4978051
+</span><br><span>Fax: &nbsp; &nbsp; &nbsp;+34 91 4978087
+</span><br><span>e-mail: </span><a href="http://www.nabble.com/user/SendEmail.jtp?type=post&post=10970792&i=0" target="_top" rel="nofollow"><span>fjdiez@...</span></a><span> 
+</span><br></div>
+<script>
+
+if (Nabble.searchterms != null && Nabble.searchterms.length > 0) {
+	Nabble.hilt(Nabble.searchterms, Nabble.get("nabble.msgtxt10970792"));
+}
+</script>
+</div>
+</td>
+
+</tr>
+
+
+<tr valign="top">
+<!-- Current Message -->
+<td class="current-message">
+	<span id="nabble.i10971081" style="visibility: hidden;"><img alt="" src="icon_tri.png" width="12" align="absmiddle" height="12"></span><br>
+</td>
+<td>
+<!-- Subject -->
+
+<a name="a10971081">
+	</a><h2><a name="a10971081">Re: subtraction of ROIs</a></h2><a title="Click to flag this post" id="nabble.aflag10971081" href="javascript:%20void%20Nabble.setFlag(10971081);"><img alt="Click to flag this post" id="nabble.flag10971081" src="icon_unflagged.png" onmouseover="status = alt; return true;" onmouseout="status = defaultStatus; return true;" width="15" border="0" height="15"></a>
+<!-- /Subject -->
+<!-- Message Actions -->
+<span id="nabble.rating10971081">
+<script>document.write(Nabble.ratingStars(3));</script><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12">
+</span>
+
+<div class="message-actions weak-color">
+<p class="message-actions1">
+
+by <script>document.write('<a href=\"' +'/user/UserProfile' + '.jtp?'+'user=67376\" rel=\"nofollow\" ' + Nabble.embeddedTarget('_top') + '>');</script><a href="http://www.nabble.com/user/UserProfile.jtp?user=67376" rel="nofollow" target="_top">Mark R. Besonen<script>document.write('</a>');</script></a>
+<span class="weak-color"><script>document.write(Nabble.formatDateLong(new Date(1181058419000)));</script>Jun 05, 2007; 11:46pm</span> ::
+Rate this Message:
+<a href="#" title="Click to mark as Spam" onmouseover="Nabble.mouseover(10971081,0); return true;" onmouseout="Nabble.mouseout(10971081); return true;" onclick="Nabble.clicked(10971081,0); return false;"><img src="icon_blocked_gray.png" id="nabble.spam10971081" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to rate as Poor Post" onmouseover="Nabble.mouseover(10971081,1); return true;" onmouseout="Nabble.mouseout(10971081); return true;" onclick="Nabble.clicked(10971081,1); return false;"><img src="icon_star_grey.png" id="nabble.star10971081-1" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Below Average Post" onmouseover="Nabble.mouseover(10971081,2); return true;" onmouseout="Nabble.mouseout(10971081); return true;" onclick="Nabble.clicked(10971081,2); return false;"><img src="icon_star_grey.png" id="nabble.star10971081-2" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Average Post" onmouseover="Nabble.mouseover(10971081,3); return true;" onmouseout="Nabble.mouseout(10971081); return true;" onclick="Nabble.clicked(10971081,3); return false;"><img src="icon_star_grey.png" id="nabble.star10971081-3" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Above Average Post" onmouseover="Nabble.mouseover(10971081,4); return true;" onmouseout="Nabble.mouseout(10971081); return true;" onclick="Nabble.clicked(10971081,4); return false;"><img src="icon_star_grey.png" id="nabble.star10971081-4" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Excellent Post" onmouseover="Nabble.mouseover(10971081,5); return true;" onmouseout="Nabble.mouseout(10971081); return true;" onclick="Nabble.clicked(10971081,5); return false;"><img src="icon_star_grey.png" id="nabble.star10971081-5" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to clear rating" onmouseover="Nabble.mouseover(10971081,-1); return true;" onmouseout="Nabble.mouseout(10971081); return true;" onclick="Nabble.clicked(10971081,-1); return false;"><img id="nabble.star10971081-0" alt="" src="icon_clear_rating.png" style="vertical-align: middle;" border="0"></a>
+<span id="nabble.descriptor10971081">- Use ratings to moderate (<a title="Click for more info" href="http://www.nabble.com/help/Answer.jtp?id=16">?</a>)</span>
+</p>
+<p class="message-actions2">
+
+<script>
+
+document.writeln('<a href="/forum/Reply.jtp?post=10971081" rel="nofollow">Reply</a> | ');
+</script><a href="http://www.nabble.com/forum/Reply.jtp?post=10971081" rel="nofollow">Reply</a> | 
+
+<a href="http://www.nabble.com/user/SendEmail.jtp?type=pm&post=10971081" target="_top" rel="nofollow">Reply to Author</a>   
+<script>
+
+if( Nabble.user == 67376 ) {
+    
+	document.writeln('| <a href="javascript:Nabble.deletePost(10971081,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+else if( Nabble.user == 792292 ) {
+	document.writeln('| <a href="javascript:Nabble.deletePost(10971081,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+document.writeln('| <a href="/forum/PrintPost.jtp?post=10971081" rel="nofollow" target="_new">Print</a>');
+</script>| <a href="http://www.nabble.com/forum/PrintPost.jtp?post=10971081" rel="nofollow" target="_new">Print</a>
+
+
+| <a href="javascript:%20void%20Nabble.setView('newthreaded',10971081);">View Threaded</a>
+| <a href="http://www.nabble.com/Re%3A-subtraction-of-ROIs-p10971081.html">Show Only this Message</a>
+</p>
+
+</div>
+<div class="message-details">
+<div id="nabble.pending10971081"></div>
+<div class="message-text" id="nabble.msgtxt10971081"><span>At 09:33 AM 6/5/2007, you wrote:
+</span><div style="height: 170px; overflow-y: hidden;" class="shrinkable-quote"><br><span>&gt;How can I make a <b class="highlight">ROI</b> that is the result of the subtraction between two <b class="highlight">ROIs</b>?
+</span><br><span>&gt;
+</span><br><span>&gt;Searching docs and list archives I've only found 
+</span><br><span>&gt;how to make "composite selections", which are 
+</span><br><span>&gt;created by hand (by drawing a <b class="highlight">ROI</b> inside another, while pressing the alt key).
+</span><br><span>&gt;
+</span><br><span>&gt;I have two <b class="highlight">ROIs</b> in the <b class="highlight">ROI</b> manager, one <b class="highlight">ROI</b> 
+</span><br><span>&gt;inside the other one. I want to select the area 
+</span><br><span>&gt;within the bigger <b class="highlight">ROI</b>, excluding the area of the 
+</span><br><span>&gt;smaller <b class="highlight">ROI</b>. If we were talking of two circles 
+</span><br><span>&gt;(one inside the other), I want select the area 
+</span><br><span>&gt;defined by the <b class="highlight">ring</b> between them.
+</span><br><span>&gt;
+</span><br><span>&gt;Any suggestions?
+</span></div><div style="" class="shrink-quote"><span>...</span> [<a href="#">show rest of quote</a>]</div><br><span>Hello Javier,
+</span><br><br><span>Here's one solution of probably many:
+</span><br><br><span>Load the bigger <b class="highlight">ROI</b>, then use 
+</span><br><span>Edit--&gt;Selection--&gt;Create Mask. &nbsp;On the new mask 
+</span><br><span>window that pops up, load the second smaller <b class="highlight">ROI</b>, 
+</span><br><span>then use Edit--&gt;Clear. &nbsp;Now use the Wand tool to 
+</span><br><span>automatically highlight the remaining <b class="highlight">ring</b> 
+</span><br><span>region, and then add that to the <b class="highlight">RoiManager</b>.
+</span><br><br><span>Mark Besonen
+</span><br><span>UMass Geosciences
+</span><br><br><br><br><div style="height: 170px; overflow-y: hidden;" class="shrinkable-quote"><br><span>&gt;F Javier Diez-Guerra, PhD
+</span><br><span>&gt;Profesor Titular
+</span><br><span>&gt;Centro de Biologia Molecular Severo Ochoa
+</span><br><span>&gt;Facultad de Ciencias, Universidad Aut&oacute;noma
+</span><br><span>&gt;Ctra Colmenar Viejo Km 15
+</span><br><span>&gt;Cantoblanco, 28049 Madrid
+</span><br><span>&gt;SPAIN
+</span><br><span>&gt;
+</span><br><span>&gt;phone: &nbsp;+34 91 4978051
+</span><br><span>&gt;Fax: &nbsp; &nbsp; &nbsp;+34 91 4978087
+</span><br><span>&gt;e-mail: </span><a href="http://www.nabble.com/user/SendEmail.jtp?type=post&post=10971081&i=0" target="_top" rel="nofollow"><span>fjdiez@...</span></a><span>
+</span><br></div><div style="" class="shrink-quote"><span>...</span> [<a href="#">show rest of quote</a>]</div></div>
+<script>
+
+if (Nabble.searchterms != null && Nabble.searchterms.length > 0) {
+	Nabble.hilt(Nabble.searchterms, Nabble.get("nabble.msgtxt10971081"));
+}
+</script>
+</div>
+</td>
+
+</tr>
+
+
+<tr valign="top">
+<!-- Current Message -->
+<td class="current-message">
+	<span id="nabble.i10971138" style="visibility: hidden;"><img alt="" src="icon_tri.png" width="12" align="absmiddle" height="12"></span><br>
+</td>
+<td>
+<!-- Subject -->
+
+<a name="a10971138">
+	</a><h2><a name="a10971138">Re: subtraction of ROIs</a></h2><a title="Click to flag this post" id="nabble.aflag10971138" href="javascript:%20void%20Nabble.setFlag(10971138);"><img alt="Click to flag this post" id="nabble.flag10971138" src="icon_unflagged.png" onmouseover="status = alt; return true;" onmouseout="status = defaultStatus; return true;" width="15" border="0" height="15"></a>
+<!-- /Subject -->
+<!-- Message Actions -->
+<span id="nabble.rating10971138">
+<script>document.write(Nabble.ratingStars(4));</script><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12">
+</span>
+
+<div class="message-actions weak-color">
+<p class="message-actions1">
+
+by <script>document.write('<a href=\"' +'/user/UserProfile' + '.jtp?'+'user=58258\" rel=\"nofollow\" ' + Nabble.embeddedTarget('_top') + '>');</script><a href="http://www.nabble.com/user/UserProfile.jtp?user=58258" rel="nofollow" target="_top">Gabriel Landini<script>document.write('</a>');</script></a>
+<span class="weak-color"><script>document.write(Nabble.formatDateLong(new Date(1181058494000)));</script>Jun 05, 2007; 11:48pm</span> ::
+Rate this Message:
+<a href="#" title="Click to mark as Spam" onmouseover="Nabble.mouseover(10971138,0); return true;" onmouseout="Nabble.mouseout(10971138); return true;" onclick="Nabble.clicked(10971138,0); return false;"><img src="icon_blocked_gray.png" id="nabble.spam10971138" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to rate as Poor Post" onmouseover="Nabble.mouseover(10971138,1); return true;" onmouseout="Nabble.mouseout(10971138); return true;" onclick="Nabble.clicked(10971138,1); return false;"><img src="icon_star_grey.png" id="nabble.star10971138-1" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Below Average Post" onmouseover="Nabble.mouseover(10971138,2); return true;" onmouseout="Nabble.mouseout(10971138); return true;" onclick="Nabble.clicked(10971138,2); return false;"><img src="icon_star_grey.png" id="nabble.star10971138-2" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Average Post" onmouseover="Nabble.mouseover(10971138,3); return true;" onmouseout="Nabble.mouseout(10971138); return true;" onclick="Nabble.clicked(10971138,3); return false;"><img src="icon_star_grey.png" id="nabble.star10971138-3" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Above Average Post" onmouseover="Nabble.mouseover(10971138,4); return true;" onmouseout="Nabble.mouseout(10971138); return true;" onclick="Nabble.clicked(10971138,4); return false;"><img src="icon_star_grey.png" id="nabble.star10971138-4" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Excellent Post" onmouseover="Nabble.mouseover(10971138,5); return true;" onmouseout="Nabble.mouseout(10971138); return true;" onclick="Nabble.clicked(10971138,5); return false;"><img src="icon_star_grey.png" id="nabble.star10971138-5" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to clear rating" onmouseover="Nabble.mouseover(10971138,-1); return true;" onmouseout="Nabble.mouseout(10971138); return true;" onclick="Nabble.clicked(10971138,-1); return false;"><img id="nabble.star10971138-0" alt="" src="icon_clear_rating.png" style="vertical-align: middle;" border="0"></a>
+<span id="nabble.descriptor10971138">- Use ratings to moderate (<a title="Click for more info" href="http://www.nabble.com/help/Answer.jtp?id=16">?</a>)</span>
+</p>
+<p class="message-actions2">
+
+<script>
+
+document.writeln('<a href="/forum/Reply.jtp?post=10971138" rel="nofollow">Reply</a> | ');
+</script><a href="http://www.nabble.com/forum/Reply.jtp?post=10971138" rel="nofollow">Reply</a> | 
+
+<a href="http://www.nabble.com/user/SendEmail.jtp?type=pm&post=10971138" target="_top" rel="nofollow">Reply to Author</a>   
+<script>
+
+if( Nabble.user == 58258 ) {
+    
+	document.writeln('| <a href="javascript:Nabble.deletePost(10971138,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+else if( Nabble.user == 792292 ) {
+	document.writeln('| <a href="javascript:Nabble.deletePost(10971138,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+document.writeln('| <a href="/forum/PrintPost.jtp?post=10971138" rel="nofollow" target="_new">Print</a>');
+</script>| <a href="http://www.nabble.com/forum/PrintPost.jtp?post=10971138" rel="nofollow" target="_new">Print</a>
+
+
+| <a href="javascript:%20void%20Nabble.setView('newthreaded',10971138);">View Threaded</a>
+| <a href="http://www.nabble.com/Re%3A-subtraction-of-ROIs-p10971138.html">Show Only this Message</a>
+</p>
+
+</div>
+<div class="message-details">
+<div id="nabble.pending10971138"></div>
+<div class="message-text" id="nabble.msgtxt10971138"><span>On Tuesday 05 June 2007 14:33:46 F Javier Diez Guerra wrote:
+</span><br><span>&gt; How can I make a <b class="highlight">ROI</b> that is the result of the subtraction between two
+</span><br><span>&gt; <b class="highlight">ROIs</b>?
+</span><br><br><br><span>Create the first <b class="highlight">ROI</b>, then
+</span><br><span>Edit&gt;Selection&gt;Make Inverse
+</span><br><span>Put the result in the <b class="highlight">ROI</b> manager
+</span><br><span>Create 2nd <b class="highlight">ROI</b>
+</span><br><span>Put it in the <b class="highlight">ROI</b> manager
+</span><br><br><span>Select those 2 <b class="highlight">ROIs</b> and do More&gt;&gt;Combine in the <b class="highlight">ROI</b> manager.
+</span><br><br><span>G.
+</span><br></div>
+<script>
+
+if (Nabble.searchterms != null && Nabble.searchterms.length > 0) {
+	Nabble.hilt(Nabble.searchterms, Nabble.get("nabble.msgtxt10971138"));
+}
+</script>
+</div>
+</td>
+
+</tr>
+
+
+<tr valign="top">
+<!-- Current Message -->
+<td class="current-message">
+	<span id="nabble.i10972066" style="visibility: hidden;"><img alt="" src="icon_tri.png" width="12" align="absmiddle" height="12"></span><br>
+</td>
+<td>
+<!-- Subject -->
+
+<a name="a10972066">
+	</a><h2><a name="a10972066">Re: subtraction of ROIs</a></h2><a title="Click to flag this post" id="nabble.aflag10972066" href="javascript:%20void%20Nabble.setFlag(10972066);"><img alt="Click to flag this post" id="nabble.flag10972066" src="icon_unflagged.png" onmouseover="status = alt; return true;" onmouseout="status = defaultStatus; return true;" width="15" border="0" height="15"></a>
+<!-- /Subject -->
+<!-- Message Actions -->
+<span id="nabble.rating10972066">
+<script>document.write(Nabble.ratingStars(3));</script><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12">
+</span>
+
+<div class="message-actions weak-color">
+<p class="message-actions1">
+
+by <script>document.write('<a href=\"' +'/user/UserProfile' + '.jtp?'+'user=226779\" rel=\"nofollow\" ' + Nabble.embeddedTarget('_top') + '>');</script><a href="http://www.nabble.com/user/UserProfile.jtp?user=226779" rel="nofollow" target="_top">F Javier Diez Guerra<script>document.write('</a>');</script></a>
+<span class="weak-color"><script>document.write(Nabble.formatDateLong(new Date(1181059880000)));</script>Jun 06, 2007; 12:11am</span> ::
+Rate this Message:
+<a href="#" title="Click to mark as Spam" onmouseover="Nabble.mouseover(10972066,0); return true;" onmouseout="Nabble.mouseout(10972066); return true;" onclick="Nabble.clicked(10972066,0); return false;"><img src="icon_blocked_gray.png" id="nabble.spam10972066" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to rate as Poor Post" onmouseover="Nabble.mouseover(10972066,1); return true;" onmouseout="Nabble.mouseout(10972066); return true;" onclick="Nabble.clicked(10972066,1); return false;"><img src="icon_star_grey.png" id="nabble.star10972066-1" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Below Average Post" onmouseover="Nabble.mouseover(10972066,2); return true;" onmouseout="Nabble.mouseout(10972066); return true;" onclick="Nabble.clicked(10972066,2); return false;"><img src="icon_star_grey.png" id="nabble.star10972066-2" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Average Post" onmouseover="Nabble.mouseover(10972066,3); return true;" onmouseout="Nabble.mouseout(10972066); return true;" onclick="Nabble.clicked(10972066,3); return false;"><img src="icon_star_grey.png" id="nabble.star10972066-3" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Above Average Post" onmouseover="Nabble.mouseover(10972066,4); return true;" onmouseout="Nabble.mouseout(10972066); return true;" onclick="Nabble.clicked(10972066,4); return false;"><img src="icon_star_grey.png" id="nabble.star10972066-4" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Excellent Post" onmouseover="Nabble.mouseover(10972066,5); return true;" onmouseout="Nabble.mouseout(10972066); return true;" onclick="Nabble.clicked(10972066,5); return false;"><img src="icon_star_grey.png" id="nabble.star10972066-5" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to clear rating" onmouseover="Nabble.mouseover(10972066,-1); return true;" onmouseout="Nabble.mouseout(10972066); return true;" onclick="Nabble.clicked(10972066,-1); return false;"><img id="nabble.star10972066-0" alt="" src="icon_clear_rating.png" style="vertical-align: middle;" border="0"></a>
+<span id="nabble.descriptor10972066">- Use ratings to moderate (<a title="Click for more info" href="http://www.nabble.com/help/Answer.jtp?id=16">?</a>)</span>
+</p>
+<p class="message-actions2">
+
+<script>
+
+document.writeln('<a href="/forum/Reply.jtp?post=10972066" rel="nofollow">Reply</a> | ');
+</script><a href="http://www.nabble.com/forum/Reply.jtp?post=10972066" rel="nofollow">Reply</a> | 
+
+<a href="http://www.nabble.com/user/SendEmail.jtp?type=pm&post=10972066" target="_top" rel="nofollow">Reply to Author</a>   
+<script>
+
+if( Nabble.user == 226779 ) {
+    
+	document.writeln('| <a href="javascript:Nabble.deletePost(10972066,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+else if( Nabble.user == 792292 ) {
+	document.writeln('| <a href="javascript:Nabble.deletePost(10972066,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+document.writeln('| <a href="/forum/PrintPost.jtp?post=10972066" rel="nofollow" target="_new">Print</a>');
+</script>| <a href="http://www.nabble.com/forum/PrintPost.jtp?post=10972066" rel="nofollow" target="_new">Print</a>
+
+
+| <a href="javascript:%20void%20Nabble.setView('newthreaded',10972066);">View Threaded</a>
+| <a href="http://www.nabble.com/Re%3A-subtraction-of-ROIs-p10972066.html">Show Only this Message</a>
+</p>
+
+</div>
+<div class="message-details">
+<div id="nabble.pending10972066"></div>
+<div class="message-text" id="nabble.msgtxt10972066"><span>Mark,
+</span><br><br><span>Thanks for your input. However, I do not manage 
+</span><br><span>to get the <b class="highlight">ring</b> <b class="highlight">ROI</b> after selecting it with the 
+</span><br><span>magic wand. I imagine that since the selection is 
+</span><br><span>closed, the magic wand takes the whole area of 
+</span><br><span>the bigger <b class="highlight">ROI</b> again and not the difference.
+</span><br><br><span>Thanks,
+</span><br><br><br><span>At 16:46 05/06/2007, you wrote:
+</span><div style="height: 170px; overflow-y: hidden;" class="shrinkable-quote"><br><span>&gt;At 09:33 AM 6/5/2007, you wrote:
+</span><br><span>&gt;&gt;How can I make a <b class="highlight">ROI</b> that is the result of the subtraction between two <b class="highlight">ROIs</b>?
+</span><br><span>&gt;&gt;
+</span><br><span>&gt;&gt;Searching docs and list archives I've only 
+</span><br><span>&gt;&gt;found how to make "composite selections", which 
+</span><br><span>&gt;&gt;are created by hand (by drawing a <b class="highlight">ROI</b> inside 
+</span><br><span>&gt;&gt;another, while pressing the alt key).
+</span><br><span>&gt;&gt;
+</span><br><span>&gt;&gt;I have two <b class="highlight">ROIs</b> in the <b class="highlight">ROI</b> manager, one <b class="highlight">ROI</b> 
+</span><br><span>&gt;&gt;inside the other one. I want to select the area 
+</span><br><span>&gt;&gt;within the bigger <b class="highlight">ROI</b>, excluding the area of 
+</span><br><span>&gt;&gt;the smaller <b class="highlight">ROI</b>. If we were talking of two 
+</span><br><span>&gt;&gt;circles (one inside the other), I want select 
+</span><br><span>&gt;&gt;the area defined by the <b class="highlight">ring</b> between them.
+</span><br><span>&gt;&gt;
+</span><br><span>&gt;&gt;Any suggestions?
+</span><br><span>&gt;
+</span><br><span>&gt;Hello Javier,
+</span><br><span>&gt;
+</span><br><span>&gt;Here's one solution of probably many:
+</span><br><span>&gt;
+</span><br><span>&gt;Load the bigger <b class="highlight">ROI</b>, then use 
+</span><br><span>&gt;Edit--&gt;Selection--&gt;Create Mask. &nbsp;On the new mask 
+</span><br><span>&gt;window that pops up, load the second smaller 
+</span><br><span>&gt;<b class="highlight">ROI</b>, then use Edit--&gt;Clear. &nbsp;Now use the Wand 
+</span><br><span>&gt;tool to automatically highlight the remaining 
+</span><br><span>&gt;<b class="highlight">ring</b> region, and then add that to the <b class="highlight">RoiManager</b>.
+</span><br><span>&gt;
+</span><br><span>&gt;Mark Besonen
+</span><br><span>&gt;UMass Geosciences
+</span><br><span>&gt;
+</span><br><span>&gt;
+</span><br><span>&gt;
+</span><br><span>&gt;
+</span><br><span>&gt;&gt;F Javier Diez-Guerra, PhD
+</span><br><span>&gt;&gt;Profesor Titular
+</span><br><span>&gt;&gt;Centro de Biologia Molecular Severo Ochoa
+</span><br><span>&gt;&gt;Facultad de Ciencias, Universidad Aut&oacute;noma
+</span><br><span>&gt;&gt;Ctra Colmenar Viejo Km 15
+</span><br><span>&gt;&gt;Cantoblanco, 28049 Madrid
+</span><br><span>&gt;&gt;SPAIN
+</span><br><span>&gt;&gt;
+</span><br><span>&gt;&gt;phone: &nbsp;+34 91 4978051
+</span><br><span>&gt;&gt;Fax: &nbsp; &nbsp; &nbsp;+34 91 4978087
+</span><br><span>&gt;&gt;e-mail: </span><a href="http://www.nabble.com/user/SendEmail.jtp?type=post&post=10972066&i=0" target="_top" rel="nofollow"><span>fjdiez@...</span></a><span>
+</span><br><span>&gt;
+</span><br><span>&gt;F Javier Diez-Guerra, PhD
+</span><br><span>&gt;Profesor Titular
+</span><br><span>&gt;Centro de Biologia Molecular Severo Ochoa
+</span><br><span>&gt;Facultad de Ciencias, Universidad Aut&oacute;noma
+</span><br><span>&gt;Ctra Colmenar Viejo Km 15
+</span><br><span>&gt;Cantoblanco, 28049 Madrid
+</span><br><span>&gt;SPAIN
+</span><br><span>&gt;
+</span><br><span>&gt;phone: &nbsp;+34 91 4978051
+</span><br><span>&gt;Fax: &nbsp; &nbsp; &nbsp;+34 91 4978087
+</span><br><span>&gt;e-mail: </span><a href="http://www.nabble.com/user/SendEmail.jtp?type=post&post=10972066&i=1" target="_top" rel="nofollow"><span>fjdiez@...</span></a><span> 
+</span><br></div><div style="" class="shrink-quote"><span>...</span> [<a href="#">show rest of quote</a>]</div></div>
+<script>
+
+if (Nabble.searchterms != null && Nabble.searchterms.length > 0) {
+	Nabble.hilt(Nabble.searchterms, Nabble.get("nabble.msgtxt10972066"));
+}
+</script>
+</div>
+</td>
+
+</tr>
+
+
+<tr valign="top">
+<!-- Current Message -->
+<td class="current-message">
+	<span id="nabble.i10972368" style="visibility: hidden;"><img alt="" src="icon_tri.png" width="12" align="absmiddle" height="12"></span><br>
+</td>
+<td>
+<!-- Subject -->
+
+<a name="a10972368">
+	</a><h2><a name="a10972368">Re: subtraction of ROIs</a></h2><a title="Click to flag this post" id="nabble.aflag10972368" href="javascript:%20void%20Nabble.setFlag(10972368);"><img alt="Click to flag this post" id="nabble.flag10972368" src="icon_unflagged.png" onmouseover="status = alt; return true;" onmouseout="status = defaultStatus; return true;" width="15" border="0" height="15"></a>
+<!-- /Subject -->
+<!-- Message Actions -->
+<span id="nabble.rating10972368">
+<script>document.write(Nabble.ratingStars(4));</script><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12">
+</span>
+
+<div class="message-actions weak-color">
+<p class="message-actions1">
+
+by <script>document.write('<a href=\"' +'/user/UserProfile' + '.jtp?'+'user=58258\" rel=\"nofollow\" ' + Nabble.embeddedTarget('_top') + '>');</script><a href="http://www.nabble.com/user/UserProfile.jtp?user=58258" rel="nofollow" target="_top">Gabriel Landini<script>document.write('</a>');</script></a>
+<span class="weak-color"><script>document.write(Nabble.formatDateLong(new Date(1181062169000)));</script>Jun 06, 2007; 12:49am</span> ::
+Rate this Message:
+<a href="#" title="Click to mark as Spam" onmouseover="Nabble.mouseover(10972368,0); return true;" onmouseout="Nabble.mouseout(10972368); return true;" onclick="Nabble.clicked(10972368,0); return false;"><img src="icon_blocked_gray.png" id="nabble.spam10972368" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to rate as Poor Post" onmouseover="Nabble.mouseover(10972368,1); return true;" onmouseout="Nabble.mouseout(10972368); return true;" onclick="Nabble.clicked(10972368,1); return false;"><img src="icon_star_grey.png" id="nabble.star10972368-1" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Below Average Post" onmouseover="Nabble.mouseover(10972368,2); return true;" onmouseout="Nabble.mouseout(10972368); return true;" onclick="Nabble.clicked(10972368,2); return false;"><img src="icon_star_grey.png" id="nabble.star10972368-2" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Average Post" onmouseover="Nabble.mouseover(10972368,3); return true;" onmouseout="Nabble.mouseout(10972368); return true;" onclick="Nabble.clicked(10972368,3); return false;"><img src="icon_star_grey.png" id="nabble.star10972368-3" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Above Average Post" onmouseover="Nabble.mouseover(10972368,4); return true;" onmouseout="Nabble.mouseout(10972368); return true;" onclick="Nabble.clicked(10972368,4); return false;"><img src="icon_star_grey.png" id="nabble.star10972368-4" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Excellent Post" onmouseover="Nabble.mouseover(10972368,5); return true;" onmouseout="Nabble.mouseout(10972368); return true;" onclick="Nabble.clicked(10972368,5); return false;"><img src="icon_star_grey.png" id="nabble.star10972368-5" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to clear rating" onmouseover="Nabble.mouseover(10972368,-1); return true;" onmouseout="Nabble.mouseout(10972368); return true;" onclick="Nabble.clicked(10972368,-1); return false;"><img id="nabble.star10972368-0" alt="" src="icon_clear_rating.png" style="vertical-align: middle;" border="0"></a>
+<span id="nabble.descriptor10972368">- Use ratings to moderate (<a title="Click for more info" href="http://www.nabble.com/help/Answer.jtp?id=16">?</a>)</span>
+</p>
+<p class="message-actions2">
+
+<script>
+
+document.writeln('<a href="/forum/Reply.jtp?post=10972368" rel="nofollow">Reply</a> | ');
+</script><a href="http://www.nabble.com/forum/Reply.jtp?post=10972368" rel="nofollow">Reply</a> | 
+
+<a href="http://www.nabble.com/user/SendEmail.jtp?type=pm&post=10972368" target="_top" rel="nofollow">Reply to Author</a>   
+<script>
+
+if( Nabble.user == 58258 ) {
+    
+	document.writeln('| <a href="javascript:Nabble.deletePost(10972368,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+else if( Nabble.user == 792292 ) {
+	document.writeln('| <a href="javascript:Nabble.deletePost(10972368,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+document.writeln('| <a href="/forum/PrintPost.jtp?post=10972368" rel="nofollow" target="_new">Print</a>');
+</script>| <a href="http://www.nabble.com/forum/PrintPost.jtp?post=10972368" rel="nofollow" target="_new">Print</a>
+
+
+| <a href="javascript:%20void%20Nabble.setView('newthreaded',10972368);">View Threaded</a>
+| <a href="http://www.nabble.com/Re%3A-subtraction-of-ROIs-p10972368.html">Show Only this Message</a>
+</p>
+
+</div>
+<div class="message-details">
+<div id="nabble.pending10972368"></div>
+<div class="message-text" id="nabble.msgtxt10972368"><span>On Tuesday 05 June 2007 16:11:20 F Javier Diez Guerra wrote:
+</span><br><span>&gt; Mark,
+</span><br><span>&gt;
+</span><br><span>&gt; Thanks for your input. However, I do not manage
+</span><br><span>&gt; to get the <b class="highlight">ring</b> <b class="highlight">ROI</b> after selecting it with the
+</span><br><span>&gt; magic wand. I imagine that since the selection is
+</span><br><span>&gt; closed, the magic wand takes the whole area of
+</span><br><span>&gt; the bigger <b class="highlight">ROI</b> again and not the difference.
+</span><br><span>&gt;
+</span><br><br><span>I just realised that what I just sent would not work for a doughnut <b class="highlight">ROI</b>, but 
+</span><br><span>only for overlapping ones.
+</span><br><br><span>G.
+</span><br></div>
+<script>
+
+if (Nabble.searchterms != null && Nabble.searchterms.length > 0) {
+	Nabble.hilt(Nabble.searchterms, Nabble.get("nabble.msgtxt10972368"));
+}
+</script>
+</div>
+</td>
+
+</tr>
+
+
+<tr valign="top">
+<!-- Current Message -->
+<td class="current-message">
+	<span id="nabble.i10972365" style="visibility: hidden;"><img alt="" src="icon_tri.png" width="12" align="absmiddle" height="12"></span><br>
+</td>
+<td>
+<!-- Subject -->
+
+<a name="a10972365">
+	</a><h2><a name="a10972365">Re: subtraction of ROIs</a></h2><a title="Click to flag this post" id="nabble.aflag10972365" href="javascript:%20void%20Nabble.setFlag(10972365);"><img alt="Click to flag this post" id="nabble.flag10972365" src="icon_unflagged.png" onmouseover="status = alt; return true;" onmouseout="status = defaultStatus; return true;" width="15" border="0" height="15"></a>
+<!-- /Subject -->
+<!-- Message Actions -->
+<span id="nabble.rating10972365">
+<script>document.write(Nabble.ratingStars(3));</script><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12">
+</span>
+
+<div class="message-actions weak-color">
+<p class="message-actions1">
+
+by <script>document.write('<a href=\"' +'/user/UserProfile' + '.jtp?'+'user=67376\" rel=\"nofollow\" ' + Nabble.embeddedTarget('_top') + '>');</script><a href="http://www.nabble.com/user/UserProfile.jtp?user=67376" rel="nofollow" target="_top">Mark R. Besonen<script>document.write('</a>');</script></a>
+<span class="weak-color"><script>document.write(Nabble.formatDateLong(new Date(1181062200000)));</script>Jun 06, 2007; 12:50am</span> ::
+Rate this Message:
+<a href="#" title="Click to mark as Spam" onmouseover="Nabble.mouseover(10972365,0); return true;" onmouseout="Nabble.mouseout(10972365); return true;" onclick="Nabble.clicked(10972365,0); return false;"><img src="icon_blocked_gray.png" id="nabble.spam10972365" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to rate as Poor Post" onmouseover="Nabble.mouseover(10972365,1); return true;" onmouseout="Nabble.mouseout(10972365); return true;" onclick="Nabble.clicked(10972365,1); return false;"><img src="icon_star_grey.png" id="nabble.star10972365-1" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Below Average Post" onmouseover="Nabble.mouseover(10972365,2); return true;" onmouseout="Nabble.mouseout(10972365); return true;" onclick="Nabble.clicked(10972365,2); return false;"><img src="icon_star_grey.png" id="nabble.star10972365-2" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Average Post" onmouseover="Nabble.mouseover(10972365,3); return true;" onmouseout="Nabble.mouseout(10972365); return true;" onclick="Nabble.clicked(10972365,3); return false;"><img src="icon_star_grey.png" id="nabble.star10972365-3" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Above Average Post" onmouseover="Nabble.mouseover(10972365,4); return true;" onmouseout="Nabble.mouseout(10972365); return true;" onclick="Nabble.clicked(10972365,4); return false;"><img src="icon_star_grey.png" id="nabble.star10972365-4" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Excellent Post" onmouseover="Nabble.mouseover(10972365,5); return true;" onmouseout="Nabble.mouseout(10972365); return true;" onclick="Nabble.clicked(10972365,5); return false;"><img src="icon_star_grey.png" id="nabble.star10972365-5" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to clear rating" onmouseover="Nabble.mouseover(10972365,-1); return true;" onmouseout="Nabble.mouseout(10972365); return true;" onclick="Nabble.clicked(10972365,-1); return false;"><img id="nabble.star10972365-0" alt="" src="icon_clear_rating.png" style="vertical-align: middle;" border="0"></a>
+<span id="nabble.descriptor10972365">- Use ratings to moderate (<a title="Click for more info" href="http://www.nabble.com/help/Answer.jtp?id=16">?</a>)</span>
+</p>
+<p class="message-actions2">
+
+<script>
+
+document.writeln('<a href="/forum/Reply.jtp?post=10972365" rel="nofollow">Reply</a> | ');
+</script><a href="http://www.nabble.com/forum/Reply.jtp?post=10972365" rel="nofollow">Reply</a> | 
+
+<a href="http://www.nabble.com/user/SendEmail.jtp?type=pm&post=10972365" target="_top" rel="nofollow">Reply to Author</a>   
+<script>
+
+if( Nabble.user == 67376 ) {
+    
+	document.writeln('| <a href="javascript:Nabble.deletePost(10972365,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+else if( Nabble.user == 792292 ) {
+	document.writeln('| <a href="javascript:Nabble.deletePost(10972365,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+document.writeln('| <a href="/forum/PrintPost.jtp?post=10972365" rel="nofollow" target="_new">Print</a>');
+</script>| <a href="http://www.nabble.com/forum/PrintPost.jtp?post=10972365" rel="nofollow" target="_new">Print</a>
+
+
+| <a href="javascript:%20void%20Nabble.setView('newthreaded',10972365);">View Threaded</a>
+| <a href="http://www.nabble.com/Re%3A-subtraction-of-ROIs-p10972365.html">Show Only this Message</a>
+</p>
+
+</div>
+<div class="message-details">
+<div id="nabble.pending10972365"></div>
+<div class="message-text" id="nabble.msgtxt10972365"><span>Hi Javier,
+</span><br><br><span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;You are absolutely right--I just tried 
+</span><br><span>what I suggested, and had the same result as you, 
+</span><br><span>so my suggestion was incorrect. &nbsp;Gabriel's 
+</span><br><span>solution, however, does work. &nbsp;Sorry for not 
+</span><br><span>testing first--I have been using the method I 
+</span><br><span>wrote for the last couple of weeks as sort of a 
+</span><br><span>clipping path for overlapping regions, not ones 
+</span><br><span>that were completely contained within another. &nbsp;I should have tested first!
+</span><br><br><span>Mark Besonen
+</span><br><span>UMass Geosciences
+</span><br><br><br><span>At 11:11 AM 6/5/2007, F Javier Diez Guerra wrote:
+</span><div style="height: 170px; overflow-y: hidden;" class="shrinkable-quote"><br><span>&gt;Mark,
+</span><br><span>&gt;
+</span><br><span>&gt;Thanks for your input. However, I do not manage 
+</span><br><span>&gt;to get the <b class="highlight">ring</b> <b class="highlight">ROI</b> after selecting it with the 
+</span><br><span>&gt;magic wand. I imagine that since the selection 
+</span><br><span>&gt;is closed, the magic wand takes the whole area 
+</span><br><span>&gt;of the bigger <b class="highlight">ROI</b> again and not the difference.
+</span><br><span>&gt;
+</span><br><span>&gt;Thanks,
+</span><br><span>&gt;
+</span><br><span>&gt;
+</span><br><span>&gt;At 16:46 05/06/2007, you wrote:
+</span><br><span>&gt;&gt;At 09:33 AM 6/5/2007, you wrote:
+</span><br><span>&gt;&gt;&gt;How can I make a <b class="highlight">ROI</b> that is the result of the subtraction between two <b class="highlight">ROIs</b>?
+</span><br><span>&gt;&gt;&gt;
+</span><br><span>&gt;&gt;&gt;Searching docs and list archives I've only 
+</span><br><span>&gt;&gt;&gt;found how to make "composite selections", 
+</span><br><span>&gt;&gt;&gt;which are created by hand (by drawing a <b class="highlight">ROI</b> 
+</span><br><span>&gt;&gt;&gt;inside another, while pressing the alt key).
+</span><br><span>&gt;&gt;&gt;
+</span><br><span>&gt;&gt;&gt;I have two <b class="highlight">ROIs</b> in the <b class="highlight">ROI</b> manager, one <b class="highlight">ROI</b> 
+</span><br><span>&gt;&gt;&gt;inside the other one. I want to select the 
+</span><br><span>&gt;&gt;&gt;area within the bigger <b class="highlight">ROI</b>, excluding the area 
+</span><br><span>&gt;&gt;&gt;of the smaller <b class="highlight">ROI</b>. If we were talking of two 
+</span><br><span>&gt;&gt;&gt;circles (one inside the other), I want select 
+</span><br><span>&gt;&gt;&gt;the area defined by the <b class="highlight">ring</b> between them.
+</span><br><span>&gt;&gt;&gt;
+</span><br><span>&gt;&gt;&gt;Any suggestions?
+</span><br><span>&gt;&gt;
+</span><br><span>&gt;&gt;Hello Javier,
+</span><br><span>&gt;&gt;
+</span><br><span>&gt;&gt;Here's one solution of probably many:
+</span><br><span>&gt;&gt;
+</span><br><span>&gt;&gt;Load the bigger <b class="highlight">ROI</b>, then use 
+</span><br><span>&gt;&gt;Edit--&gt;Selection--&gt;Create Mask. &nbsp;On the new 
+</span><br><span>&gt;&gt;mask window that pops up, load the second 
+</span><br><span>&gt;&gt;smaller <b class="highlight">ROI</b>, then use Edit--&gt;Clear. &nbsp;Now use 
+</span><br><span>&gt;&gt;the Wand tool to automatically highlight the 
+</span><br><span>&gt;&gt;remaining <b class="highlight">ring</b> region, and then add that to the <b class="highlight">RoiManager</b>.
+</span><br><span>&gt;&gt;
+</span><br><span>&gt;&gt;Mark Besonen
+</span><br><span>&gt;&gt;UMass Geosciences
+</span><br><span>&gt;&gt;
+</span><br><span>&gt;&gt;
+</span><br><span>&gt;&gt;
+</span><br><span>&gt;&gt;
+</span><br><span>&gt;&gt;&gt;F Javier Diez-Guerra, PhD
+</span><br><span>&gt;&gt;&gt;Profesor Titular
+</span><br><span>&gt;&gt;&gt;Centro de Biologia Molecular Severo Ochoa
+</span><br><span>&gt;&gt;&gt;Facultad de Ciencias, Universidad Aut&oacute;noma
+</span><br><span>&gt;&gt;&gt;Ctra Colmenar Viejo Km 15
+</span><br><span>&gt;&gt;&gt;Cantoblanco, 28049 Madrid
+</span><br><span>&gt;&gt;&gt;SPAIN
+</span><br><span>&gt;&gt;&gt;
+</span><br><span>&gt;&gt;&gt;phone: &nbsp;+34 91 4978051
+</span><br><span>&gt;&gt;&gt;Fax: &nbsp; &nbsp; &nbsp;+34 91 4978087
+</span><br><span>&gt;&gt;&gt;e-mail: </span><a href="http://www.nabble.com/user/SendEmail.jtp?type=post&post=10972365&i=0" target="_top" rel="nofollow"><span>fjdiez@...</span></a><span>
+</span><br><span>&gt;&gt;
+</span><br><span>&gt;&gt;F Javier Diez-Guerra, PhD
+</span><br><span>&gt;&gt;Profesor Titular
+</span><br><span>&gt;&gt;Centro de Biologia Molecular Severo Ochoa
+</span><br><span>&gt;&gt;Facultad de Ciencias, Universidad Aut&oacute;noma
+</span><br><span>&gt;&gt;Ctra Colmenar Viejo Km 15
+</span><br><span>&gt;&gt;Cantoblanco, 28049 Madrid
+</span><br><span>&gt;&gt;SPAIN
+</span><br><span>&gt;&gt;
+</span><br><span>&gt;&gt;phone: &nbsp;+34 91 4978051
+</span><br><span>&gt;&gt;Fax: &nbsp; &nbsp; &nbsp;+34 91 4978087
+</span><br><span>&gt;&gt;e-mail: </span><a href="http://www.nabble.com/user/SendEmail.jtp?type=post&post=10972365&i=1" target="_top" rel="nofollow"><span>fjdiez@...</span></a><span>
+</span></div><div style="" class="shrink-quote"><span>...</span> [<a href="#">show rest of quote</a>]</div><br><br><span>-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+</span><br><span>Mark R. Besonen &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; e-mail: &nbsp;</span><a href="http://www.nabble.com/user/SendEmail.jtp?type=post&post=10972365&i=2" target="_top" rel="nofollow"><span>besonen@...</span></a><span>
+</span><br><span>Department of Geosciences &nbsp; &nbsp; tel: &nbsp;(413) 545-1755 or 545-0659 [Office]
+</span><br><span>233 Morrill Science Center &nbsp; &nbsp;tel: &nbsp;(413) 545-2794 [Quaternary Lab]
+</span><br><span>611 North Pleasant Street &nbsp; &nbsp; tel: &nbsp;(413) 577-1168 [SEM Lab]
+</span><br><span>University of Massachusetts &nbsp; fax: &nbsp;(413) 545-1200
+</span><br><span>Amherst, MA &nbsp;01003 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span><a href="http://ostracod.geo.umass.edu/besonen" target="_top" rel="nofollow"><span>http://ostracod.geo.umass.edu/besonen</span></a><br><span>-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+</span><br></div>
+<script>
+
+if (Nabble.searchterms != null && Nabble.searchterms.length > 0) {
+	Nabble.hilt(Nabble.searchterms, Nabble.get("nabble.msgtxt10972365"));
+}
+</script>
+</div>
+</td>
+
+</tr>
+
+
+<tr valign="top">
+<!-- Current Message -->
+<td class="current-message">
+	<span id="nabble.i10972489" style="visibility: visible;"><img alt="" src="icon_tri.png" width="12" align="absmiddle" height="12"></span><br>
+</td>
+<td>
+<!-- Subject -->
+
+<a name="a10972489">
+	</a><h2><a name="a10972489">Re: subtraction of ROIs</a></h2><a title="Click to flag this post" id="nabble.aflag10972489" href="javascript:%20void%20Nabble.setFlag(10972489);"><img alt="Click to flag this post" id="nabble.flag10972489" src="icon_unflagged.png" onmouseover="status = alt; return true;" onmouseout="status = defaultStatus; return true;" width="15" border="0" height="15"></a>
+<!-- /Subject -->
+<!-- Message Actions -->
+<span id="nabble.rating10972489">
+<script>document.write(Nabble.ratingStars(4));</script><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12">
+</span>
+
+<div class="message-actions weak-color">
+<p class="message-actions1">
+
+by <script>document.write('<a href=\"' +'/user/UserProfile' + '.jtp?'+'user=58258\" rel=\"nofollow\" ' + Nabble.embeddedTarget('_top') + '>');</script><a href="http://www.nabble.com/user/UserProfile.jtp?user=58258" rel="nofollow" target="_top">Gabriel Landini<script>document.write('</a>');</script></a>
+<span class="weak-color"><script>document.write(Nabble.formatDateLong(new Date(1181062725000)));</script>Jun 06, 2007; 12:58am</span> ::
+Rate this Message:
+<a href="#" title="Click to mark as Spam" onmouseover="Nabble.mouseover(10972489,0); return true;" onmouseout="Nabble.mouseout(10972489); return true;" onclick="Nabble.clicked(10972489,0); return false;"><img src="icon_blocked_gray.png" id="nabble.spam10972489" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to rate as Poor Post" onmouseover="Nabble.mouseover(10972489,1); return true;" onmouseout="Nabble.mouseout(10972489); return true;" onclick="Nabble.clicked(10972489,1); return false;"><img src="icon_star_grey.png" id="nabble.star10972489-1" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Below Average Post" onmouseover="Nabble.mouseover(10972489,2); return true;" onmouseout="Nabble.mouseout(10972489); return true;" onclick="Nabble.clicked(10972489,2); return false;"><img src="icon_star_grey.png" id="nabble.star10972489-2" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Average Post" onmouseover="Nabble.mouseover(10972489,3); return true;" onmouseout="Nabble.mouseout(10972489); return true;" onclick="Nabble.clicked(10972489,3); return false;"><img src="icon_star_grey.png" id="nabble.star10972489-3" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Above Average Post" onmouseover="Nabble.mouseover(10972489,4); return true;" onmouseout="Nabble.mouseout(10972489); return true;" onclick="Nabble.clicked(10972489,4); return false;"><img src="icon_star_grey.png" id="nabble.star10972489-4" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Excellent Post" onmouseover="Nabble.mouseover(10972489,5); return true;" onmouseout="Nabble.mouseout(10972489); return true;" onclick="Nabble.clicked(10972489,5); return false;"><img src="icon_star_grey.png" id="nabble.star10972489-5" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to clear rating" onmouseover="Nabble.mouseover(10972489,-1); return true;" onmouseout="Nabble.mouseout(10972489); return true;" onclick="Nabble.clicked(10972489,-1); return false;"><img id="nabble.star10972489-0" alt="" src="icon_clear_rating.png" style="vertical-align: middle;" border="0"></a>
+<span id="nabble.descriptor10972489">- Use ratings to moderate (<a title="Click for more info" href="http://www.nabble.com/help/Answer.jtp?id=16">?</a>)</span>
+</p>
+<p class="message-actions2">
+
+<script>
+
+document.writeln('<a href="/forum/Reply.jtp?post=10972489" rel="nofollow">Reply</a> | ');
+</script><a href="http://www.nabble.com/forum/Reply.jtp?post=10972489" rel="nofollow">Reply</a> | 
+
+<a href="http://www.nabble.com/user/SendEmail.jtp?type=pm&post=10972489" target="_top" rel="nofollow">Reply to Author</a>   
+<script>
+
+if( Nabble.user == 58258 ) {
+    
+	document.writeln('| <a href="javascript:Nabble.deletePost(10972489,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+else if( Nabble.user == 792292 ) {
+	document.writeln('| <a href="javascript:Nabble.deletePost(10972489,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+document.writeln('| <a href="/forum/PrintPost.jtp?post=10972489" rel="nofollow" target="_new">Print</a>');
+</script>| <a href="http://www.nabble.com/forum/PrintPost.jtp?post=10972489" rel="nofollow" target="_new">Print</a>
+
+
+| <a href="javascript:%20void%20Nabble.setView('newthreaded',10972489);">View Threaded</a>
+| <a href="http://www.nabble.com/Re%3A-subtraction-of-ROIs-p10972489.html">Show Only this Message</a>
+</p>
+
+</div>
+<div class="message-details">
+<div id="nabble.pending10972489"></div>
+<div class="message-text" id="nabble.msgtxt10972489"><span>On Tuesday 05 June 2007 16:11:20 F Javier Diez Guerra wrote:
+</span><br><span>&gt; Thanks for your input. However, I do not manage
+</span><br><span>&gt; to get the <b class="highlight">ring</b> <b class="highlight">ROI</b> after selecting it with the
+</span><br><span>&gt; magic wand. I imagine that since the selection is
+</span><br><span>&gt; closed, the magic wand takes the whole area of
+</span><br><span>&gt; the bigger <b class="highlight">ROI</b> again and not the difference.
+</span><br><br><br><span>This does it:
+</span><br><br><span>makeOval(81, 72, 286, 286);
+</span><br><span>setKeyDown("alt");
+</span><br><span>makeOval(163, 167, 126, 129);
+</span><br><br><span>Cheers,
+</span><br><br><span>G.
+</span><br></div>
+<script>
+
+if (Nabble.searchterms != null && Nabble.searchterms.length > 0) {
+	Nabble.hilt(Nabble.searchterms, Nabble.get("nabble.msgtxt10972489"));
+}
+</script>
+</div>
+</td>
+
+</tr>
+
+
+<tr valign="top">
+<!-- Current Message -->
+<td class="current-message">
+	<span id="nabble.i10972571" style="visibility: hidden;"><img alt="" src="icon_tri.png" width="12" align="absmiddle" height="12"></span><br>
+</td>
+<td>
+<!-- Subject -->
+
+<a name="a10972571">
+	</a><h2><a name="a10972571">Re: subtraction of ROIs</a></h2><a title="Click to flag this post" id="nabble.aflag10972571" href="javascript:%20void%20Nabble.setFlag(10972571);"><img alt="Click to flag this post" id="nabble.flag10972571" src="icon_unflagged.png" onmouseover="status = alt; return true;" onmouseout="status = defaultStatus; return true;" width="15" border="0" height="15"></a>
+<!-- /Subject -->
+<!-- Message Actions -->
+<span id="nabble.rating10972571">
+<script>document.write(Nabble.ratingStars(4));</script><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12">
+</span>
+
+<div class="message-actions weak-color">
+<p class="message-actions1">
+
+by <script>document.write('<a href=\"' +'/user/UserProfile' + '.jtp?'+'user=58258\" rel=\"nofollow\" ' + Nabble.embeddedTarget('_top') + '>');</script><a href="http://www.nabble.com/user/UserProfile.jtp?user=58258" rel="nofollow" target="_top">Gabriel Landini<script>document.write('</a>');</script></a>
+<span class="weak-color"><script>document.write(Nabble.formatDateLong(new Date(1181063029000)));</script>Jun 06, 2007; 01:03am</span> ::
+Rate this Message:
+<a href="#" title="Click to mark as Spam" onmouseover="Nabble.mouseover(10972571,0); return true;" onmouseout="Nabble.mouseout(10972571); return true;" onclick="Nabble.clicked(10972571,0); return false;"><img src="icon_blocked_gray.png" id="nabble.spam10972571" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to rate as Poor Post" onmouseover="Nabble.mouseover(10972571,1); return true;" onmouseout="Nabble.mouseout(10972571); return true;" onclick="Nabble.clicked(10972571,1); return false;"><img src="icon_star_grey.png" id="nabble.star10972571-1" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Below Average Post" onmouseover="Nabble.mouseover(10972571,2); return true;" onmouseout="Nabble.mouseout(10972571); return true;" onclick="Nabble.clicked(10972571,2); return false;"><img src="icon_star_grey.png" id="nabble.star10972571-2" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Average Post" onmouseover="Nabble.mouseover(10972571,3); return true;" onmouseout="Nabble.mouseout(10972571); return true;" onclick="Nabble.clicked(10972571,3); return false;"><img src="icon_star_grey.png" id="nabble.star10972571-3" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Above Average Post" onmouseover="Nabble.mouseover(10972571,4); return true;" onmouseout="Nabble.mouseout(10972571); return true;" onclick="Nabble.clicked(10972571,4); return false;"><img src="icon_star_grey.png" id="nabble.star10972571-4" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Excellent Post" onmouseover="Nabble.mouseover(10972571,5); return true;" onmouseout="Nabble.mouseout(10972571); return true;" onclick="Nabble.clicked(10972571,5); return false;"><img src="icon_star_grey.png" id="nabble.star10972571-5" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to clear rating" onmouseover="Nabble.mouseover(10972571,-1); return true;" onmouseout="Nabble.mouseout(10972571); return true;" onclick="Nabble.clicked(10972571,-1); return false;"><img id="nabble.star10972571-0" alt="" src="icon_clear_rating.png" style="vertical-align: middle;" border="0"></a>
+<span id="nabble.descriptor10972571">- Use ratings to moderate (<a title="Click for more info" href="http://www.nabble.com/help/Answer.jtp?id=16">?</a>)</span>
+</p>
+<p class="message-actions2">
+
+<script>
+
+document.writeln('<a href="/forum/Reply.jtp?post=10972571" rel="nofollow">Reply</a> | ');
+</script><a href="http://www.nabble.com/forum/Reply.jtp?post=10972571" rel="nofollow">Reply</a> | 
+
+<a href="http://www.nabble.com/user/SendEmail.jtp?type=pm&post=10972571" target="_top" rel="nofollow">Reply to Author</a>   
+<script>
+
+if( Nabble.user == 58258 ) {
+    
+	document.writeln('| <a href="javascript:Nabble.deletePost(10972571,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+else if( Nabble.user == 792292 ) {
+	document.writeln('| <a href="javascript:Nabble.deletePost(10972571,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+document.writeln('| <a href="/forum/PrintPost.jtp?post=10972571" rel="nofollow" target="_new">Print</a>');
+</script>| <a href="http://www.nabble.com/forum/PrintPost.jtp?post=10972571" rel="nofollow" target="_new">Print</a>
+
+
+| <a href="javascript:%20void%20Nabble.setView('newthreaded',10972571);">View Threaded</a>
+| <a href="http://www.nabble.com/Re%3A-subtraction-of-ROIs-p10972571.html">Show Only this Message</a>
+</p>
+
+</div>
+<div class="message-details">
+<div id="nabble.pending10972571"></div>
+<div class="message-text" id="nabble.msgtxt10972571"><span>This is better. If the <b class="highlight">ROIs</b> (0 and 1) are in the <b class="highlight">ROI</b> manager:
+</span><br><br><br><span><b class="highlight">roiManager</b>("Select", 0);
+</span><br><span>setKeyDown("alt");
+</span><br><span><b class="highlight">roiManager</b>("Select",1);
+</span><br><span>setKeyDown("none") 
+</span><br><br><br><span>Cheers,
+</span><br><br><span>Gabriel
+</span><br></div>
+<script>
+
+if (Nabble.searchterms != null && Nabble.searchterms.length > 0) {
+	Nabble.hilt(Nabble.searchterms, Nabble.get("nabble.msgtxt10972571"));
+}
+</script>
+</div>
+</td>
+
+</tr>
+
+
+<tr valign="top">
+<!-- Current Message -->
+<td class="current-message">
+	<span id="nabble.i10984274" style="visibility: hidden;"><img alt="" src="icon_tri.png" width="12" align="absmiddle" height="12"></span><br>
+</td>
+<td>
+<!-- Subject -->
+
+<a name="a10984274">
+	</a><h2><a href="http://www.nabble.com/help/Answer.jtp?id=34" target="_top"><img alt="Parent Message unknown" title="Parent Message unknown" src="icon_orphan.png" style="vertical-align: middle;" width="13" border="0" height="14"></a> Re: subtraction of ROIs</h2><a title="Click to flag this post" id="nabble.aflag10984274" href="javascript:%20void%20Nabble.setFlag(10984274);"><img alt="Click to flag this post" id="nabble.flag10984274" src="icon_unflagged.png" onmouseover="status = alt; return true;" onmouseout="status = defaultStatus; return true;" width="15" border="0" height="15"></a>
+<!-- /Subject -->
+<!-- Message Actions -->
+<span id="nabble.rating10984274">
+<script>document.write(Nabble.ratingStars(3));</script><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12">
+</span>
+
+<div class="message-actions weak-color">
+<p class="message-actions1">
+
+by <script>document.write('<a href=\"' +'/user/UserProfile' + '.jtp?'+'user=646338\" rel=\"nofollow\" ' + Nabble.embeddedTarget('_top') + '>');</script><a href="http://www.nabble.com/user/UserProfile.jtp?user=646338" rel="nofollow" target="_top">Philippe Rosay<script>document.write('</a>');</script></a>
+<span class="weak-color"><script>document.write(Nabble.formatDateLong(new Date(1181120697000)));</script>Jun 06, 2007; 05:04pm</span> ::
+Rate this Message:
+<a href="#" title="Click to mark as Spam" onmouseover="Nabble.mouseover(10984274,0); return true;" onmouseout="Nabble.mouseout(10984274); return true;" onclick="Nabble.clicked(10984274,0); return false;"><img src="icon_blocked_gray.png" id="nabble.spam10984274" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to rate as Poor Post" onmouseover="Nabble.mouseover(10984274,1); return true;" onmouseout="Nabble.mouseout(10984274); return true;" onclick="Nabble.clicked(10984274,1); return false;"><img src="icon_star_grey.png" id="nabble.star10984274-1" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Below Average Post" onmouseover="Nabble.mouseover(10984274,2); return true;" onmouseout="Nabble.mouseout(10984274); return true;" onclick="Nabble.clicked(10984274,2); return false;"><img src="icon_star_grey.png" id="nabble.star10984274-2" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Average Post" onmouseover="Nabble.mouseover(10984274,3); return true;" onmouseout="Nabble.mouseout(10984274); return true;" onclick="Nabble.clicked(10984274,3); return false;"><img src="icon_star_grey.png" id="nabble.star10984274-3" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Above Average Post" onmouseover="Nabble.mouseover(10984274,4); return true;" onmouseout="Nabble.mouseout(10984274); return true;" onclick="Nabble.clicked(10984274,4); return false;"><img src="icon_star_grey.png" id="nabble.star10984274-4" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Excellent Post" onmouseover="Nabble.mouseover(10984274,5); return true;" onmouseout="Nabble.mouseout(10984274); return true;" onclick="Nabble.clicked(10984274,5); return false;"><img src="icon_star_grey.png" id="nabble.star10984274-5" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to clear rating" onmouseover="Nabble.mouseover(10984274,-1); return true;" onmouseout="Nabble.mouseout(10984274); return true;" onclick="Nabble.clicked(10984274,-1); return false;"><img id="nabble.star10984274-0" alt="" src="icon_clear_rating.png" style="vertical-align: middle;" border="0"></a>
+<span id="nabble.descriptor10984274">- Use ratings to moderate (<a title="Click for more info" href="http://www.nabble.com/help/Answer.jtp?id=16">?</a>)</span>
+</p>
+<p class="message-actions2">
+
+<script>
+
+document.writeln('<a href="/forum/Reply.jtp?post=10984274" rel="nofollow">Reply</a> | ');
+</script><a href="http://www.nabble.com/forum/Reply.jtp?post=10984274" rel="nofollow">Reply</a> | 
+
+<a href="http://www.nabble.com/user/SendEmail.jtp?type=pm&post=10984274" target="_top" rel="nofollow">Reply to Author</a>   
+<script>
+
+if( Nabble.user == 646338 ) {
+    
+	document.writeln('| <a href="javascript:Nabble.deletePost(10984274,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+else if( Nabble.user == 792292 ) {
+	document.writeln('| <a href="javascript:Nabble.deletePost(10984274,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+document.writeln('| <a href="/forum/PrintPost.jtp?post=10984274" rel="nofollow" target="_new">Print</a>');
+</script>| <a href="http://www.nabble.com/forum/PrintPost.jtp?post=10984274" rel="nofollow" target="_new">Print</a>
+
+
+| <a href="javascript:%20void%20Nabble.setView('newthreaded',10984274);">View Threaded</a>
+| <a href="http://www.nabble.com/Re%3A-subtraction-of-ROIs-p10984274.html">Show Only this Message</a>
+</p>
+
+</div>
+<div class="message-details">
+<div id="nabble.pending10984274"></div>
+<div class="message-text" id="nabble.msgtxt10984274"><span>Mark Besonen idea works, i've tried to record it as a macro...
+</span><br><span>Can someone help me, as I do not want to use <b class="highlight">ROI</b> no 3 and 4, but the last
+</span><br><span>and &nbsp;the penultimate (n th and n-1 th)?
+</span><br><span>Philippe Rosay
+</span><br><br><br><span>// macro sur une id&eacute;e de Mark Besonen
+</span><br><span>// soustraire deux r&eacute;gions donc une incluse dans l'autre
+</span><br><br><span>&nbsp;if (<b class="highlight">roiManager</b>("Count")!=4)
+</span><br><span>&nbsp; &nbsp; &nbsp; exit("il n'y a pas exactement 4 <b class="highlight">ROI</b>");
+</span><br><span>// test car on utilise la <b class="highlight">ROI</b> 3 et 4
+</span><br><br><span><b class="highlight">roiManager</b>("Select", 2);
+</span><br><span>run("Create Mask");
+</span><br><span>// on prends la partie la plus grande dans un masque ici hilus et supra
+</span><br><br><span><b class="highlight">roiManager</b>("Select", 3);
+</span><br><span>run("Clear");
+</span><br><span>// on selectionne la petite partie, ici le hilus et on retranche de la grande
+</span><br><br><span>run("Create Selection");
+</span><br><span><b class="highlight">roiManager</b>("Add");
+</span><br><span>close();
+</span><br><span>// on selectionne le r&eacute;sultat, et ajoute au <b class="highlight">ROI</b>. On ferme la fenetre masque
+</span><br><br><span><b class="highlight">roiManager</b>("Select", 4);
+</span><br><span><b class="highlight">roiManager</b>("Rename", "supra");
+</span><br><span>// simple renommage
+</span><br></div>
+<script>
+
+if (Nabble.searchterms != null && Nabble.searchterms.length > 0) {
+	Nabble.hilt(Nabble.searchterms, Nabble.get("nabble.msgtxt10984274"));
+}
+</script>
+</div>
+</td>
+
+</tr>
+
+
+<tr valign="top">
+<!-- Current Message -->
+<td class="current-message">
+	<span id="nabble.i10988079" style="visibility: hidden;"><img alt="" src="icon_tri.png" width="12" align="absmiddle" height="12"></span><br>
+</td>
+<td>
+<!-- Subject -->
+
+<a name="a10988079">
+	</a><h2><a name="a10988079">Re: subtraction of ROIs</a></h2><a title="Click to flag this post" id="nabble.aflag10988079" href="javascript:%20void%20Nabble.setFlag(10988079);"><img alt="Click to flag this post" id="nabble.flag10988079" src="icon_unflagged.png" onmouseover="status = alt; return true;" onmouseout="status = defaultStatus; return true;" width="15" border="0" height="15"></a>
+<!-- /Subject -->
+<!-- Message Actions -->
+<span id="nabble.rating10988079">
+<script>document.write(Nabble.ratingStars(3));</script><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12">
+</span>
+
+<div class="message-actions weak-color">
+<p class="message-actions1">
+
+by <script>document.write('<a href=\"' +'/user/UserProfile' + '.jtp?'+'user=311051\" rel=\"nofollow\" ' + Nabble.embeddedTarget('_top') + '>');</script><a href="http://www.nabble.com/user/UserProfile.jtp?user=311051" rel="nofollow" target="_top">Ben.BigHair<script>document.write('</a>');</script></a>
+<span class="weak-color"><script>document.write(Nabble.formatDateLong(new Date(1181136532000)));</script>Jun 06, 2007; 09:28pm</span> ::
+Rate this Message:
+<a href="#" title="Click to mark as Spam" onmouseover="Nabble.mouseover(10988079,0); return true;" onmouseout="Nabble.mouseout(10988079); return true;" onclick="Nabble.clicked(10988079,0); return false;"><img src="icon_blocked_gray.png" id="nabble.spam10988079" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to rate as Poor Post" onmouseover="Nabble.mouseover(10988079,1); return true;" onmouseout="Nabble.mouseout(10988079); return true;" onclick="Nabble.clicked(10988079,1); return false;"><img src="icon_star_grey.png" id="nabble.star10988079-1" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Below Average Post" onmouseover="Nabble.mouseover(10988079,2); return true;" onmouseout="Nabble.mouseout(10988079); return true;" onclick="Nabble.clicked(10988079,2); return false;"><img src="icon_star_grey.png" id="nabble.star10988079-2" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Average Post" onmouseover="Nabble.mouseover(10988079,3); return true;" onmouseout="Nabble.mouseout(10988079); return true;" onclick="Nabble.clicked(10988079,3); return false;"><img src="icon_star_grey.png" id="nabble.star10988079-3" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Above Average Post" onmouseover="Nabble.mouseover(10988079,4); return true;" onmouseout="Nabble.mouseout(10988079); return true;" onclick="Nabble.clicked(10988079,4); return false;"><img src="icon_star_grey.png" id="nabble.star10988079-4" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Excellent Post" onmouseover="Nabble.mouseover(10988079,5); return true;" onmouseout="Nabble.mouseout(10988079); return true;" onclick="Nabble.clicked(10988079,5); return false;"><img src="icon_star_grey.png" id="nabble.star10988079-5" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to clear rating" onmouseover="Nabble.mouseover(10988079,-1); return true;" onmouseout="Nabble.mouseout(10988079); return true;" onclick="Nabble.clicked(10988079,-1); return false;"><img id="nabble.star10988079-0" alt="" src="icon_clear_rating.png" style="vertical-align: middle;" border="0"></a>
+<span id="nabble.descriptor10988079">- Use ratings to moderate (<a title="Click for more info" href="http://www.nabble.com/help/Answer.jtp?id=16">?</a>)</span>
+</p>
+<p class="message-actions2">
+
+<script>
+
+document.writeln('<a href="/forum/Reply.jtp?post=10988079" rel="nofollow">Reply</a> | ');
+</script><a href="http://www.nabble.com/forum/Reply.jtp?post=10988079" rel="nofollow">Reply</a> | 
+
+<a href="http://www.nabble.com/user/SendEmail.jtp?type=pm&post=10988079" target="_top" rel="nofollow">Reply to Author</a>   
+<script>
+
+if( Nabble.user == 311051 ) {
+    
+	document.writeln('| <a href="javascript:Nabble.deletePost(10988079,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+else if( Nabble.user == 792292 ) {
+	document.writeln('| <a href="javascript:Nabble.deletePost(10988079,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+document.writeln('| <a href="/forum/PrintPost.jtp?post=10988079" rel="nofollow" target="_new">Print</a>');
+</script>| <a href="http://www.nabble.com/forum/PrintPost.jtp?post=10988079" rel="nofollow" target="_new">Print</a>
+
+
+| <a href="javascript:%20void%20Nabble.setView('newthreaded',10988079);">View Threaded</a>
+| <a href="http://www.nabble.com/Re%3A-subtraction-of-ROIs-p10988079.html">Show Only this Message</a>
+</p>
+
+</div>
+<div class="message-details">
+<div id="nabble.pending10988079"></div>
+<div class="message-text" id="nabble.msgtxt10988079"><span>Philippe Rosay wrote:
+</span><div style="height: 170px; overflow-y: hidden;" class="shrinkable-quote"><br><span>&gt; Mark Besonen idea works, i've tried to record it as a macro...
+</span><br><span>&gt; Can someone help me, as I do not want to use <b class="highlight">ROI</b> no 3 and 4, but the last
+</span><br><span>&gt; and &nbsp;the penultimate (n th and n-1 th)?
+</span><br><span>&gt; Philippe Rosay
+</span><br><span>&gt; 
+</span><br><span>&gt; 
+</span><br><span>&gt; // macro sur une id&eacute;e de Mark Besonen
+</span><br><span>&gt; // soustraire deux r&eacute;gions donc une incluse dans l'autre
+</span><br><span>&gt; 
+</span><br><span>&gt; &nbsp;if (<b class="highlight">roiManager</b>("Count")!=4)
+</span><br><span>&gt; &nbsp; &nbsp; &nbsp; exit("il n'y a pas exactement 4 <b class="highlight">ROI</b>");
+</span><br><span>&gt; // test car on utilise la <b class="highlight">ROI</b> 3 et 4
+</span><br><span>&gt; 
+</span><br><span>&gt; <b class="highlight">roiManager</b>("Select", 2);
+</span><br><span>&gt; run("Create Mask");
+</span><br><span>&gt; // on prends la partie la plus grande dans un masque ici hilus et supra
+</span><br><span>&gt; 
+</span><br><span>&gt; <b class="highlight">roiManager</b>("Select", 3);
+</span><br><span>&gt; run("Clear");
+</span><br><span>&gt; // on selectionne la petite partie, ici le hilus et on retranche de la grande
+</span><br><span>&gt; 
+</span><br><span>&gt; run("Create Selection");
+</span><br><span>&gt; <b class="highlight">roiManager</b>("Add");
+</span><br><span>&gt; close();
+</span><br><span>&gt; // on selectionne le r&eacute;sultat, et ajoute au <b class="highlight">ROI</b>. On ferme la fenetre masque
+</span><br><span>&gt; 
+</span><br><span>&gt; <b class="highlight">roiManager</b>("Select", 4);
+</span><br><span>&gt; <b class="highlight">roiManager</b>("Rename", "supra");
+</span><br><span>&gt; // simple renommage
+</span><br><span>&gt; 
+</span></div><div style="" class="shrink-quote"><span>...</span> [<a href="#">show rest of quote</a>]</div><span>Hi,
+</span><br><br><span>You can use the "count" method for <b class="highlight">roiManager</b> to get objects near the 
+</span><br><span>end of the <b class="highlight">roi</b> list.
+</span><br><br><span><b class="highlight">roiManager</b>("select", <b class="highlight">roiManager</b>("count")-1); &nbsp;= n th
+</span><br><span><b class="highlight">roiManager</b>("select", <b class="highlight">roiManager</b>("count")-2); &nbsp;= n-1 th
+</span><br><br><span>Cheers,
+</span><br><span>Ben
+</span><br></div>
+<script>
+
+if (Nabble.searchterms != null && Nabble.searchterms.length > 0) {
+	Nabble.hilt(Nabble.searchterms, Nabble.get("nabble.msgtxt10988079"));
+}
+</script>
+</div>
+</td>
+
+</tr>
+
+
+<tr valign="top">
+<!-- Current Message -->
+<td class="current-message">
+	<span id="nabble.i10999925" style="visibility: hidden;"><img alt="" src="icon_tri.png" width="12" align="absmiddle" height="12"></span><br>
+</td>
+<td>
+<!-- Subject -->
+
+<a name="a10999925">
+	</a><h2><a name="a10999925">Re: subtraction of ROIs</a></h2><a title="Click to flag this post" id="nabble.aflag10999925" href="javascript:%20void%20Nabble.setFlag(10999925);"><img alt="Click to flag this post" id="nabble.flag10999925" src="icon_unflagged.png" onmouseover="status = alt; return true;" onmouseout="status = defaultStatus; return true;" width="15" border="0" height="15"></a>
+<!-- /Subject -->
+<!-- Message Actions -->
+<span id="nabble.rating10999925">
+<script>document.write(Nabble.ratingStars(3));</script><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12">
+</span>
+
+<div class="message-actions weak-color">
+<p class="message-actions1">
+
+by <script>document.write('<a href=\"' +'/user/UserProfile' + '.jtp?'+'user=83754\" rel=\"nofollow\" ' + Nabble.embeddedTarget('_top') + '>');</script><a href="http://www.nabble.com/user/UserProfile.jtp?user=83754" rel="nofollow" target="_top">Jim Cant<script>document.write('</a>');</script></a>
+<span class="weak-color"><script>document.write(Nabble.formatDateLong(new Date(1181179776000)));</script>Jun 07, 2007; 09:29am</span> ::
+Rate this Message:
+<a href="#" title="Click to mark as Spam" onmouseover="Nabble.mouseover(10999925,0); return true;" onmouseout="Nabble.mouseout(10999925); return true;" onclick="Nabble.clicked(10999925,0); return false;"><img src="icon_blocked_gray.png" id="nabble.spam10999925" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to rate as Poor Post" onmouseover="Nabble.mouseover(10999925,1); return true;" onmouseout="Nabble.mouseout(10999925); return true;" onclick="Nabble.clicked(10999925,1); return false;"><img src="icon_star_grey.png" id="nabble.star10999925-1" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Below Average Post" onmouseover="Nabble.mouseover(10999925,2); return true;" onmouseout="Nabble.mouseout(10999925); return true;" onclick="Nabble.clicked(10999925,2); return false;"><img src="icon_star_grey.png" id="nabble.star10999925-2" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Average Post" onmouseover="Nabble.mouseover(10999925,3); return true;" onmouseout="Nabble.mouseout(10999925); return true;" onclick="Nabble.clicked(10999925,3); return false;"><img src="icon_star_grey.png" id="nabble.star10999925-3" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Above Average Post" onmouseover="Nabble.mouseover(10999925,4); return true;" onmouseout="Nabble.mouseout(10999925); return true;" onclick="Nabble.clicked(10999925,4); return false;"><img src="icon_star_grey.png" id="nabble.star10999925-4" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Excellent Post" onmouseover="Nabble.mouseover(10999925,5); return true;" onmouseout="Nabble.mouseout(10999925); return true;" onclick="Nabble.clicked(10999925,5); return false;"><img src="icon_star_grey.png" id="nabble.star10999925-5" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to clear rating" onmouseover="Nabble.mouseover(10999925,-1); return true;" onmouseout="Nabble.mouseout(10999925); return true;" onclick="Nabble.clicked(10999925,-1); return false;"><img id="nabble.star10999925-0" alt="" src="icon_clear_rating.png" style="vertical-align: middle;" border="0"></a>
+<span id="nabble.descriptor10999925">- Use ratings to moderate (<a title="Click for more info" href="http://www.nabble.com/help/Answer.jtp?id=16">?</a>)</span>
+</p>
+<p class="message-actions2">
+
+<script>
+
+document.writeln('<a href="/forum/Reply.jtp?post=10999925" rel="nofollow">Reply</a> | ');
+</script><a href="http://www.nabble.com/forum/Reply.jtp?post=10999925" rel="nofollow">Reply</a> | 
+
+<a href="http://www.nabble.com/user/SendEmail.jtp?type=pm&post=10999925" target="_top" rel="nofollow">Reply to Author</a>   
+<script>
+
+if( Nabble.user == 83754 ) {
+    
+	document.writeln('| <a href="/forum/EditPost.jtp?post=10999925" rel="nofollow">Edit</a>');
+    
+	document.writeln('| <a href="javascript:Nabble.deletePost(10999925,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+else if( Nabble.user == 792292 ) {
+	document.writeln('| <a href="javascript:Nabble.deletePost(10999925,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+document.writeln('| <a href="/forum/PrintPost.jtp?post=10999925" rel="nofollow" target="_new">Print</a>');
+</script>| <a href="http://www.nabble.com/forum/PrintPost.jtp?post=10999925" rel="nofollow" target="_new">Print</a>
+
+
+| <a href="javascript:%20void%20Nabble.setView('newthreaded',10999925);">View Threaded</a>
+| <a href="http://www.nabble.com/Re%3A-subtraction-of-ROIs-p10999925.html">Show Only this Message</a>
+</p>
+
+</div>
+<div class="message-details">
+<div id="nabble.pending10999925"></div>
+<div class="message-text" id="nabble.msgtxt10999925"><span>I'm curious as to what the goal is; it may make the problem simpler or harder; it appears that the suggestions in this thread have all been retracted. &nbsp; ;-)
+</span><br><br><span>If it's just to visually show the subtracted area (donut) then there's really no need to subtract.
+</span><br><span>If the area if the donut is needed, just to 'measure' on the <b class="highlight">roi</b>'s subtract the areas.
+</span><br><br><span>If the goal is to actually read and/or manipulate the pixels in the donut -- well this seems really hard.
+</span><br><span>First, it doesn't seem possible to represent the donut as an <b class="highlight">ROI</b> in ImageJ as it cannot be represented as list of vertices (which, I believe, is the data held internally to represent the <b class="highlight">ROI</b>; you would need 2 such lists.
+</span><br><br><span>If one wanted to write some code, one could do isPixelInDonut() by traversing all the pixels in the bounding rectangle of the outer <b class="highlight">ROI</b> and asking if the pixel was contained in the outer and not contained in the inner <b class="highlight">ROI</b>. This would give the correct set of pixels which you would than have to handle individually.
+</span><br><br><span>One could draw an approximation of the donut by 1. outlining the inner <b class="highlight">ROI</b> clockwise but just as you get back to the start, 2. move to a point on the outer <b class="highlight">ROI</b> and 3. outline it in the counter-clockwise direction and as you get back to the start of the outer, 4. move to the start of the inner. &nbsp;This will give a conventional <b class="highlight">ROI</b> that will be a donut with a cut in it. &nbsp;If you can make the cut small enough, this might be workable.
+</span><br><br><span>Again, if you wanted to write some code, you could take the 2 <b class="highlight">ring</b> <b class="highlight">ROIs</b>, get the list of vertices from each, and create a 'donut with cut' <b class="highlight">roi</b> that would include exactly the pixels in the donut.
+</span><br><br><span>Hope this helps
+</span><br><br><quote author="F Javier Diez Guerra"><br><span>How can I make a <b class="highlight">ROI</b> that is the result of the subtraction between two <b class="highlight">ROIs</b>?
+</span><br><br><span>Searching docs and list archives I've only found 
+</span><br><span>how to make "composite selections", which are 
+</span><br><span>created by hand (by drawing a <b class="highlight">ROI</b> inside another, while pressing the alt key).
+</span><br><br><span>I have two <b class="highlight">ROIs</b> in the <b class="highlight">ROI</b> manager, one <b class="highlight">ROI</b> 
+</span><br><span>inside the other one. I want to select the area 
+</span><br><span>within the bigger <b class="highlight">ROI</b>, excluding the area of the 
+</span><br><span>smaller <b class="highlight">ROI</b>. If we were talking of two circles 
+</span><br><span>(one inside the other), I want select the area 
+</span><br><span>defined by the <b class="highlight">ring</b> between them.
+</span><br></quote></div>
+<script>
+
+if (Nabble.searchterms != null && Nabble.searchterms.length > 0) {
+	Nabble.hilt(Nabble.searchterms, Nabble.get("nabble.msgtxt10999925"));
+}
+</script>
+</div>
+</td>
+
+</tr>
+
+
+<tr valign="top">
+<!-- Current Message -->
+<td class="current-message">
+	<span id="nabble.i11002514" style="visibility: hidden;"><img alt="" src="icon_tri.png" width="12" align="absmiddle" height="12"></span><br>
+</td>
+<td>
+<!-- Subject -->
+
+<a name="a11002514">
+	</a><h2><a name="a11002514">Re: subtraction of ROIs</a></h2><a title="Click to flag this post" id="nabble.aflag11002514" href="javascript:%20void%20Nabble.setFlag(11002514);"><img alt="Click to flag this post" id="nabble.flag11002514" src="icon_unflagged.png" onmouseover="status = alt; return true;" onmouseout="status = defaultStatus; return true;" width="15" border="0" height="15"></a>
+<!-- /Subject -->
+<!-- Message Actions -->
+<span id="nabble.rating11002514">
+<script>document.write(Nabble.ratingStars(4));</script><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12">
+</span>
+
+<div class="message-actions weak-color">
+<p class="message-actions1">
+
+by <script>document.write('<a href=\"' +'/user/UserProfile' + '.jtp?'+'user=58258\" rel=\"nofollow\" ' + Nabble.embeddedTarget('_top') + '>');</script><a href="http://www.nabble.com/user/UserProfile.jtp?user=58258" rel="nofollow" target="_top">Gabriel Landini<script>document.write('</a>');</script></a>
+<span class="weak-color"><script>document.write(Nabble.formatDateLong(new Date(1181199872000)));</script>Jun 07, 2007; 03:04pm</span> ::
+Rate this Message:
+<a href="#" title="Click to mark as Spam" onmouseover="Nabble.mouseover(11002514,0); return true;" onmouseout="Nabble.mouseout(11002514); return true;" onclick="Nabble.clicked(11002514,0); return false;"><img src="icon_blocked_gray.png" id="nabble.spam11002514" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to rate as Poor Post" onmouseover="Nabble.mouseover(11002514,1); return true;" onmouseout="Nabble.mouseout(11002514); return true;" onclick="Nabble.clicked(11002514,1); return false;"><img src="icon_star_grey.png" id="nabble.star11002514-1" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Below Average Post" onmouseover="Nabble.mouseover(11002514,2); return true;" onmouseout="Nabble.mouseout(11002514); return true;" onclick="Nabble.clicked(11002514,2); return false;"><img src="icon_star_grey.png" id="nabble.star11002514-2" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Average Post" onmouseover="Nabble.mouseover(11002514,3); return true;" onmouseout="Nabble.mouseout(11002514); return true;" onclick="Nabble.clicked(11002514,3); return false;"><img src="icon_star_grey.png" id="nabble.star11002514-3" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Above Average Post" onmouseover="Nabble.mouseover(11002514,4); return true;" onmouseout="Nabble.mouseout(11002514); return true;" onclick="Nabble.clicked(11002514,4); return false;"><img src="icon_star_grey.png" id="nabble.star11002514-4" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Excellent Post" onmouseover="Nabble.mouseover(11002514,5); return true;" onmouseout="Nabble.mouseout(11002514); return true;" onclick="Nabble.clicked(11002514,5); return false;"><img src="icon_star_grey.png" id="nabble.star11002514-5" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to clear rating" onmouseover="Nabble.mouseover(11002514,-1); return true;" onmouseout="Nabble.mouseout(11002514); return true;" onclick="Nabble.clicked(11002514,-1); return false;"><img id="nabble.star11002514-0" alt="" src="icon_clear_rating.png" style="vertical-align: middle;" border="0"></a>
+<span id="nabble.descriptor11002514">- Use ratings to moderate (<a title="Click for more info" href="http://www.nabble.com/help/Answer.jtp?id=16">?</a>)</span>
+</p>
+<p class="message-actions2">
+
+<script>
+
+document.writeln('<a href="/forum/Reply.jtp?post=11002514" rel="nofollow">Reply</a> | ');
+</script><a href="http://www.nabble.com/forum/Reply.jtp?post=11002514" rel="nofollow">Reply</a> | 
+
+<a href="http://www.nabble.com/user/SendEmail.jtp?type=pm&post=11002514" target="_top" rel="nofollow">Reply to Author</a>   
+<script>
+
+if( Nabble.user == 58258 ) {
+    
+	document.writeln('| <a href="javascript:Nabble.deletePost(11002514,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+else if( Nabble.user == 792292 ) {
+	document.writeln('| <a href="javascript:Nabble.deletePost(11002514,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+document.writeln('| <a href="/forum/PrintPost.jtp?post=11002514" rel="nofollow" target="_new">Print</a>');
+</script>| <a href="http://www.nabble.com/forum/PrintPost.jtp?post=11002514" rel="nofollow" target="_new">Print</a>
+
+
+| <a href="javascript:%20void%20Nabble.setView('newthreaded',11002514);">View Threaded</a>
+| <a href="http://www.nabble.com/Re%3A-subtraction-of-ROIs-p11002514.html">Show Only this Message</a>
+</p>
+
+</div>
+<div class="message-details">
+<div id="nabble.pending11002514"></div>
+<div class="message-text" id="nabble.msgtxt11002514"><span>On Thursday 07 June 2007, Jim Cant wrote:
+</span><br><span>&gt; I'm curious as to what the goal is; it may make the problem simpler or
+</span><br><span>&gt; harder; it appears that the suggestions in this thread have all been
+</span><br><span>&gt; retracted. &nbsp; ;-)
+</span><br><br><span>No, the one I suggested last works fine. Did you try it?
+</span><br><br><span>&gt; If it's just to visually show the subtracted area (donut) then there's
+</span><br><span>&gt; really no need to subtract.
+</span><br><span>&gt; If the area if the donut is needed, just to 'measure' on the <b class="highlight">roi</b>'s subtract
+</span><br><span>&gt; the areas.
+</span><br><br><span><b class="highlight">ROIs</b> are not only used to measure things inside, you can filter inside, do 
+</span><br><span>operations, etc.
+</span><br><br><span>&gt; First, it doesn't seem possible to represent the donut as an <b class="highlight">ROI</b> in ImageJ
+</span><br><span>&gt; as it cannot be represented as list of vertices (which, I believe, is the
+</span><br><span>&gt; data held internally to represent the <b class="highlight">ROI</b>; you would need 2 such lists.
+</span><br><br><span>It is possible, this is what composite <b class="highlight">ROIs</b> are for.
+</span><br><br><span>Cheers,
+</span><br><br><span>G.
+</span><br></div>
+<script>
+
+if (Nabble.searchterms != null && Nabble.searchterms.length > 0) {
+	Nabble.hilt(Nabble.searchterms, Nabble.get("nabble.msgtxt11002514"));
+}
+</script>
+</div>
+</td>
+
+</tr>
+
+
+<tr valign="top">
+<!-- Current Message -->
+<td class="current-message">
+	<span id="nabble.i11007274" style="visibility: hidden;"><img alt="" src="icon_tri.png" width="12" align="absmiddle" height="12"></span><br>
+</td>
+<td>
+<!-- Subject -->
+
+<a name="a11007274">
+	</a><h2><a name="a11007274">Re: subtraction of ROIs</a></h2><a title="Click to flag this post" id="nabble.aflag11007274" href="javascript:%20void%20Nabble.setFlag(11007274);"><img alt="Click to flag this post" id="nabble.flag11007274" src="icon_unflagged.png" onmouseover="status = alt; return true;" onmouseout="status = defaultStatus; return true;" width="15" border="0" height="15"></a>
+<!-- /Subject -->
+<!-- Message Actions -->
+<span id="nabble.rating11007274">
+<script>document.write(Nabble.ratingStars(3));</script><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12">
+</span>
+
+<div class="message-actions weak-color">
+<p class="message-actions1">
+
+by <script>document.write('<a href=\"' +'/user/UserProfile' + '.jtp?'+'user=226779\" rel=\"nofollow\" ' + Nabble.embeddedTarget('_top') + '>');</script><a href="http://www.nabble.com/user/UserProfile.jtp?user=226779" rel="nofollow" target="_top">F Javier Diez Guerra<script>document.write('</a>');</script></a>
+<span class="weak-color"><script>document.write(Nabble.formatDateLong(new Date(1181214156000)));</script>Jun 07, 2007; 07:02pm</span> ::
+Rate this Message:
+<a href="#" title="Click to mark as Spam" onmouseover="Nabble.mouseover(11007274,0); return true;" onmouseout="Nabble.mouseout(11007274); return true;" onclick="Nabble.clicked(11007274,0); return false;"><img src="icon_blocked_gray.png" id="nabble.spam11007274" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to rate as Poor Post" onmouseover="Nabble.mouseover(11007274,1); return true;" onmouseout="Nabble.mouseout(11007274); return true;" onclick="Nabble.clicked(11007274,1); return false;"><img src="icon_star_grey.png" id="nabble.star11007274-1" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Below Average Post" onmouseover="Nabble.mouseover(11007274,2); return true;" onmouseout="Nabble.mouseout(11007274); return true;" onclick="Nabble.clicked(11007274,2); return false;"><img src="icon_star_grey.png" id="nabble.star11007274-2" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Average Post" onmouseover="Nabble.mouseover(11007274,3); return true;" onmouseout="Nabble.mouseout(11007274); return true;" onclick="Nabble.clicked(11007274,3); return false;"><img src="icon_star_grey.png" id="nabble.star11007274-3" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Above Average Post" onmouseover="Nabble.mouseover(11007274,4); return true;" onmouseout="Nabble.mouseout(11007274); return true;" onclick="Nabble.clicked(11007274,4); return false;"><img src="icon_star_grey.png" id="nabble.star11007274-4" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Excellent Post" onmouseover="Nabble.mouseover(11007274,5); return true;" onmouseout="Nabble.mouseout(11007274); return true;" onclick="Nabble.clicked(11007274,5); return false;"><img src="icon_star_grey.png" id="nabble.star11007274-5" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to clear rating" onmouseover="Nabble.mouseover(11007274,-1); return true;" onmouseout="Nabble.mouseout(11007274); return true;" onclick="Nabble.clicked(11007274,-1); return false;"><img id="nabble.star11007274-0" alt="" src="icon_clear_rating.png" style="vertical-align: middle;" border="0"></a>
+<span id="nabble.descriptor11007274">- Use ratings to moderate (<a title="Click for more info" href="http://www.nabble.com/help/Answer.jtp?id=16">?</a>)</span>
+</p>
+<p class="message-actions2">
+
+<script>
+
+document.writeln('<a href="/forum/Reply.jtp?post=11007274" rel="nofollow">Reply</a> | ');
+</script><a href="http://www.nabble.com/forum/Reply.jtp?post=11007274" rel="nofollow">Reply</a> | 
+
+<a href="http://www.nabble.com/user/SendEmail.jtp?type=pm&post=11007274" target="_top" rel="nofollow">Reply to Author</a>   
+<script>
+
+if( Nabble.user == 226779 ) {
+    
+	document.writeln('| <a href="javascript:Nabble.deletePost(11007274,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+else if( Nabble.user == 792292 ) {
+	document.writeln('| <a href="javascript:Nabble.deletePost(11007274,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+document.writeln('| <a href="/forum/PrintPost.jtp?post=11007274" rel="nofollow" target="_new">Print</a>');
+</script>| <a href="http://www.nabble.com/forum/PrintPost.jtp?post=11007274" rel="nofollow" target="_new">Print</a>
+
+
+| <a href="javascript:%20void%20Nabble.setView('newthreaded',11007274);">View Threaded</a>
+| <a href="http://www.nabble.com/Re%3A-subtraction-of-ROIs-p11007274.html">Show Only this Message</a>
+</p>
+
+</div>
+<div class="message-details">
+<div id="nabble.pending11007274"></div>
+<div class="message-text" id="nabble.msgtxt11007274"><span>Thanks to everybody that has shown interest in the subtraction of <b class="highlight">ROIs</b> thread.
+</span><br><br><span>The goal was to compare the distribution of 
+</span><br><span>several fluorescent proteins (FP) in the nucleus 
+</span><br><span>and cytoplasm of cells that were labelled with 
+</span><br><span>To-Pro3 and were imaged in a confocal microscope.
+</span><br><br><span>&nbsp;From the To-Pro3 image, the image was 
+</span><br><span>thresholded (Image&gt;adjust&gt;threshold) and the 
+</span><br><span>relevant <b class="highlight">ROI</b> (nucleus ) was selected with the 
+</span><br><span>wand tool and added to the <b class="highlight">ROI</b> manager (<b class="highlight">ROI</b> 0). 
+</span><br><span>&nbsp;From the FP image the contour of the relevant 
+</span><br><span>cell was delineated in the same way and added to the <b class="highlight">ROI</b> manager (<b class="highlight">ROI</b> 1).
+</span><br><br><span>To calculate the <b class="highlight">ROI</b> that defines the cytoplasm 
+</span><br><span>(cell contour minus nucleus), the following 
+</span><br><span>simple macro (<b class="highlight">ROI_donut</b>.txt) is very useful:
+</span><br><br><span><b class="highlight">roiManager</b>("Select", 1);
+</span><br><span>setKeyDown("alt");
+</span><br><span><b class="highlight">roiManager</b>("Select",0);
+</span><br><span>setKeyDown("none");
+</span><br><span><b class="highlight">roiManager</b>("Add");
+</span><br><br><span>You end up with a third <b class="highlight">ROI</b> (1-1) in the <b class="highlight">ROI</b> 
+</span><br><span>manager that corresponds to the cytoplasm. Then 
+</span><br><span>you can measure in the different <b class="highlight">ROIs</b>.
+</span><br><br><span>Thanks to Mark and especially to Gabriel for their contribution.
+</span><br><br><span>I hope that this could be useful to others.
+</span><br><br><br><br><span>At 02:29 07/06/2007, you wrote:
+</span><div style="height: 170px; overflow-y: hidden;" class="shrinkable-quote"><br><span>&gt;I'm curious as to what the goal is; it may make the problem simpler or
+</span><br><span>&gt;harder; it appears that the suggestions in this thread have all been
+</span><br><span>&gt;retracted. &nbsp; ;-)
+</span><br><span>&gt;
+</span><br><span>&gt;If it's just to visually show the subtracted area (donut) then there's
+</span><br><span>&gt;really no need to subtract.
+</span><br><span>&gt;If the area if the donut is needed, just to 'measure' on the <b class="highlight">roi</b>'s subtract
+</span><br><span>&gt;the areas.
+</span><br><span>&gt;
+</span><br><span>&gt;If the goal is to actually read and/or manipulate the pixels in the donut --
+</span><br><span>&gt;well this seems really hard.
+</span><br><span>&gt;First, it doesn't seem possible to represent the donut as an <b class="highlight">ROI</b> in ImageJ
+</span><br><span>&gt;as it cannot be represented as list of vertices (which, I believe, is the
+</span><br><span>&gt;data held internally to represent the <b class="highlight">ROI</b>; you would need 2 such lists.
+</span><br><span>&gt;
+</span><br><span>&gt;If one wanted to write some code, one could do isPixelInDonut() by
+</span><br><span>&gt;traversing all the pixels in the bounding rectangle of the outer <b class="highlight">ROI</b> and
+</span><br><span>&gt;asking if the pixel was contained in the outer and not contained in the
+</span><br><span>&gt;inner <b class="highlight">ROI</b>. This would give the correct set of pixels which you would than
+</span><br><span>&gt;have to handle individually.
+</span><br><span>&gt;
+</span><br><span>&gt;One could draw an approximation of the donut by 1. outlining the inner <b class="highlight">ROI</b>
+</span><br><span>&gt;clockwise but just as you get back to the start, 2. move to a point on the
+</span><br><span>&gt;outer <b class="highlight">ROI</b> and 3. outline it in the counter-clockwise direction and as you
+</span><br><span>&gt;get back to the start of the outer, 4. move to the start of the inner. &nbsp;This
+</span><br><span>&gt;will give a conventional <b class="highlight">ROI</b> that will be a donut with a cut in it. &nbsp;If you
+</span><br><span>&gt;can make the cut small enough, this might be workable.
+</span><br><span>&gt;
+</span><br><span>&gt;Again, if you wanted to write some code, you could take the 2 <b class="highlight">ring</b> <b class="highlight">ROIs</b>, get
+</span><br><span>&gt;the list of vertices from each, and create a 'donut with cut' <b class="highlight">roi</b> that would
+</span><br><span>&gt;include exactly the pixels in the donut.
+</span><br><span>&gt;
+</span><br><span>&gt;Hope this helps
+</span><br><span>&gt;
+</span><br><span>&gt;
+</span><br><span>&gt;How can I make a <b class="highlight">ROI</b> that is the result of the subtraction between two <b class="highlight">ROIs</b>?
+</span><br><span>&gt;
+</span><br><span>&gt;Searching docs and list archives I've only found
+</span><br><span>&gt;how to make "composite selections", which are
+</span><br><span>&gt;created by hand (by drawing a <b class="highlight">ROI</b> inside another, while pressing the alt
+</span><br><span>&gt;key).
+</span><br><span>&gt;
+</span><br><span>&gt;I have two <b class="highlight">ROIs</b> in the <b class="highlight">ROI</b> manager, one <b class="highlight">ROI</b>
+</span><br><span>&gt;inside the other one. I want to select the area
+</span><br><span>&gt;within the bigger <b class="highlight">ROI</b>, excluding the area of the
+</span><br><span>&gt;smaller <b class="highlight">ROI</b>. If we were talking of two circles
+</span><br><span>&gt;(one inside the other), I want select the area
+</span><br><span>&gt;defined by the <b class="highlight">ring</b> between them.
+</span><br><span>&gt;
+</span><br><span>&gt;--
+</span><br><span>&gt;View this message in context: 
+</span><br><span>&gt;</span><a href="http://www.nabble.com/subtraction-of-ROIs-tf3872158.html#a10999925" target="_top"><span>http://www.nabble.com/subtraction-of-<b class="highlight">ROIs</b>-tf3872158.html#a10999925</span></a><br><span>&gt;Sent from the ImageJ mailing list archive at Nabble.com.
+</span></div><div style="" class="shrink-quote"><span>...</span> [<a href="#">show rest of quote</a>]</div><br><span>F Javier Diez-Guerra, PhD
+</span><br><span>Profesor Titular
+</span><br><span>Centro de Biologia Molecular Severo Ochoa
+</span><br><span>Facultad de Ciencias, Universidad Aut&oacute;noma
+</span><br><span>Ctra Colmenar Viejo Km 15
+</span><br><span>Cantoblanco, 28049 Madrid
+</span><br><span>SPAIN
+</span><br><br><span>phone: &nbsp;+34 91 4978051
+</span><br><span>Fax: &nbsp; &nbsp; &nbsp;+34 91 4978087
+</span><br><span>e-mail: </span><a href="http://www.nabble.com/user/SendEmail.jtp?type=post&post=11007274&i=0" target="_top" rel="nofollow"><span>fjdiez@...</span></a><span> 
+</span><br></div>
+<script>
+
+if (Nabble.searchterms != null && Nabble.searchterms.length > 0) {
+	Nabble.hilt(Nabble.searchterms, Nabble.get("nabble.msgtxt11007274"));
+}
+</script>
+</div>
+</td>
+
+</tr>
+
+
+<tr valign="top">
+<!-- Current Message -->
+<td class="current-message">
+	<span id="nabble.i11093360" style="visibility: hidden;"><img alt="" src="icon_tri.png" width="12" align="absmiddle" height="12"></span><br>
+</td>
+<td>
+<!-- Subject -->
+
+<a name="a11093360">
+	</a><h2><a name="a11093360">Re: subtraction of ROIs</a></h2><a title="Click to flag this post" id="nabble.aflag11093360" href="javascript:%20void%20Nabble.setFlag(11093360);"><img alt="Click to flag this post" id="nabble.flag11093360" src="icon_unflagged.png" onmouseover="status = alt; return true;" onmouseout="status = defaultStatus; return true;" width="15" border="0" height="15"></a>
+<!-- /Subject -->
+<!-- Message Actions -->
+<span id="nabble.rating11093360">
+<script>document.write(Nabble.ratingStars(3));</script><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12">
+</span>
+
+<div class="message-actions weak-color">
+<p class="message-actions1">
+
+by <script>document.write('<a href=\"' +'/user/UserProfile' + '.jtp?'+'user=712573\" rel=\"nofollow\" ' + Nabble.embeddedTarget('_top') + '>');</script><a href="http://www.nabble.com/user/UserProfile.jtp?user=712573" rel="nofollow" target="_top">Declan James<script>document.write('</a>');</script></a>
+<span class="weak-color"><script>document.write(Nabble.formatDateLong(new Date(1181718932000)));</script>Jun 13, 2007; 03:15pm</span> ::
+Rate this Message:
+<a href="#" title="Click to mark as Spam" onmouseover="Nabble.mouseover(11093360,0); return true;" onmouseout="Nabble.mouseout(11093360); return true;" onclick="Nabble.clicked(11093360,0); return false;"><img src="icon_blocked_gray.png" id="nabble.spam11093360" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to rate as Poor Post" onmouseover="Nabble.mouseover(11093360,1); return true;" onmouseout="Nabble.mouseout(11093360); return true;" onclick="Nabble.clicked(11093360,1); return false;"><img src="icon_star_grey.png" id="nabble.star11093360-1" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Below Average Post" onmouseover="Nabble.mouseover(11093360,2); return true;" onmouseout="Nabble.mouseout(11093360); return true;" onclick="Nabble.clicked(11093360,2); return false;"><img src="icon_star_grey.png" id="nabble.star11093360-2" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Average Post" onmouseover="Nabble.mouseover(11093360,3); return true;" onmouseout="Nabble.mouseout(11093360); return true;" onclick="Nabble.clicked(11093360,3); return false;"><img src="icon_star_grey.png" id="nabble.star11093360-3" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Above Average Post" onmouseover="Nabble.mouseover(11093360,4); return true;" onmouseout="Nabble.mouseout(11093360); return true;" onclick="Nabble.clicked(11093360,4); return false;"><img src="icon_star_grey.png" id="nabble.star11093360-4" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Excellent Post" onmouseover="Nabble.mouseover(11093360,5); return true;" onmouseout="Nabble.mouseout(11093360); return true;" onclick="Nabble.clicked(11093360,5); return false;"><img src="icon_star_grey.png" id="nabble.star11093360-5" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to clear rating" onmouseover="Nabble.mouseover(11093360,-1); return true;" onmouseout="Nabble.mouseout(11093360); return true;" onclick="Nabble.clicked(11093360,-1); return false;"><img id="nabble.star11093360-0" alt="" src="icon_clear_rating.png" style="vertical-align: middle;" border="0"></a>
+<span id="nabble.descriptor11093360">- Use ratings to moderate (<a title="Click for more info" href="http://www.nabble.com/help/Answer.jtp?id=16">?</a>)</span>
+</p>
+<p class="message-actions2">
+
+<script>
+
+document.writeln('<a href="/forum/Reply.jtp?post=11093360" rel="nofollow">Reply</a> | ');
+</script><a href="http://www.nabble.com/forum/Reply.jtp?post=11093360" rel="nofollow">Reply</a> | 
+
+<a href="http://www.nabble.com/user/SendEmail.jtp?type=pm&post=11093360" target="_top" rel="nofollow">Reply to Author</a>   
+<script>
+
+if( Nabble.user == 712573 ) {
+    
+	document.writeln('| <a href="javascript:Nabble.deletePost(11093360,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+else if( Nabble.user == 792292 ) {
+	document.writeln('| <a href="javascript:Nabble.deletePost(11093360,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+document.writeln('| <a href="/forum/PrintPost.jtp?post=11093360" rel="nofollow" target="_new">Print</a>');
+</script>| <a href="http://www.nabble.com/forum/PrintPost.jtp?post=11093360" rel="nofollow" target="_new">Print</a>
+
+
+| <a href="javascript:%20void%20Nabble.setView('newthreaded',11093360);">View Threaded</a>
+| <a href="http://www.nabble.com/Re%3A-subtraction-of-ROIs-p11093360.html">Show Only this Message</a>
+</p>
+
+</div>
+<div class="message-details">
+<div id="nabble.pending11093360"></div>
+<div class="message-text" id="nabble.msgtxt11093360"><span>Hello List, 
+</span><br><br><span>I may be a bit late on this particular topic but I have been trying outside
+</span><br><span>of ImageJ ie with Excel after all the ImageJ results is dumped to a txt file
+</span><br><span>to subtract measurements for <b class="highlight">ROIs</b> contained within <b class="highlight">ROI</b>'s. 
+</span><br><br><span>How would you do what <b class="highlight">ROI_donut</b>.txt does below for one cell on a collection
+</span><br><span>of cells within the same image? &nbsp;Or put another way ...
+</span><br><span>How do you associate the larger <b class="highlight">ROI</b>(cell cytoplasma) with the smaller <b class="highlight">ROI</b>
+</span><br><span>(nucleus) that share the same center of mass x,y when you have more than one
+</span><br><span>cell, ie a list of greater than 300 <b class="highlight">ROIs</b>? &nbsp;
+</span><br><br><span>Also because the objects I am measuring are sometimes near to each other to
+</span><br><span>prevent segmentation, the outer/larger <b class="highlight">ROI</b> can contain more that one
+</span><br><span>internal <b class="highlight">ROI</b>. A situation like this can also genuinely arise when a cell
+</span><br><span>contains two nuclei. &nbsp;Under those circumstances the larger <b class="highlight">ROI</b> (cytoplasm)
+</span><br><span>now has a centre of mass x,y that does not correspond to the centre of mass
+</span><br><span>coordinates for the two smaller internal <b class="highlight">ROI</b>'s(nuclei). &nbsp; Given a big list
+</span><br><span>of <b class="highlight">ROIs</b> how would these two smaller <b class="highlight">ROIs</b> be correctly added to the larger
+</span><br><span><b class="highlight">ROI</b>? &nbsp;
+</span><br><br><span>Many thanks
+</span><br><br><span>Declan 
+</span><br><span>-----Original Message-----
+</span><br><span>From: ImageJ Interest Group [mailto:</span><a href="http://www.nabble.com/user/SendEmail.jtp?type=post&post=11093360&i=0" target="_top" rel="nofollow"><span>IMAGEJ@...</span></a><span>] On Behalf Of F
+</span><br><span>Javier Diez Guerra
+</span><br><span>Sent: 07 June 2007 05:03
+</span><br><span>To: </span><a href="http://www.nabble.com/user/SendEmail.jtp?type=post&post=11093360&i=1" target="_top" rel="nofollow"><span>IMAGEJ@...</span></a><span>
+</span><br><span>Subject: Re: subtraction of <b class="highlight">ROIs</b>
+</span><br><br><span>Thanks to everybody that has shown interest in the subtraction of <b class="highlight">ROIs</b>
+</span><br><span>thread.
+</span><br><br><span>The goal was to compare the distribution of 
+</span><br><span>several fluorescent proteins (FP) in the nucleus 
+</span><br><span>and cytoplasm of cells that were labelled with 
+</span><br><span>To-Pro3 and were imaged in a confocal microscope.
+</span><br><br><span>&nbsp;From the To-Pro3 image, the image was 
+</span><br><span>thresholded (Image&gt;adjust&gt;threshold) and the 
+</span><br><span>relevant <b class="highlight">ROI</b> (nucleus ) was selected with the 
+</span><br><span>wand tool and added to the <b class="highlight">ROI</b> manager (<b class="highlight">ROI</b> 0). 
+</span><br><span>&nbsp;From the FP image the contour of the relevant 
+</span><br><span>cell was delineated in the same way and added to the <b class="highlight">ROI</b> manager (<b class="highlight">ROI</b> 1).
+</span><br><br><span>To calculate the <b class="highlight">ROI</b> that defines the cytoplasm 
+</span><br><span>(cell contour minus nucleus), the following 
+</span><br><span>simple macro (<b class="highlight">ROI_donut</b>.txt) is very useful:
+</span><br><br><span><b class="highlight">roiManager</b>("Select", 1);
+</span><br><span>setKeyDown("alt");
+</span><br><span><b class="highlight">roiManager</b>("Select",0);
+</span><br><span>setKeyDown("none");
+</span><br><span><b class="highlight">roiManager</b>("Add");
+</span><br><br><span>You end up with a third <b class="highlight">ROI</b> (1-1) in the <b class="highlight">ROI</b> 
+</span><br><span>manager that corresponds to the cytoplasm. Then 
+</span><br><span>you can measure in the different <b class="highlight">ROIs</b>.
+</span><br><br><span>Thanks to Mark and especially to Gabriel for their contribution.
+</span><br><br><span>I hope that this could be useful to others.
+</span><br><br><br><br><span>&gt;How can I make a <b class="highlight">ROI</b> that is the result of the subtraction between two
+</span><br><span><b class="highlight">ROIs</b>?
+</span><div style="height: 170px; overflow-y: hidden;" class="shrinkable-quote"><br><span>&gt;
+</span><br><span>&gt;Searching docs and list archives I've only found
+</span><br><span>&gt;how to make "composite selections", which are
+</span><br><span>&gt;created by hand (by drawing a <b class="highlight">ROI</b> inside another, while pressing the alt
+</span><br><span>&gt;key).
+</span><br><span>&gt;
+</span><br><span>&gt;I have two <b class="highlight">ROIs</b> in the <b class="highlight">ROI</b> manager, one <b class="highlight">ROI</b>
+</span><br><span>&gt;inside the other one. I want to select the area
+</span><br><span>&gt;within the bigger <b class="highlight">ROI</b>, excluding the area of the
+</span><br><span>&gt;smaller <b class="highlight">ROI</b>. If we were talking of two circles
+</span><br><span>&gt;(one inside the other), I want select the area
+</span><br><span>&gt;defined by the <b class="highlight">ring</b> between them.
+</span><br><span>&gt;
+</span><br><span>&gt;--
+</span><br><span>&gt;View this message in context: 
+</span><br><span>&gt;</span><a href="http://www.nabble.com/subtraction-of-ROIs-tf3872158.html#a10999925" target="_top"><span>http://www.nabble.com/subtraction-of-<b class="highlight">ROIs</b>-tf3872158.html#a10999925</span></a><br><span>&gt;Sent from the ImageJ mailing list archive at Nabble.com.
+</span></div><div style="" class="shrink-quote"><span>...</span> [<a href="#">show rest of quote</a>]</div><br><span>F Javier Diez-Guerra, PhD
+</span><br><span>Profesor Titular
+</span><br><span>Centro de Biologia Molecular Severo Ochoa
+</span><br><span>Facultad de Ciencias, Universidad Aut&oacute;noma
+</span><br><span>Ctra Colmenar Viejo Km 15
+</span><br><span>Cantoblanco, 28049 Madrid
+</span><br><span>SPAIN
+</span><br><br><span>phone: &nbsp;+34 91 4978051
+</span><br><span>Fax: &nbsp; &nbsp; &nbsp;+34 91 4978087
+</span><br><span>e-mail: </span><a href="http://www.nabble.com/user/SendEmail.jtp?type=post&post=11093360&i=2" target="_top" rel="nofollow"><span>fjdiez@...</span></a><span> 
+</span><br></div>
+<script>
+
+if (Nabble.searchterms != null && Nabble.searchterms.length > 0) {
+	Nabble.hilt(Nabble.searchterms, Nabble.get("nabble.msgtxt11093360"));
+}
+</script>
+</div>
+</td>
+
+</tr>
+
+
+<tr valign="top">
+<!-- Current Message -->
+<td class="current-message">
+	<span id="nabble.i11097527" style="visibility: hidden;"><img alt="" src="icon_tri.png" width="12" align="absmiddle" height="12"></span><br>
+</td>
+<td>
+<!-- Subject -->
+
+<a name="a11097527">
+	</a><h2><a name="a11097527">Re: subtraction of ROIs</a></h2><a title="Click to flag this post" id="nabble.aflag11097527" href="javascript:%20void%20Nabble.setFlag(11097527);"><img alt="Click to flag this post" id="nabble.flag11097527" src="icon_unflagged.png" onmouseover="status = alt; return true;" onmouseout="status = defaultStatus; return true;" width="15" border="0" height="15"></a>
+<!-- /Subject -->
+<!-- Message Actions -->
+<span id="nabble.rating11097527">
+<script>document.write(Nabble.ratingStars(3));</script><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12"><img src="icon_star_blue.png" width="12" border="0" height="12">
+</span>
+
+<div class="message-actions weak-color">
+<p class="message-actions1">
+
+by <script>document.write('<a href=\"' +'/user/UserProfile' + '.jtp?'+'user=226779\" rel=\"nofollow\" ' + Nabble.embeddedTarget('_top') + '>');</script><a href="http://www.nabble.com/user/UserProfile.jtp?user=226779" rel="nofollow" target="_top">F Javier Diez Guerra<script>document.write('</a>');</script></a>
+<span class="weak-color"><script>document.write(Nabble.formatDateLong(new Date(1181723002000)));</script>Jun 13, 2007; 04:23pm</span> ::
+Rate this Message:
+<a href="#" title="Click to mark as Spam" onmouseover="Nabble.mouseover(11097527,0); return true;" onmouseout="Nabble.mouseout(11097527); return true;" onclick="Nabble.clicked(11097527,0); return false;"><img src="icon_blocked_gray.png" id="nabble.spam11097527" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to rate as Poor Post" onmouseover="Nabble.mouseover(11097527,1); return true;" onmouseout="Nabble.mouseout(11097527); return true;" onclick="Nabble.clicked(11097527,1); return false;"><img src="icon_star_grey.png" id="nabble.star11097527-1" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Below Average Post" onmouseover="Nabble.mouseover(11097527,2); return true;" onmouseout="Nabble.mouseout(11097527); return true;" onclick="Nabble.clicked(11097527,2); return false;"><img src="icon_star_grey.png" id="nabble.star11097527-2" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Average Post" onmouseover="Nabble.mouseover(11097527,3); return true;" onmouseout="Nabble.mouseout(11097527); return true;" onclick="Nabble.clicked(11097527,3); return false;"><img src="icon_star_grey.png" id="nabble.star11097527-3" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Above Average Post" onmouseover="Nabble.mouseover(11097527,4); return true;" onmouseout="Nabble.mouseout(11097527); return true;" onclick="Nabble.clicked(11097527,4); return false;"><img src="icon_star_grey.png" id="nabble.star11097527-4" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a><a href="#" title="Click to rate as Excellent Post" onmouseover="Nabble.mouseover(11097527,5); return true;" onmouseout="Nabble.mouseout(11097527); return true;" onclick="Nabble.clicked(11097527,5); return false;"><img src="icon_star_grey.png" id="nabble.star11097527-5" alt="" style="vertical-align: middle;" width="12" border="0" height="12"></a>
+<a href="#" title="Click to clear rating" onmouseover="Nabble.mouseover(11097527,-1); return true;" onmouseout="Nabble.mouseout(11097527); return true;" onclick="Nabble.clicked(11097527,-1); return false;"><img id="nabble.star11097527-0" alt="" src="icon_clear_rating.png" style="vertical-align: middle;" border="0"></a>
+<span id="nabble.descriptor11097527">- Use ratings to moderate (<a title="Click for more info" href="http://www.nabble.com/help/Answer.jtp?id=16">?</a>)</span>
+</p>
+<p class="message-actions2">
+
+<script>
+
+document.writeln('<a href="/forum/Reply.jtp?post=11097527" rel="nofollow">Reply</a> | ');
+</script><a href="http://www.nabble.com/forum/Reply.jtp?post=11097527" rel="nofollow">Reply</a> | 
+
+<a href="http://www.nabble.com/user/SendEmail.jtp?type=pm&post=11097527" target="_top" rel="nofollow">Reply to Author</a>   
+<script>
+
+if( Nabble.user == 226779 ) {
+    
+	document.writeln('| <a href="javascript:Nabble.deletePost(11097527,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+else if( Nabble.user == 792292 ) {
+	document.writeln('| <a href="javascript:Nabble.deletePost(11097527,Nabble.confirmDeletePostQuestionMailingList);" rel="nofollow">Delete</a>');
+}
+document.writeln('| <a href="/forum/PrintPost.jtp?post=11097527" rel="nofollow" target="_new">Print</a>');
+</script>| <a href="http://www.nabble.com/forum/PrintPost.jtp?post=11097527" rel="nofollow" target="_new">Print</a>
+
+
+| <a href="javascript:%20void%20Nabble.setView('newthreaded',11097527);">View Threaded</a>
+| <a href="http://www.nabble.com/Re%3A-subtraction-of-ROIs-p11097527.html">Show Only this Message</a>
+</p>
+
+</div>
+<div class="message-details">
+<div id="nabble.pending11097527"></div>
+<div class="message-text" id="nabble.msgtxt11097527"><span>Hi Declan,
+</span><br><br><span>In my particular case, confocal images were 
+</span><br><span>captured with a 63x objective, choosing isolated 
+</span><br><span>cells with well defined edges and moderate 
+</span><br><span>expression. We only had one cell or two (max) in 
+</span><br><span>each image. So we run the whole procedure for each cell at a time.
+</span><br><br><span>You can <b class="highlight">analyze</b> cells with two or more nuclei by 
+</span><br><span>combining the <b class="highlight">ROIs</b> (in the <b class="highlight">ROI</b> Manager) before running the macro.
+</span><br><br><span>Finally the data collected (measure cmd) were 
+</span><br><span>copy-pasted to an excel sheet especially designed 
+</span><br><span>to make the subtractions and statistics.
+</span><br><br><span>Hope it helps.
+</span><br><br><br><span>At 08:15 13/06/2007, you wrote:
+</span><div style="height: 170px; overflow-y: hidden;" class="shrinkable-quote"><br><span>&gt;Hello List,
+</span><br><span>&gt;
+</span><br><span>&gt;I may be a bit late on this particular topic but I have been trying outside
+</span><br><span>&gt;of ImageJ ie with Excel after all the ImageJ results is dumped to a txt file
+</span><br><span>&gt;to subtract measurements for <b class="highlight">ROIs</b> contained within <b class="highlight">ROI</b>'s.
+</span><br><span>&gt;
+</span><br><span>&gt;How would you do what <b class="highlight">ROI_donut</b>.txt does below for one cell on a collection
+</span><br><span>&gt;of cells within the same image? &nbsp;Or put another way ...
+</span><br><span>&gt;How do you associate the larger <b class="highlight">ROI</b>(cell cytoplasma) with the smaller <b class="highlight">ROI</b>
+</span><br><span>&gt;(nucleus) that share the same center of mass x,y when you have more than one
+</span><br><span>&gt;cell, ie a list of greater than 300 <b class="highlight">ROIs</b>?
+</span><br><span>&gt;
+</span><br><span>&gt;Also because the objects I am measuring are sometimes near to each other to
+</span><br><span>&gt;prevent segmentation, the outer/larger <b class="highlight">ROI</b> can contain more that one
+</span><br><span>&gt;internal <b class="highlight">ROI</b>. A situation like this can also genuinely arise when a cell
+</span><br><span>&gt;contains two nuclei. &nbsp;Under those circumstances the larger <b class="highlight">ROI</b> (cytoplasm)
+</span><br><span>&gt;now has a centre of mass x,y that does not correspond to the centre of mass
+</span><br><span>&gt;coordinates for the two smaller internal <b class="highlight">ROI</b>'s(nuclei). &nbsp; Given a big list
+</span><br><span>&gt;of <b class="highlight">ROIs</b> how would these two smaller <b class="highlight">ROIs</b> be correctly added to the larger
+</span><br><span>&gt;<b class="highlight">ROI</b>?
+</span><br><span>&gt;
+</span><br><span>&gt;Many thanks
+</span><br><span>&gt;
+</span><br><span>&gt;Declan
+</span><br><span>&gt;-----Original Message-----
+</span><br><span>&gt;From: ImageJ Interest Group [mailto:</span><a href="http://www.nabble.com/user/SendEmail.jtp?type=post&post=11097527&i=0" target="_top" rel="nofollow"><span>IMAGEJ@...</span></a><span>] On Behalf Of F
+</span><br><span>&gt;Javier Diez Guerra
+</span><br><span>&gt;Sent: 07 June 2007 05:03
+</span><br><span>&gt;To: </span><a href="http://www.nabble.com/user/SendEmail.jtp?type=post&post=11097527&i=1" target="_top" rel="nofollow"><span>IMAGEJ@...</span></a><span>
+</span><br><span>&gt;Subject: Re: subtraction of <b class="highlight">ROIs</b>
+</span><br><span>&gt;
+</span><br><span>&gt;Thanks to everybody that has shown interest in the subtraction of <b class="highlight">ROIs</b>
+</span><br><span>&gt;thread.
+</span><br><span>&gt;
+</span><br><span>&gt;The goal was to compare the distribution of
+</span><br><span>&gt;several fluorescent proteins (FP) in the nucleus
+</span><br><span>&gt;and cytoplasm of cells that were labelled with
+</span><br><span>&gt;To-Pro3 and were imaged in a confocal microscope.
+</span><br><span>&gt;
+</span><br><span>&gt; &nbsp;From the To-Pro3 image, the image was
+</span><br><span>&gt;thresholded (Image&gt;adjust&gt;threshold) and the
+</span><br><span>&gt;relevant <b class="highlight">ROI</b> (nucleus ) was selected with the
+</span><br><span>&gt;wand tool and added to the <b class="highlight">ROI</b> manager (<b class="highlight">ROI</b> 0).
+</span><br><span>&gt; &nbsp;From the FP image the contour of the relevant
+</span><br><span>&gt;cell was delineated in the same way and added to the <b class="highlight">ROI</b> manager (<b class="highlight">ROI</b> 1).
+</span><br><span>&gt;
+</span><br><span>&gt;To calculate the <b class="highlight">ROI</b> that defines the cytoplasm
+</span><br><span>&gt;(cell contour minus nucleus), the following
+</span><br><span>&gt;simple macro (<b class="highlight">ROI_donut</b>.txt) is very useful:
+</span><br><span>&gt;
+</span><br><span>&gt;<b class="highlight">roiManager</b>("Select", 1);
+</span><br><span>&gt;setKeyDown("alt");
+</span><br><span>&gt;<b class="highlight">roiManager</b>("Select",0);
+</span><br><span>&gt;setKeyDown("none");
+</span><br><span>&gt;<b class="highlight">roiManager</b>("Add");
+</span><br><span>&gt;
+</span><br><span>&gt;You end up with a third <b class="highlight">ROI</b> (1-1) in the <b class="highlight">ROI</b>
+</span><br><span>&gt;manager that corresponds to the cytoplasm. Then
+</span><br><span>&gt;you can measure in the different <b class="highlight">ROIs</b>.
+</span><br><span>&gt;
+</span><br><span>&gt;Thanks to Mark and especially to Gabriel for their contribution.
+</span><br><span>&gt;
+</span><br><span>&gt;I hope that this could be useful to others.
+</span><br><span>&gt;
+</span><br><span>&gt;
+</span><br><span>&gt;
+</span><br><span>&gt; &gt;How can I make a <b class="highlight">ROI</b> that is the result of the subtraction between two
+</span><br><span>&gt;<b class="highlight">ROIs</b>?
+</span><br><span>&gt; &gt;
+</span><br><span>&gt; &gt;Searching docs and list archives I've only found
+</span><br><span>&gt; &gt;how to make "composite selections", which are
+</span><br><span>&gt; &gt;created by hand (by drawing a <b class="highlight">ROI</b> inside another, while pressing the alt
+</span><br><span>&gt; &gt;key).
+</span><br><span>&gt; &gt;
+</span><br><span>&gt; &gt;I have two <b class="highlight">ROIs</b> in the <b class="highlight">ROI</b> manager, one <b class="highlight">ROI</b>
+</span><br><span>&gt; &gt;inside the other one. I want to select the area
+</span><br><span>&gt; &gt;within the bigger <b class="highlight">ROI</b>, excluding the area of the
+</span><br><span>&gt; &gt;smaller <b class="highlight">ROI</b>. If we were talking of two circles
+</span><br><span>&gt; &gt;(one inside the other), I want select the area
+</span><br><span>&gt; &gt;defined by the <b class="highlight">ring</b> between them.
+</span><br><span>&gt; &gt;
+</span><br><span>&gt; &gt;--
+</span><br><span>&gt; &gt;View this message in context:
+</span><br><span>&gt; &gt;</span><a href="http://www.nabble.com/subtraction-of-ROIs-tf3872158.html#a10999925" target="_top"><span>http://www.nabble.com/subtraction-of-<b class="highlight">ROIs</b>-tf3872158.html#a10999925</span></a><br><span>&gt; &gt;Sent from the ImageJ mailing list archive at Nabble.com.
+</span><br><span>&gt;
+</span><br><span>&gt;F Javier Diez-Guerra, PhD
+</span><br><span>&gt;Profesor Titular
+</span><br><span>&gt;Centro de Biologia Molecular Severo Ochoa
+</span><br><span>&gt;Facultad de Ciencias, Universidad Aut&oacute;noma
+</span><br><span>&gt;Ctra Colmenar Viejo Km 15
+</span><br><span>&gt;Cantoblanco, 28049 Madrid
+</span><br><span>&gt;SPAIN
+</span><br><span>&gt;
+</span><br><span>&gt;phone: &nbsp;+34 91 4978051
+</span><br><span>&gt;Fax: &nbsp; &nbsp; &nbsp;+34 91 4978087
+</span><br><span>&gt;e-mail: </span><a href="http://www.nabble.com/user/SendEmail.jtp?type=post&post=11097527&i=2" target="_top" rel="nofollow"><span>fjdiez@...</span></a><span>
+</span></div><div style="" class="shrink-quote"><span>...</span> [<a href="#">show rest of quote</a>]</div><br><span>F Javier Diez-Guerra, PhD
+</span><br><span>Profesor Titular
+</span><br><span>Centro de Biologia Molecular Severo Ochoa
+</span><br><span>Facultad de Ciencias, Universidad Aut&oacute;noma
+</span><br><span>Ctra Colmenar Viejo Km 15
+</span><br><span>Cantoblanco, 28049 Madrid
+</span><br><span>SPAIN
+</span><br><br><span>phone: &nbsp;+34 91 4978051
+</span><br><span>Fax: &nbsp; &nbsp; &nbsp;+34 91 4978087
+</span><br><span>e-mail: </span><a href="http://www.nabble.com/user/SendEmail.jtp?type=post&post=11097527&i=3" target="_top" rel="nofollow"><span>fjdiez@...</span></a><span> 
+</span><br></div>
+<script>
+
+if (Nabble.searchterms != null && Nabble.searchterms.length > 0) {
+	Nabble.hilt(Nabble.searchterms, Nabble.get("nabble.msgtxt11097527"));
+}
+</script>
+</div>
+</td>
+
+</tr>
+
+</tbody></table>
+
+
+<form action="http://www.nabble.com/subtraction-of-ROIs-td10970792.html"><input id="nabble.back" value="no" type="hidden"></form>
+
+<script type="text/javascript"><!--
+if( Nabble.ads ) {
+	Nabble.ads();
+}
+//--></script>
+
+<div id="nabble.searchResults"></div>
+<script>
+
+//Nabble.gquery = 'test';
+//Nabble.topicDumpSearch = true;
+if (Nabble.gquery!=null) {
+	if (Nabble.topicDumpSearch) {
+		Nabble.get('nabble.searchResults').innerHTML = '<h1>&nbsp;Other threads matching \"<strong>'+Nabble.gquery+'</strong>\":</h1>'+
+		'<p style=\"margin-left: 3em;\">looking for matching threads...</p>';
+		Nabble.loadScript('/forum/TopicDump$SearchJs.jtp?query='+encodeURIComponent(Nabble.gquery)+'&post=10970792');
+		Nabble.setVar('prev',null);
+	} else {
+		Nabble.setVar('prev',
+			'<big><a id="nabble.prev_search" href="/forum/Search.jtp?query='+encodeURIComponent(Nabble.gquery)+'">Search Nabble for "<b>'+Nabble.gquery+'</b>"</a>'
+		);
+	}
+}
+
+if( Nabble.prev )
+	Nabble.writeReturnToLink(Nabble.prev);
+
+</script><br><p>&laquo; <a href="http://www.nabble.com/forum/Search.jtp?query=ring&local=y&page=1&forum=2618&daterange=0" target="_top">Return to search results</a></p>
+
+
+<table class="footer-table shaded-bg-color">
+<tbody><tr>
+	<td class="footer-left">
+	<a href="http://www.nabble.com/" target="_top">Free Forum</a> Powered by Nabble
+	</td>
+	<td class="footer-right">
+	<a href="http://www.nabble.com/help/Index.jtp" target="_top" embed="fixTarget">Forum Help</a>
+	</td>
+	
+</tr>
+</tbody></table>
+</div>
+
+<script>
+
+(function(){
+	if( Nabble.cur ) {
+		var t = Nabble.get( "nabble.i" + Nabble.cur );
+		if( t ) {
+			t.style.visibility = "visible";
+		}
+	}
+	if( Nabble.gquery!=null ) {
+		var t = Nabble.get("nabble.searchQuery");
+		t.value = Nabble.gquery;
+		Nabble.selectOption(Nabble.get("nabble.searchSelect"),"n");
+		if( !Nabble.notRed ) {
+			t.className += "error-message";
+			t.style.borderStyle = "solid";
+			t.style.borderWidth = "3px";
+			t.style.backgroundColor = Nabble.currentStyle(Nabble.get('nabble')).backgroundColor;
+		}
+	}
+})();
+</script>
+<script src="topicdump$js.jtp"></script>
+
+<script>
+
+	Nabble.analytics();
+</script>
+
+</body>
+</html>

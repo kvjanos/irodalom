@@ -1,0 +1,853 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+
+  
+  <meta name="description" content="Extracting hierarchical curve-skeletons from general 3D objects using a potential field based approach">
+  <meta name="keywords" content="skeleton, curve-skeleton, skeletonization, 3D, code, download, source code, curve, potential, field, implementation, repulsive force"><title>Computing Hierarchical Curve-Skeletons of 3D Objects</title></head>
+<body style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);" alink="#3333ff" link="#000099" vlink="#990000">
+<center>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="0" cellspacing="2">
+  <tbody>
+    <tr>
+      <td><a href="http://www.caip.rutgers.edu/%7Ecornea/"><img style="border: 2px solid ;" alt="" src="home.gif"></a></td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h1 style="font-family: Helvetica,Arial,sans-serif;">Computing
+Hierarchical Curve-Skeletons of 3D Objects</h1>
+</center>
+<table style="background-color: rgb(255, 255, 255); width: 100%;" border="0" cellpadding="0" cellspacing="2">
+  <tbody>
+    <tr nosave="" style="font-family: Helvetica,Arial,sans-serif; background-color: rgb(192, 192, 192);">
+      <td style="width: 50px;"><b><small>Go to:</small></b></td>
+      <td style="width: 100px;" align="center"><b><small><a href="#Download">Download</a></small></b></td>
+      <td style="width: 100px;" align="center"><b><small><a href="#Results">Results</a></small></b></td>
+      <td style="width: 539px;">&nbsp;</td>
+      <td style="width: 145px;" align="center"><b><small><a href="#Publications">Pulications</a></small></b></td>
+    </tr>
+  </tbody>
+</table>
+<div style="text-align: justify;">
+fpSkel parameterezese:
+$./pfSkel t07o11z17_meta_Chaincode-based.raw.vol 87 104 17 0 6 25 meta
+
+pfSkel.cpp-ből:
+- 87 = x 104 = y 17 = z
+
+- 0 = distance of charges (should be >= 0): ("distCharges" változó) distance from object boundary where to place the charges (>=0)
+
+- 6 = potential field strength (must be between 1-10, recommended 4-9): ("fieldStrenght" változó)
+
+- 25 = percentage of high divergence points to use
+
+We introduce the concept of
+hierarchical curve-skeleton and describe a general and robust
+methodology which computes a family of increasingly detailed
+curve-skeletons. The algorithm is based upon computing a repulsive force
+field over a discretization of the 3D object (voxelized representation)
+and using topological characteristics of the resulting vector field,
+such as critical points and critical curves, to extract the
+curve-skeleton. The algorithm consists of 5&nbsp;steps:</div>
+<ol style="text-align: justify;">
+  <li>Identify the <span style="font-weight: bold;">boundary voxels</span>
+of the 3D object as the source of the repulsive force field.&nbsp;</li>
+  <li>Compute the <a href="#RepulsiveForce"><span style="font-weight: bold;">repulsive force function</span></a><i> </i>at
+each object voxel. After computation, a 3D vector-field results. </li>
+  <li>Detect the <a href="#CritPts"><span style="font-weight: bold;">critical
+points</span></a> of the vector field and connect them using path-lines
+by integrating over the vector-field. This step&nbsp;produces the <a href="#CritPts"><span style="font-weight: bold;">core skeleton</span></a>.</li>
+  <li>Compute the <a href="#LowDiv"><span style="font-weight: bold;">divergence</span></a><i> </i>of
+the vector-field at each voxel. Points with low divergence values are
+selected as new seeds for new skeleton segments. Varying the divergence
+threshold (given as a percentage, i.e., the top 20%) creates the <a href="#LowDiv"><span style="font-weight: bold;">level 1 hierarchy</span></a><i> </i>after
+the core skeleton. </li>
+  <li>Compute the<span style="font-weight: bold;"> </span><a href="#HighCurv"><span style="font-weight: bold;">curvature</span></a><i> </i>at
+every boundary voxel and select new seed points based on a
+user-supplied curvature threshold, given again as a percentage of the
+highest curvature value in the dataset (i.e. top 30%). This adds another
+level of hierarchy to the core and divergence skeletons, the <a href="#HighCurv"><span style="font-weight: bold;">level 2 skeleton
+hierarchy</span></a>.&nbsp;</li>
+</ol>
+<div style="text-align: justify;">
+<h2><a name="RepulsiveForce"></a>Repulsive Force Function</h2>
+<img src="potfield.png">
+<p>We use a generalized potential field approach <a href="#ref_1">[1]</a>.
+The key idea behind the potential field approach is to generate a
+vector field inside the object by charging the object’s boundary. </p>
+<p>We place electrical point charges on the object's boundary,
+considering each boundary voxel to be a point charge (a boundary voxel
+is an object voxel which has a background neighbor). The repulsive force
+at an interior object voxel due to a nearby point charge is defined as
+a force pushing the voxel away from the charge with a strength that is
+inverse proportional to the distance between the voxel and the
+charge,&nbsp;raised at a certain power <span style="font-style: italic;">m</span> which we call <span style="font-style: italic; font-weight: bold;">"</span><span style="font-weight: bold;">the field strength</span><span style="font-style: italic; font-weight: bold;">"</span>. The <span style="font-style: italic;">"field strength"</span> is a parameter of
+the program. The final repulsive force at each interior voxel is
+computed by summing the influences of all the point charges. The
+resulting vector field is also called a force field.</p>
+<p>A high <span style="font-style: italic;">"field strength"</span> (<i>m</i>)
+will cause the local point chanrges to have a higher influence on a
+given interior voxel than the more distant charges, thus creating a
+vector field with sharper path-lines because it follows the local
+boundary topology more closely. A low value for the <i>m</i> parameter
+will produce a smoother vector field, with more rounded corners, since
+the vector direction at a particular point is now influenced by more
+point charges.</p>
+<p>Because the algorithm uses all&nbsp;the point charges for force
+computation at each interior voxel, <i>visibility errors</i> can result
+for objects with tapered limbs (like a comb) since individual voxels
+within each prong of the comb cannot “see” the charges corresponding to
+the other prongs and those charges should not be considered in the force
+field calculation. Using a high <span style="font-style: italic;">"field
+strenght"</span>&nbsp;minimizes this effect by reducing the influence
+of more distant point charges.</p>
+<p>Resolution/discretization is an important external factor affecting
+the performance of the algorithm and changing the accuracy of the
+solution. Clearly a 4<sup>3</sup> grid will yield a less accurate result
+than a 60<sup>3</sup> grid. A 1 or 2 voxels thick object region will not
+have enough resolution to properly compute the repulsive force field in
+that region (this is a common simulation issue). For such regions, the
+repulsive force field is extremely sensitive to even small boundary
+perturbations, resulting in discontinuities of the flow pattern inside
+the object’s boundaries. As a result, the interior skeleton can become
+disconnected just because the force-following algorithm becomes stuck in
+these perturbed regions of the force field (see the next sections). To
+overcome this problem, one can either increase the resolution of the
+voxelization or <span style="font-style: italic;">"pad"</span> the
+object with a number of extra layers of voxels (dilation), making the
+object thicker (this is another parameter of the program). "<span style="font-weight: bold;">Padding</span>" produces a smoothing effect
+of the object’s boundary, which makes it suitable for noisy objects, but
+can also merge object features that are very close to each other.</p>
+<h2><a name="CritPts"></a>Critical points and the “core skeleton” </h2>
+<img src="critpts.png">
+<p>Critical points are important vector field topology components and
+are often used in vector field visualization. These are the points where
+the magnitude of the force vector vanishes. Critical points are
+difficult to locate in a vector field, particularly because they do not
+necessarily occur at the given sample locations, but often occur in
+between sampling points. We use a sub-division scheme to locate all the
+critical points in the vector field (see paper for details). Once
+extracted, the critical points are classified into&nbsp;<span style="font-weight: bold;">attracting nodes</span> (where all vectors
+are pointing towards the critical point), <span style="font-weight: bold;">repelling nodes</span> (where all the
+vectors are pointing away from the critical point) and <span style="font-weight: bold;">saddles</span><span style="font-weight: bold;"> </span>(where some vectors are pointing
+towards the critical point and others away from it).&nbsp;Saddle points
+will occur between attracting or repelling nodes directing the flow
+towards one or another and can be used to connect them. Intuitively, the
+outward flow directed away from a saddle point, can only reach an
+attracting node or another saddle inside the object since the vector
+field was generated by the closed boundary of the object and points
+towards the interior.</p>
+<p>Path-lines are&nbsp;seeded from saddles in the directions of the
+outward flow and a path-line <span style="font-weight: bold;">force-following</span>
+algorithm is applied which stops at another critical point or when it
+arrives at a previously visited location. The force-following algorithm
+evaluates the force value at each point along a path and moves in the
+force direction with small steps. Samples taken along the integration
+path started at a saddle point form a <span style="font-weight: bold;">skeleton
+segment</span>. Skeleton segments connecting all the critical points of
+the force field are known as <i>critical-curves</i> and form the <b>core
+skeleton</b>.</p>
+<p>The core skeleton represents <span style="font-weight: bold; font-style: italic;">level 0</span> in the
+skeleton hierarchy. However, the core skeleton contains only part of the
+central curve-skeleton for a given object. The next level-of-detail is
+added by considering another important feature of the force field: the
+divergence.</p>
+<h2><a name="LowDiv"></a>Low divergence points and the “level 1
+skeleton hierarchy”</h2>
+<img src="lowdiv.png">
+<p>The divergence of a vector field in a given region of space is a
+scalar quantity that characterizes the rate of flow leaving that region.
+Divergence is an interesting property because it measures the
+“sinkness” of a point. A negative divergence value at a point indicates
+that the flow is moving mainly towards the given point. Of interest are
+points with low divergence values, which indicate a “sink”. A threshold
+on the divergence value (the<span style="font-weight: bold; font-style: italic;"> </span><span style="font-weight: bold;">divergence threshold</span>) is used to
+identify new seed points. The threshold is given as a percentage of the
+lowest divergence value in the entire vector field.&nbsp;From each of
+these new seed points, a new field-line is generated which will connect
+to the core skeleton.&nbsp;</p>
+<p>By varying the <span style="font-style: italic;">divergence
+threshold </span>(another parameter of our progam) the user varies the
+number of seed points selected and correspondingly the number of new
+skeleton segments, generating an entire hierarchy of skeletons that we
+call the <span style="font-weight: bold;">level 1 skeleton</span>.
+Different thresholds can be chosen based upon the application of the
+curve-skeleton.</p>
+<h2><a name="HighCurv"></a>High Curvature points and the "level 2
+skeleton hierarchy"</h2>
+<p>Another set of seed points for new skeletal segments consists of the
+convex corners of the object. These will create paths from the boundary
+to the skeleton and generate the “tendrils” found in medial axis
+representations. The curvature of every&nbsp;boundary voxel can be
+computed and areas of high curvature can be used to seed new path-lines,
+using a threshold similar to the <span style="font-style: italic;">divergence
+threshold</span>.&nbsp;</p>
+<p>A disadvantage of boundary seeding based on the curvature is that it
+is affected even by small amounts of noise present on the object’s
+boundary. A possible solution to this problem is to consider an extended
+neighborhood when computing the curvature at boundary voxels, not just
+the face, edge and vertex neighbors. For certain applications, such as
+virtual navigation, boundary seeds could be used differently, i.e., to
+specifically generate certain navigation paths.</p>
+<p>The skeleton segments originated at seed points on the boundary will
+create another level of hierarchy for each curve-skeleton computed thus
+far. Each of the <span style="font-style: italic;">level-1 skeletons</span>
+will form the root of a new hierarchy developed by varying the number of
+boundary-seeded segments (via the user specified curvature threshold).
+We call this new hierarchy level the <span style="font-weight: bold;">level
+2 skeleton hierarchy</span>.</p>
+<p>Note that the boundary seeds can be added either directly to the
+core skeleton or to a level 1 skeleton. However, a strict hierarchy is
+achieved only if the hierarchy levels below the current level are fixed:
+for example, in order to generate a strict level 2 hierarchy, the core
+skeleton and the number of divergence seeds must be fixed and only the
+number of boundary seeds be allowed to vary.&nbsp;</p>
+<p><i>Note:</i> the bundary seeding is not included in the downloadable
+programs.</p>
+<table style="background-color: rgb(204, 204, 204); width: 100%; font-family: Helvetica,Arial,sans-serif;" id="Download" border="0" cellpadding="0" cellspacing="2">
+  <tbody>
+    <tr>
+      <td><b><a name="Download"></a>Download</b></td>
+    </tr>
+  </tbody>
+</table>
+<p>The C++ source code is available for download here: <!--a href="code/">here</a>.-->
+</p>
+
+<table style="width: 100%; font-family: Helvetica,Arial,sans-serif;" border="0" cellpadding="1" cellspacing="1">
+  <tbody><tr style="background-color: rgb(220, 220, 220);">
+    <td align="left">pfSkel</td>
+    <td align="left"><a href="http://www.caip.rutgers.edu/%7Ecornea/Skeletonization/code/pfSkel-1.2.1.1.tar.gz">v1.2.1.1</a></td>
+    <td align="left">
+      <a href="http://www.caip.rutgers.edu/%7Ecornea/Skeletonization/code/pfSkel-1.2.1.1.tar.gz"><img src="download.gif" style="height: 15px;" align="middle"></a>
+      &nbsp;
+      <a href="http://www.caip.rutgers.edu/%7Ecornea/Skeletonization/code/pfSkel-1.2.1.1.tar.gz">pfSkel-1.2.1.1.tar.gz</a>
+    </td>
+    <td align="right">99KB</td>
+  </tr>
+<!--
+  <tr style="background-color: rgb(240, 240, 240);">
+      <td align="left">pfSkel</td>
+      <td align="left">v1.2.1</td>
+      <td align="left">
+        <a href="code/pfSkel-1.2.1.tar.gz"><img src="download.gif" style="height: 10px;"></a>
+        &nbsp;
+        <a href="code/pfSkel-1.2.1.tar.gz">pfSkel-1.2.1.tar.gz</a>
+      </td>
+      <td align="right">112KB</td>
+  </tr>
+  -->
+</tbody></table>
+
+
+<p>The code uses the following libraries:<br>
+</p>
+<ul>
+  <li> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://math.nist.gov/tnt/index.html">TNT (Template Numerical
+Toolkit)&nbsp;</a> </li>
+  <li> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://math.nist.gov/tnt/download.html">JAMA/C++</a> </li>
+</ul>
+<br>
+developed at The <a href="http://math.nist.gov/mcsd/">Mathematical and
+Computational Sciences Division</a>&nbsp;of <a href="http://www.nist.gov/">The National Institute of Standards and
+Technology</a>.
+<p></p>
+<p><span style="font-style: italic;">Note:</span> You don't have to
+download the libraries from the above sites. They are included in the
+source code. </p>
+<p>A sample dataset is also available to try out the program: <a href="http://www.caip.rutgers.edu/%7Ecornea/Skeletonization/Cow/cow.85x31x54.vol">cow
+(85x31x54)</a><br>
+</p>
+<p>Run the program like this (version 1.2.1.1):<br>
+<span style="font-family: courier new,courier,monospace;"><br>
+./pfSkel cow.85x31x54.vol 85 31 54 0 6 0 cow</span><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; This should give you the "core"
+skeleton which looks like this:<br>
+</p>
+<div style="text-align: center;">&nbsp;<img src="cow-fs-6-hd-0.png" title="" alt="" style="width: 259px; height: 200px;"> download skeleton
+file: <a href="http://www.caip.rutgers.edu/%7Ecornea/Skeletonization/Cow/cow-fs6-hd0.skel">cow-fs6-hd0.skel</a><br>
+</div>
+<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Note that we have no skeleton
+segments for the tail, the horns and the ears.<br>
+</p>
+<p>Or try:</p>
+<p><span style="font-family: courier new,courier,monospace;">./pfSkel
+cow.85x31x54.vol 85 31 54 0 6 25 cow</span><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; This should give you a more
+detailed skeleton, using 25% divergence seeds, which looks like this:<br>
+</p>
+<div style="text-align: center;"><img src="cow-fs-6-hd-25.png" title="" alt="" style="width: 259px; height: 200px;"> download skeleton
+file: <a href="http://www.caip.rutgers.edu/%7Ecornea/Skeletonization/Cow/cow-fs6-hd25.skel">cow-fs6-hd25.skel</a><br>
+</div>
+<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Now we have a tail, horns and
+ears. <br>
+</p>
+<p>Note:<br>
+&nbsp; I use <a href="http://www.avs.com/">AVS/Express</a> to visualize
+the skeletons and make these pretty pictures. It's a great tool but it's
+not free.<br>
+My suggestion is to try <a href="http://vtk.org/">VTK</a> to
+visualize the skeletons. Here is a small vtk program that renders the skeleton together with the volume: <a href="http://www.caip.rutgers.edu/%7Ecornea/Code/vtkSkelViewer.tar.gz">vtkSkelViewer.tar.gz</a>.<br>
+Note that the name of the volume needs to be of the same format as the cow volume mentioned above: name.size.vol.</p>
+
+<table style="background-color: rgb(204, 204, 204); font-family: Helvetica,Arial,sans-serif; height: 28px; width: 100%;" id="Results" border="0" cellpadding="0" cellspacing="2">
+  <tbody>
+    <tr>
+      <td><b><a name="Results"></a>Results</b></td>
+    </tr>
+  </tbody>
+</table>
+<ul style="text-align: justify;">
+</ul>
+<small><font face="Helvetica, Arial, sans-serif"><b></b></font></small>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="0" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="width: 180px;">
+      <ul style="text-align: justify;">
+        <li><small><font face="Helvetica, Arial, sans-serif"><b><a href="http://www.caip.rutgers.edu/%7Ecornea/Skeletonization/Cow/index.html">Cow</a></b></font></small></li>
+        <li><small><font face="Helvetica, Arial, sans-serif"><b><a href="http://www.caip.rutgers.edu/%7Ecornea/Skeletonization/Aneurism/index.html">Aneurism</a></b></font></small></li>
+        <li><small><font face="Helvetica, Arial, sans-serif"><b><a href="http://www.caip.rutgers.edu/%7Ecornea/Skeletonization/Torus/index.html">Torus</a></b></font></small></li>
+      </ul>
+      </td>
+      <td style="width: 180px;">
+      <ul style="font-family: Helvetica,Arial,sans-serif; font-weight: bold;">
+        <li><small><a href="http://www.caip.rutgers.edu/%7Ecornea/Skeletonization/Art/index.html">Art</a></small></li>
+      </ul>
+      <small><br>
+      </small></td>
+      <td style="text-align: left; width: 570px;"><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<small><font face="Helvetica, Arial, sans-serif"><b></b></font></small>
+<p> Bellow we present the results we obtained for different objects. </p>
+<center>
+<table style="width: 100%;" nosave="" border="1" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr nosave="">
+      <td style="font-weight: bold;">
+      <center>#</center>
+      </td>
+      <td style="font-weight: bold;">
+      <center>Object&nbsp;</center>
+      </td>
+      <td style="font-weight: bold;">
+      <center>Skeleton</center>
+      </td>
+      <td style="font-weight: bold;">
+      <center>#</center>
+      </td>
+      <td style="font-weight: bold;">
+      <center>Object</center>
+      </td>
+      <td style="font-weight: bold;">
+      <center>Skeleton</center>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">1.</td>
+      <td align="center"><img src="767_hol.jpg" height="153" width="200"> </td>
+      <td align="center"><img src="767_hol-s1.png" height="164" width="200"> </td>
+      <td align="center">2.</td>
+      <td align="center"><img src="banana.jpg" height="140" width="200"> </td>
+      <td align="center"><img src="banana-s1.png" height="142" width="200"> </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+    <tr nosave="" align="center">
+      <td>3.</td>
+      <td nosave=""><img src="bishop.jpg" height="200" width="93"> </td>
+      <td><img src="bishop-s1.png" height="164" width="200"> </td>
+      <td>4.</td>
+      <td><img src="bolt1.jpg" height="200" width="87"> </td>
+      <td><img src="bolt1-s1.png" height="164" width="200"> </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+    <tr nosave="" align="center">
+      <td>5.</td>
+      <td><img src="cooltwist.jpg" height="147" width="200"> </td>
+      <td nosave=""><img src="cooltwist-s1.png" height="164" width="200"> </td>
+      <td>6.</td>
+      <td><img src="cow.jpg" height="143" width="200"> </td>
+      <td><img src="cow-s1.png" height="164" width="200"> </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+    <tr nosave="" align="center">
+      <td>7.</td>
+      <td><img src="fishyamame.jpg" height="93" width="200"> </td>
+      <td nosave=""><img src="fishyamame-s1.png" height="164" width="200"> </td>
+      <td>8.</td>
+      <td><img src="shark.jpg" height="97" width="200"> </td>
+      <td><img src="shark-s1.png" height="164" width="200"> </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+    <tr nosave="" align="center">
+      <td>9.</td>
+      <td><img src="teapot.jpg" height="120" width="200"> </td>
+      <td nosave=""><img src="teapot-s1.png" height="164" width="200"> </td>
+      <td>10.</td>
+      <td><img src="ticerotops.jpg" height="132" width="200"> </td>
+      <td><img src="ticerotops-s1.png" height="164" width="200"> </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+    <tr nosave="" align="center">
+      <td>11.</td>
+      <td><img src="trout.jpg" height="81" width="200"> </td>
+      <td nosave=""><img src="trout-s1.png" height="164" width="200"> </td>
+      <td>12.</td>
+      <td><img src="brassman.jpg" height="200" width="194"> </td>
+      <td><img src="brassman-s1.png" height="164" width="200"> </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+    <tr nosave="" align="center">
+      <td>13.</td>
+      <td nosave=""><img src="bull.jpg" height="146" width="200"> </td>
+      <td><img src="bull-s1.png" height="164" width="200"> </td>
+      <td>14.</td>
+      <td><img src="curl.jpg" height="153" width="200"> </td>
+      <td><img src="curl-s1.png" height="164" width="200"> </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+    <tr nosave="" align="center">
+      <td>15.</td>
+      <td nosave=""><img src="dinohol.jpg" height="200" width="172"> </td>
+      <td><img src="dinohol-s1.png" height="164" width="200"> </td>
+      <td>16.</td>
+      <td><img src="dog2.jpg" height="200" width="191"> </td>
+      <td><img src="dog2-s1.png" height="164" width="200"> </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+    <tr nosave="" align="center">
+      <td>17.</td>
+      <td nosave=""><img src="dolphinhol.jpg" height="88" width="200"> </td>
+      <td><img src="dolphinhol-s1.png" height="164" width="200"> </td>
+      <td>18.</td>
+      <td><img src="dome.jpg" height="200" width="160"> </td>
+      <td><img src="dome-s1.png" height="164" width="200"> </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+    <tr nosave="" align="center">
+      <td nosave="">19.</td>
+      <td><img src="duck.jpg" height="177" width="200"> </td>
+      <td><img src="duck-s1.png" height="164" width="200"> </td>
+      <td>20.</td>
+      <td><img src="enforcer.jpg" height="165" width="200"> </td>
+      <td><img src="enforcer-s1.png" height="164" width="200"> </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+    <tr nosave="" align="center">
+      <td nosave="">21.</td>
+      <td><img src="frog.jpg" height="181" width="200"> </td>
+      <td><img src="frog-s1.png" height="164" width="200"> </td>
+      <td>22.<br>
+      </td>
+      <td><img src="gangster.jpg" title="" alt="" style="width: 153px; height: 200px;"> <br>
+      </td>
+      <td><img src="gangster-s1.png" title="" alt="" style="width: 200px; height: 164px;"> <br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center; vertical-align: middle;">23.<br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="grenade.jpg" title="" alt="" style="width: 151px; height: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="grenade-s1.png" title="" alt="" style="width: 200px; height: 164px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;">24.<br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="king.jpg" title="" alt="" style="width: 79px; height: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="king-s1.png" title="" alt="" style="width: 200px; height: 164px;"> <br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center; vertical-align: middle;">25.<br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="knot.jpg" title="" alt="" style="width: 189px; height: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="knot-s1.png" title="" alt="" style="width: 200px; height: 164px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;">26.<br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="mouse.jpg" title="" alt="" style="width: 200px; height: 198px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="mouse-s1.png" title="" alt="" style="width: 200px; height: 164px;"> <br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center; vertical-align: middle;">27.<br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="mozgril.jpg" title="" alt="" style="width: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="mozgril_001.jpg" title="" alt="" style="width: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;">28.<br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="obj.jpg" title="" alt="" style="width: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="obj_001.jpg" title="" alt="" style="width: 200px;"> <br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center; vertical-align: middle;">29.<br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="pentagonoidhol.jpg" title="" alt="" style="width: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="pentagonoidhol_001.jpg" title="" alt="" style="width: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;">30.<br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="refrig.jpg" title="" alt="" style="height: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="refrig_001.jpg" title="" alt="" style="height: 200px;"> <br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center; vertical-align: middle;">31.<br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="mug.jpg" title="" alt="" style="width: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="mug_001.jpg" title="" alt="" style="width: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;">32.<br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="snowman.jpg" title="" alt="" style="height: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="snowman_001.jpg" title="" alt="" style="height: 200px;"> <br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center; vertical-align: middle;">33.<br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="smoothcubehol.jpg" title="" alt="" style="height: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="smoothcubehol_001.jpg" title="" alt="" style="height: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;">34.<br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="smoothpentahol.jpg" title="" alt="" style="height: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="smoothpentahol_001.jpg" title="" alt="" style="height: 200px;"> <br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center; vertical-align: middle;">35.<br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="knight.png" title="" alt="" style="height: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="knight_001.png" title="" alt="" style="height: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;">36.<br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="dog.png" title="" alt="" style="height: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="dog_001.png" title="" alt="" style="height: 200px;"> <br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+      <td style="vertical-align: middle;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center; vertical-align: middle;">37.<br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="mushroom.png" title="" alt="" style="width: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="mushroom_001.png" title="" alt="" style="width: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;">38.<br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="toilet.png" title="" alt="" style="height: 200px;"> <br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;"><img src="toilet_001.png" title="" alt="" style="height: 200px;"> <br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</center>
+<hr><font size="+1"><span style="font-family: Helvetica,Arial,sans-serif;">References:</span><br>
+<br>
+</font><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><a name="ref_1"></a>[1] Chuang J-H, Tsai C, Ko M-C (2000) Skeletonization
+of Three-Dimensional Object Using Generalized Potential Field. <span style="">IEEE Trans. Pattern Analysis and Machine Intelligence,</span>
+22(11):1241-1251<br>
+<br>
+</span>
+<table style="background-color: rgb(204, 204, 204); font-family: Helvetica,Arial,sans-serif; height: 28px; width: 100%;" id="Results" border="0" cellpadding="0" cellspacing="2">
+  <tbody>
+    <tr>
+      <td><span style="font-weight: bold;"><a name="Publications"></a>Publications</span></td>
+    </tr>
+  </tbody>
+</table>
+<br style="color: rgb(0, 0, 0);">
+<font face="Helvetica, Arial, sans-serif"> <small> Cornea N.D., Silver
+D., Min P. (2005). <b>Curve-Skeleton Applications.</b> In Proceedings
+IEEE Visualization, pp. 95-102, 2005. [ <a href="http://www.caip.rutgers.edu/%7Ecornea/Publications/index.html#vis05">here</a> ]<br>
+<br>
+Cornea N.D.,Silver D., Yuan X., Balasubramanian R. (2005). <b>Computing
+Hierarchical Curve-Skeletons of 3D Objects.</b> The Visual Computer
+21(11):945-955, Springer-Verlag, October, 2005. [ <a href="http://www.caip.rutgers.edu/%7Ecornea/Publications/index.html#vc05">here</a> ]<br>
+</small> </font>
+<hr style="width: 100%; height: 2px;"><font size="+1"></font>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="0" cellspacing="2">
+  <tbody>
+    <tr>
+      <td><small>Nicu D. Cornea</small></td>
+      <td style="text-align: right;"><small>Nov 4, 2005</small></td>
+    </tr>
+  </tbody>
+</table>
+<font size="+1"> <a href="http://www.caip.rutgers.edu/%7Ecornea/index.html"></a></font></div>
+
+</body>
+</html>

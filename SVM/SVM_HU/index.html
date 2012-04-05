@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MiSupportVectorMachines &lt; Infoalap &lt; VIK wiki</title>
+
+
+
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://wiki.sch.bme.hu/bin/view/Infoalap/WebRss?skin=rss&amp;contenttype=text/xml">
+
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+
+
+<link rel="stylesheet" type="text/css" href="index.css" media="all">
+</head>
+<body class="twikiViewPage twikiPrintPage">
+<div class="twikiMiddleContainer"><div class="twikiMain"><div class="twikiTopic">
+<h1><a name="Support_Vector_Machine_házi_fela"> </a> Support Vector Machine házi feladat </h1>
+<p>
+</p><h2><a name="Forrás"> </a> Forrás </h2>
+<p>
+Én javarészt ebből dolgoztam: <a href="http://www.ecs.soton.ac.uk/%7Esrg/publications/pdf/SVM.pdf" target="_top">http://www.ecs.soton.ac.uk/~srg/publications/pdf/SVM.pdf</a>
+</p><p>
+</p><h2><a name="Classification_pontok_csoportosí"> </a> Classification (pontok csoportosítása) </h2>
+<p>
+Az alapprobléma, amivel bevezetik az egészet, az az, hogy van a síkon egy rakás pontunk, festve vannak pirosra és kékre, és keresünk egy olyan egyenest, amely úgy választja szét őket, hogy az egyik oldalon kék, a másik oldalon piros pontjaink legyenek, mindezt optimálisan úgy, hogy az egyeneshez legközelebb eső piros pont távolságának és a legközelebb eső kék pont távolságának összege maximális legyen. <a href="http://hhc.intro.hu/svm/svc00.gif" target="_top">00</a> Az ábra megjelöli a szeparáló egyenest ténylegesen meghatározó pontokat, a support-vektorkat, ebből jó, ha kevés van. A fenti leírásban a (2.1) képlet adja meg a bemeneti problémát, az eredmény alakja (2.2), a jól-szeparálási feltétel a (2.4) , az optimalitási feltétel végül pedig a (2.6)-(2.7). Általánosabban viszont természetesen nem síkról és szeparáló egyenesről van szó, hanem bemeneti vektorokról és ezek terében vett szeparáló hipersíkról, ez viszont a képleteket már nem zavarja.
+</p><p>
+Egy egyszerű classification kód:
+</p><p>
+</p><pre>X = [[0 1];[1 -1];[2 1]];
+Y = [1; -1; 1];
+[nsv alpha bias] = svc(X,Y,'linear',10);
+svcplot(X,Y,'linear',alpha,bias,0,1);
+</pre>
+<p>
+Játszani egyébként sokat lehet az <code>uiclass</code> formon, pl: <a href="http://hhc.intro.hu/svm/svc1.gif" target="_top">svc1.gif</a>
+</p><p>
+Generalised problémán a fenti doksi azt érti, hogy nem ijedünk meg, ha nem sikerül szeparálnunk az osztályokat, akkor is megadunk egy elválasztóegyenest, de úgy számolunk, hogy a rossz oldalra eső tanítópontoknál egy "büntetőfüggvényt" ( <strong>loss function</strong> ) használunk. Ezt a (2.5) ábra és az alatta levő képletek mutatják, én jelenleg ezen a ponton vesztem el a képletek fonalát <img src="smile.gif" alt="smile" title="smile" border="0"> <a href="http://hhc.intro.hu/svm/svc01.gif" target="_top">01</a>
+</p><p>
+Ezután (2.3 fejezet) arról van szó, hogy az egyenessel nem szeparálható ponthalmazt hogyan is kezeljük. <a href="http://hhc.intro.hu/svm/svc02.gif" target="_top">02</a> Ekkor egy transzformációval (ez lesz a <strong>kernelfüggvény</strong> ) magasabb dimenzióba transzformáljuk az egész problémát, utána ott keresünk elválasztó (hiper)síkot. A hipersík ezután az eredeti problémán (pl síkban) ábrázolva úgy néz ki, mint egy magasabbrendű polinom. <a href="http://hhc.intro.hu/svm/svc03.gif" target="_top">03</a>
+</p><p>
+A 3-mas fejezet ezekután különféle kernelfüggvényeket mutat be, mindezek matematikája szerintem már nem érdekel minket, annyit kell majd tudni, hogy milyen jellegű ponthalmazok osztályozására mely függvények lesznek hatékonyabbak (adnak optimálisabb szeparálást).
+</p><p>
+</p><h2><a name="Regression_függvény_approximáció"> </a> Regression (függvény approximációja) </h2>
+<p>
+Célszerű hozzá minimum átfutni az osztályozással foglalkozó részt. 
+</p><p>
+Az 5-ös fejezet adja az osztályozási probléma átfogalmazását regressziós problémára. Regresszió esetén olyan egyenest keresünk, amelyhez a legközelebb esnek a tanítópontok (fent X). A közelség mértéke a doksiban négyféle lehet, mi majd az epszilon-intensive-el fogunk dolgozni, úgy néztem, amely epszilon-nál kisebb hibát tökéletességnek vesz. 
+</p><p>
+Ha elég jól rásimul a tanítópontokra az approximációs görbe, akkor jó néhány pont az epszilon sávon belül lesz, ilyenkor ezeknél már 0 a loss function, így nem befolyásolják az approximációt, vagyis nem számítanak support vectornak. Ha a tanító pontoknak csak mondjuk 70%-a vagy akár csak 20%-a lett SV, akkor jól illik a függvény (vagy túl nagy lett az epszilon).
+</p><p>
+A nemlineáris probléma itt is ugyanúgy műküdik mind az osztályozásnál, tehát magasabb dimenzióban nézi az svm a problémát. Számunkra ez szemléletesen annyit jelent, hogy magasabbrendű függvényt adhatunk a pontok "fedésére". Az <code>uiregress</code> -el sokat lehet játszani <a href="http://hhc.intro.hu/svm/svr1.gif" target="_top">svr1.gif</a>, és a fenti doksiban és sok screenshot van példaként felhozva. 
+</p><ul>
+<li> Valaki majd mondja el, mit kell csinálni, hogy az <code>uiregress</code> el is induljon! Nekem (<a class="twikiLink" href="https://wiki.sch.bme.hu/bin/view/Main/BergmannGabor?CGISESSID=8eb4f52fbee4fa7f39af68cb5b11541b">Baba</a>) nem fut.
+</li>
+</ul>
+<p>
+Mindkét problémához jól használható a konzulensüktől kapott <code>start.m</code>.
+</p><p>
+Az <code>'rbf'</code> kernelfüggvény ajánlott, a globális <code>p1</code> (pé egy) változóba kell a szigma paramétert tenni, szigma = pi-nél kb. jó, ezt érdemes variálni, és az eredményeket nézegetni (buta vs. overfitting). Amit még variálni lehet, az a C (kb. mozgásszabadság a kernel megválasztásakor), epszilon (az epszilon-érzéketlenséghez) és a tanítópontok száma. 
+</p><p>
+A függvényekről röviden: 
+</p><ul>
+<li> Ha már kiválasztottuk kedvenc kernelünket, loss functionünket és paramétereinket, akkor az <code>svr</code> függvény tanítópontok X listájából és az ezen helyeken felvett Y függvényértékek listájából megépíti a support vector machinet.
+</li>
+<li> Az eredményt egész jól megjeleníti az <code>svrplot</code> . 
+</li>
+<li> Az <code>svroutput</code> a már megépített svm-hez a tanítópontokon kívüli inputokra adott választ mondja meg.   
+</li>
+<li> Az <code>svrerror</code> pedig, ha a teljes inputlistára a valódi függvényértékeket is megmondjuk, kiszámolja, hogy mekkora egy adott loss function-nel az svm hibája.
+</li>
+</ul>
+<p>
+</p><p>
+</p><p>
+</p><p>
+</p><p>
+-- <a class="twikiLink" href="https://wiki.sch.bme.hu/bin/view/Main/FarkasGabor?CGISESSID=8eb4f52fbee4fa7f39af68cb5b11541b">FarkasGabor</a> - 2005.11.20.</p></div>
+<!---->
+<!---->
+<p>
+</p><div class="twikiTopicInfo"><span class="twikiRevInfo twikiGrayText">Revision: r1.2 - 2005.11.20 - 13:13 - <a class="twikiLink" href="https://wiki.sch.bme.hu/bin/view/Main/BergmannGabor?CGISESSID=8eb4f52fbee4fa7f39af68cb5b11541b&amp;CGISESSID=8eb4f52fbee4fa7f39af68cb5b11541b">BergmannGabor</a></span></div>
+<div class="twikiTopicFooter"><span class="twikiLeft"><span class="twikiHomePath"><a class="twikiLink" href="https://wiki.sch.bme.hu/bin/view/Infoalap/WebHome?CGISESSID=8eb4f52fbee4fa7f39af68cb5b11541b&amp;CGISESSID=8eb4f52fbee4fa7f39af68cb5b11541b">Infoalap</a>  <span class="sep">&gt;</span> <a class="twikiLink" href="https://wiki.sch.bme.hu/bin/view/Infoalap/MestersegesIntelligencia?CGISESSID=8eb4f52fbee4fa7f39af68cb5b11541b&amp;CGISESSID=8eb4f52fbee4fa7f39af68cb5b11541b">MestersegesIntelligencia</a> &gt; <a class="twikiLink" href="https://wiki.sch.bme.hu/bin/view/Infoalap/MestersegesIntelligenciaHf3?CGISESSID=8eb4f52fbee4fa7f39af68cb5b11541b&amp;CGISESSID=8eb4f52fbee4fa7f39af68cb5b11541b">MestersegesIntelligenciaHf3</a> &gt; <a class="twikiLink" href="https://wiki.sch.bme.hu/bin/view/Infoalap/MiFuggvenyApprox?CGISESSID=8eb4f52fbee4fa7f39af68cb5b11541b&amp;CGISESSID=8eb4f52fbee4fa7f39af68cb5b11541b">MiFuggvenyApprox</a> <span class="sep">&gt;</span> MiSupportVectorMachines </span></span></div></div></div><div class="twikiBottomBar"><div class="twikiBottomBarContents"><span class="twikiGrayText">Copyright © 1999-2007 SCH 
+ <br> 
+Ötleted, kérésed, problémád van a VIK wikivel kapcsolatban? <a href="mailto:twiki@wadon.sch.bme.hu?subject=VIK%20wiki%20visszajelzes%20-%20%20Infoalap.MiSupportVectorMachines">Írj!</a>
+</span></div></div>
+</body>
+</html>

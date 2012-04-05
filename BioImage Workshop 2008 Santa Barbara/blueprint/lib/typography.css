@@ -1,0 +1,118 @@
+/* -------------------------------------------------------------- 
+    
+   Typography.css
+   * Sets some default typography.
+  
+   Based on work by:
+   * Nathan Borror     [playgroundblues.com]
+   * Jeff Croft        [jeffcroft.com]
+   * Christian Metts   [mintchaos.com]
+   * Wilson Miner      [wilsonminer.com]
+   * Typogrify         [code.google.com/p/typogrify]
+   
+   The default font size is 12px. The baseline is set to 
+   18px. When you're setting heights of elements, always 
+   remember to use a multiple of the baseline (18,36,54..).
+   
+   The height of images shoud also be a multiple of 18.
+   
+   Read more about using a baseline here:
+   * alistapart.com/articles/settingtypeontheweb
+  
+-------------------------------------------------------------- */   
+
+body,ul,ol,dl,h1,h2,h3,h4,h5,h6,td,th,
+caption,pre,p,blockquote,input,textarea {
+  font-family: "Lucida Grande", Helvetica, Verdana, Arial,sans-serif;
+  font-size: 12px;
+  line-height: 18px; /* Baseline here at 150%. This is set multiple places. */
+  color: #333;
+}
+
+
+/* Headings
+-------------------------------------------------------------- */
+
+h1,h2,h3,h4,h5,h6 { 
+  font-family: Helvetica, Arial, "Lucida Grande", Verdana, sans-serif;
+  margin: 0; 
+  padding: 9px 0;
+  color:#111; 
+  clear:both; 
+}
+
+/* Total height for each heading has to be a multiple of the baseline (18). */
+h1 { font-size: 36px; line-height: 36px; padding: 18px 0; }
+h2 { font-size: 28px; line-height: 36px; }
+h3 { font-size: 18px; }
+h4 { font-size: 14px; }
+h5 { font-size: 12px; font-weight:bold; }
+h6 { font-size: 10px; font-weight:bold; }
+
+
+/* Text elements
+-------------------------------------------------------------- */
+
+p           { margin: 0 0 18px 0; text-align:justify; }
+p.last      { margin-bottom:0; }
+p img       { float: left; margin: 18px 18px 18px 0; padding:0; }
+p img.top   { margin-top:0; } /* Use this if the image is at the top of the <p>. */
+
+ul, ol      { margin: 18px 0 18px 18px; list-style-type:disc; }
+li          { line-height:18px; }
+ol          { list-style-type: decimal; }
+dl          { margin: 18px 0; }
+dl dt       { font-weight: bold; }
+
+a           { color: #125AA7; text-decoration: none; outline: none; }
+a:hover     { color: #000; }
+
+blockquote  { margin: 18px 0 18px 23px; font-size: 0.9em; color: #666; font-style: italic; }
+strong      { font-weight: bold; }
+em          { font-style: italic; }
+pre         { margin-bottom: 18px; line-height:18px; background: #eee; padding:8px; border:1px solid #ddd; }
+code        { font:0.9em Monaco, monospace; }
+
+
+/* Tables
+-------------------------------------------------------------- */
+
+table   { margin-bottom: 13px; border-top:1px solid #ddd; border-left:1px solid #ddd; }
+th,td   { height:17px; padding:0 8px; border-bottom:1px solid #ddd; border-right:1px solid #ddd; }
+th      { font-weight:bold; }
+
+
+/* Some default classes
+-------------------------------------------------------------- */
+
+.small, .small p  { font-size: 10px; }
+.large, .large p  { font-size: 14px; }
+.quiet, .quiet p  { color: #666; }
+.hide             { display: none; }
+
+/* TODO: Implement image captions. */
+.caption { }
+
+
+/* Extra fancy typography
+-------------------------------------------------------------- */
+
+/* For great looking ampersands, use this code instead of &amp;: 
+   <span class="amp">&amp;</span>  */
+  
+.amp { 
+  color: #666; 
+  font-family: "Warnock Pro", "Goudy Old Style","Palatino","Book Antiqua", serif; 
+  font-size: 1.1em;
+  line-height:10%; /* Fix to maintain correct baseline */
+  font-style: italic;
+}
+
+/* For great looking quote marks in titles, replace "asdf" width:
+   <span class="dquo">&#8220;</span>asdf&#8221;
+   (That is, when the title starts with a quote mark). */  
+
+.dquo { margin-left: -.7em; } 
+/* (You may have to change this value depending on your font size). */
+
+

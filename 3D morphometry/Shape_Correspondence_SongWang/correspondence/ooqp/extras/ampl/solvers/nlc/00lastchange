@@ -1,0 +1,13 @@
+Tue Mar 20 17:33:32 EST 2001
+  nlc.c, cops.c:  fix glitches with max(...) involving defined
+variables and, under -f, with case numbering, both for max(...)
+and for multiple objectives.  Under -f, adjust colrow so it accords
+with funcom_ without -f:  the (new) first nobj entries indicate
+whether the corresponding objective is to be minimized (0) or
+maximized (1).  Fix a bug in computing derivatives of defined variables
+used in several objectives or constraints.  An example where this
+bug bit (with wrong partials w.r.t y) is:
+	var x := .1; var y := -.1;
+	var p = 100*(y - x^2)^2 + (1 - y)^2;
+	var q = x*(x + 1);
+	minimize ox: max(p,q); minimize op: p;

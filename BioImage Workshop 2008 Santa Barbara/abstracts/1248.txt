@@ -1,0 +1,24 @@
+The plus ends of microtubules oscillate between phases of
+growth and shortening in a process called dynamic instability. Kinetic
+parameters used to describe microtubules' dynamic instability are the
+rates and duration of the two phases as well as the frequency of their
+interconversion (rescue and catastrophe). The parameters are extracted
+from live cell time-lapse imaging of fluorescently labeled tubulin. To
+date this is achieved with manual processing and hence is tedious and
+subjective. The goal of this work has been to automate the parameter
+extraction. Moreover, the accuracy of the estimate of the microtubule
+length is increased by computing it using multiple points along the
+microtubule axis. The automatic processing has been accomplished by
+first computing the image domain in which a microtubule is oscillating
+from a time-lapse fluorescent image stack. A Riemannian metric is
+computed over that region with a variation of fast marching. A
+geodesic in this metric gives the microtubule plus end
+trajectory. Subsequently, the variation of the length of each
+microtubule is used to subdivide the plus end polymerization into
+piecewise segments of linear polymerization rates. The discrete
+subdivision is performed efficiently using dynamic programming that
+determines the line segments of the microtubule length that give the
+best least squares fit in the time intervals. The line segments
+provide the kinetic statistics. The effectiveness of the algorithm is
+demonstrated with both phantom as well as real image sequences.
+ 

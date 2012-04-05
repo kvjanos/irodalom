@@ -1,0 +1,100 @@
+The source files in this directory and subdirectory src
+create a version of MINOS version 5.4 or 5.5 called "minos" that works
+with AMPL's solve command or can be used stand-alone to read a SPECS
+and MPS file and solve an LP.
+
+Minos determines how much scratch storage it will need from stub.nl or
+the SPECS file and obtains it from malloc.  For more details, see
+README.minos.
+
+You need to put the MINOS source files into subdirectory src
+(or the directory specified in the makefile's "M =" assignment).
+Since Lucent has a site license for MINOS, Lucent people can request
+MINOS source from the Lucent proprietary portion of netlib by
+asking netlib@netlib.bell-labs.com to
+		send all from minos
+Either move the files from that reply to src, or adjust the "M ="
+assignment in the makefile.
+
+Non-Lucent people must obtain MINOS source from
+
+	Stanford Business Software
+	2680 Bayshore Parkway, Suite 304
+	Mountain View, CA 94043
+	Phone:	+1-415-962-8719
+	Fax:	+1-415-962-1869
+
+and must
+
+	1. break up the MINOS source files as described by
+	   comments in the makefile and
+	2. comment out the minos2 subroutine in mi10unix.f.
+
+
+Type
+	make xsum.out
+
+to check for transmission errors.  This assumes you have the xsum
+program that comes with f2c or with the ampl source.  To get xsum's
+source, ask research!netlib to
+
+	send xsum.c from f2c/src
+
+If you have an old-style C compiler, add -DKR_headers to the CFLAGS =
+assignment in the makefile.  For example, change it from
+
+	CFLAGS = -O
+
+(if you trust your compiler's optimizations, -O) to
+
+	CFLAGS = -O -DKR_headers
+
+On Sun systems running SunOS, you should also add
+"-DMAIN__=MAIN_ -Dxargv=_xargv", so the line becomes
+
+	CFLAGS = -O -DKR_headers -DMAIN__=MAIN_ -Dxargv=_xargv
+
+On SGI (IRIX) systems, add "-Dxargv=f77argv" to CFLAGS.
+
+Under DEC's OSF1 (Unix for the Alpha chip), try
+
+	CFLAGS = -O -Dxargv=for__a_argv
+
+On Sun systems running Solaris,
+1. Create a two-line file, fmain.f, consisting of the lines
+
+	call main
+	end
+
+2. Insert "fmain.o " after "m = " in the makefile.
+3. Add "-DMAIN__=main_ -Dxargv=__xargv" to the CFLAGS assignment
+in the makefile.  In this case
+
+	CFLAGS = -O -DMAIN__=main_ -Dxargv=__xargv
+
+may suffice.
+
+Unless you are running on an IEEE-arithmetic machine or one with
+IBM-mainframe arithmetic, you should appropriately modify the line
+      EPS    = 2.0D+0**(-52)
+in src/mi10mach.f ; for VAX machines, the appropriate line is
+      EPS    = 2.0D+0**(-55)
+You may also have to change other machine-dependent lines
+in mi10unix.f .
+
+If you're concerned about memory and will not be using arrays
+longer than 32767, you can convert some integer arrays into
+integer*2 arrays by running the .f files in src through
+the sed script
+
+	sed 's/integer\*4/integer*2/;s/nwordh = 2/nwordh = 4/'
+
+Read the comments in .. (directory "solvers", of which this
+directory is a subdirectory, solvers/minos).
+
+Type "make" to create a random library called minos.a and
+the executable version of MINOS called minos mentioned above.
+You can also link your own subroutines defining the objective
+function and its gradient with minos.a; in src, type
+"make a.out" to see an example of this, and "make examples"
+to run the examples that come with the MINOS distribution.

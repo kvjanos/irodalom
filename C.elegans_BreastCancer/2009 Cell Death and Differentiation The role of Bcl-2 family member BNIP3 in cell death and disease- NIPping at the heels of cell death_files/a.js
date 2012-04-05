@@ -1,0 +1,1 @@
+document.write('<a target="_blank" href="http://ad.doubleclick.net/click;h=v8/3a8f/0/0/%2a/t;229333646;0-0;0;11800778;3454-728/90;38513976/38531733/1;;~sscs=%3fhttp://www.nature.com/bcj"><img src="http://s0.2mdn.net/viewad/2915969/22587-05-BCJ-banner-728.gif" border=0 alt="NEW! Blood Cancer Journal"></a>');

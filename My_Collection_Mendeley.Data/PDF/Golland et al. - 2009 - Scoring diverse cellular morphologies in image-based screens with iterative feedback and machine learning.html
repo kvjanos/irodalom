@@ -1,0 +1,1172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<meta name="wpd_version" content="0.2">
+<meta name="wpd_baseurl" content="http://www.pnas.org/content/106/6/1826.full">
+<meta name="wpd_url" content="http://www.pnas.org/content/106/6/1826.full">
+<meta name="wpd_date" content="2009-10-02T08:35Z">
+
+
+   
+      
+      <title>Scoring diverse cellular morphologies in image-based screens with iterative feedback and machine learning  &mdash;  PNAS </title>
+      <meta name="DC.Format" content="text/html">
+      <meta name="DC.Language" content="en">
+      <meta content="Scoring diverse cellular morphologies in image-based screens with iterative feedback and machine learning" name="DC.Title">
+      <meta content="10.1073/pnas.0808843106" name="DC.Identifier">
+      <meta content="2009-02-10" name="DC.Date">
+      <meta content="National Academy of Sciences" name="DC.Publisher">
+      <meta content="Thouis R. Jones" name="DC.Contributor">
+      <meta content="Anne E. Carpenter" name="DC.Contributor">
+      <meta content="Michael R. Lamprecht" name="DC.Contributor">
+      <meta content="Jason Moffat" name="DC.Contributor">
+      <meta content="Serena J. Silver" name="DC.Contributor">
+      <meta content="Jennifer K. Grenier" name="DC.Contributor">
+      <meta content="Adam B. Castoreno" name="DC.Contributor">
+      <meta content="Ulrike S. Eggert" name="DC.Contributor">
+      <meta content="David E. Root" name="DC.Contributor">
+      <meta content="Polina Golland" name="DC.Contributor">
+      <meta content="David M. Sabatini" name="DC.Contributor">
+      <meta content="Proceedings of the National Academy of Sciences" name="citation_journal_title">
+      <meta content="National Acad Sciences" name="citation_publisher">
+      <meta content="" name="citation_issn">
+      <meta content="" name="citation_issn">
+      <meta content="Jones, Thouis R.; Carpenter, Anne E.; Lamprecht, Michael R.; Moffat, Jason; Silver, Serena J.; Grenier, Jennifer K.; Castoreno, Adam B.; Eggert, Ulrike S.; Root, David E.; Golland, Polina; Sabatini, David M." name="citation_authors">
+      <meta content="Scoring diverse cellular morphologies in image-based screens with iterative feedback and machine learning" name="citation_title">
+      <meta content="02/10/2009" name="citation_date">
+      <meta content="106" name="citation_volume">
+      <meta content="6" name="citation_issue">
+      <meta content="1826" name="citation_firstpage">
+      <meta content="106/6/1826" name="citation_id">
+      <meta content="pnas;106/6/1826" name="citation_mjid">
+      <meta content="10.1073/pnas.0808843106" name="citation_doi">
+      <meta content="http://www.pnas.org/content/106/6/1826.abstract" name="citation_abstract_html_url">
+      <meta content="http://www.pnas.org/content/106/6/1826.full" name="citation_fulltext_html_url">
+      <meta content="http://www.pnas.org/content/106/6/1826.full.pdf" name="citation_pdf_url">
+      <meta content="19188593" name="citation_pmid">
+      <meta name="citation_access" content="all">
+      <meta name="robots" content="noarchive,nofollow">
+      
+      
+      
+      
+      
+      
+      
+      <script type="text/javascript">var callbackToken='464A46B03D2A5F3';</script><script type="text/javascript" src="jquery-min.js"></script><script type="text/javascript" src="hw-shared.js"></script><script type="text/javascript" src="hw-pnas.js"></script><script type="text/javascript" src="baynote.js"></script><script type="text/javascript" src="hw-content.js"></script><script type="text/javascript" src="hw-col-expand.js"></script><script type="text/javascript" src="baynote-guide.js"></script><script src="common.js"></script>
+<link rel="stylesheet" type="text/css" href="1826.css" media="all">
+</head>
+<body>
+      <div class="hw-gen-page pagetype-content" id="pageid-content">
+         <div id="header">
+            
+            <div class="main-logo">
+               <a href="http://www.pnas.org/" title="Proceedings of the National Academy of Sciences"><strong>PNAS</strong></a>
+               
+            </div>
+            <a href="http://www.pnas.org/" title="Proceedings of the National Academy of Sciences" class="secondary-logo"><strong>Proceedings of the National Academy of Sciences of the United States of
+                  America</strong></a>
+            
+            <p id="skip-link">
+               <a href="#content-block">Skip to main page content</a>
+               
+            </p>
+            
+            <ul class="button-list header-buttons">
+               <li><a title="Info for Authors" href="http://www.pnas.org/misc/iforc.shtml" class="ifora-link"><span>
+
+                        Info for Authors
+                        </span></a></li>
+               <li><a title="Editorial Board" href="http://www.pnas.org/misc/masthead.shtml" class="edboard-link"><span>
+
+                        Editorial Board
+                        </span></a></li>
+               <li><a title="About" href="http://www.pnas.org/misc/about.shtml" class="about-link"><span>
+
+                        About
+                        </span></a></li>
+               <li><a title="Subscribe" href="http://www.pnas.org/subscriptions" class="subscribe-link"><span>
+
+                        Subscribe
+                        </span></a></li>
+               <li><a title="Advertise" href="http://www.pnas.org/misc/about.shtml#advertising" class="advertise-link"><span>
+
+                        Advertise
+                        </span></a></li>
+               <li><a title="Contact" href="http://www.pnas.org/site/misc/contact.shtml" class="contact-link"><span>
+
+                        Contact
+                        </span></a></li>
+               <li><a title="Feedback" href="http://www.pnas.org/cgi/feedback" class="feedback-link"><span>
+
+                        Feedback
+                        </span></a></li>
+               <li><a title="Site Map" href="http://www.pnas.org/misc/sitemap.shtml" class="sitemap-link"><span>
+
+                        Site Map
+                        </span></a></li>
+            </ul>
+            
+            
+            <ul class="banner-ads">
+               <li class="position-1"><a href="http://www.pnas.org/cgi/adclick/?ad=21555&adclick=true&url=http%3A%2F%2Fwww.invitrogen.com%2Fsite%2Fus%2Fen%2Fhome%2Fbrands.html%3FCID%3DBN-085989-PNASBanner3"><img style="display: none;" class="adborder1" src="banner3-460x60.gif" alt="Invitrogen" height="60" width="468"></a></li>
+               <li class="position-2"><a href="http://www.pnas.org/cgi/adclick/?ad=21636&adclick=true&url=http%3A%2F%2Fwww.pnas.org%2Fcgi%2Falerts%2Fetoc"><img style="display: none;" class="adborder1" src="etocs-200x60.gif" alt="Sign up for PNAS eTOCs" height="60" width="200"></a></li>
+               <li class="position-3"><a href="http://www.pnas.org/cgi/adclick/?ad=19262&adclick=true&url=http%3A%2F%2Fwww.pnas.org%2Fmisc%2Fpodcasts.shtml"><img style="display: none;" class="adborder1" src="science-sessions-200x60.gif" alt="Science Sessions: PNAS Podcast Program" height="60" width="200"></a></li>
+            </ul>
+            
+         </div>
+         <div id="authstring">
+            
+            
+         </div>
+         <div style="height: auto;" id="content-block"><div id="content-option-box" title="Expand this column"><ul><li id="content-toggle"><a href="#"><span class="descr">Expand</span><span>+</span></a></li></ul></div>
+            <div class="article fulltext-view">
+               <h1 id="article-title-1">Scoring diverse cellular morphologies in image-based screens with iterative feedback and machine learning</h1>
+               <div class="contributors">
+                  <ol class="contributor-list" id="contrib-group-1">
+                     <li id="contrib-1"><span class="name"><a class="name-search" href="http://www.pnas.org/search?author1=Thouis+R.+Jones&sortspec=date&submit=Submit">Thouis R. Jones</a></span><a class="xref-aff" href="#aff-1" id="xref-aff-1-1"><sup>a</sup></a><span class="xref-sep">,</span><a class="xref-aff" href="#aff-2" id="xref-aff-2-1"><sup>b</sup></a><span class="xref-sep">,</span><a class="xref-aff" href="#aff-3" id="xref-aff-3-1"><sup>c</sup></a>, 
+                     </li>
+                     <li id="contrib-2"><span class="name"><a class="name-search" href="http://www.pnas.org/search?author1=Anne+E.+Carpenter&sortspec=date&submit=Submit">Anne E. Carpenter</a></span><a class="xref-aff" href="#aff-1" id="xref-aff-1-2"><sup>a</sup></a><span class="xref-sep">,</span><a class="xref-aff" href="#aff-2" id="xref-aff-2-2"><sup>b</sup></a><span class="xref-sep">,</span><a class="xref-fn" href="#fn-3" id="xref-fn-3-1"><sup>1</sup></a><span class="xref-sep">,</span><a class="xref-corresp" href="#corresp-1" id="xref-corresp-1-1"><sup>2</sup></a>, 
+                     </li>
+                     <li id="contrib-3"><span class="name"><a class="name-search" href="http://www.pnas.org/search?author1=Michael+R.+Lamprecht&sortspec=date&submit=Submit">Michael R. Lamprecht</a></span><a class="xref-aff" href="#aff-2" id="xref-aff-2-3"><sup>b</sup></a>, 
+                     </li>
+                     <li id="contrib-4"><span class="name"><a class="name-search" href="http://www.pnas.org/search?author1=Jason+Moffat&sortspec=date&submit=Submit">Jason Moffat</a></span><a class="xref-aff" href="#aff-2" id="xref-aff-2-4"><sup>b</sup></a><span class="xref-sep">,</span><a class="xref-fn" href="#fn-4" id="xref-fn-4-1"><sup>3</sup></a>, 
+                     </li>
+                     <li id="contrib-5"><span class="name"><a class="name-search" href="http://www.pnas.org/search?author1=Serena+J.+Silver&sortspec=date&submit=Submit">Serena J. Silver</a></span><a class="xref-aff" href="#aff-1" id="xref-aff-1-3"><sup>a</sup></a>, 
+                     </li>
+                     <li id="contrib-6"><span class="name"><a class="name-search" href="http://www.pnas.org/search?author1=Jennifer+K.+Grenier&sortspec=date&submit=Submit">Jennifer K. Grenier</a></span><a class="xref-aff" href="#aff-1" id="xref-aff-1-4"><sup>a</sup></a>, 
+                     </li>
+                     <li id="contrib-7"><span class="name"><a class="name-search" href="http://www.pnas.org/search?author1=Adam+B.+Castoreno&sortspec=date&submit=Submit">Adam B. Castoreno</a></span><a class="xref-aff" href="#aff-4" id="xref-aff-4-1"><sup>d</sup></a>, 
+                     </li>
+                     <li id="contrib-8"><span class="name"><a class="name-search" href="http://www.pnas.org/search?author1=Ulrike+S.+Eggert&sortspec=date&submit=Submit">Ulrike S. Eggert</a></span><a class="xref-aff" href="#aff-4" id="xref-aff-4-2"><sup>d</sup></a>, 
+                     </li>
+                     <li id="contrib-9"><span class="name"><a class="name-search" href="http://www.pnas.org/search?author1=David+E.+Root&sortspec=date&submit=Submit">David E. Root</a></span><a class="xref-aff" href="#aff-1" id="xref-aff-1-5"><sup>a</sup></a>, 
+                     </li>
+                     <li id="contrib-10"><span class="name"><a class="name-search" href="http://www.pnas.org/search?author1=Polina+Golland&sortspec=date&submit=Submit">Polina Golland</a></span><a class="xref-aff" href="#aff-3" id="xref-aff-3-2"><sup>c</sup></a> and 
+                     </li>
+                     <li id="contrib-11"><span class="name"><a class="name-search" href="http://www.pnas.org/search?author1=David+M.+Sabatini&sortspec=date&submit=Submit">David M. Sabatini</a></span><a class="xref-aff" href="#aff-1" id="xref-aff-1-6"><sup>a</sup></a><span class="xref-sep">,</span><a class="xref-aff" href="#aff-2" id="xref-aff-2-5"><sup>b</sup></a><span class="xref-sep">,</span><a class="xref-aff" href="#aff-5" id="xref-aff-5-1"><sup>e</sup></a></li>
+                  </ol><p class="affiliation-list-reveal"><a href="#" class="view-more">+</a> Author Affiliations</p>
+                  <ol class="affiliation-list hideaffil">
+                     <li class="aff"><a id="aff-1" name="aff-1"></a><address><sup>a</sup>The Broad Institute of MIT and Harvard, 7 Cambridge Center, Cambridge, MA 02142; 
+                        </address>
+                     </li>
+                     <li class="aff"><a id="aff-2" name="aff-2"></a><address><sup>b</sup>Whitehead Institute for Biomedical Research, Massachusetts Institute of Technology, 9 Cambridge Center, Cambridge, MA 02142;
+                           
+                        </address>
+                     </li>
+                     <li class="aff"><a id="aff-3" name="aff-3"></a><address><sup>c</sup>Computer Science and Artificial Intelligence Laboratory, Massachusetts Institute of Technology, 32 Vassar Street, Cambridge,
+                           MA 02139; 
+                        </address>
+                     </li>
+                     <li class="aff"><a id="aff-4" name="aff-4"></a><address><sup>d</sup>Dana-Farber Cancer Institute and Department of Biological Chemistry and Molecular Pharmacology, Harvard Medical School, 250
+                           Longwood Avenue, Boston, MA 02115; and 
+                        </address>
+                     </li>
+                     <li class="aff"><a id="aff-5" name="aff-5"></a><address><sup>e</sup>Department of Biology, Massachusetts Institute of Technology, 31 Ames Street, Cambridge, MA 02139
+                        </address>
+                     </li>
+                  </ol>
+                  <ol class="fn-track">
+                     <li class="fn-edited-by" id="fn-1">
+                        <p id="p-1">Edited by Edward M. Scolnick, The Broad Institute, Cambridge, MA, and approved December 12, 2008</p>
+                     </li>
+                     <li class="fn-equal" id="fn-3">
+                        <p id="p-3"><a class="rev-xref" href="#xref-fn-3-1">&crarr;</a><sup>1</sup>T.R.J. and A.E.C. contributed equally to this work. (received for review September 8, 2008)
+                        </p>
+                     </li>
+                  </ol>
+               </div>
+               <div class="section abstract" id="abstract-1">
+                  <div class="section-nav">
+                     <div class="nav-placeholder">&nbsp;</div><a href="#sec-1" title="Results" class="next-section-link"><span>Next Section</span></a></div>
+                  <h2>Abstract</h2>
+                  
+                  <p id="p-6">Many biological pathways were first uncovered by identifying mutants with visible phenotypes and by scoring every sample in
+                     a screen via tedious and subjective visual inspection. Now, automated image analysis can effectively score many phenotypes.
+                     In practical application, customizing an image-analysis algorithm or finding a sufficient number of example cells to train
+                     a machine learning algorithm can be infeasible, particularly when positive control samples are not available and the phenotype
+                     of interest is rare. Here we present a supervised machine learning approach that uses iterative feedback to readily score
+                     multiple subtle and complex morphological phenotypes in high-throughput, image-based screens. First, automated cytological
+                     profiling extracts hundreds of numerical descriptors for every cell in every image. Next, the researcher generates a rule
+                     (i.e., classifier) to recognize cells with a phenotype of interest during a short, interactive training session using iterative
+                     feedback. Finally, all of the cells in the experiment are automatically classified and each sample is scored based on the
+                     presence of cells displaying the phenotype. By using this approach, we successfully scored images in RNA interference screens
+                     in 2 organisms for the prevalence of 15 diverse cellular morphologies, some of which were previously intractable.
+                  </p>
+               </div><span class="kwd-group-title">Keywords: </span><ul class="kwd-group">
+                  <li class="kwd"><span><a class="kwd-search" href="http://www.pnas.org/search?fulltext=high-content+screening&sortspec=date&submit=Submit&andorexactfulltext=phrase">high-content screening</a></span></li>
+                  <li class="kwd"><span><a class="kwd-search" href="http://www.pnas.org/search?fulltext=high-throughput+image+analysis&sortspec=date&submit=Submit&andorexactfulltext=phrase">high-throughput image analysis</a></span></li>
+                  <li class="kwd"><span><a class="kwd-search" href="http://www.pnas.org/search?fulltext=phenotype&sortspec=date&submit=Submit&andorexactfulltext=phrase">phenotype</a></span></li>
+               </ul>
+               <p id="p-7">The history of biology has been dramatically shaped by classic visual screens in model organisms, including <em>Drosophila melanogaster</em> (<a class="xref-bibr" href="#ref-1" id="xref-ref-1-1">1</a>&ndash;<a class="xref-bibr" href="#ref-3" id="xref-ref-3-1">3</a>), <em>Saccharomyces cerevisiae</em> (<a class="xref-bibr" href="#ref-4" id="xref-ref-4-1">4</a>), <em>Caenorhabditis elegans</em> (<a class="xref-bibr" href="#ref-5" id="xref-ref-5-1">5</a>), and the zebrafish <em>Danio rerio</em> (<a class="xref-bibr" href="#ref-6" id="xref-ref-6-1">6</a>, <a class="xref-bibr" href="#ref-7" id="xref-ref-7-1">7</a>). In each case, biological pathways were discovered because researchers were intrigued by groups of peculiar-looking mutants
+                  and identified the genes underlying their phenotypes. Because researchers have favored the extensive study of relatively few
+                  genes (<a class="xref-bibr" href="#ref-8" id="xref-ref-8-1">8</a>), classic, wide-net approaches like screening are as relevant as ever to probe known biological pathways and discover new
+                  ones. Modern technology now enables large-scale experiments in cultured cells to identify human genes that underlie biological
+                  processes via RNAi. Automation also allows the screening of chemical libraries to identify perturbants useful as research
+                  tools or drugs.
+               </p>
+               <p id="p-8">Despite these advances, scoring cells in images for rare and unusual morphologies has, in general, remained a significant
+                  bottleneck (<a class="xref-bibr" href="#ref-9" id="xref-ref-9-1">9</a>&ndash;<a class="xref-bibr" href="#ref-12" id="xref-ref-12-1">12</a>). Cell image analysis allows accurate identification and measurement of cells' features, enabling automated analysis of certain
+                  phenotypes that were previously intractable (<a class="xref-bibr" href="#ref-13" id="xref-ref-13-1">13</a>&ndash;<a class="xref-bibr" href="#ref-26" id="xref-ref-26-1">26</a>). However, many interesting phenotypes require the assessment of several measured features of cells. Machine learning methods
+                  that select and combine multiple features for automated cell classification have been used to score many phenotypes (<a class="xref-bibr" href="#ref-15" id="xref-ref-15-2">15</a>&ndash;<a class="xref-bibr" href="#ref-26" id="xref-ref-26-2">26</a>). These methods require the provision of example cells that do and do not display the morphology of interest (i.e., positive
+                  and negative cells). Finding positive cells is straightforward when positive control samples are available and most of the
+                  cells therein show the phenotype. However, when this is not the case, as in classic exploratory screens, finding a sufficient
+                  number of positive cells can be prohibitively difficult. Even when positive control samples are available, using positive
+                  example cells from only those samples can lead to inaccurate scoring because of overfitting of the machine learning algorithm.
+               </p>
+               <p id="p-9">Here we describe our approach to scoring multiple complex and subtle phenotypes in large-scale, image-based screens. It is
+                  particularly effective when positive control samples are not available or not highly penetrant, as is often the case in RNAi
+                  and chemical screens. Our approach uses: (<em>a</em>) a biologist's ability to identify an &ldquo;interesting&rdquo; phenotype, (<em>b</em>) automatic measurement of multiple features for each cell, (<em>c</em>) a computer's ability to rapidly test multiple combinations of features using machine learning algorithms, and (<em>d</em>) a computer's ability to quickly and objectively classify millions of individual cells based on their measured features.
+                  We used our approach to score 15 diverse cellular phenotypes in large-scale RNAi screens in human and <em>D. melanogaster</em> cells, demonstrating that automated scoring for image-based chemical and genetic screens for multiple complex, low-penetrance
+                  phenotypes is now feasible.
+               </p>
+               <div class="section results" id="sec-1">
+                  <div class="section-nav"><a href="#abstract-1" title="Abstract" class="prev-section-link"><span>Previous Section</span></a><a href="#sec-5" title="Discussion" class="next-section-link"><span>Next Section</span></a></div>
+                  
+                  <h2>Results</h2>
+                  
+                  
+                  <h3>Overview of the Approach.</h3>
+                  <p class="h-lead" id="p-10">We have developed and validated a method for researchers to rapidly train a computer to score unusual cell morphologies automatically
+                     (<a class="xref-fig" href="#F1" id="xref-fig-1-1">Fig. 1</a>). First, we automatically identify and measure every cell in every image in the experiment by using the cell-image analysis
+                     software CellProfiler (<a class="xref-bibr" href="#ref-13" id="xref-ref-13-2">13</a>), which generates a cytological profile (<a class="xref-bibr" href="#ref-27" id="xref-ref-27-1">27</a>), or cytoprofile, for each cell. This cytoprofile consists of a set of numbers that describe the cell's characteristics,
+                     including size, shape, and the intensity and texture of various stains in various compartments (<a class="xref-fig" href="#F1" id="xref-fig-1-2">Fig. 1</a><em>A</em>). Next, the researcher initiates the training phase by identifying a few positive example cells that display a phenotype
+                     of interest and negative example cells without the phenotype (<a class="xref-fig" href="#F1" id="xref-fig-1-3">Fig. 1</a><em>B</em>). These cells can be from control samples if the screen has been designed to address a particular phenotype, or selected
+                     at random if the screen's goal is to uncover previously uncharacterized phenotypes in an exploratory screen. Most commonly,
+                     these example cells are taken from the full population without reference to the particular sample from which they are derived.
+                     This action is taken to avoid overfitting the machine learning algorithm to a few particular samples.
+                  </p>
+                  
+                  
+                  <div id="F1" class="fig pos-float">
+                     <div class="fig-inline"><a href="http://www.pnas.org/content/106/6/1826/F1.expansion.html"><img alt="Fig. 1." src="f1.small.gif"></a><div class="callout"><span>View larger version:</span><ul class="callout-links">
+                              <li><a href="http://www.pnas.org/content/106/6/1826/F1.expansion.html">In this window</a></li>
+                              <li><a class="in-nw" href="http://www.pnas.org/content/106/6/1826/F1.expansion.html">In a new window</a></li>
+                           </ul>
+                           <ul class="fig-services">
+                              <li class="ppt-link"><a href="http://www.pnas.org/powerpoint/106/6/1826/F1">Download as PowerPoint Slide</a></li>
+                           </ul>
+                        </div>
+                     </div>
+                     <div class="fig-caption"><span class="fig-label">Fig. 1.</span> 
+                        
+                        <p id="p-11" class="first-child">Scoring cell morphologies via cytological profiling, iterative feedback, and machine learning. (<em>A</em>) Images of cell populations for each treatment condition (RNAi or chemical) are processed with cell-image analysis software
+                           (e.g., CellProfiler) to identify and measure individual cells, in order to generate a cytological profile, containing a collection
+                           of measurements of features of each cell, represented schematically here as a bar code. (<em>B</em>) The software system presents the researcher with individual cells for classification, sampled randomly from the screen-wide
+                           population. After a few dozen cells are classified, the researcher can begin the iterative machine learning phase, in which
+                           the computer generates a tentative rule based on the classified cells and presents the researcher with cells classified according
+                           to that rule. In general, larger training sets produce more accurate rules, and using too small a training set can result
+                           in the computer training to a too-narrow definition of the phenotype (<a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=SF10">Fig. S10</a>). Generating a large training set without iterative feedback can be difficult when the phenotype is rare or no positive control
+                           samples are available; these are the cases where the iterative nature of our approach is most useful. The optimal initial
+                           training set size depends on the complexity of the phenotype and the scarcity of positive cells in the experiment. After the
+                           researcher corrects errors and retrains for several rounds, the rule becomes more accurate. (<em>C</em>) When the accuracy of the rule is sufficient, it is used to classify all cells in the experiment in order to calculate the
+                           number of positive and negative cells in each sample.
+                        </p>
+                        <div class="sb-div caption-clear"></div>
+                     </div>
+                  </div>
+                  
+                  <p id="p-12">Once a few dozen individual cells have been classified by the researcher, a machine learning algorithm is used to determine
+                     a tentative rule (i.e., a classifier) that distinguishes the cytoprofiles of the positive and negative example cells, using
+                     the GentleBoosting algorithm applied to regression stumps (<a class="xref-bibr" href="#ref-28" id="xref-ref-28-1">28</a>). Other machine learning methods are likely to be equally effective, based on their performance in previous work (<a class="xref-bibr" href="#ref-15" id="xref-ref-15-3">15</a>&ndash;<a class="xref-bibr" href="#ref-24" id="xref-ref-24-3">24</a>). The system then presents the researcher with a new batch of cells, which it has classified based on the tentative rule,
+                     and the researcher corrects errors. The corrections are used to refine the rule. After several rounds of error correction
+                     and rule refinement, the researcher has classified a few hundred cells, and these are used to produce a rule specific to the
+                     phenotype of interest. In the final step (<a class="xref-fig" href="#F1" id="xref-fig-1-4">Fig. 1</a><em>C</em>), the rule is applied to the cytoprofiles of every cell in the experiment, classifying each cell as positive or negative.
+                     Ultimately, the goal of the screen is to score each sample, which is a population of cells subjected to a particular RNAi
+                     or chemical treatment. Because simply ranking samples by the percentage of cells that are positive can be misleading for samples
+                     with few cells, we developed an &ldquo;enrichment score&rdquo; to rank each sample (see <a class="xref-fig" href="#F2" id="xref-fig-2-1">Fig. 2</a> and <em>Methods</em>). The researcher may continue to conduct further rounds of error correction and rule refinement based on images from samples
+                     with many positive cells, ultimately producing a rule with satisfactory accuracy. Although highly dependent on the complexity
+                     of the phenotype and the scarcity of positive example cells, the entire process of training for a phenotype typically takes
+                     a few hours.
+                  </p>
+                  
+                  <div id="F2" class="fig pos-float">
+                     <div class="fig-inline"><a href="http://www.pnas.org/content/106/6/1826/F2.expansion.html"><img alt="Fig. 2." src="f2.small.gif"></a><div class="callout"><span>View larger version:</span><ul class="callout-links">
+                              <li><a href="http://www.pnas.org/content/106/6/1826/F2.expansion.html">In this window</a></li>
+                              <li><a class="in-nw" href="http://www.pnas.org/content/106/6/1826/F2.expansion.html">In a new window</a></li>
+                           </ul>
+                           <ul class="fig-services">
+                              <li class="ppt-link"><a href="http://www.pnas.org/powerpoint/106/6/1826/F2">Download as PowerPoint Slide</a></li>
+                           </ul>
+                        </div>
+                     </div>
+                     <div class="fig-caption"><span class="fig-label">Fig. 2.</span> 
+                        
+                        <p id="p-13" class="first-child">Validation example of actin blebs phenotype. (<em>i</em>) The approach rank-orders samples (populations of cells under the same treatment condition) by their enrichment score (see
+                           <em>Methods</em>) and allows selection of positive and neutral samples based on this automated scoring. (<em>ii</em>) The corresponding phenotype penetrance is shown for the positive and neutral samples. Phenotype penetrance is typically
+                           correlated with enrichment score except that a low number of cells in a sample can decrease the score despite a high penetrance.
+                           (<em>iii</em>) The corresponding validation data are shown for the positive and neutral samples. The height of the bar for each sample
+                           indicates how many times a human observer chose that sample as a positive in a forced-choice comparison (see <em>Methods</em>). In this example, samples that were scored as positives (<em>Left</em>) were also chosen by the researchers as positives (11 or 12 times, of 12 comparisons per sample), and none of the neutral
+                           samples (<em>Right</em>) were routinely chosen as positive (0 or 1 time of 12 comparisons). Corresponding data for all phenotypes is shown in <a class="xref-fig" href="#F3" id="xref-fig-3-1">Figs. 3</a> and <a class="xref-fig" href="#F4" id="xref-fig-4-1">4</a>.
+                        </p>
+                        <div class="sb-div caption-clear"></div>
+                     </div>
+                  </div>
+                  
+                  
+                  
+                  <h3>Scoring RNAi Screens for Diverse Phenotypes in Human Cells.</h3>
+                  <p class="h-lead" id="p-14">We used this iterative approach to recognize and score 14 diverse phenotypes (<a class="xref-fig" href="#F3" id="xref-fig-3-2">Figs. 3</a> and <a class="xref-fig" href="#F4" id="xref-fig-4-2">4</a>) based on measurements acquired from &asymp;8.3 million human cells contained within 40,000 previously acquired fluorescence images
+                     (<a class="xref-bibr" href="#ref-14" id="xref-ref-14-2">14</a>). The cytological profile for each cell contained 610 measurements (see <a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=STXT"><em>SI Text</em></a>), resulting in more than 5 billion measurements total. Some of the phenotypes we chose are well-known&mdash;cells in particular
+                     subphases of mitosis, for example. Others, such as crescent-shaped nuclei (<a class="xref-fig" href="#F3" id="xref-fig-3-3">Fig. 3</a><em>E</em>) and blebs of actin that sometimes formed tubular projections (<a class="xref-fig" href="#F3" id="xref-fig-3-4">Fig. 3</a><em>A</em>), have no clear biological interpretation.
+                  </p>
+                  
+                  
+                  <div id="F3" class="fig pos-float">
+                     <div class="fig-inline"><a href="http://www.pnas.org/content/106/6/1826/F3.expansion.html"><img alt="Fig. 3." src="f3.small.gif"></a><div class="callout"><span>View larger version:</span><ul class="callout-links">
+                              <li><a href="http://www.pnas.org/content/106/6/1826/F3.expansion.html">In this window</a></li>
+                              <li><a class="in-nw" href="http://www.pnas.org/content/106/6/1826/F3.expansion.html">In a new window</a></li>
+                           </ul>
+                           <ul class="fig-services">
+                              <li class="ppt-link"><a href="http://www.pnas.org/powerpoint/106/6/1826/F3">Download as PowerPoint Slide</a></li>
+                           </ul>
+                        </div>
+                     </div>
+                     <div class="fig-caption"><span class="fig-label">Fig. 3.</span> 
+                        
+                        <p id="p-15" class="first-child">Results of the phenotype-scoring system, for diverse cellular morphologies in human cells. Each row shows images and data
+                           for a different cellular morphology that the system was trained to recognize and score. The phenotype column shows the name
+                           of each phenotype along with the number of positive and negative example cells in the training set after all rounds of iteration
+                           were completed by the researcher. Images for each phenotype follow a color scheme: blue, DNA (contrast-stretched); red, actin
+                           (contrast-stretched); green, phospho-histone H3 (absolute scale). (<em>Left</em>) Traditional pseudocoloring of the fluorescence microscopy images. (<em>Right</em>) Color-adjustment using the &ldquo;Invert For Printing&rdquo; module of CellProfiler. The width of each image (or montage, for multiframe
+                           images) is 102 &mu;m. For details on the validation column, see <a class="xref-fig" href="#F2" id="xref-fig-2-2">Fig. 2</a>. The penetrance histogram column shows the distribution of per-sample penetrance for each phenotype, along with the mean
+                           (shown as text and with a green line) and the model fit to the data (red line).
+                        </p>
+                        <div class="sb-div caption-clear"></div>
+                     </div>
+                  </div>
+                  
+                  <div id="F4" class="fig pos-float">
+                     <div class="fig-inline"><a href="http://www.pnas.org/content/106/6/1826/F4.expansion.html"><img alt="Fig. 4." src="f4.small.gif"></a><div class="callout"><span>View larger version:</span><ul class="callout-links">
+                              <li><a href="http://www.pnas.org/content/106/6/1826/F4.expansion.html">In this window</a></li>
+                              <li><a class="in-nw" href="http://www.pnas.org/content/106/6/1826/F4.expansion.html">In a new window</a></li>
+                           </ul>
+                           <ul class="fig-services">
+                              <li class="ppt-link"><a href="http://www.pnas.org/powerpoint/106/6/1826/F4">Download as PowerPoint Slide</a></li>
+                           </ul>
+                        </div>
+                     </div>
+                     <div class="fig-caption"><span class="fig-label">Fig. 4.</span> 
+                        
+                        <p id="p-16" class="first-child">More results of the phenotype-scoring system, for diverse cellular morphologies in human cells. See <a class="xref-fig" href="#F3" id="xref-fig-3-5">Fig. 3</a> for details.
+                        </p>
+                        <div class="sb-div caption-clear"></div>
+                     </div>
+                  </div>
+                  
+                  <p id="p-17">Nearly every phenotype we attempted to score could be scored accurately without customization of the image processing. That
+                     is, the standard cytoprofiles were sufficient for accurate classification in all but the Peas in a Pod phenotype. We added
+                     one feature (angle between a nucleus' 2 nearest neighbors) to the image-analysis step to better identify this phenotype (<a class="xref-fig" href="#F4" id="xref-fig-4-3">Fig. 4</a><em>C</em>). Also, we abandoned attempts to train a rule to identify a &ldquo;sparkly actin&rdquo; phenotype (<a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=SF1">Fig. S1</a>); few positive example cells could be found, and it is possible that our cytoprofiles did not contain appropriate texture
+                     measurements.
+                  </p>
+                  
+                  <p id="p-18">Features from the cytoprofiles that were used to classify cells for each phenotype usually included a mixture of measurements
+                     of intensity, texture, and area/shape (<a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=SF2">Fig. S2</a> and <a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=STXT"><em>SI Text</em></a>). Some features were unexpected, implying that choosing features manually by using biological or image-analysis expertise
+                     would have overlooked useful features. The features also served to generate hypotheses about phenotypes that were otherwise
+                     uncharacterized. For example, cells showing the actin blebs and peripheral actin phenotypes tend to have 4N DNA content, indicating
+                     an unexpected relationship to the cell cycle (<a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=SF3">Fig. S3</a>).
+                  </p>
+                  
+                  <p id="p-19">For most phenotypes, we knew of no samples that could be considered positive controls, precluding our use of existing methods
+                     that require highly penetrant controls (<a class="xref-bibr" href="#ref-15" id="xref-ref-15-4">15</a>, <a class="xref-bibr" href="#ref-19" id="xref-ref-19-4">19</a>, <a class="xref-bibr" href="#ref-20" id="xref-ref-20-4">20</a>). Typically, our only exemplars were unusual phenotypes that we observed at a low frequency in WT cells. Factors like cell
+                     cycle, local environment, stochastic noise, and epigenetics all play a role in generating nonuniform populations of cells
+                     (<a class="xref-bibr" href="#ref-29" id="xref-ref-29-1">29</a>, <a class="xref-bibr" href="#ref-30" id="xref-ref-30-1">30</a>). We therefore wondered whether any samples would have an unusually high proportion of cells showing these naturally occurring
+                     rare morphologies. Interestingly, every phenotype we pursued yielded at least some RNAi samples in which the phenotype was
+                     significantly enriched. This is consistent with the possibility that the number of phenotypic states that are possible for
+                     a cell is fairly limited, and natural variation in mRNA expression levels can push cells into one of these states, even without
+                     the influence of RNAi. In any event, the system enabled us to indulge our curiosity by pursuing unusual and uncharacterized
+                     cellular morphologies, as in classic genetic screens.
+                  </p>
+                  
+                  
+                  
+                  <h3>Validation, Comparison to Previous Methods, and Flexibility.</h3>
+                  <p class="h-lead" id="p-20">We tested our method's accuracy at ranking samples by having researchers score samples (that is, images showing a population
+                     of cells) by eye. The biologically relevant score for a sample is enrichment of cells that display the phenotype, rather than
+                     a hard &ldquo;positive&rdquo; or &ldquo;negative&rdquo; label, because samples in screens typically do not fall into clear positive and negative classes
+                     (particularly when judged by different researchers), but instead fall along a continuum (<a class="xref-bibr" href="#ref-31" id="xref-ref-31-1">31</a>). Our goal is to bring highly enriched samples to the attention of the researcher; therefore, our validation design (forced
+                     choice, described in <em>Methods</em>) (<a class="xref-bibr" href="#ref-32" id="xref-ref-32-1">32</a>) aimed to test whether top-ranking samples were indeed enriched relative to samples scored as neutral.
+                  </p>
+                  
+                  
+                  <p id="p-21">The results for actin blebs are shown in detail in <a class="xref-fig" href="#F2" id="xref-fig-2-3">Fig. 2</a>, and data for all human cell phenotypes are shown in the validation column in <a class="xref-fig" href="#F3" id="xref-fig-3-6">Figs. 3</a> and <a class="xref-fig" href="#F4" id="xref-fig-4-4">4</a>. For each phenotype, we rank-ordered the 5,000 puromycin-treated samples by enrichment score (<a class="xref-fig" href="#F2" id="xref-fig-2-4">Fig. 2</a><em>A</em>), as would be done in a typical screen. For validation, researchers were forced to choose between pairs of samples. One sample
+                     in each pair had been scored by the computer as highly enriched for the phenotype and the other as neutral. We recorded the
+                     number of times each sample was chosen as positive by the researchers (bar chart, <a class="xref-fig" href="#F2" id="xref-fig-2-5">Fig. 2</a><em>C</em>).
+                  </p>
+                  
+                  <p id="p-22">Among all 360 samples identified as &ldquo;hits&rdquo; across the different phenotypes (<a class="xref-fig" href="#F3" id="xref-fig-3-7">Figs. 3</a> and <a class="xref-fig" href="#F4" id="xref-fig-4-5">4</a>, positive samples column), there were 0 false negatives among the 360 samples identified as neutral and 2 potential false
+                     positives (red stars in <a class="xref-fig" href="#F3" id="xref-fig-3-8">Fig. 3</a><em>E</em>). Note that false positives can be readily weeded out by eye after analysis and that we cannot estimate the actual false-negative
+                     rate without knowing a priori the number of true positive samples, which is not possible in this screen. Agreement between
+                     humans was comparable with that between humans and automated scoring (<a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=ST1">Table S1</a>), indicating sufficient accuracy to bring samples enriched for each phenotype to the attention of the researcher.
+                  </p>
+                  
+                  <p id="p-23">The phenotypes we chose were particularly challenging because their average penetrance was low (0.2&ndash;6.1%), and even the strongest
+                     hits for some phenotypes contained &lt;5% positive cells. All phenotypes were, nonetheless, readily scored by our method. Previous
+                     approaches (<a class="xref-bibr" href="#ref-15" id="xref-ref-15-5">15</a>, <a class="xref-bibr" href="#ref-19" id="xref-ref-19-5">19</a>, <a class="xref-bibr" href="#ref-20" id="xref-ref-20-5">20</a>) have succeeded on highly penetrant phenotypes where positive control samples are known, but none of the phenotypes in our
+                     study had positive control samples available, and most were low-penetrance. We chose 4 of the phenotypes in this study and
+                     retrospectively tested a positive control-based method on them (<a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=SF4">Fig. S4</a>). The method worked well on the most highly penetrant, straightforward phenotype, large spread cells (<a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=SF4">Fig. S4<em>A</em></a>), but was inferior on the other 3 phenotypes of greater morphological complexity and lower penetrance, in some cases even
+                     failing to highly rank the training samples (<a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=SF4">Fig. S4 <em>B&ndash;D</em></a>).
+                  </p>
+                  
+                  <p id="p-24">Overfitting is a concern when using machine learning algorithms, but boosting variants are fairly resistant to it (<a class="xref-bibr" href="#ref-28" id="xref-ref-28-2">28</a>). Cross-validation results (<a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=SF5">Fig. S5</a>) show that this is also the case for our approach. The classification accuracy is typically not significantly reduced as
+                     the number of individual regression stumps forming a rule for a phenotype increases. To increase the coverage of the training
+                     set and guard against training to a too-narrow definition of a phenotype, it is useful to inspect images of the top-ranked
+                     samples (or positive control samples, if available), in which positively classified cells are marked. From these images, it
+                     is easy to identify false-negative cells and add them to the training set during the iterative training phase.
+                  </p>
+                  
+                  <p id="p-25">We considered whether a rule will generalize to new experiments. A rule trained on one experiment is unlikely to be applicable
+                     to experiments involving different assay protocols, cellular stains, or image acquisition instrumentation, although with our
+                     approach, the time required to generate a new rule for the new experiment is minimal. For replicate experiments, creating
+                     a training set from one replicate and applying the rule it generates to another replicate risks negatively impacting its accuracy
+                     because of undetected experimental variation (<a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=SF6">Fig. S6<em>B</em></a>). The more robust approach is to create a training set spanning all replicates (<a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=SF6">Fig. S6<em>A</em></a>).
+                  </p>
+                  
+                  <p id="p-26">Lastly, we tested our method's flexibility by applying it to another large-scale image set. Previously, 288 genes were screened
+                     for a metaphase phenotype by RNAi in <em>Drosophila</em> by using living-cell microarrays (<a class="xref-bibr" href="#ref-33" id="xref-ref-33-1">33</a>). In our previous work, we identified cells in metaphase by empirically applying sequential gates based on 4 measured features
+                     of the DNA stain of each cell. This process took more than a week. With our new approach, we identified metaphase nuclei and
+                     accurately scored the entire screen within 4 h, of which only 1 h was hands-on time (<a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=SF7">Fig. S7</a> and <a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=SF8">Fig. S8</a>). The top of the rank-ordered list of genes from the screen (<a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=STXT"><em>SI Text</em></a>) contained widerborst (CG5643, the one hit in our original study), as well as other cell-cycle-related genes, e.g., polo
+                     (CG12306) and microtubule star (CG7109). The gene most deenriched for metaphase nuclei was Nima-related kinase 2 (Nek2, CG17256;
+                     &ldquo;Nima&rdquo; derives from &ldquo;never in mitosis&rdquo;). As was the case for complex human phenotypes (<a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=SF4">Fig. S4</a>), providing the positive control sample images directly to the machine learning algorithm was unsuccessful (<a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=SF9">Fig. S9</a>).
+                  </p>
+                  
+               </div>
+               <div class="section discussion" id="sec-5">
+                  <div class="section-nav"><a href="#sec-1" title="Results" class="prev-section-link"><span>Previous Section</span></a><a href="#sec-6" title="Methods" class="next-section-link"><span>Next Section</span></a></div>
+                  
+                  <h2>Discussion</h2>
+                  
+                  <p id="p-27">Together, this work indicates that automated scoring of a wide variety of morphologies can be accomplished quickly and easily,
+                     even when a phenotype is rare in the WT population and positive control samples are not available. Specifically, the approach
+                     is scalable to large-scale, image-based screens (chemical or genetic) in which multiple complex phenotypes are examined. Whereas
+                     screening for perturbations of general cellular functions like cell division has yielded large networks of genes (<a class="xref-bibr" href="#ref-14" id="xref-ref-14-3">14</a>, <a class="xref-bibr" href="#ref-34" id="xref-ref-34-1">34</a>), the ability to identify more subtle and rare cellular morphologies should yield more tightly focused families of genes
+                     worthy of study (<a class="xref-bibr" href="#ref-35" id="xref-ref-35-1">35</a>). In particular, morphologies of unknown biological significance are likely to lead to the study of entirely new pathways
+                     in the spirit of classic genetic screens.
+                  </p>
+                  
+                  <p id="p-28">The approach described here is compatible with automated image analysis systems and, importantly, is robust to the occasional
+                     segmentation errors produced by such systems. Previous work has demonstrated that machine learning algorithms can be successfully
+                     trained by using all cells from positive and negative control samples to create a training set, even for some phenotypes that
+                     cannot be visually distinguished by humans (<a class="xref-bibr" href="#ref-25" id="xref-ref-25-3">25</a>). Here we showed that, whereas this approach can be successful for highly penetrant phenotypes (<a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=SF4">Fig. S4<em>A</em></a>), it is not suitable when the phenotype is less penetrant (<a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=SF4">Fig. S4 <em>B&ndash;D</em></a> and <a href="http://www.pnas.org/cgi/data/0808843106/DCSupplemental/Supplemental_PDF#nameddest=SF9">Fig. S9</a>). We have addressed these challenging situations, thus enabling screens for low-penetrance phenotypes that lack positive
+                     control samples. Even when positive control samples are available, leveraging the user's visual perception to select individual
+                     example cells helps prevent the machine learning algorithm from focusing on aspects of morphology that are irrelevant to the
+                     biological question at hand or from becoming tuned to cells that display some complex combination of phenotypes as the positive
+                     control samples (i.e., pleiotropic effects) rather than the specific phenotype of interest.
+                  </p>
+                  
+                  <p id="p-29">The machine learning approach presented here has been implemented and released as the &ldquo;Classifier&rdquo; feature in an open-source
+                     software package we developed previously for visualizing and exploring data from image-based screens, called CellProfiler
+                     Analyst (<a class="xref-bibr" href="#ref-33" id="xref-ref-33-2">33</a>).
+                  </p>
+                  
+               </div>
+               <div class="section methods" id="sec-6">
+                  <div class="section-nav"><a href="#sec-5" title="Discussion" class="prev-section-link"><span>Previous Section</span></a><a href="#ack-1" title="Acknowledgments" class="next-section-link"><span>Next Section</span></a></div>
+                  
+                  <h2>Methods</h2>
+                  
+                  
+                  <h3>Algorithms and Software.</h3>
+                  <p class="h-lead" id="p-30">The software packages used in this work, CellProfiler and CellProfiler Analyst, are open-source (available from the Broad
+                     Institute at <a href="http://www.cellprofiler.org/">www.cellprofiler.org</a>). The image-analysis pipeline, which can exactly recreate the analysis in CellProfiler, is provided along with a text description
+                     (<em>SI Text</em>). Based on code from Torralba <em>et al.</em> (<a class="xref-bibr" href="#ref-36" id="xref-ref-36-1">36</a>), the Classifier functionality was developed as a feature in CellProfiler Analyst for this study; its usage is described
+                     in a manual and an online demonstration video (available from the Broad Institute at <a href="http://www.cellprofiler.org/examples">www.cellprofiler.org/examples</a>).
+                  </p>
+                  
+                  
+                  <p id="p-31">The time to compute a rule is on the order of a few seconds, and grows linearly with training set size and the number of features.
+                     Using the rule to classify 8 million cells in a database takes &asymp;2 min, with the same orders of growth, primarily limited by
+                     disk transfer speed, as the full dataset must be read to classify every cell. Image processing times to identify and measure
+                     cells using CellProfiler are currently on the order of 10 s to several minutes per image, depending on the particular experimental
+                     and image analysis used (for example, &asymp;2.5 min per 3-channel, 512- &times; 512-image on a 2.4-GHz Intel CPU with 8 gigabytes of
+                     RAM for the human cell images in this study). Cluster computing prevents this from becoming a bottleneck.
+                  </p>
+                  
+                  
+                  
+                  <div class="h-p-wrap">
+                     <h3>RNAi Screens, Images, and Cytological Profiles.</h3>
+                     <p class="h-lead" id="p-32">Images used in the human screens presented here have been previously described (<a class="xref-bibr" href="#ref-14" id="xref-ref-14-4">14</a>). Cells were stained for DNA (Hoechst), actin (phalloidin), and phospho-histone-H3 serine 10 (antibody). Approximately 5
+                        separate lentiviral-delivered shRNAs were tested for each of 1,028 genes, mostly kinases and phosphatases, with 2 samples
+                        for each shRNA (one with and one without the selection reagent for the shRNA, puromycin) and with 4 images captured per sample.
+                        We used the samples treated with puromycin (the selection agent for the shRNA vector) for the validation step shown in <a class="xref-fig" href="#F3" id="xref-fig-3-9">Figs. 3</a> and <a class="xref-fig" href="#F4" id="xref-fig-4-6">4</a> because puromycin selection culls cells where the shRNA vector failed to infect, leading to more homogeneous populations
+                        in each sample and because puromycin affects phenotype penetrance in the WT population. Images (250 GB), the database of cytoprofiles
+                        (20 GB), and each phenotype's training set of positive and negative example cells are available on request. Images and data
+                        used in the <em>Drosophila</em> metaphase screen have also been previously described (<a class="xref-bibr" href="#ref-33" id="xref-ref-33-3">33</a>). Briefly, there were 5 replicates of a cell microarray, and each array had 3 replicate spots per gene, plus 256 negative
+                        control spots lacking an RNAi reagent.
+                     </p>
+                  </div>
+                  
+                  
+                  
+               </div>
+               <div class="section ack" id="ack-1">
+                  <div class="section-nav"><a href="#sec-6" title="Methods" class="prev-section-link"><span>Previous Section</span></a><a href="#fn-group-1" title="Footnotes" class="next-section-link"><span>Next Section</span></a></div>
+                  
+                  <h2>Acknowledgments</h2>
+                  
+                  <p id="p-36">We thank InHan Kang (Massachusetts Institute of Technology) for creating the CellProfiler Analyst software infrastructure
+                     and engineering some of the machine learning functionality; the RNAi Consortium and the Broad Institute RNAi Platform for
+                     investment of time and resources in the project; the Broad Institute Imaging Platform members for image analysis, statistical
+                     analysis, and software engineering (especially Adam Fraser, Adam Papallo, and Martha Vokes); Shomit Sengupta for microscopy
+                     and assay guidance; Aviv Regev and Eric Lander for helpful comments on the manuscript; and David Bonnett, Renee Butterfield,
+                     Dan Card, Dianne Carpenter, Seth Carpenter, Christopher Lewis, and Themba Nyathi for scoring images for the project. This
+                     work was supported by the Broad Institute, the RNAi Consortium, a Novartis fellowship from the Life Sciences Research Foundation
+                     (to A.E.C.), a Society for Biomolecular Screening Academic grant (to A.E.C.), a L'Oreal for Women in Science fellowship (to
+                     A.E.C.), the Massachusetts Institute of Technology Department of Electrical Engineering and Computer Science/Whitehead/Broad
+                     Training Program in Computational Biology, National Institutes of Health Grant DK070069&ndash;01 (to T.R.J.), National Science Foundation
+                     CAREER Award 0642971 (to P.G.), National Institute of General Medical Sciences Grant R01 GM0725555 (to D.M.S.) and National
+                     Institute of Allergy and Infectious Diseases Grant RO1 AI047389 (to D.M.S.).
+                  </p>
+                  
+               </div>
+               <div class="section fn-group" id="fn-group-1">
+                  <div class="section-nav"><a href="#ack-1" title="Acknowledgments" class="prev-section-link"><span>Previous Section</span></a><a href="#ref-list-1" title="References" class="next-section-link"><span>Next Section</span></a></div>
+                  <h2>Footnotes</h2>
+                  <ul>
+                     <li class="corresp" id="corresp-1"><sup>2</sup>To whom correspondence should be addressed. E-mail: <a href="mailto:anne@broad.mit.edu">anne@broad.mit.edu</a></li>
+                     <li class="fn-other" id="fn-2">
+                        <p id="p-2">Author contributions: T.R.J., A.E.C., D.E.R., P.G., and D.M.S. designed research; T.R.J., A.E.C., M.R.L., J.M., S.J.S., J.K.G.,
+                           A.B.C., and U.S.E. performed research; T.R.J., A.E.C., and P.G. analyzed data; and T.R.J. and A.E.C. wrote the paper.
+                        </p>
+                     </li>
+                     <li class="fn-present-address" id="fn-4">
+                        <p id="p-4"><a class="rev-xref" href="#xref-fn-4-1">&crarr;</a><sup>3</sup>Present address: Banting and Best Department of Medical Research, Donnelly Centre for Cellular and Biomolecular Research,
+                           University of Toronto, 160 College Street, Room 802, Toronto, Ontario, Canada M5S 3E1.
+                        </p>
+                     </li>
+                     <li class="fn-conflict" id="fn-5">
+                        <p id="p-33">The authors declare no conflict of interest.</p>
+                     </li>
+                     <li class="fn-other" id="fn-6">
+                        <p id="p-34">This article is a PNAS Direct Submission.</p>
+                     </li>
+                     <li class="fn-supplementary-material" id="fn-7">
+                        <p id="p-35">This article contains supporting information online at <a href="http://www.pnas.org/cgi/content/full/0808843106/DCSupplemental">www.pnas.org/cgi/content/full/0808843106/DCSupplemental</a>.
+                        </p>
+                     </li>
+                     <li class="license" id="license-1">
+                        <p id="p-5">Freely available online through the PNAS open access option.</p>
+                     </li>
+                     <li class="copyright-statement" id="copyright-statement-1">&copy; 2009 by The National Academy of Sciences of the USA</li>
+                  </ul>
+               </div>
+               <div class="section ref-list" id="ref-list-1">
+                  <div class="section-nav"><a href="#fn-group-1" title="Footnotes" class="prev-section-link"><span>Previous Section</span></a><div class="nav-placeholder">&nbsp;</div>
+                  </div>
+                  <h2>References</h2>
+                  <ol class="cit-list">
+                     <li><a class="rev-xref-ref" href="#xref-ref-1-1" title="View reference 1 in text" id="ref-1">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.1">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Nusslein-Volhard</span> <span class="cit-name-given-names">C</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Wieschaus</span> <span class="cit-name-given-names">E</span></span></li></ol><cite> (<span class="cit-pub-date">1980</span>) <span class="cit-article-title">Mutations affecting segment number and polarity in Drosophila</span>. <abbr class="cit-jnl-abbrev">Nature</abbr> <span class="cit-vol">287</span>:<span class="cit-fpage">795</span>&ndash;<span class="cit-lpage">801</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=10.1038/287795a0&link_type=DOI">CrossRef</a><a href="http://www.pnas.org/external-ref?access_num=6776413&link_type=MED">Medline</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-2-1" title="View reference 2 in text" id="ref-2">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.2">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Morgan</span> <span class="cit-name-given-names">TH</span></span></li></ol><cite> (<span class="cit-pub-date">1911</span>) <span class="cit-article-title">The origin of five mutations in eye color in Drosophila and their modes of inheritance</span>. <abbr class="cit-jnl-abbrev">Science</abbr> <span class="cit-vol">33</span>:<span class="cit-fpage">534</span>&ndash;<span class="cit-lpage">537</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/cgi/ijlink?linkType=PDF&journalCode=sci&resid=33/849/534-a"><span class="cit-reflinks-full-text"><span class="free-full-text">FREE </span>Full Text</span></a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-3-1" title="View reference 3 in text" id="ref-3">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.3">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Muller</span> <span class="cit-name-given-names">H</span></span></li></ol><cite> (<span class="cit-pub-date">1927</span>) <span class="cit-article-title">Artificial Transmutation of the Gene</span>. <abbr class="cit-jnl-abbrev">Science</abbr> <span class="cit-vol">66</span>:<span class="cit-fpage">84</span>&ndash;<span class="cit-lpage">87</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/cgi/ijlink?linkType=PDF&journalCode=sci&resid=66/1699/84"><span class="cit-reflinks-full-text"><span class="free-full-text">FREE </span>Full Text</span></a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-4-1" title="View reference 4 in text" id="ref-4">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.4">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Hartwell</span> <span class="cit-name-given-names">LH</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Culotti</span> <span class="cit-name-given-names">J</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Reid</span> <span class="cit-name-given-names">B</span></span></li></ol><cite> (<span class="cit-pub-date">1970</span>) <span class="cit-article-title">Genetic control of the cell-division cycle in yeast. I. Detection of mutants</span>. <abbr class="cit-jnl-abbrev">Proc Natl Acad Sci USA</abbr> <span class="cit-vol">66</span>:<span class="cit-fpage">352</span>&ndash;<span class="cit-lpage">359</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/cgi/ijlink?linkType=ABST&journalCode=pnas&resid=66/2/352"><span class="cit-reflinks-abstract">Abstract</span><span class="cit-sep cit-reflinks-variant-name-sep">/</span><span class="cit-reflinks-full-text"><span class="free-full-text">FREE </span>Full Text</span></a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-5-1" title="View reference 5 in text" id="ref-5">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.5">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Brenner</span> <span class="cit-name-given-names">S</span></span></li></ol><cite> (<span class="cit-pub-date">1974</span>) <span class="cit-article-title">The genetics of Caenorhabditis elegans</span>. <abbr class="cit-jnl-abbrev">Genetics</abbr> <span class="cit-vol">77</span>:<span class="cit-fpage">71</span>&ndash;<span class="cit-lpage">94</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/cgi/ijlink?linkType=ABST&journalCode=genetics&resid=77/1/71"><span class="cit-reflinks-abstract">Abstract</span><span class="cit-sep cit-reflinks-variant-name-sep">/</span><span class="cit-reflinks-full-text"><span class="free-full-text">FREE </span>Full Text</span></a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-6-1" title="View reference 6 in text" id="ref-6">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.6">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Haffter</span> <span class="cit-name-given-names">P</span></span>, </li><li><span class="cit-etal">et al.</span></li></ol><cite> (<span class="cit-pub-date">1996</span>) <span class="cit-article-title">The identification of genes with unique and essential functions in the development of the zebrafish, Danio rerio</span>. <abbr class="cit-jnl-abbrev">Development</abbr> <span class="cit-vol">123</span>:<span class="cit-fpage">1</span>&ndash;<span class="cit-lpage">36</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/cgi/ijlink?linkType=ABST&journalCode=develop&resid=123/1/1"><span class="cit-reflinks-abstract">Abstract</span></a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-7-1" title="View reference 7 in text" id="ref-7">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.7">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Driever</span> <span class="cit-name-given-names">W</span></span>, </li><li><span class="cit-etal">et al.</span></li></ol><cite> (<span class="cit-pub-date">1996</span>) <span class="cit-article-title">A genetic screen for mutations affecting embryogenesis in zebrafish</span>. <abbr class="cit-jnl-abbrev">Development</abbr> <span class="cit-vol">123</span>:<span class="cit-fpage">37</span>&ndash;<span class="cit-lpage">46</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/cgi/ijlink?linkType=ABST&journalCode=develop&resid=123/1/37"><span class="cit-reflinks-abstract">Abstract</span></a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-8-1" title="View reference 8 in text" id="ref-8">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.8">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Su</span> <span class="cit-name-given-names">AI</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Hogenesch</span> <span class="cit-name-given-names">JB</span></span></li></ol><cite> (<span class="cit-pub-date">2007</span>) <span class="cit-article-title">Power-law-like distributions in biomedical publications and research funding</span>. <abbr class="cit-jnl-abbrev">Genome Biol</abbr> <span class="cit-vol">8</span>:<span class="cit-fpage">404</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=10.1186/gb-2007-8-4-404&link_type=DOI">CrossRef</a><a href="http://www.pnas.org/external-ref?access_num=17472739&link_type=MED">Medline</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-9-1" title="View reference 9 in text" id="ref-9">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.9">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Eggert</span> <span class="cit-name-given-names">US</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Mitchison</span> <span class="cit-name-given-names">TJ</span></span></li></ol><cite> (<span class="cit-pub-date">2006</span>) <span class="cit-article-title">Small molecule screening by imaging</span>. <abbr class="cit-jnl-abbrev">Curr Opin Chem Biol</abbr> <span class="cit-vol">10</span>:<span class="cit-fpage">232</span>&ndash;<span class="cit-lpage">237</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=10.1016/j.cbpa.2006.04.010&link_type=DOI">CrossRef</a><a href="http://www.pnas.org/external-ref?access_num=16682248&link_type=MED">Medline</a><a href="http://www.pnas.org/external-ref?access_num=000238795000008&link_type=ISI">Web of Science</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-10-1" title="View reference 10 in text" id="ref-10">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.10">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Carpenter</span> <span class="cit-name-given-names">AE</span></span></li></ol><cite> (<span class="cit-pub-date">2007</span>) <span class="cit-article-title">Image-based chemical screening</span>. <abbr class="cit-jnl-abbrev">Nat Chem Biol</abbr> <span class="cit-vol">3</span>:<span class="cit-fpage">461</span>&ndash;<span class="cit-lpage">465</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=10.1038/nchembio.2007.15&link_type=DOI">CrossRef</a><a href="http://www.pnas.org/external-ref?access_num=17637778&link_type=MED">Medline</a><a href="http://www.pnas.org/external-ref?access_num=000248302200012&link_type=ISI">Web of Science</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-11-1" title="View reference 11 in text" id="ref-11">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.11">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Carpenter</span> <span class="cit-name-given-names">AE</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Sabatini</span> <span class="cit-name-given-names">DM</span></span></li></ol><cite> (<span class="cit-pub-date">2004</span>) <span class="cit-article-title">Systematic genome-wide screens of gene function</span>. <abbr class="cit-jnl-abbrev">Nat Rev Genet</abbr> <span class="cit-vol">5</span>:<span class="cit-fpage">11</span>&ndash;<span class="cit-lpage">22</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=14708012&link_type=MED">Medline</a><a href="http://www.pnas.org/external-ref?access_num=000187641100012&link_type=ISI">Web of Science</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-12-1" title="View reference 12 in text" id="ref-12">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.12">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Kiger</span> <span class="cit-name-given-names">A</span></span>, </li><li><span class="cit-etal">et al.</span></li></ol><cite> (<span class="cit-pub-date">2003</span>) <span class="cit-article-title">A functional genomic analysis of cell morphology using RNA interference</span>. <abbr class="cit-jnl-abbrev">J Biol</abbr> <span class="cit-vol">2</span>(<span class="cit-issue">4</span>):<span class="cit-fpage">27</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=10.1186/1475-4924-2-27&link_type=DOI">CrossRef</a><a href="http://www.pnas.org/external-ref?access_num=14527345&link_type=MED">Medline</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-13-1" title="View reference 13 in text" id="ref-13">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.13">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Carpenter</span> <span class="cit-name-given-names">AE</span></span>, </li><li><span class="cit-etal">et al.</span></li></ol><cite> (<span class="cit-pub-date">2006</span>) <span class="cit-article-title">CellProfiler: image analysis software for identifying and quantifying cell phenotypes</span>. <abbr class="cit-jnl-abbrev">Genome Biol</abbr> <span class="cit-vol">7</span>(<span class="cit-issue">10</span>):<span class="cit-fpage">R100</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=10.1186/gb-2006-7-10-r100&link_type=DOI">CrossRef</a><a href="http://www.pnas.org/external-ref?access_num=17076895&link_type=MED">Medline</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-14-1" title="View reference 14 in text" id="ref-14">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.14">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Moffat</span> <span class="cit-name-given-names">J</span></span>, </li><li><span class="cit-etal">et al.</span></li></ol><cite> (<span class="cit-pub-date">2006</span>) <span class="cit-article-title">A lentiviral RNAi library for human and mouse genes applied to an arrayed viral high-content screen</span>. <abbr class="cit-jnl-abbrev">Cell</abbr> <span class="cit-vol">124</span>:<span class="cit-fpage">1283</span>&ndash;<span class="cit-lpage">1298</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=10.1016/j.cell.2006.01.040&link_type=DOI">CrossRef</a><a href="http://www.pnas.org/external-ref?access_num=16564017&link_type=MED">Medline</a><a href="http://www.pnas.org/external-ref?access_num=000237241400026&link_type=ISI">Web of Science</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-15-1" title="View reference 15 in text" id="ref-15">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.15">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Bakal</span> <span class="cit-name-given-names">C</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Aach</span> <span class="cit-name-given-names">J</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Church</span> <span class="cit-name-given-names">G</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Perrimon</span> <span class="cit-name-given-names">N</span></span></li></ol><cite> (<span class="cit-pub-date">2007</span>) <span class="cit-article-title">Quantitative morphological signatures define local signaling networks regulating cell morphology</span>. <abbr class="cit-jnl-abbrev">Science</abbr> <span class="cit-vol">316</span>:<span class="cit-fpage">1753</span>&ndash;<span class="cit-lpage">1756</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/cgi/ijlink?linkType=ABST&journalCode=sci&resid=316/5832/1753"><span class="cit-reflinks-abstract">Abstract</span><span class="cit-sep cit-reflinks-variant-name-sep">/</span><span class="cit-reflinks-full-text"><span class="free-full-text">FREE </span>Full Text</span></a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-16-1" title="View reference 16 in text" id="ref-16">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.16">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Neumann</span> <span class="cit-name-given-names">B</span></span>, </li><li><span class="cit-etal">et al.</span></li></ol><cite> (<span class="cit-pub-date">2006</span>) <span class="cit-article-title">High-throughput RNAi screening by time-lapse imaging of live human cells</span>. <abbr class="cit-jnl-abbrev">Nat Methods</abbr> <span class="cit-vol">3</span>:<span class="cit-fpage">385</span>&ndash;<span class="cit-lpage">390</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=10.1038/nmeth876&link_type=DOI">CrossRef</a><a href="http://www.pnas.org/external-ref?access_num=16628209&link_type=MED">Medline</a><a href="http://www.pnas.org/external-ref?access_num=000237210700018&link_type=ISI">Web of Science</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-17-1" title="View reference 17 in text" id="ref-17">&crarr;</a><div class="cit ref-cit ref-book" id="cit-106.6.1826.17">
+                           <div class="cit-metadata">
+                              <ol class="cit-ed-list duplicate">
+                                 <li><span class="cit-ed"><span class="cit-name-surname">Goro</span> <span class="cit-name-given-names">Obinata</span></span>, 
+                                 </li>
+                                 <li><span class="cit-ed"><span class="cit-name-surname">Ashish</span> <span class="cit-name-given-names">Dutta</span></span></li>
+                              </ol>
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Orlov</span> <span class="cit-name-given-names">N</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Johnston</span> <span class="cit-name-given-names">J</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Macura</span> <span class="cit-name-given-names">T</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Shamir</span> <span class="cit-name-given-names">L</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Goldberg</span> <span class="cit-name-given-names">I</span></span></li></ol><cite> (<span class="cit-pub-date">2007</span>) in <span class="cit-source">Vision Systems: Segmentation and Pattern Recognition</span>, <span class="cit-article-title">Computer Vision for Microscopy Applications</span>, eds <span class="cit-ed"><span class="cit-name-surname">Goro</span> <span class="cit-name-given-names">Obinata</span></span>, <span class="cit-ed"><span class="cit-name-surname">Ashish</span> <span class="cit-name-given-names">Dutta</span></span> (<span class="cit-publ-name">I-Tech</span>, <span class="cit-publ-loc">Vienna</span>), pp <span class="cit-fpage">221</span>&ndash;<span class="cit-lpage">242</span>.</cite></div>
+                           <div class="cit-extra"></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-18-1" title="View reference 18 in text" id="ref-18">&crarr;</a><div class="cit ref-cit ref-confproc" id="cit-106.6.1826.18">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Lin</span> <span class="cit-name-given-names">C</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Mak</span> <span class="cit-name-given-names">W</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Hong</span> <span class="cit-name-given-names">P</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Sepp</span> <span class="cit-name-given-names">K</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Perrimon</span> <span class="cit-name-given-names">N</span></span></li></ol><cite> (<span class="cit-pub-date">2007</span>) <span class="cit-conf-name">IEEE 7th International Conference on Bioinformatics and Biomedical Engineering</span> <span class="cit-article-title">Intelligent Interfaces for Mining Large-Scale RNAi-HCS Image Databases</span> (<span class="cit-publ-name">IEEE</span>, <span class="cit-publ-loc">Washington DC</span>).</cite></div>
+                           <div class="cit-extra"></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-19-1" title="View reference 19 in text" id="ref-19">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.19">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Chen</span> <span class="cit-name-given-names">X</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Murphy</span> <span class="cit-name-given-names">RF</span></span></li></ol><cite> (<span class="cit-pub-date">2006</span>) <span class="cit-article-title">Automated interpretation of protein subcellular location patterns</span>. <abbr class="cit-jnl-abbrev">Int Rev Cytol</abbr> <span class="cit-vol">249</span>:<span class="cit-fpage">193</span>&ndash;<span class="cit-lpage">227</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=10.1016/S0074-7696%2806%2949004-5&link_type=DOI">CrossRef</a><a href="http://www.pnas.org/external-ref?access_num=16697284&link_type=MED">Medline</a><a href="http://www.pnas.org/external-ref?access_num=000237544300004&link_type=ISI">Web of Science</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-20-1" title="View reference 20 in text" id="ref-20">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.20">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Loo</span> <span class="cit-name-given-names">LH</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Wu</span> <span class="cit-name-given-names">LF</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Altschuler</span> <span class="cit-name-given-names">SJ</span></span></li></ol><cite> (<span class="cit-pub-date">2007</span>) <span class="cit-article-title">Image-based multivariate profiling of drug responses from single cells</span>. <abbr class="cit-jnl-abbrev">Nat Methods</abbr> <span class="cit-vol">4</span>:<span class="cit-fpage">445</span>&ndash;<span class="cit-lpage">453</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=17401369&link_type=MED">Medline</a><a href="http://www.pnas.org/external-ref?access_num=000246300400021&link_type=ISI">Web of Science</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-21-1" title="View reference 21 in text" id="ref-21">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.21">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Adams</span> <span class="cit-name-given-names">CL</span></span>, </li><li><span class="cit-etal">et al.</span></li></ol><cite> (<span class="cit-pub-date">2006</span>) <span class="cit-article-title">Compound classification using image-based cellular phenotypes</span>. <abbr class="cit-jnl-abbrev">Methods Enzymol</abbr> <span class="cit-vol">414</span>:<span class="cit-fpage">440</span>&ndash;<span class="cit-lpage">468</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=10.1016/S0076-6879%2806%2914024-0&link_type=DOI">CrossRef</a><a href="http://www.pnas.org/external-ref?access_num=17110206&link_type=MED">Medline</a><a href="http://www.pnas.org/external-ref?access_num=000243221500024&link_type=ISI">Web of Science</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-22-1" title="View reference 22 in text" id="ref-22">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.22">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Tanaka</span> <span class="cit-name-given-names">M</span></span>, </li><li><span class="cit-etal">et al.</span></li></ol><cite> (<span class="cit-pub-date">2005</span>) <span class="cit-article-title">An unbiased cell morphology-based screen for new, biologically active small molecules</span>. <abbr class="cit-jnl-abbrev">PLoS Biol</abbr> <span class="cit-vol">3</span>(<span class="cit-issue">5</span>):<span class="cit-fpage">e128</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=10.1371/journal.pbio.0030128&link_type=DOI">CrossRef</a><a href="http://www.pnas.org/external-ref?access_num=15799708&link_type=MED">Medline</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-23-1" title="View reference 23 in text" id="ref-23">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.23">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Young</span> <span class="cit-name-given-names">DW</span></span>, </li><li><span class="cit-etal">et al.</span></li></ol><cite> (<span class="cit-pub-date">2008</span>) <span class="cit-article-title">Integrating high-content screening and ligand-target prediction to identify mechanism of action</span>. <abbr class="cit-jnl-abbrev">Nat Chem Biol</abbr> <span class="cit-vol">4</span>:<span class="cit-fpage">59</span>&ndash;<span class="cit-lpage">68</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=10.1038/nchembio.2007.53&link_type=DOI">CrossRef</a><a href="http://www.pnas.org/external-ref?access_num=18066055&link_type=MED">Medline</a><a href="http://www.pnas.org/external-ref?access_num=000251990000014&link_type=ISI">Web of Science</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-24-1" title="View reference 24 in text" id="ref-24">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.24">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Wang</span> <span class="cit-name-given-names">J</span></span>, </li><li><span class="cit-etal">et al.</span></li></ol><cite> (<span class="cit-pub-date">2008</span>) <span class="cit-article-title">Cellular phenotype recognition for high-content RNA interference genome-wide screening</span>. <abbr class="cit-jnl-abbrev">J Biomol Screen</abbr> <span class="cit-vol">13</span>:<span class="cit-fpage">29</span>&ndash;<span class="cit-lpage">39</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/cgi/ijlink?linkType=ABST&journalCode=spjbx&resid=13/1/29"><span class="cit-reflinks-abstract">Abstract</span><span class="cit-sep cit-reflinks-variant-name-sep">/</span><span class="cit-reflinks-full-text"><span class="free-full-text">FREE </span>Full Text</span></a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-25-1" title="View reference 25 in text" id="ref-25">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.25">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Boland</span> <span class="cit-name-given-names">MV</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Murphy</span> <span class="cit-name-given-names">RF</span></span></li></ol><cite> (<span class="cit-pub-date">2001</span>) <span class="cit-article-title">A neural network classifier capable of recognizing the patterns of all major subcellular structures in fluorescence microscope
+                                    images of HeLa cells</span>. <abbr class="cit-jnl-abbrev">Bioinformatics</abbr> <span class="cit-vol">17</span>:<span class="cit-fpage">1213</span>&ndash;<span class="cit-lpage">1223</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/cgi/ijlink?linkType=ABST&journalCode=bioinfo&resid=17/12/1213"><span class="cit-reflinks-abstract">Abstract</span><span class="cit-sep cit-reflinks-variant-name-sep">/</span><span class="cit-reflinks-full-text"><span class="free-full-text">FREE </span>Full Text</span></a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-26-1" title="View reference 26 in text" id="ref-26">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.26">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Boland</span> <span class="cit-name-given-names">MV</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Markey</span> <span class="cit-name-given-names">MK</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Murphy</span> <span class="cit-name-given-names">RF</span></span></li></ol><cite> (<span class="cit-pub-date">1998</span>) <span class="cit-article-title">Automated recognition of patterns characteristic of subcellular structures in fluorescence microscopy images</span>. <abbr class="cit-jnl-abbrev">Cytometry</abbr> <span class="cit-vol">33</span>:<span class="cit-fpage">366</span>&ndash;<span class="cit-lpage">375</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=10.1002/%28SICI%291097-0320%2819981101%2933:3%3C366::AID-CYTO12%3E3.0.CO;2-R&link_type=DOI">CrossRef</a><a href="http://www.pnas.org/external-ref?access_num=9822349&link_type=MED">Medline</a><a href="http://www.pnas.org/external-ref?access_num=000076794900011&link_type=ISI">Web of Science</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-27-1" title="View reference 27 in text" id="ref-27">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.27">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Perlman</span> <span class="cit-name-given-names">ZE</span></span>, </li><li><span class="cit-etal">et al.</span></li></ol><cite> (<span class="cit-pub-date">2004</span>) <span class="cit-article-title">Multidimensional drug profiling by automated microscopy</span>. <abbr class="cit-jnl-abbrev">Science</abbr> <span class="cit-vol">306</span>:<span class="cit-fpage">1194</span>&ndash;<span class="cit-lpage">1198</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/cgi/ijlink?linkType=ABST&journalCode=sci&resid=306/5699/1194"><span class="cit-reflinks-abstract">Abstract</span><span class="cit-sep cit-reflinks-variant-name-sep">/</span><span class="cit-reflinks-full-text"><span class="free-full-text">FREE </span>Full Text</span></a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-28-1" title="View reference 28 in text" id="ref-28">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.28">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Friedman</span> <span class="cit-name-given-names">JH</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Hastie</span> <span class="cit-name-given-names">T</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Tibshirani</span> <span class="cit-name-given-names">R</span></span></li></ol><cite> (<span class="cit-pub-date">2000</span>) <span class="cit-article-title">Additive logistic regression: A statistical view of boosting</span>. <abbr class="cit-jnl-abbrev">Ann Stat</abbr> <span class="cit-vol">28</span>(<span class="cit-issue">2</span>):<span class="cit-fpage">337</span>&ndash;<span class="cit-lpage">407</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=000089669700001&link_type=ISI">Web of Science</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-29-1" title="View reference 29 in text" id="ref-29">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.29">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Sigal</span> <span class="cit-name-given-names">A</span></span>, </li><li><span class="cit-etal">et al.</span></li></ol><cite> (<span class="cit-pub-date">2006</span>) <span class="cit-article-title">Dynamic proteomics in individual human cells uncovers widespread cell-cycle dependence of nuclear proteins</span>. <abbr class="cit-jnl-abbrev">Nat Methods</abbr> <span class="cit-vol">3</span>:<span class="cit-fpage">525</span>&ndash;<span class="cit-lpage">531</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=10.1038/nmeth892&link_type=DOI">CrossRef</a><a href="http://www.pnas.org/external-ref?access_num=16791210&link_type=MED">Medline</a><a href="http://www.pnas.org/external-ref?access_num=000238669600014&link_type=ISI">Web of Science</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-30-1" title="View reference 30 in text" id="ref-30">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.30">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Levsky</span> <span class="cit-name-given-names">JM</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Singer</span> <span class="cit-name-given-names">RH</span></span></li></ol><cite> (<span class="cit-pub-date">2003</span>) <span class="cit-article-title">Gene expression and the myth of the average cell</span>. <abbr class="cit-jnl-abbrev">Trends Cell Biol</abbr> <span class="cit-vol">13</span>:<span class="cit-fpage">4</span>&ndash;<span class="cit-lpage">6</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=10.1016/S0962-8924%2802%2900002-8&link_type=DOI">CrossRef</a><a href="http://www.pnas.org/external-ref?access_num=12480334&link_type=MED">Medline</a><a href="http://www.pnas.org/external-ref?access_num=000180095200003&link_type=ISI">Web of Science</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-31-1" title="View reference 31 in text" id="ref-31">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.31">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Friedman</span> <span class="cit-name-given-names">A</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Perrimon</span> <span class="cit-name-given-names">N</span></span></li></ol><cite> (<span class="cit-pub-date">2007</span>) <span class="cit-article-title">Genetic screening for signal transduction in the era of network biology</span>. <abbr class="cit-jnl-abbrev">Cell</abbr> <span class="cit-vol">128</span>:<span class="cit-fpage">225</span>&ndash;<span class="cit-lpage">231</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=10.1016/j.cell.2007.01.007&link_type=DOI">CrossRef</a><a href="http://www.pnas.org/external-ref?access_num=17254958&link_type=MED">Medline</a><a href="http://www.pnas.org/external-ref?access_num=000244420500005&link_type=ISI">Web of Science</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-32-1" title="View reference 32 in text" id="ref-32">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.32">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Wichmann</span> <span class="cit-name-given-names">FA</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Graf</span> <span class="cit-name-given-names">ABA</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Simoncelli</span> <span class="cit-name-given-names">EP</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">B&uuml;lthoff</span> <span class="cit-name-given-names">HH</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Sch&ouml;lkopf</span> <span class="cit-name-given-names">B</span></span></li></ol><cite> (<span class="cit-pub-date">2004</span>) <span class="cit-article-title">Machine learning applied to perception: Decision images for gender classification</span>. <abbr class="cit-jnl-abbrev">Adv Neural Info Processing Syst</abbr> <span class="cit-vol">17</span>:<span class="cit-fpage">1489</span>&ndash;<span class="cit-lpage">1496</span>.</cite></div>
+                           <div class="cit-extra"></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-33-1" title="View reference 33 in text" id="ref-33">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.33">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Jones</span> <span class="cit-name-given-names">TR</span></span>, </li><li><span class="cit-etal">et al.</span></li></ol><cite> (<span class="cit-pub-date">2008</span>) <span class="cit-article-title">CellProfiler Analyst: Data exploration and analysis software for complex image-based screens</span>. <abbr class="cit-jnl-abbrev">BMC Bioinformatics</abbr> <span class="cit-vol">9</span>:<span class="cit-fpage">482</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=10.1186/1471-2105-9-482&link_type=DOI">CrossRef</a><a href="http://www.pnas.org/external-ref?access_num=19014601&link_type=MED">Medline</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-34-1" title="View reference 34 in text" id="ref-34">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.34">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Mukherji</span> <span class="cit-name-given-names">M</span></span>, </li><li><span class="cit-etal">et al.</span></li></ol><cite> (<span class="cit-pub-date">2006</span>) <span class="cit-article-title">Genome-wide functional analysis of human cell-cycle regulators</span>. <abbr class="cit-jnl-abbrev">Proc Natl Acad Sci USA</abbr> <span class="cit-vol">103</span>:<span class="cit-fpage">14819</span>&ndash;<span class="cit-lpage">14824</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/cgi/ijlink?linkType=ABST&journalCode=pnas&resid=103/40/14819"><span class="cit-reflinks-abstract">Abstract</span><span class="cit-sep cit-reflinks-variant-name-sep">/</span><span class="cit-reflinks-full-text"><span class="free-full-text">FREE </span>Full Text</span></a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-35-1" title="View reference 35 in text" id="ref-35">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.35">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Echeverri</span> <span class="cit-name-given-names">CJ</span></span>, </li><li><span class="cit-etal">et al.</span></li></ol><cite> (<span class="cit-pub-date">2006</span>) <span class="cit-article-title">Minimizing the risk of reporting false positives in large-scale RNAi screens</span>. <abbr class="cit-jnl-abbrev">Nat Methods</abbr> <span class="cit-vol">3</span>:<span class="cit-fpage">777</span>&ndash;<span class="cit-lpage">779</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=10.1038/nmeth1006-777&link_type=DOI">CrossRef</a><a href="http://www.pnas.org/external-ref?access_num=16990807&link_type=MED">Medline</a><a href="http://www.pnas.org/external-ref?access_num=000240942600008&link_type=ISI">Web of Science</a></div>
+                        </div>
+                     </li>
+                     <li><a class="rev-xref-ref" href="#xref-ref-36-1" title="View reference 36 in text" id="ref-36">&crarr;</a><div class="cit ref-cit ref-journal" id="cit-106.6.1826.36">
+                           <div class="cit-metadata">
+                              <ol class="cit-auth-list"> <li><span class="cit-auth"><span class="cit-name-surname">Torralba</span> <span class="cit-name-given-names">A</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Murphy</span> <span class="cit-name-given-names">KP</span></span>, </li><li><span class="cit-auth"><span class="cit-name-surname">Freeman</span> <span class="cit-name-given-names">WT</span></span></li></ol><cite> (<span class="cit-pub-date">2007</span>) <span class="cit-article-title">Sharing visual features for multiclass and multiview object detection</span>. <abbr class="cit-jnl-abbrev">IEEE Trans Pattern Anal Machine Intell</abbr> <span class="cit-vol">29</span>:<span class="cit-fpage">854</span>&ndash;<span class="cit-lpage">869</span>.</cite></div>
+                           <div class="cit-extra"><a href="http://www.pnas.org/external-ref?access_num=10.1109/TPAMI.2007.1055&link_type=DOI">CrossRef</a></div>
+                        </div>
+                     </li>
+                  </ol>
+               </div>
+            </div>
+            <div class="social-bookmarking">
+               
+               <ul class="social-bookmark-links">
+                  <li><a href="http://www.pnas.org/external-ref?tag_url=http://www.pnas.org/cgi/content/long/106/6/1826&title=Scoring%20diverse%20cellular%20morphologies%20in%20image-based%20screens%20with%20iterative%20feedback%20and%20machine%20learning+--+Jones%20et%20al.%20106%20%286%29%3A%201826+--+PNAS&doi=10.1073/pnas.0808843106&link_type=CITEULIKE"><img src="citeulike.gif" alt="Add to CiteULike" title="CiteULike"><span class="soc-bm-link-text">CiteULike</span></a></li>
+                  <li><a href="http://www.pnas.org/external-ref?tag_url=http://www.pnas.org/cgi/content/long/106/6/1826&title=Scoring%20diverse%20cellular%20morphologies%20in%20image-based%20screens%20with%20iterative%20feedback%20and%20machine%20learning+--+Jones%20et%20al.%20106%20%286%29%3A%201826+--+PNAS&doi=10.1073/pnas.0808843106&link_type=COMPLORE"><img src="complore.gif" alt="Add to Complore" title="Complore"><span class="soc-bm-link-text">Complore</span></a></li>
+                  <li><a href="http://www.pnas.org/external-ref?tag_url=http://www.pnas.org/cgi/content/long/106/6/1826&title=Scoring%20diverse%20cellular%20morphologies%20in%20image-based%20screens%20with%20iterative%20feedback%20and%20machine%20learning+--+Jones%20et%20al.%20106%20%286%29%3A%201826+--+PNAS&doi=10.1073/pnas.0808843106&link_type=CONNOTEA"><img src="connotea.gif" alt="Add to Connotea" title="Connotea"><span class="soc-bm-link-text">Connotea</span></a></li>
+                  <li><a href="http://www.pnas.org/external-ref?tag_url=http://www.pnas.org/cgi/content/long/106/6/1826&title=Scoring%20diverse%20cellular%20morphologies%20in%20image-based%20screens%20with%20iterative%20feedback%20and%20machine%20learning+--+Jones%20et%20al.%20106%20%286%29%3A%201826+--+PNAS&doi=10.1073/pnas.0808843106&link_type=DEL_ICIO_US"><img src="delicious.gif" alt="Add to Del.icio.us" title="Del.icio.us"><span class="soc-bm-link-text">Del.icio.us</span></a></li>
+                  <li><a href="http://www.pnas.org/external-ref?tag_url=http://www.pnas.org/cgi/content/long/106/6/1826&title=Scoring%20diverse%20cellular%20morphologies%20in%20image-based%20screens%20with%20iterative%20feedback%20and%20machine%20learning+--+Jones%20et%20al.%20106%20%286%29%3A%201826+--+PNAS&doi=10.1073/pnas.0808843106&link_type=DIGG"><img src="digg.gif" alt="Add to Digg" title="Digg"><span class="soc-bm-link-text">Digg</span></a></li>
+               </ul>
+               
+               <p class="social-bookmarking-help"><a href="http://www.pnas.org/help/social_bookmarks.dtl">What's this?</a></p>
+               
+            </div><span id="related-urls"></span></div>
+         <div style="height: 11060px;" id="col-2">
+            
+            <div class="article-nav">
+               <a href="http://www.pnas.org/content/106/6/1820.short" title="Previous article">&laquo; Previous</a><span class="article-nav-sep"> | </span><a href="http://www.pnas.org/content/106/6/1832.short" title="Next article">Next Article &raquo;</a><span class="toc-link"><a href="http://www.pnas.org/content/106/6.toc" title="Table of Contents">Table of Contents</a></span>
+               
+            </div>
+            <div class="open-access-note">
+               <span class="open-access-note">OPEN ACCESS ARTICLE</span>
+               
+            </div>
+            <div class="content-box" id="article-cb-main">
+               <div class="cb-contents">
+                  <h3 class="cb-contents-header"><span>This Article</span></h3>
+                  <div class="cb-section cb-slug">
+                     <ol>
+                        <li>
+                           <div id="slugline">
+                              
+                              
+                              	    <span class="slug-metadata-note ahead-of-print">
+
+                                 	Published online before print
+                                 <span class="slug-ahead-of-print-date">February 2, 2009</span>,
+                                 doi:
+                                 <span title="10.1073/pnas.0808843106" class="slug-doi">10.1073/pnas.0808843106
+                                    </span></span>
+                              
+                              <cite>
+                                 	    <abbr title="Proceedings of the National Academy of Sciences" class="slug-jnl-abbrev">
+
+                                    PNAS</abbr><span class="slug-pub-date">
+
+                                    	    February 10, 2009 
+                                    </span>
+                                 	    <span class="slug-vol">
+
+                                    vol. 106 
+                                    </span><span class="slug-issue">
+
+                                    no. 6 
+                                    </span><span class="slug-pages">
+
+                                    1826-1831
+                                    </span>
+                                 </cite>
+                              
+                              
+                              
+                           </div>
+                        </li>
+                     </ol>
+                  </div>
+                  <div class="cb-section">
+                     <ol>
+                        <li><span class="oa-article">Free via Open Access: <span>OA</span></span></li>
+                        <li><span class="oa-view">OA&nbsp;</span><a href="http://www.pnas.org/content/106/6/1826.abstract" rel="view-abstract">Abstract</a></li>
+                        <li><a href="http://www.pnas.org/content/106/6/1826.figures-only" rel="view-figures-only">Figures Only</a></li>
+                        <li class="notice"><span class="variant-indicator">&raquo; <span>Full Text</span></span></li>
+                        <li class="notice"><a href="http://www.pnas.org/content/106/6/1826.full.pdf+html" rel="view-full-text.pdf">Full Text (PDF)</a></li>
+                        <li><a href="http://www.pnas.org/content/106/6/1826/suppl/DCSupplemental" rel="supplemental-data" class="dslink-supporting-information">Supporting Information</a></li>
+                     </ol>
+                  </div>
+                  <div class="cb-section collapsible" id="cb-art-cat">
+                     <h4 class="cb-section-header"><a href="#" class="collapse-toggle"><span class="view-more">-</span> <span>Classifications</span></a></h4>
+                     <ol>
+                        <li>
+                           <ul class="subject-headings">
+                              <li>Biological Sciences
+                                 <ul class="subject-sub-headings">
+                                    <li><a class="tocsection-search" href="http://www.pnas.org/search?tocsectionid=Cell+Biology&sortspec=date&submit=Submit">Cell Biology</a></li>
+                                 </ul>
+                              </li>
+                           </ul>
+                        </li>
+                     </ol>
+                  </div>
+                  <div class="cb-section collapsible" id="cb-art-recm">
+                     <h4 class="cb-section-header"><a href="#" class="collapse-toggle"><span class="view-more">-</span> <span>Readers Also Viewed</span></a></h4>
+                     <ol>
+                        <li>
+                           <div id="cb-bn-guide" class="bn_g_recommendations"><script type="text/javascript">
+
+                    
+                    baynote_showGuide("AbstractGuide");
+                </script><span id="bn_placeholder_global"></span><div id="bn_placeholder0"></div></div>
+                        </li>
+                     </ol>
+                  </div>
+                  <div class="cb-section collapsible" id="cb-art-svcs">
+                     <h4 class="cb-section-header"><a href="#" class="collapse-toggle"><span class="view-more">-</span> <span>Services</span></a></h4>
+                     <ol>
+                        <li><a href="http://www.pnas.org/email?gca=pnas;106/6/1826&current-view-path=/content/106/6/1826.full">Email this article to a colleague</a></li>
+                        <li><a href="http://www.pnas.org/cgi/alerts/ctalert?alertType=citedby&addAlert=cited_by&cited_by_criteria_resid=pnas;106/6/1826&saveAlert=no&return-type=article&return_url=http://www.pnas.org/content/106/6/1826.full">Alert me when this article is cited</a></li>
+                        <li><a href="http://www.pnas.org/cgi/alerts/ctalert?alertType=correction&addAlert=correction&correction_criteria_value=106/6/1826&saveAlert=no&return-type=article&return_url=http://www.pnas.org/content/106/6/1826.full">Alert me if a correction is posted</a></li>
+                        <li><a href="http://www.pnas.org/search?qbe=pnas;0808843106&citation=Jones%20et%20al.%20106%20%286%29:%201826&submit=yes">Similar articles in this journal</a></li>
+                        <li><a href="http://www.pnas.org/external-ref?access_num=pnas%3B106%2F6%2F1826&link_type=ISI_RELATEDRECORDS" id="cb-isi-similar-articles">Similar articles in ISI</a></li>
+                        <li><a href="http://www.pnas.org/external-ref?access_num=19188593&link_type=MED_NBRS">Similar articles in PubMed</a></li>
+                        <li><a href="http://www.pnas.org/cgi/folders?action=addtofolder&wherefrom=JOURNALS&wrapped_id=pnas;106/6/1826">Add to My File Cabinet</a></li>
+                        <li><a href="http://www.pnas.org/citmgr?gca=pnas;106/6/1826">Download to citation manager</a></li>
+                        <li><a href="http://www.pnas.org/misc/rightperm.shtml">Request copyright permission</a></li>
+                     </ol>
+                  </div>
+                  <div class="cb-section default-closed collapsed" id="cb-art-cit">
+                     <h4 class="cb-section-header"><a href="#" class="collapse-toggle"><span class="view-more">+</span> <span>Citing Articles</span></a></h4>
+                     <ol style="display: none;">
+                        <li><a href="http://www.pnas.org/content/106/6/1826.full?cited-by=yes&legid=pnas;106/6/1826#cited-by" id="cb-hw-citing-articles">Load citing article information</a></li>
+                        <li><a title="[opens in a new window]" target="_top" href="http://www.pnas.org/cgi/crossref-forward-links/106/6/1826" rel="external-nw" id="cb-crossref-citing-articles">Citing articles via CrossRef</a></li>
+                        <li><a title="[opens in a new window]" target="_top" href="http://www.pnas.org/external-ref?access_num=pnas%3B106%2F6%2F1826&link_type=ISI_CITING" rel="external-nw" id="cb-isi-citing-articles">Citing articles via Web of Science</a></li>
+                        <li><a href="http://www.pnas.org/external-ref?access_num=http://www.pnas.org/cgi/content/abstract/106/6/1826&link_type=GOOGLESCHOLAR">Citing articles via Google Scholar</a></li>
+                     </ol>
+                  </div>
+                  <div class="cb-section default-closed collapsed" id="cb-art-gs">
+                     <h4 class="cb-section-header"><a href="#" class="collapse-toggle"><span class="view-more">+</span> <span>Google Scholar</span></a></h4>
+                     <ol style="display: none;">
+                        <li><a href="http://scholar.google.com/scholar?q=%22author%3AJones%20author%3AT.R.%22">Articles by  Jones, T. R.</a></li>
+                        <li><a href="http://scholar.google.com/scholar?q=%22author%3ASabatini%20author%3AD.M.%22">Articles by  Sabatini, D. M.</a></li>
+                        <li><a href="http://www.pnas.org/external-ref?access_num=http://www.pnas.org/cgi/content/abstract/106/6/1826&link_type=GOOGLESCHOLARRELATED">Search for related content</a></li>
+                     </ol>
+                  </div>
+                  <div class="cb-section default-closed collapsed" id="cb-art-pm">
+                     <h4 class="cb-section-header"><a href="#" class="collapse-toggle"><span class="view-more">+</span> <span>PubMed</span></a></h4>
+                     <ol style="display: none;">
+                        <li><a href="http://www.pnas.org/external-ref?access_num=19188593&link_type=PUBMED">PubMed citation</a></li>
+                        <li><a href="http://www.pnas.org/external-ref?access_num=Jones%20TR&link_type=AUTHORSEARCH">Articles by  Jones, T. R.</a></li>
+                        <li><a href="http://www.pnas.org/external-ref?access_num=Sabatini%20DM&link_type=AUTHORSEARCH">Articles by  Sabatini, D. M.</a></li>
+                        <li>
+                           <div id="cb-entrez-links-placeholder"><a href="http://www.pnas.org/entrez-links/19188593"></a></div>
+                        </li>
+                     </ol>
+                  </div>
+                  <div class="cb-section default-closed collapsed" id="cb-art-rel">
+                     <h4 class="cb-section-header"><a href="#" class="collapse-toggle"><span class="view-more">+</span> <span>Related Content</span></a></h4>
+                     <ol style="display: none;">
+                        <li><a href="http://www.pnas.org/content/106/6/1826.full?related-urls=yes&legid=pnas;106/6/1826#related-urls" id="cb-related-urls">Load related web page information</a></li>
+                     </ol>
+                  </div>
+                  <div class="cb-section default-closed collapsed" id="cb-art-soc">
+                     <h4 class="cb-section-header"><a href="#" class="collapse-toggle"><span class="view-more">+</span> <span>Social Bookmarking</span></a></h4>
+                     <ol style="display: none;">
+                        <li>
+                           <div class="social-bookmarking">
+                              
+                              <ul class="social-bookmark-links">
+                                 <li><a href="http://www.pnas.org/external-ref?tag_url=http://www.pnas.org/cgi/content/long/106/6/1826&title=Scoring%20diverse%20cellular%20morphologies%20in%20image-based%20screens%20with%20iterative%20feedback%20and%20machine%20learning+--+Jones%20et%20al.%20106%20%286%29%3A%201826+--+PNAS&doi=10.1073/pnas.0808843106&link_type=CITEULIKE"><img src="citeulike.gif" alt="Add to CiteULike" title="CiteULike"><span class="soc-bm-link-text">CiteULike</span></a></li>
+                                 <li><a href="http://www.pnas.org/external-ref?tag_url=http://www.pnas.org/cgi/content/long/106/6/1826&title=Scoring%20diverse%20cellular%20morphologies%20in%20image-based%20screens%20with%20iterative%20feedback%20and%20machine%20learning+--+Jones%20et%20al.%20106%20%286%29%3A%201826+--+PNAS&doi=10.1073/pnas.0808843106&link_type=COMPLORE"><img src="complore.gif" alt="Add to Complore" title="Complore"><span class="soc-bm-link-text">Complore</span></a></li>
+                                 <li><a href="http://www.pnas.org/external-ref?tag_url=http://www.pnas.org/cgi/content/long/106/6/1826&title=Scoring%20diverse%20cellular%20morphologies%20in%20image-based%20screens%20with%20iterative%20feedback%20and%20machine%20learning+--+Jones%20et%20al.%20106%20%286%29%3A%201826+--+PNAS&doi=10.1073/pnas.0808843106&link_type=CONNOTEA"><img src="connotea.gif" alt="Add to Connotea" title="Connotea"><span class="soc-bm-link-text">Connotea</span></a></li>
+                                 <li><a href="http://www.pnas.org/external-ref?tag_url=http://www.pnas.org/cgi/content/long/106/6/1826&title=Scoring%20diverse%20cellular%20morphologies%20in%20image-based%20screens%20with%20iterative%20feedback%20and%20machine%20learning+--+Jones%20et%20al.%20106%20%286%29%3A%201826+--+PNAS&doi=10.1073/pnas.0808843106&link_type=DEL_ICIO_US"><img src="delicious.gif" alt="Add to Del.icio.us" title="Del.icio.us"><span class="soc-bm-link-text">Del.icio.us</span></a></li>
+                                 <li><a href="http://www.pnas.org/external-ref?tag_url=http://www.pnas.org/cgi/content/long/106/6/1826&title=Scoring%20diverse%20cellular%20morphologies%20in%20image-based%20screens%20with%20iterative%20feedback%20and%20machine%20learning+--+Jones%20et%20al.%20106%20%286%29%3A%201826+--+PNAS&doi=10.1073/pnas.0808843106&link_type=DIGG"><img src="digg.gif" alt="Add to Digg" title="Digg"><span class="soc-bm-link-text">Digg</span></a></li>
+                              </ul>
+                              
+                              <p class="social-bookmarking-help"><a href="http://www.pnas.org/help/social_bookmarks.dtl">What's this?</a></p>
+                              
+                           </div>
+                        </li>
+                     </ol>
+                  </div>
+               </div>
+            </div>
+            
+            
+            <div class="content-box" id="article-dyn-nav">
+               <div class="cb-contents">
+                  <h3 class="cb-contents-header"><span>Navigate This Article</span></h3>
+                  <div class="cb-section collapsible" id="cb-art-nav">
+                     <ol>
+                        <li><a href="#content-block">Top</a></li>
+                        <li><a href="#abstract-1">Abstract</a></li>
+                        <li><a href="#sec-1">Results</a></li>
+                        <li><a href="#sec-5">Discussion</a></li>
+                        <li><a href="#sec-6">Methods</a></li>
+                        <li><a href="#ack-1">Acknowledgments</a></li>
+                        <li><a href="#fn-group-1">Footnotes</a></li>
+                        <li><a href="#ref-list-1">References</a></li>
+                     </ol>
+                  </div>
+               </div>
+            </div>
+            
+         </div>
+         <div style="height: 11060px;" id="col-3">
+            
+            <div class="sidebar-qs">
+               
+               <form class="searchbox" action="http://www.pnas.org/search" method="get">
+                  <div>
+                     <label for="sidebar-search-input" id="sidebar-search-label">Search PNAS</label>
+                     <input style="color: rgb(160, 160, 160);" value="Search PNAS" name="fulltext" id="sidebar-search-input" type="text">
+                     <input name="submit" value="yes" type="hidden">
+                     <input value="GO" id="sidebar-search-go" type="submit">
+                     
+                  </div>
+               </form>
+               <a href="http://www.pnas.org/search"><img alt="Link: Advanced Search" src="advsrch_head.gif" height="12" width="96"></a>
+               
+            </div>
+            <div class="content-box" id="sidebar-current-issue">
+               <div class="cb-contents">
+                  <h3 class="cb-contents-header"><span>This Week's Issue</span></h3>
+                  <div class="cb-section">
+                     <ol>
+                        <li><span><a href="http://www.pnas.org/content/current" rel="current-issue">October 27, 2009, 106 (43)</a></span></li>
+                     </ol>
+                  </div>
+                  <div class="cb-section">
+                     <ol>
+                        <li>
+                           <div class="current-issue"><a href="http://www.pnas.org/content/current" rel="current-issue"><img src="43.cover.gif" alt="Current Issue" height="89" width="67"></a></div>
+                        </li>
+                     </ol>
+                  </div>
+                  <div class="cb-section" id="sidebar-cur-issue-coverlines">
+                     <h4 class="cb-section-header"><span>From the Cover</span></h4>
+                     <ul>
+                        <li><a href="http://www.pnas.org/content/106/43/18097">Evolution of biodiversity</a></li>
+                        <li><a href="http://www.pnas.org/content/106/43/18231">Mechanics of stretched DNA</a></li>
+                        <li><a href="http://www.pnas.org/content/106/43/18321">Noncoding RNA regulatory circuitry</a></li>
+                        <li><a href="http://www.pnas.org/content/106/43/18396">Selective kappa opioid receptor antagonist</a></li>
+                     </ul>
+                  </div>
+                  <div class="cb-section sidebar-etoc-link">
+                     <ol>
+                        <li><a href="http://www.pnas.org/cgi/alerts/etoc">Alert me to new issues of PNAS</a></li>
+                     </ol>
+                  </div>
+               </div>
+            </div>
+            <div id="sidebar-global-nav">
+               
+               <ul class="button-list sidebar-buttons">
+                  <li><a title="Early Edition" href="http://www.pnas.org/content/early/recent" class="sidebar-early-edition-link"><span>Early Edition</span></a></li>
+                  <li><a title="Archives" href="http://www.pnas.org/content" class="sidebar-archives-link"><span>Archives</span></a></li>
+                  <li><a title="Online Submission" href="http://www.pnas.org/site/misc/onlinesubmission.shtml" class="sidebar-submission-link"><span>Online Submission</span></a></li>
+               </ul>            
+               <div class="rollover-info-box"></div>
+               
+               <ul class="button-list sidebar-links">
+                  <li><a title="Feature Articles" href="http://www.pnas.org/cgi/collection/feature_articles" class="feature-art-link"><span>Feature Articles</span></a><p class="feature-art-descr"><span> (Expanded research articles of exceptional breadth)</span></p>
+                  </li>
+                  <li><a title="Commentaries" href="http://www.pnas.org/content/by/section/Commentaries" class="commentaries-link"><span>Commentaries</span></a><p class="comm-descr"><span> (Expert commentary on leading research)</span></p>
+                  </li>
+                  <li><a title="Letters" href="http://www.pnas.org/cgi/collection/letters" class="letters-link"><span>Letters</span></a><p class="letters-descr"><span> (Online-only letters to the editor)</span></p>
+                  </li>
+                  <li><a title="Inaugural Articles" href="http://www.pnas.org/cgi/collection/inaugurals" class="inaugural-articles-link"><span>Inaugural Articles</span></a><p class="inaug-descr"><span> (Articles by recently elected NAS members)</span></p>
+                  </li>
+                  <li><a title="PNAS Profiles" href="http://www.pnas.org/cgi/collection/profiles" class="pnas-profiles-link"><span>PNAS Profiles</span></a><p class="profiles-descr"><span> (Biographical profiles of Academy members)</span></p>
+                  </li>
+                  <li><a title="Sustainability Science" href="http://www.pnas.org/site/misc/sustainability.shtml" class="sust-science-link"><span>Sustainability Science</span></a><p class="sust-sci-descr"><span> (Interactions of human and environmental systems)</span></p>
+                  </li>
+                  <li><a title="Collected Papers" href="http://www.pnas.org/site/misc/collectedpapers.shtml" class="coll-papers-link"><span>Collected Papers</span></a><p class="collpapers-descr"><span> (Editorials, Perspectives, Reviews, Colloquia, etc.)</span></p>
+                  </li>
+                  <li><a title="Special Features" href="http://www.pnas.org/site/misc/special.shtml" class="special-features-link"><span>Special Features</span></a><p class="features-descr"><span> (Solicited articles on exceptional research topics)</span></p>
+                  </li>
+                  <li><a title="Sackler Colloquia" href="http://www.pnas.org/site/misc/colloquia.shtml" class="sackler-colloquia-link"><span>Sackler Colloquia</span></a><p class="sackler-descr"><span> (Scientific reports held under NAS auspices)</span></p>
+                  </li>
+                  <li><a title="Podcasts" href="http://www.pnas.org/site/misc/podcasts.shtml" class="podcasts-link"><span>Podcasts</span></a><p class="podcasts-descr"><span>Brief podcasts with leading scientists</span></p>
+                  </li>
+               </ul>
+               
+            </div>
+            
+            
+            <div class="most-links-box">
+               
+               <div class="most-header">
+                  
+                  <h3>Most</h3><ul class="most-headings"><li class="most-cur-sel"><a href="#">Read</a></li><li><a href="#">Cited</a></li></ul>
+                  
+               </div>
+               
+               <ul>
+                  <li class="most-cur-sel">
+                     <h4>Read</h4>
+                     <div class="most-list">
+                        
+                        <ol>
+                           <li><a href="http://www.pnas.org/cgi/content/short/104/14/5727?rss=1&ssource=mfc">High-pressure/low-temperature neutron scattering of gas inclusion compounds: Progress and prospects</a></li>
+                           <li><a href="http://www.pnas.org/cgi/content/short/106/17/6883?rss=1&ssource=mfc">The most influential journals: Impact Factor and Eigenfactor</a></li>
+                           <li><a href="http://www.pnas.org/cgi/content/short/106/37/15518?rss=1&ssource=mfc">PNAS will eliminate Communicated submissions in July 2010</a></li>
+                           <li><a href="http://www.pnas.org/cgi/content/short/104/5/1449?rss=1&ssource=mfc">A new human retrovirus associated with prostate cancer</a></li>
+                           <li><a href="http://www.pnas.org/cgi/content/short/98/5/2115?rss=1&ssource=mfc">H1N1-influenza as Lazarus: Genomic resurrection from the tomb of an unknown</a></li>
+                        </ol>
+                        <a href="http://www.pnas.org/reports/mfr1.dtl" class="view-all">&raquo; View all Most Read articles</a>
+                        
+                     </div>
+                  </li>
+                  <li>
+                     <h4>Cited</h4>
+                     <div class="most-list">
+                        
+                        <ol>
+                           <li><a href="http://www.pnas.org/cgi/content/short/74/12/5463?rss=1&ssource=mfc">DNA Sequencing with Chain-Terminating Inhibitors</a></li>
+                           <li><a href="http://www.pnas.org/cgi/content/short/76/9/4350?rss=1&ssource=mfc">Electrophoretic Transfer of Proteins from Polyacrylamide Gels to Nitrocellulose Sheets: Procedure and Some Applications</a></li>
+                           <li><a href="http://www.pnas.org/cgi/content/short/95/25/14863?rss=1&ssource=mfc">Cluster analysis and display of genome-wide expression patterns</a></li>
+                           <li><a href="http://www.pnas.org/cgi/content/short/98/9/5116?rss=1&ssource=mfc">Significance analysis of microarrays applied to the ionizing radiation response</a></li>
+                           <li><a href="http://www.pnas.org/cgi/content/short/97/12/6640?rss=1&ssource=mfc">One-step inactivation of chromosomal genes in Escherichia coli K-12 using PCR products</a></li>
+                        </ol>
+                        <a href="http://www.pnas.org/reports/mfc1.dtl" class="view-all">&raquo; View all Most Cited articles</a>
+                        
+                     </div>
+                  </li>
+               </ul>
+               
+            </div>
+            <div class="science-jobs">
+               <script type="text/javascript" src="widget_json.js"></script>
+               <script type="text/javascript">
+
+            var rm_widgetId=478;
+            var rm_serviceLocation='http://www.realmatch.com/Widgets/Pages/Widget_JSON.aspx';
+            getWidget();
+        </script>
+               <noscript><a href="http://www.realmatch.com">Job search</a>by realmatch
+                  
+               </noscript>
+               
+               
+            </div>
+            
+         </div>
+         <div id="footer">
+            
+            <ul class="footer-links">
+               <li class="firstitem"><a href="http://www.pnas.org/content/current">
+
+                     Current Issue
+                     </a></li>
+               <li><a href="http://www.pnas.org/content">
+
+                     Archives
+                     </a></li>
+               <li><a href="http://www.pnas.org/misc/onlinesubmission.shtml">
+
+                     Online Submission
+                     </a></li>
+               <li><a href="http://www.pnas.org/misc/iforc.shtml">
+
+                     Info for Authors
+                     </a></li>
+               <li><a href="http://www.pnas.org/misc/masthead.shtml">
+
+                     Editorial Board
+                     </a></li>
+               <li><a href="http://www.pnas.org/misc/about.shtml">
+
+                     About
+                     </a></li>
+            </ul>
+            <ul class="footer-links">
+               <li class="firstitem"><a href="http://www.pnas.org/subscriptions">Subscribe</a></li>
+               <li><a href="http://www.pnas.org/misc/about.shtml#advertising">Advertise</a></li>
+               <li><a href="http://www.pnas.org/cgi/feedback">Contact</a></li>
+               <li><a href="http://www.pnas.org/misc/sitemap.shtml">Site Map</a></li>
+            </ul>
+            
+            <p class="copyright">
+               <a href="http://www.pnas.org/misc/terms.shtml">Copyright &copy;2009 by the National Academy of Sciences</a>
+               
+            </p>
+            <script type="text/javascript">
+
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script><script src="ga.js" type="text/javascript"></script><script type="text/javascript">
+
+        var pageTracker = _gat._getTracker("UA-677185-1");
+        pageTracker._trackPageview();
+        </script>
+            </div>
+      </div><script type="text/javascript" src="baynote-observer.js"></script><div id="bn_placeholder1"></div></body>
+</html>
