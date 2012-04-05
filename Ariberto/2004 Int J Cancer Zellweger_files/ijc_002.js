@@ -1,0 +1,1 @@
+document.write('<a target="_blank" href="http://ad.uk.doubleclick.net/click;h=v8/3a92/0/0/%2a/e;227533384;0-0;0;42442308;3454-728/90;37828390/37846238/1;;~sscs=%3fhttp://olabout.wiley.com/WileyCDA/Section/id-390001.html"><img src="http://s0.2mdn.net/viewad/2508014/WOL-Leaderboard_v12.gif" border=0 alt="Click here to find out more!"></a>');
