@@ -1,0 +1,38 @@
+Automated High Content Assays in Biological 3D Extracellular Matrix
+Victoria Echeverria, Melissa Ritter, Allyson Skoien, Steven Hayes
+
+Overview
+Abstract: The importance of 3-dimensional extracellular matrix on cellular function and behavior is clear from studies in differentiation, tissue engineering and more recently, molecular pharmacology. If given the proper 3D scaffold, mammary epithelial cells will undergo polarization and differentiation resembling in vivo structures 1. Important differences exist between migration of fibroblasts and other cell types on flat plastic compared to 3D environments 2. Certain therapeutic agents show differential responses between 2D substrates and biological 3-D matrix 3-4. Yet due to technical challenges, cellular assays are still predominantly performed in 2D. Leveraging our previous work in high content 3D tumor cell migration using an array of microchannels 5, we present here a highly miniaturized and automated approach for high content immunocytochemistry in 3D matrices. The validation was performed on a pancreatic tumor cell model using cells embedded in 3D fibrillar collagen compared to collagen coated substrates. A series of protocol enhancements will be described, along with representative experimental results from cell cycle analysis. This approach yields precise and reproducible inhibitor potencies, and produces screenable quality assay windows. The miniaturization inherent in the platform should prove enabling for studies using primary cells and customized extracellular matrices.
+
+Consistent cell staining intensity is achieved across the length of the channel
+
+1,280 compound high content screen in 3D collagen
+
+Morphological differences between cells in 2D vs. 3D
+
+Figure 3. Average intensity of Hoechst 33342 staining vs. x-axis position within the channel length. Since 3D collagen is fibrillar and porous, we are able to flow droplets of reagents from one end of the channel to the other through the matrix. BxPC3 cells were seeded in 3D collagen and incubated overnight. Cells were assayed for S-phase using the Invitrogen Click-iT™ EdU kit. The channels were imaged with a 4x objective with sufficient depth of focus to capture the 140 µm height of the channel. Both the nuclear dye, Hoechst and the EdU label was able to evenly stain cells across the full length of the channel, as shown by the moving average (black line, period= 100 points).
+
+Figure 6. Hit profile of 1,280 compound screen for cell cycle inhibitors. The LOPAC1280TM library (Sigma), a collection of 1,280 pharmacologically active compounds, was screened for inhibitory effect on % of population in Sphase using the Invitrogen Click-iT™ EdU kit. Cells were seeded in 3D type I collagen (1 mg/ml) in microchannels, and treated with compounds overnight at a 10µM dose, n=2. All liquid handling was done using a Cybio CyBi®-Well 96-channel Simultaneous Pipettor. Imaging was done with an automated Nikon TE2000 Inverted Microscope. Analysis was automated using Metamorph software. The % of S-phase cells was normalized to the untreated control for each plate. The red box indicates 3 standard deviations around the average untreated control. There were several active compounds identified for cell cycle inhibition, by loss of S-phase population. Average plate Z’ was 0.4.
+
+Optimization of segmentation parameters : thresholding intensity
+
+Determining rank order of potency in 3D collagen
+
+Figure 1. Phase contrast images of three cell lines plated on collagen-coated surfaces or embedded in 3D collagen gel. Cells were seeded in microchannels either in 2D in channels coated with 50µg / mL type I collagen, or in 3D by embedding in 1 mg/ml type I collagen. Clear morphological differences are apparent when cells are viewed via phase contrast microscopy. Cells in 2D spread flat on the bottom surface of the channel. In 3D, cells remain rounded and interact with collagen fibers around them (yellow arrows.)
+
+Figure 4. Impact of intensity threshold on accuracy of automated object segmentation. Metamorph Multiwavelength Cell Scoring application was used to automate image analysis. One of the more significant parameters, ‘intensity above local background’, allows the user to threshold for objects of a certain relative intensity. We compared automated to manual counts of cell nuclei in channels where the cells were treated with 10 µM cycloheximide or left untreated. The automated cell counts were consistently higher than manual counts, as shown by the % error. By increasing the threshold, the % error approaches 0, however, many nuclear objects are incorrectly excluded (see Δ500, yellow arrows). We selected Δ300 as an appropriate threshold, because the error for the treated and untreated conditions were closest at this value.
+
+Cells are embedded across 140μm height of the channel.
+Figure 2. Z-height analysis of cells embedded in 3D collagen in microchannels. Cells are embedded in 3D type I collagen by flowing an ice-cold neutralized collagen-cell suspension into a channel. The device is then warmed to 37°C while continuously inverting. As the collagen warms, the suspension gels and traps the cells in 3D. Here, M4A4 cells were seeded in 3D overnight, stained with Hoechst 33342, and imaged at several different Z-heights with a 20x objective. These images were colorized and overlayed to construct a 3D-view of the embedded cells. Cells are distributed throughout the height of the channel.
+
+Optimization of segmentation parameters – minimum object size
+
+Figure 7. Dose response curves for cell cycle inhibition in 3D collagen. Inhibitory compounds identified in the screen were assayed for potency in dose response format. The assay was performed as described in figure 6, with 10 concentrations tested and a dilution factor of 3.25. The rank order potency of the compounds is shown in the table along with corresponding 95% confidence interval.
+
+Conclusions
+   Single-plane imaging can be successfully employed to accurately analyze high content assays in microchannels filled with 3D collagen. The assay is fully automatable using liquid handling robotics and automated microscopy. Compound screening and profiling using this approach are both demonstrated.
+
+References
+
+Figure 5. In addition to intensity thresholding, debris can be eliminated by setting a threshold on the minimum object area. The % error of the cell counts for cycloheximide-treated cells was consistently higher than for the untreated cells due to apoptotic or necrotic cells whose nuclei break into multiple smaller objects. These were not counted as nuclei in the manual count, or were counted as single objects. At a minimum threshold of 40 µm2, the % error for cell counts in both the untreated and cycloheximide-treated channels is less than 5%.
+

@@ -1,0 +1,38 @@
+Automated analysis of mitotic cell nuclei in 3D ﬂuorescence microscopy image sequences
+Nathalie Harder1 , Felipe Mora-Berm´dez2 , William J. Godinez1 , u Jan Ellenberg2 , Roland Eils1 , and Karl Rohr1
+University of Heidelberg, BIOQUANT, IPMB, and DKFZ Heidelberg, Dept. Bioinformatics and Functional Genomics, Biomed. Computer Vision Group, Im Neuenheimer Feld 267, 69120 Heidelberg, Germany, 2 European Molecular Biology Laboratory (EMBL), Gene Expression and Cell Biology/Biophysics Programmes, Meyerhofstrasse 1, 69117 Heidelberg, Germany
+1
+
+In high-throughput RNAi knockdown screens large amounts of image data are acquired. The evaluation of these microscopy images constitutes a bottleneck and motivates the development of automated image analysis methods. This contribution is concerned with the automated evaluation of RNAi knockdown experiments for studying delays in mitotic phases. To this end, 3D multi-cell image sequences of living cell nuclei are acquired. Based on these images, the duration of the mitotic phases has to be measured for the treated cells and compared with the normal cells from control experiments. To automatically determine the lengths of the cell cycle phases, we have developed a workﬂow that comprises segmentation, tracking of splitting nuclei, extraction of static and dynamic features, classiﬁcation, and phase length determination. For fast and accurate segmentation we use a region adaptive thresholding technique on the maximum intensity projected images (Fig. 1a,b). We perform tracking of the splitting cell nuclei using a two step approach. First, correspondences are determined by exploiting the smoothness of potential trajectories. Second, mitosis events are detected based on morphological properties and the corresponding trajectories are merged (Fig. 1c). Based on the tracking result we automatically select the most informative slice for each nucleus from the 3D image, which is then used for feature extraction. Besides static image features, we additionally include dynamic image features which represent temporal changes of the cell morphology between ancestrally related cells. A support vector machine classiﬁer is used to classify the nuclei into the following seven cell cycle phases: Interphase, Prophase, Prometaphase, Metaphase, Anaphase1, Anaphase2, and Telophase (Fig. 2). Finally, we have
+
+(a)
+
+(b)
+
+(c)
+
+Fig. 1. (a) Maximum intensity projection of an original image, (b) Segmentation result, (c) Tracking result with splitting cells (marked by arrows)
+
+Interph.
+
+Proph.
+
+Prometaph.
+
+Metaph.
+
+Anaph.1
+
+Anaph.2
+
+Teloph.
+
+Fig. 2. Example images for the seven cell cycle phases
+
+Fig. 3. Example result for one cell nucleus that splits into two daughter cells: Phase sequence for 12 consecutive time steps
+
+developed a scheme to determine the phase lengths and to check the consistency of the computed sequences of phases. This scheme is based on a ﬁnite state machine and enables to automatically resolve errors using the confusion probabilities of the classiﬁer. As a result, we can determine the lengths of the seven cell cycle phases automatically. Our approach has been successfully applied to multi-cell 3D image sequences and we have compared the performance with ground truth provided by manual evaluation. In four image sequences, 29 cell nuclei have been segmented and tracked over 124 time steps. This resulted in 4225 single-cell 3D image stacks (note that the cells proliferate) which were then classiﬁed. We obtained an overall classiﬁcation accuracy of 96.6%. The computed phase sequences were processed with the ﬁnite state machine and the results were compared with ground truth. It turned out that nearly all inconsistencies have been resolved. In addition, the phase lengths have been determined. In Fig. 3 an example result is shown. Acknowledgement This work has been supported by the EU project MitoCheck.
+
+References
+1. Harder, N., Mora-Berm´ dez, F., Godinez, W.J., Ellenberg, J., Eils, R., Rohr, K.: Automated u analysis of the mitotic phases of human cells in 3D ﬂuorescence microscopy image sequences. In: Proc. MICCAI’06. Volume 4190 of LNCS., Copenhagen, DK, Springer-Verlag (2006) 840–848 2. Harder, N., Mora-Berm´ dez, F., Godinez, W.J., Ellenberg, J., Eils, R., Rohr, K.: Determination u of mitotic delays in 3D ﬂuorescence microscopy images of human cells using an error-correcting ﬁnite state machine. In: Proc. IEEE Internat. Symposium on Biomedical Imaging: From Nano to Macro (ISBI’07), Arlington, VA, USA, IEEE (2007) 1044–1047
+

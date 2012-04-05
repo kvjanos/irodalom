@@ -1,0 +1,385 @@
+Chapter 12
+Use of Primary Human Cells in High-Throughput Screens
+Angela Dunne, Mike Jowett, and Stephen Rees
+Abstract
+Traditionally, the objective of high-throughput screening (HTS) has been to identify compounds that interact with a defined target protein as the starting point for a chemistry lead optimisation programme. To enable this it has become commonplace to express the drug target in a recombinant expression system and use this reagent as the source of the biological material to support the HTS campaign. In this chapter we describe an alternative HTS methodology with the objective of identifying compounds that mediate a change in a defined physiological end point as a consequence of compound activity in human primary cells. Rather than screening at a defined molecular target, such ‘‘phenotypic’’ screens permit the identification of compounds that act at any target protein within the cell to regulate the end point under study. As an example of such a screen we will describe an HTS campaign to identify compounds that promote the production of the cytokine interferon-a from human blood peripheral mononuclear cells (PBMCs) isolated from whole blood. We describe the procedures required to obtain and purify human PBMCs and the electrochemiluminescence-based assay technology used to detect interferon-a and highlight the challenges associated with this screening paradigm. Keywords: High-Throughput Screen, Primary cells, PBMCs, Electrochemiluminescence, MesoScale Discovery, Interferon-a.
+
+1. Introduction
+During the past 15 years, high-throughput screening (HTS) has become a central engine of drug discovery. As described in this volume, pharmaceutical and biotechnology companies, and increasingly academic institutions, have established the infrastructure to screen large libraries of chemically diverse molecules against drug targets, using automated robotic screening platforms (1, 2). In parallel with the development of HTS automation and instrumentation, a huge range of bioassay technologies have been
+W.P. Janzen, P. Bernasconi (eds.), High Throughput Screening, Methods and Protocols, Second Edition, vol. 565 ª Humana Press, a part of Springer Science+Business Media, LLC 2009 DOI 10.1007/978-1-60327-258-2_12, Springerprotocols.com
+
+239
+
+240
+
+Dunne, Jowett, and Rees
+
+enabled, which share a number of common features; the assays are typically homogeneous, amenable to assay in sub-100 ml assay volumes, tolerant to compound solvents such as dimethyl sulphoxide (DMSO) and are relatively cheap and simple to configure (3). Importantly, almost all HTS assays rely upon the use of recombinant protein or recombinant cell lines as the source of biological target due to the ability to generate a virtually limitless supply of material of consistent and high quality (4). Following hit identification, recombinant assays are usually complemented by downstream native tissue phenotypic assays used to profile hit or lead compounds for efficacy and mechanism of action (MOA). These assays typically rely upon the determination of compound activity in a cellular model of disease using either human primary cells or animal tissue in which the target protein is expressed in the native environment (5, 6). If the compounds are active in the phenotypic assay, the programme may progress towards the clinic; however, if the compounds are inactive, the compound series may be declared of no further interest. As a consequence, many years of effort may be wasted in optimizing molecules that ultimately have no activity in the disease-relevant phenotypic assay. For this reason it is attractive to move the phenotypic assay to an earlier point in the programme to avoid wasted work. To run the HTS using a native tissue phenotypic assay maximizes the possibility of identifying hits with the desired phenotypic activity and use recombinant assays to identify the MOA and to profile off-target activities. A phenotypic HTS enables the direct assessment of compound action on a pathway, rather than a defined target (7). This allows the scientist to probe all molecular targets on the pathway of interest and increases the likelihood of identifying compounds with the desired mechanism of action. However, it leads to a major question regarding the need to identify the mechanism of action of that molecule. There are two approaches to this issue: first, all hits can be profiled in recombinant assays against targets suspected to be of interest to identify the MOA and subsequent compound optimisation can be performed in recombinant assays. Second, if knowledge of the MOA is not required, or if it is not possible to identify the MOA, then all subsequent activities could be performed using the phenotypic assay as the primary assay. In this chapter we explore the use of phenotypic assays involving primary human cells for hit discovery and discuss the issues to be addressed to enable this screening paradigm using a HTS as the example to identify activators of interferon-a (IFN-a) production from human peripheral blood mononuclear cells (PBMCs).
+
+Use of Primary Human Cells in High-Throughput Screens
+
+241
+
+1.1. Issues to Be Addressed to Enable a Phenotypic Assay HTS
+
+There are a number of practical issues to be addressed prior to running a phenotypic HTS. First, the supply of primary human or animal tissue is limited. Cryopreserved Primary cells can be purchased from a number of vendors and many cell lines including human lung fibroblasts, chondrocytes and neuronal cells are available. However, primary human tissue remains difficult to obtain and for this reason we have run our first phenotypic screens using human blood cells. Second, the range of assay technologies available for HTS in native tissue is relatively limited. Phenotypic assays often rely upon the detection of the level of expression of a surface protein or the determination of the concentration of a secreted analyte in the culture media using ELISA (enzyme-linked immunosorbent assay) for detection. The development of miniaturized ELISA technologies such as electrochemiluminescence (MesoScale Discovery) (8) or AlphaLISA (Perkin-Elmer) (9) enables the performance of these assays in 96- and 384-well microtitre plates, thus making these assays HTS compatible. The third issue is often organisational and comes from a perception that phenotypic assays cannot be run for HTS due to the logistical reasons mentioned here or a belief that the HTS department will not run such an assay. Toll-like receptors (TLR) are a family of at least 10 single-membrane spanning receptors, expressed in immune cells, that play a key role in mediating the innate immune response to the presence of pathogens (10). The activation of these receptors promotes leucocyte recruitment to the site of infection and causes the release of pro-inflammatory cytokines including IFN-a to cause the induction of the immune response to combat the presence of the foreign antigen (11). For this reason, TLR agonists are of interest as pro-inflammatory therapeutics to fight pathogen infection and as vaccine adjuvants (10–13). One such molecule that has been described is the imidazoquinoline compound Resiquimod (R-848) (Fig. 12.1). Resiquimod induces the production of IFN-a and a number of other pro-inflammatory cytokines from cultured human PBMCs. While the precise mechanism of action remains unclear, it has been
+
+1.2. HTS to Detect IFNa Production by Human PBMCs
+
+NH2 N N N OH O
+
+Resiquimod
+Fig. 12.1. Structure of the TLR agonist Resiquimod (R-848).
+
+242
+
+Dunne, Jowett, and Rees
+
+demonstrated to act as an agonist at both the TLR-7 and TLR-8 receptors (14). Rather than develop a recombinant HTS to identify agonists of TLR receptors, we elected to develop a screen to identify compounds capable of mediating the production of the physiologically relevant end point, IFN-a, from human PBMCs through any mechanism of action. This required the establishment of a robust supply chain for the collection and preparation of human PBMCs and the identification of an assay technology amenable to IFN-a detection with HTS performance characteristics.
+1.3. MesoScale Discovery (MSD) Assay Platform
+
+MesoScale Discovery (http://www.meso-scale.com) assay technology allows the performance of ELISA assays within 96- or 384well microtitre plates using electrochemiluminescence (ECL) detection (8). ECL is a non-isotopic, homogeneous and sensitive assay technology that allows the detection of analytes within the media of cultured cells (Fig. 12.2). MSD assays are performed using microtitre plates, which contain an electrode built into the
+
+Measured signal is light
+LIGHT
+
+*Ru(bpy)32+
+
+TPA–
+
+–H+
+
+Ru(bpy)32+
+
+Ru(bpy)32+
+
+TPA
+
+TPA– +
+
+Detection antibody
+Analyte Capture antibody
+
+Counter electrode
+
+Working electrode
+
+Dielectric
+
+Fig. 12.2. Schematic representation of the electrochemiluminescence-based IFN-a detection assay. 384-well MSD plates are coated with capture antibody. Following the binding of analyte to this antibody, two ruthenium-labelled detection antibodies are added to the assay plate to form an ELISA sandwich at the base of the plate. Following the addition of MSD Read Buffer, an oxidation reaction occurs, which results in the generation of light. Light intensity is proportional to the concentration of captured analyte (see Section 3 and www.meso-scale.com for further details).
+
+Use of Primary Human Cells in High-Throughput Screens
+
+243
+
+base of each well of the assay plate. To establish an MSD assay for the detection of human IFN-a, 384-well MSD plates, pre-coated with a goat anti-rabbit immunoglobulin, were coated with a rabbit polyclonal antibody to human IFN-a. Following the addition of cell culture media containing IFN-a, the cytokine is captured by the antibody. Captured analyte is detected following the addition of two monoclonal anti-IFN-a antibodies previously labelled with Ruthenium. We used two detection antibodies that recognize different epitopes on IFN-a. During assay development we determined that the signal window was enhanced through the use of an equimolar ratio of the two antibodies compared to the use of each antibody alone (data not presented). This is unusual; typically a single detection antibody is used. Following addition of MSD Read Buffer, the level of analyte is detected by reading the assay plate in the MSD Sector Imager and an electric current applied. This promotes the oxidation of Ruthenium with the resulting generation of a chemiluminescent signal, which is detected in the reader (Figs. 12.3 and 12.4).
+1.4. Regulations Regarding the Use of Human Cells
+
+It is necessary to consider whether there are any regulatory procedures that need to be adopted regarding the use of human tissue. Our screen was run in the United Kingdom and we briefly describe the regulatory issues encountered to perform this work. In 2004
+
+DAY 1
+
+Isolate PBMCs Re-suspend in Culture Media 50μl/well cells (4x10e5/ml) onto compound plate 48 hr incubation @ 37°C, 5% CO2
+
+DAY 2
+
+Add 20µl/well (1:8000)anti IFN-α polyclonal antibody to MSD plate Incubate at 4°C overnight
+
+Harvest cell supernatant in compound plate by centrifugation (3 mins at 300g)
+
+Wash MSD plate with 50μl/well PBS (Tecan Power Washer)
+
+DAY 3
+
+Transfer 20µl/well cell supernatant from compound plate to washed MSD plate using Cybiwell Add 20µl/well secondary mouse monoclonals sulpho-tagged antibodies Seal plate Incubate at 4°C overnight
+
+DAY 4
+
+Remove seal and aspirate contents (Tecan Power Washer) Add 30µl 2X MSD read buffer, incubate 10mins at Room Temp and read on Sector Imager
+
+Fig. 12.3. Flow chart describing the assay protocol developed for the PBMC IFN-a production electrochemiluminescence HTS (see Section 3 for details).
+
+244
+
+Dunne, Jowett, and Rees
+
+MONDAY
+
+TUESDAY
+
+WEDNESDAY
+
+THURSDAY
+
+FRIDAY
+
+ASSAY 1
+
+Isolation of PBMCs
+
+Preparation of MSD plates
+
+IFNα MSD assay
+
+Read plates
+
+ASSAY 2
+
+Isolation of PBMCs
+
+Preparation of MSD plates
+
+IFNα MSD assay
+
+Read plates
+
+Fig. 12.4. Chart outlining weekly work pattern required to support the PBMC IFN-a production electrochemiluminescence HTS (see Section 3 for details).
+
+the Human Tissue Act came into force, which regulates research with human tissue (15). An institute wanting to undertake such work must apply to the Human Tissue Authority to obtain a license that describes the type of work and the mechanism of how it will be conducted. The license requires among other things the following: First, records of all scientists performing the work are kept, where the material is stored and by what manner, a description of all equipment used including service and maintenance schedules, the generation of appropriate safety documentation including risk assessments and standard operating procedures, records of all staff training, a description of what is the material going to be used for and finally all disposal records. It is a legal requirement that human tissue has an audit trail starting with when the sample was obtained through to disposal. This license will describe the consent process under which tissue is taken ensuring that the donor understands why the tissue is being taken and for what purpose it will be used. The material can be used only for the purpose for which it was taken. Finally, the vaccination status of employees handling human tissue should be considered.
+
+2. Materials
+2.1. PBMC Preparation
+
+1. Human blood was obtained from healthy volunteers by the GSK Blood Donation Unit 2. RPMI 1640 Media (Gibco, Paisley, Scotland) 3.
+L-Glutamine
+
+(100 Â ) (Gibco, Paisley, Scotland).
+
+4. Penicillin/streptomycin (Gibco, Paisley, Scotland) 5. Foetal bovine serum (FBS) (Low Endotoxin) (Invitrogen, Paisley, Scotland)
+
+Use of Primary Human Cells in High-Throughput Screens
+
+245
+
+6. Cell culture media: 10% foetal bovine serum (FBS), 2% penicillin/streptomycin and 1% L-glutamine in RPMI 1640 media. Stored at 4°C for up to 4 weeks 7. Leucosep tubes pre-filled with ficol-histopaque (Greiner, Kremsmunster, Austria) 8. Centrifuge 5810 (Eppendorf, Hamburg, Germany) 9. Human recombinant IFN-g (Peprotech, Rocky Hill, NJ) 10. Citrate buffer (Baxter HealthCare, Glendale, CA) 11. Phosphate-buffered saline (PBS) (Gibco, Paisley, Scotland) 12. Controlled-rate freezer (Planer, Sunbury-On-Thames, UK) 13. Dimethyl sulphoxide (DMSO) (Sigma-Aldrich, St Louis, MO). 14. Freezing media (10% DMSO/90% FBS) 15. Cryovials (Corning, Corning, NY) 16. À140°C freezer (ThermoScientific, Waltham, MA)
+2.2. Antibody Labelling
+
+1. Rabbit polyclonal anti-IFN-a (Carrier Free) (Stratech Scientific, Tonbridge, UK) 2. Mouse monoclonal anti-hIFN-a (MMHA-2 Carrier Free) (Stratech Scientific, Tonbridge, UK). Diluted to 2 mg/ml in PBS 3. Mouse monoclonal anti-hIFN-a (MMHA-11 Carrier Free) (Stratech Scientific, Tonbridge, UK). Diluted to 2 mg/ml in PBS 4. MSD SULPHO-TAG NHS-Ester (MesoScale Discovery, Gaithersburg, MD) 5. PD-10 columns (SEPHADEX G-25 M) (GE Healthcare, Bucks, UK) 6. Biorad protein assay kit (BioRad, San Ramon, CA) 7. Tube rotator (Stuart Scientific, Stone, UK)
+
+2.3. MSD Assay
+
+1. MSD Sector Imager 6000 Reader (MesoScale Discovery, Gaithersburg, MD) 2. MSD Read Buffer T 4 Â (MesoScale Discovery, Gaithersburg, MD). Dilute 4 Â stock to 2 Â with water 3. GAR-Coated Standard MA6000 384 plates (MesoScale Discovery, Gaithersburg, MD) 4. Plate seal (Weber Labelling, Arlington Heights, IL) 5. Water (Sigma-Aldrich, St Louis, MO)
+
+2.4. Compound Plates
+
+1. For HTS, compounds were supplied as 0.5 ml of 1 mM stock solutions in 100% DMSO in 384-well clear microtitre plates (Greiner, Kremsmunster, Austria). Compounds were
+
+246
+
+Dunne, Jowett, and Rees
+
+supplied in all columns of the plate except column 6 and 18. Column 6 contained 0.5 ml of DMSO (low control) and column 18 contained 0.5 m1 of 100 mM resiquimod (high control). 2. Resiquimod was prepared by GSK Medicinal Chemistry and supplied at 10 mM in 100% DMSO.
+2.5. Automation Used for HTS
+
+1. 384-Well Tecan Power Washer (Tecan Trading AG, Zurich, Switzerland) 2. 384-Well Multidrop (ThermoScientific, Waltham, MA) 3. 384-Well Cybiwell (Cybio, Jena, Germany) 4. Plate Incubator (ThermoScientific, Waltham, MA) 5. Cedex Cell Counter (Innovatis, AG, Bielefeld, Germany) 6. Class II Cell Culture Cabinet (ThermoScientific, Waltham, MA) 7. Spectrophotometer (Perkin-Elmer, Waltham, MA)
+
+3. Methods
+3.1. Blood Collection
+
+1. Collect blood by vein puncture into 15% citrate buffer (blood anticoagulant) by blood volume (9 ml citrate for 60 ml of blood). See Notes 1 and 2. 1. Add 30 ml blood to 50 ml leucosep tubes pre-filled with 15 ml histopaque 1077. 2. Centrifuge for 20 minutes at 1000g at room temperature. 3. Pour off enriched mononuclear fraction (upper phase) into second 50-ml centrifuge tube. Rinse out walls of leucosep tube with PBS, add to centrifuge tube, top up to 50 ml with PBS. 4. Centrifuge at 300 g for 10 minutes at room temperature. 5. Discard supernatant and wash cell pellet once in PBS and once in culture media. 6. Resuspend cell pellet in culture media and determine cell number on Cedex Cell Counter. 7. Dilute cells in culture media to 4 Â 105/ml. 8. Store at 4°C for a maximum of 4 hours before use in assay.
+
+3.2. Isolation of Peripheral Blood Mononuclear Cells (PBMCs)
+
+3.3. Cryopreservation of Human PBMCs
+
+See Notes 3and 4. 1. Prepare Freezing Media and store at 4°C.
+
+Use of Primary Human Cells in High-Throughput Screens
+
+247
+
+2. Follow PBMC preparation method (Section 3.2) until Step 5. Resuspend the cell pellet in freezing media at a cell density of 4 Â 107/ml. 3. Immediately aliquot cells into 1 or 5 ml Cryovials. 4. Transfer vials to a Controlled-Rate Freezer and freeze using the following programme: l Start temperature 5°C
+l l l l l
+
+Hold at 5°C for 7 minutes Cool 1°C per minute to À5°C Cool 3°C per minute to À12°C Cool 5°C per minute to À14°C Cool 7.5°C per minute to À20°C Cool 6.5°C per minute to À25°C Hold at À25°C for 2 minutes Warm 3°C per minute to À20°C Hold at À20°C for 2 minutes Cool 1°C per minute to À50°C
+
+l l l l l l
+
+Cool 10°C per minute to À130 °C. 5. Transfer frozen vials to À140°C freezer for storage. We have found that cells can be stored for a maximum of 6 months without any loss of viability.
+3.4. Labelling of IFN-a Monoclonal Antibody with MSD Sulpho-TAG
+
+1. Dilute both mouse monoclonal antibodies to 2 mg/ml in PBS. 2. Dilute Sulpho-TAG NHS-Ester in DMSO to 10 nmol/ml immediately before use. 3. Add MSD Sulfo-TAG NHS ester solution to the antibody preparation to give a ratio of 20:1 molar excess of ester solution and mix. 4. Wrap the tubes in foil and mix on Tube Rotator at room temperature for 2 hours. 5. Prepare the G25M Sephadex PD-10 column by filling with PBS and allow to drain by gravity. Repeat three times before loading antibodies. 6. Add antibody label mix (Step 3) to the column and elute by gravity. 7. Elute from column using PBS. Collect eluate into 500 ml fractions. 8. Determine the concentration of labelled protein in each elute using Biorad Protein Assay following the instructions therein. 9. Labelled antibody can be stored at 4°C at a concentration of 2 mg/ml for 6 months.
+
+248
+
+Dunne, Jowett, and Rees
+
+3.5. IFN-a MSD Assay Protocol
+
+See Notes 5 and 6. Day 1: 1. Using a ThermoLab 384-well Multidrop add 50 ml of PBMCs in culture media 4 Â 105/ml into each well of a 384-well compound plate (hereinafter referred to as the compound plate). All plates should be lidded. 2. Incubate at 37°C/5% CO2for 48 hours in a Heraeus incubator. Day 2: 3. Add 20 ml of diluted (1:8000 in culture media) anti-IFN-a polyclonal antibody to each well of a 384-well GAR Coated Standard MSD plate using a ThermoLab 384-well Multidrop (hereinafter referred to as the MSD plate). 4. Incubate at 4°C overnight. Day 3: 5. Using a 384-well Tecan Power Washer remove the antibody solution from the MSD plate, wash each well twice in 50 ml PBS. 6. In parallel, centrifuge the compound plate for 3 minutes at 300g (1200 rpm). 7. Using a 384-well Cybiwell transfer 20 ml of cell supernatant from the compound plate to the MSD plate. 8. Add to the MSD plate 20 ml of the two mouse monoclonal sulpho-tagged antibodies (from 3.4). Cover plates using a Plate Seal. 9. Incubate at room temperature overnight in the dark. Day 4: 10. Remove the plate seal. Using a 384-well Tecan Power Washer aspirate the solution from the MSD plate. 11. Using a ThermoLab 384-well Multidrop add 30 ml of 2 Â MSD Read Buffer. 12. Incubate for 10 minutes at room temperature. 13. Read plate on MSD Sector Imager.
+
+3.6. Preparation of Human PBMCs
+
+Our objective was to screen 1.2 M compounds in 384-well microtitre plates with a throughput of 180 plates/ experiment with two screening experiments each week. Assay development data indicated that it was necessary to take blood, prepare PBMCs and add these to compound plates on the day of donation. To support the HTS we elected to take blood donations of 200 ml to allow for recycling of volunteers. We found that each donation generated sufficient cells to screen around twenty 384 well assay plates. Thus we had to establish a supply chain that enabled collection of blood
+
+Use of Primary Human Cells in High-Throughput Screens
+
+249
+
+from nine volunteers on each day of assay with 18 volunteers required each week. Following collection each donation has to be processed individually as it is not possible to mix blood from separate donors due to surface antigen cross-reactivity. This required multiple parallel processing of samples. The most significant challenge for this HTS was the effect of donor variability on assay performance. A requirement of any HTS assay is that the assay has a high signal window, usually defined as a Z0 of greater than 0.4 (16), which is consistent across plates and across days. In an HTS supported using a recombinant reagent it is possible to generate a reagent that enables consistent assay performance throughout the screening campaign. This is not possible in a phenotypic HTS. We observed differences in the ability of PBMCs from different donors to produce IFN-a in response to Resiquimod, which caused significant differences in assay window, biological activity cut-off and hit rate throughout the screen (Fig. 12.5). This led us to treat each donation as an individual batch within the HTS, with data processed on a donation-by-donation basis. We found that 20% of the donations failed to give a robust response to the standard compound Resiquimod and plates from these donors failed in the assay. The consequence of this was a high plate failure rate (20%) in the HTS.
+
+Plate Z’
+
+Donor
+
+Fig. 12.5. Variation in assay performance is donor dependent. PBMCs were prepared from 13 donors to support assay development. Data show the plate Z0 obtained in the IFN-a assay using PBMCs prepared from each donor (range ¼ 0–0.73). Z0 was calculated according to Zhang et al. (16) using the response obtained from 16 wells of a 384-well plate containing a maximal concentration of Resiquimod against 16 wells of a 384-well plate containing DMSO alone (numbers are actual Z0 from each experiment; data are the mean of three experiments).
+
+250
+
+Dunne, Jowett, and Rees
+
+While this HTS used cells prepared on the day of assay, we later found that PBMCs could be cryopreserved for subsequent use (17, 18). Cryopreservation of cells allowed us to decouple blood preparation from the screening assay and led to a simpler and more flexible work pattern. In addition, the use of cryopreserved cells allows cells to be performance tested such that cells from donors that do not show a robust response to Resiquimod can be discarded ahead of screening.
+3.7. Assay Development
+
+A number of factors were optimized ahead of HTS including cell density, incubation times, antibody concentrations, plate types, screening concentration, assay stability across screen batches, pharmacological validation and solvent tolerance. The experiments required to develop the PBMC assay were no different to those required for any cell-based HTS with the exception that all experiments had to be repeated on blood samples taken from multiple donors to account for the effects of donor variability (3). As an example of this we studied the tolerance of the assay to the compound solvent DMSO in multiple donors. This was determined by monitoring the ability of resiquimod to promote the production of IFN-a over a range of DMSO concentrations. In most donors, assay performance was not affected by DMSO concentrations of up to 1%; however, in a minority of donors the assay window collapsed at concentrations of DMSO above 0.5% (Fig. 12.6). In the final assay conditions the standard agonist Resiquimod had a pEC50 of 7.5 Æ 0.25 in agreement with other reports (11) and the assay gave a Z0 of 0.55 Æ 0.32 (n ¼ 84). Compounds were screened at a final assay concentration of 10 mM in 1% DMSO (see Notes 7–21).
+
+A
+MSD Raw Count MSD Raw Count
+
+B
+
+% [DMSO]
+
+% [DMSO]
+
+Fig. 12.6. Sensitivity of the IFN-a assay to the solvent DMSO. The ability of an EC100concentration of Resiquimod to promote IFN-a production by human PBMCs prepared from two donors (A and B) was determined in the presence of the indicated concentrations of DMSO. Each data point represents the mean Æ SEM of quadruplicate determinations.
+
+Use of Primary Human Cells in High-Throughput Screens
+
+251
+
+3.8. HTS Assay Validation
+
+Prior to committing to HTS a small validation screen is performed. At GSK we have constructed a validation compound set containing 9855 compounds dispensed into 28 Â 384 well assay plates, which is representative of compounds drawn from the GSK screening collection. This set is screened on three independent occasions to determine the performance of the assay during extended screen runs and the ability of the assay to reproducibly identify the same active molecules. A number of observations were made during the validation screen: 1. Each validation set was screened using cells prepared from separate donors. As expected we saw data variation between donors (data not shown). 2. Using a statistical activity cut-off (compounds with activities greater than 3 standard deviations above the sample mean) the calculated hit rate for the screen was 1.5% with a cut-off of 3% of the Resiquimod response (Fig. 12.7). This was not altogether surprising as we typically see low hit rates in agonist screens. As a consequence we elected to progress compounds from the HTS that exhibit activities greater than 10% of the Resiquimod response.
+
+50
+
+TLR_VAL_0006 ACT
+
+40
+
+30
+
+20
+
+10
+
+0
+
+0
+
+20
+
+40
+
+60
+
+80
+
+100
+
+120
+
+TLR_VAL_0008 ACT
+Fig. 12.7. Assay validation. The GSK validation compound set (9855 compounds) was screened at 10 mM compound concentration in the IFN-a assay. Compounds were screened against PBMCs prepared from two donors. Data show the correlation of activity between donor 1 and donor 2.
+
+3. There is little correlation between active molecules in different screens (Fig. 12.7). During assay validation we routinely observed molecules that were active in specific donors. As we
+
+252
+
+Dunne, Jowett, and Rees
+
+are interested only in identifying molecules with activities across multiple donors we elected to continue with the screen. 4. In contrast to a recombinant HTS in which plates are failed if the Z0 is below 0.4, a number of additional QC criteria were put in place for the PBMC HTS to account for donor variation. We elected to fail all plates where the Resiquimod response was less than 2000 raw counts and we passed any plates failed on Z0 if that plate contained hits displaying activities greater than 10% of the Resiquimod response. We screened 1,212,006 compounds at 10 mM final assay concentration across 3388 Â 384-well compound plates. Other than the logistical issues caused by donor variation the HTS ran as predicted for a recombinant HTS using MSD detection. We saw a range of plate Z0 throughout the screen (Fig. 12.8). The mean Z0 for plates that passed quality control was 0.40 Æ 0.23 and as predicted, the plate failure rate was 20% with all failures being due to the absence of a robust IFN-a with certain donors. Using a cut-off of 10% of the Resiquimod response, we identified 2480 active compounds; a hit rate of 0.2% (Fig. 12.9).
+
+3.9. Primary Screen
+
+A
+
+B
+800
+
+Number of Records
+
+700 600 500 400 300 200 100 0
+<0.15 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 >0.95
+
+Robust Z’
+
+Data Set
+
+Robust Z’
+
+Fig. 12.8. HTS quality control statistics. Z0 is calculated for each plate according to the signal window between column 6 (DMSO) and column 18 (Resiquimod) as described in Section 2.4. (A) Z0 for each screen plate plotted against each data set (one data set corresponds to an assay on PBMCs prepared from a single blood donation). (B) Binned Z0 for all plates screened during the HTS. The average Z’ for all plates that passed QC was 0.4 Æ 0.23.
+
+3.10. Concentration– Response Determinations
+
+One thousand nine hundred and ninety-two active molecules were progressed to concentration–response testing. We generated concentration–response curves on four experimental occasions with each compound being tested against cells prepared from four donors. As anticipated some compounds were similarly active
+
+Use of Primary Human Cells in High-Throughput Screens
+
+253
+
+A
+% Activity (of Resiquimod)
+
+B
+
+% Agonism Binned Response vs Frequency
+
+Data Set
+
+Count
+
+% Agonism Binned Response
+
+Fig. 12.9. HTS activity rates. (A) Data show percent activity of each compound on each screening plate. Using a cut-off of 10% of the Resiquimod response (normalised to 100%), the activity rate in the screen was 0.2%. (B) Activity distribution of all molecules identified in the HTS with activities greater than 10% of the response to Resiquimod. Two thousand four hundred and eighty active compounds were identified. Numbers represent the number of compounds in each activity bin.
+
+against all donors, whereas others appeared to show donor-specific activity (Fig. 12.10). As our objective was to identify molecules with clinical efficacy in broad patient populations, we elected to progress molecules that had activity against all donors tested and did not progress apparently donor-selective molecules. As a consequence this screen identified 17 molecules for
+
+A
+
+B
+
+% Response
+
+Concentration
+
+% Response
+
+Concentration
+
+Fig. 12.10. Representative concentration–response curves for two hits from the HTS. HTS hits were screened against PBMCs prepared from four donors. Ten-point concentration–response curves were generated for each compound. Data are presented as a percentage of the maximum response to resiquimod in each donor. Each curve represents a single potency determination. Compound A generated reproducible potency determinations in all assays. Compound B was inactive on two of the four test occasions and displayed donor dependent efficacy.
+
+254
+
+Dunne, Jowett, and Rees
+
+progression with pEC50values in the range of 4.3–7.3. Following an assessment of the data, chemistry has been initiated on a number of series.
+
+4. Conclusions
+There are many factors to be considered prior to a phenotypic HTS. First, a phenotypic screen is molecular target independent and allows the screener to identify molecules that regulate the disease-relevant end point. Second, a phenotypic screen may be considered for targets for which recombinant expression is difficult or for which the pharmacology of the target changes when expressed in a recombinant system. Third, in situations where a recombinant assay has failed to identify hits, there is a possibility that screening against the target in the native environment may facilitate hit identification. While it may be possible to determine the MOA of hits from a phenotypic screen, it is likely that hits will be identified for which the MOA is unknown. Hence prior to committing to such a screen, one should consider whether knowledge of the MOA is a requirement for progression and if so an experimental plan has to be constructed to allow determination. In that regard, phenotypic HTS can be regarded as the natural heir to tissue strip pharmacology through which all drugs were identified prior to the 1980s and the dawn of the recombinant era. Perhaps the major achievement of this work has been to show that it is possible to alter the paradigm of hit identification and run an HTS using primary human tissue. The PBMC HTS successfully identified a number of chemical series that regulate IFN-a production from human PBMCs and we have since completed a number of other high- and low-throughput screens to identify modulators of cytokine release from human PBMCs. While it is possible to obtain sufficient human blood to support HTS, the availability of most other tissue types in sufficient quantity for HTS remains a challenge. We have run smaller screens using hepatocytes, chondrocytes and neuroblastoma cells. The ability to run HTS using other primary tissue will depend upon the development of assay technologies that reduce the cell requirement or the development of alternative sources of biological material such as the enablement of terminally differentiated stem cells. However, it is clear that phenotypic screening offers an exciting alternative to recombinant screens that may enhance the success of early hit identification.
+
+Use of Primary Human Cells in High-Throughput Screens
+
+255
+
+5. Notes
+1. Rinse steps are included to collect as many cells as possible. 2. Samples from different donors are kept separate throughout the isolation and assay protocol. 3. Cryopreserved PBMCs were not used in the HTS described here. We have since found that this method can be used to prepare cells in advance of screening. 4. Samples from different donors must be kept separate throughout the freezing procedure. 5. See Figs. 12.3 and 12.4 for overview of HTS protocol. 6. For the HTS, plates were processed in 30-plate batches with two scientists. 7. Capture antibody is spotted directly onto the electrode in the assay well. MSD will supply plates where antibody has been spotted as a catalogue item or as a custom service (8). Alternatively, MSD will supply base plates for the customer to perform this exercise. Plate spotting requires specialist expertise and equipment and, in our experience, is difficult to perform reproducibly. 8. In the work described here we purchased plates from MSD in which a goat anti-rabbit immunoglobulin (GAR) had been spotted onto the electrodes (8). We used this to capture the IFN-a polyclonal capture antibody. 9. Following spotting of capture antibody, plates are stable for up to 1 year when stored at 4°C. 10. Plates spotted with capture antibody may need to be blocked with protein to prevent non-specific binding. This was not required in the assay described here. If required this can be performed using 1% milk powder reconstituted in PBS. The requirement for blocking should be determined during assay development. 11. Excess blocking reagent should be removed by washing in PBS. We typically use a 384-well plate washer to do this. 12. When transferring reagents to the MSD assay plate, care should be taken not to damage electrode in the bottom of the plate. 13. It is critical to define cell plating density during assay development and the cell number per well used should be minimized to conserve cells. 14. The addition of antibiotics to the culture media is advised to avoid bacterial contamination of the samples.
+
+256
+
+Dunne, Jowett, and Rees
+
+15. To minimize the number of steps in the assay, the detection antibody mixture should be added directly to the assay plate containing the analyte. However, assay performance may be enhanced if plates are washed before addition of the detection antibody. 16. It is a requirement that the detection antibody recognizes a different epitope to the capture antibody. 17. Following the addition of MSD Read Buffer to the plates, the optimal final volume should be 35 ml. At volumes of less than this, assay performance decreases as the camera in the Sector Imager is unable to detect the assay signal. For this reason, plates are sealed to prevent evaporation prior to reading. The camera height or the read time cannot be adjusted without engineer intervention. 18. Unbound detection antibody not washed away prior to the addition of the MSD Read Buffer will generate a background signal. Assay performance can be improved by washing of the plate prior to the addition of read buffer. The use of the MSD Sector Imager to read plates is a requirement of this assay. MSD assay plates are not compatible with other readers. 19. As work with human tissue carries potential health risks, all work should be contained. In our laboratory, specific equipment is used for PBMC work and not for other purposes. All tissue culture is performed within a Class II Safety Cabinet. 20. A robust data-handling process should be established ahead of screening to facilitate the identification of any quality-control failures prior to the commitment of large numbers of plates for screening to minimize waste. 21. Screen data from each PBMC batch were analysed separately to account for donor variation.
+
+6. Acknowledgements
+The authors would like to acknowledge the expertise of the members of the Biological Reagents and Assay Development, Screening and Compound Profiling, Discovery Technology Group and the Infectious Diseases Centre of Expertise for Drug Discovery for their work to enable phenotypic HTS at GlaxoSmithKline: Ken Grace, Barbara Hebeis, Ketaki Shah, David Gray, Sian Lewis, Rupal Kapadia, Shie Chang, Claire Purkiss, Jason Signolet, Anesh Sitaram, Peter Morley, Lucy Reynell, Elena Sciamanna, Mike Sowa, Gavin Harper, Karen Amaratunga, Carolyn O’Malley,
+
+Use of Primary Human Cells in High-Throughput Screens
+
+257
+
+Michael Wilson. Finally we would like to thank the GSK Blood Donation Unit and the 200 blood donors who made this work possible.
+References
+1. Posner, B. A. (2005) High-throughput screening-driven lead discovery: meeting the challenges of finding new therapeutics. Curr. Op. Drug Disc. Dev. 8, 487–494. 2. Gribbon, P. and Andreas, S. (2005) Highthroughput drug discovery: What can we expect from HTS? Drug Disc. Today 10, 17–22. 3. Walters, W. P. and Namchuck, M. (2003) Designing screens: How to make your hits a hit. Nat. Rev. Drug Disc. 2, 259–266. 4. Moore, K. and Rees, S. (2001) Cell-based versus isolated target screening: How lucky do you feel? J. Biomol. Scr. 6, 66–74. 5. Horrocks, C., Halse, R., Suzuki, R., and Shepherd, P. A. (2003) Human cell systems for drug discovery. Curr. Op. Drug Disc. Dev. 6, 570–575. 6. Clemons P. A. (2004) Complex phenotypic assays in high-throughput screening. Curr. Op. Chem. Biol. 8, 334–338. 7. Rossi, C., Padmanaban, D., Ni, J., Yeh, L.A., Glicksman, M., and Waldner, H. (2007) Identifying drug-like inhibitors of myelinreactive T cells by phenotypic high-throughput screening of a small-molecule library. J. Biomol. Scr. 12, 481–489. 8. See http://www.meso-scale.com for literature describing the theory and application of electrochemiluminescence detection. 9. See http://las.perkinelmer.com/ for literature describing the theory and application of AlphaLisa detection. 10. Gay, N. J. and Gangloff, M. (2007) Structure and function of Toll receptors and their ligands. Ann. Rev. Biochem. 76, 141–165. 11. Uematsu, S. and Akira, S. (2007) Toll-like receptors and type-1 interferons. J. Biol. Chem. 282, 15319–15324. 12. Weeratna, R. D., Makinen, S. R., McCluskie, M. J., and Davis, H. L. (2005) TLR agonists as vaccine adjuvants: Comparison of CpG ODN and Resiquimod (R-848). Vaccine 23, 5263–5270. 13. Gerondakis, S., Grumont, R. J., and Banerjee, A. (2007) Regulating B-cell activation and survival in response to TLR signals. Immunol. Cell Biol. 85, 471–475. 14. Jurk, M., Heil, F., Vollmer, J., Schetter, C., Krieg, A. M., Wagner, H., Lipford, G., and Bauer, S. (2002) Human TLR7 or TLR8 independently confer responsiveness to the anti-viral compound R-848. Nat. Immunol. 3, 499–504. 15. Human Tissue Act (2004) available from http://www.opsi.gov.uk. 16. Zhang, J.-H., Chung, D. Y., and Oldenberg, K. R. (1999) A simple statistical parameter for use in evaluation and validation of high throughput screening assays. J. Biomol. Scr. 4, 67–73. 17. Kunapuli, P., Zheng, W., Weber, M., Solly, K., Mull, R., Platchek, M., Cong, M., Zhong, Z., and Strulovici, B. (2005) Application of division arrest technology to cell-based HTS: comparison with frozen and fresh cells. Assay & Drug Dev. Technol. 3, 17–26. 18. Smith, J. G., Joseph, H. R., Green, T., Field, J. A., Wooters, M., Kaufhold, R. M., Antonello, J., and Caulfield, M. J. (2007) Establishing acceptance criteria for cell-mediatedimmunity assays using frozen peripheral blood mononuclear cells stored under optimal and suboptimal conditions. Clinical & Vaccine Immunol. 14, 527–537.
+

@@ -1,0 +1,171 @@
+Analysis of multi-channel cell-based screens
+L´ Br´s, Michael Boutros and Wolfgang Huber ıgia a August 6, 2006
+
+Contents
+1 Introduction 2 Assembling the data 2.1 Reading the raw intensity ﬁles . . . . . . . . . . . . . . . . . . 2.2 Annotating the plate results . . . . . . . . . . . . . . . . . . . 3 Data preprocessing and summarization of replicates 1 2 2 3 4
+
+1
+
+Introduction
+
+This techical report is a supplement of the main vignette End-to-end analysis of cell-based screens: from raw intensity readings to the annotated hit list that is given as part of the cellHTS package. It accompanies the paper Analysis of cell-based RNAi screens by Michael Boutros, L´ ıgia Br´s and a Wolfgang Huber. The report demonstrates how the cellHTS package can be applied to the documentation and analysis of multi-channel cell-based high-throughput screens (HTS), more speciﬁcally, dual-channel experiments. Such experiments are used, for example, to measure the phenotype of a pathway-speciﬁc reporter gene against a constitutive signal that can be used for normalization purposes. Typical examples for dual-channel experimental setups are dual-luciferase assays, whereby both a ﬁreﬂy and renilla luciferase are measured in the same well. In principle, multiplex assays can consist of many more than two channels, such as in the case of ﬂow-cytometry readout or other microscopy-based high-content approaches. We note that in this report we present a simple approach to analyse data from dual-channel experiments, which can be expanded to experiments
+
+1
+
+with more than two reporters, taking the in-built normalization functions of cellHTS as a template, and employing the extensive statistical modeling capabilities of the R programming language. Moreover, such analyses should be adapted to the biological system and to the question of interest. This text has been produced as a reproducible document [1], containing the actual computer instructions, given in the language R, to produce all results, including the ﬁgures and tables that are shown here. To reproduce the computations shown here, you will need an installation of R (version 2.3 or greater) together with a recent version of the package cellHTS and of some other add-on packages. Then, we can simply take the ﬁle twoChannels.Rnw in the doc directory of the package, open it in a text editor, run it using the R command Sweave, and modify it according to your needs. We start by loading the package. > library("cellHTS")
+
+2
+
+Assembling the data
+
+Here, we consider a sample data of a dual-channel experiment performed with D. melanogaster cells. The screen was conducted in microtiter plate format using a library of double-stranded RNAs (dsRNAs), in duplicates. The example data set corresponds to three 384-well plates. The purpose of the screen is to ﬁnd signaling components of a given pathway. In the screen, one reporter (assigned to channel 1, and denoted here by R1 ) monitors cell growth and viability, while the other reporter (assigned to channel 2 and denoted here by R2 ) is indicative of pathway activity.
+
+2.1
+
+Reading the raw intensity ﬁles
+
+The set of available result ﬁles and the information about them (which plate, which replicate, which channel) is given in the plate list ﬁle. The ﬁrst few lines of the plate list ﬁle for this data set are shown in Table 1. Using the function readPlateData, we can read the plate list ﬁle and all the intensity ﬁles, thereby assembling the data into a single R object that can be used for subsequent analyses. First, we deﬁne the path for those ﬁles: > experimentName = "DualChannelScreen" > dataPath = system.file(experimentName, package = "cellHTS") The input ﬁles are in the DualChannelScreen directory of the cellHTS package. 2
+
+Filename RA01D1.TXT RA01D2.TXT RA02D1.TXT RA02D2.TXT RA03D1.TXT ...
+
+Plate 1 1 2 2 3 ...
+
+Replicate 1 2 1 2 1 ...
+
+Channel 1 1 1 1 1 ...
+
+Table 1: Selected lines from the example plate list ﬁle Platelist.txt. Batch 1 1 1 1 ... Well A01 A02 A03 A04 ... Content geneA geneB sample sample ...
+
+Table 2: Selected lines from the example plate conﬁguration ﬁle Plateconf.txt.
+
+> x = readPlateData("Platelist.txt", name = experimentName, path = dataPath) > x cellHTS object of name 'DualChannelScreen' 3 plates with 384 wells, 2 replicates, 2 channels. State: configured normalized scored annotated FALSE FALSE FALSE FALSE
+
+2.2
+
+Annotating the plate results
+
+Next, we annotate the measured data with information on the controls, and ﬂag invalid measurements using the information given in the plate conﬁguration ﬁle and in the screen log ﬁle, respectively. Selected lines of these ﬁles are shown in Table 2 and Table 3. Morevoer, we also add the information contained in the screen description ﬁle, which gives a general description of the screen. > confFile = file.path(dataPath, "Plateconf.txt") > logFile = file.path(dataPath, "Screenlog.txt") 3
+
+Filename RA03D1.TXT RB03D1.TXT ...
+
+Well A05 A05 ...
+
+Flag NA NA ...
+
+Comment contaminated contaminated ...
+
+Table 3: Selected lines from the example screen log ﬁle Screenlog.txt.
+
+> descripFile = file.path(dataPath, "Description.txt") > x = configure(x, confFile, logFile, descripFile) In this data set, instead of using the default names pos and neg for positive and negative controls, respectively, we use the name of the gene targeted by the probes in the control wells: geneA, geneB, geneC and geneD. This is a more straighforward approach, since not all of these four controls behave as controls for both reporters R1 and R2 . Below, we look at the frequency of each well annotation in the example data: > table(x$plateConf$Content) geneA 1 geneB 1 geneC 1 geneD sample 1 380
+
+3
+
+Data preprocessing and summarization of replicates
+
+We can take a ﬁrst look at the data by constructing the HTML quality reports using the writeReport function. As mentioned above, the controls used in the screen are reporter-speciﬁc. When calling writeReport, we need to specify to the function’s arguments posControls and negControls which are the positive and negative controls for each channel: > > > > > negControls = vector("character", length = dim(x$xraw)[4]) negControls[1] = "(?i)^geneA$" negControls[2] = "(?i)^geneA$|^geneB$" posControls = vector("character", length = dim(x$xraw)[4]) posControls[2] = "(?i)^geneC$|^geneD$"
+
+4
+
+In the constitutive channel R1 , there is one negative control, named geneA, and no positive controls. In the pathway-speciﬁc reporter R2 there are two diﬀerent negative controls (geneA and geneB ), and two diﬀferent positive controls (geneC and geneD). Each of the arguments posControls and negControls should be deﬁned as a vector of regular expressions with the same length as the number of channels in x$xraw. These arguments will be passed to the regexpr function for pattern matching within the well annotation given in x$wellAnno. Finally, we construct the quality report pages for the raw data in a directory called raw, in the working directory: > out = writeReport(x, outdir = "raw", posControls = posControls, + negControls = negControls) After this function has ﬁnished, we can view the index page of the report: > browseURL(out) In this experiment, reporter 1 (R1 ) monitors cell viability. Thus, wells with low intensities in R1 should be masked: these cells are not responding to a speciﬁc perturbation of the studied signaling pathway, but show a more unspeciﬁc cell viability phenotype. There is no obvious choice for a threshold for the minimum intensity R1 that we consider still viable; here, we have chosen to set this cut-oﬀ as a low quantile (5%) of the overall distribution of corrected intensity values in the R1 channel of each replicate. However, to be able to use the overall distribution of intensities in the three plates, ﬁrst we need to remove the plate-to-plate variations. This will be performed by applying plate median scaling to each replicate and channel using the function normalizePlates: > x = normalizePlates(x, normalizationMethod = "median") > ctoff = apply(x$xnorm[, , , 2], 3, quantile, probs = 0.05, na.rm = TRUE) Figure 1 shows the plate median corrected intensities in R2 versus R1 channels, together with the calculated threshold and the positive and negative controls of the pathway-inducible reporter R2 . The wells with intensity values below the calculated threshold are shown in grey and will be set to ”NA” in x$xraw. The subsequent preprocessing will be applied on this array. > for (r in 1:dim(x$xnorm)[3]) { + ind = x$xnorm[, , r, 1] <= ctoff[r] + x$xraw[, , r, ][ind] = NA + } 5
+
+5.00
+
+0.20
+
+0.20
+
+q
+
+0.05
+
+q
+
+q
+
+q
+
+0.02
+
+0.10
+
+0.50
+
+5.00
+
+0.05
+
+q
+
+q q qq q q qq qq qq q q q qq q q q qq q q q qqq q q qq q qq q q qq qqq qqq q qq qq q qqqqq q q qqq q q qqqqq qq qq qqqqqqqq q qq q q q qqqqq q qqq qqq qq qqq qqq q qqqq q q q qq q qqqq q q q q qqqq qqq q qqqq q q q qqqq q qqq q qqq qqq qqq qq qqqq qq qq qqq qqq q qqq qqq qqqq qq q q q qqqqq q q q qqqq qqq qqqqqq q qqqqqq qqq qq qqqq q qqqqqqq qqqq qqq qqqq qqqq qq q qqqq q q qqqqqq q qq qq q qqqqq q qq qqqq q qqq q q qqqqqq q qqq q q qqqqqqqq q qqqqqqq qqqqqqq qqqqqq qqqqq qq qqq qq q qqqq q q qqqqqq qqqqq q qq qq q q qq q qqq qqqq q qqqqqqqq qqq q qqqqq qq q qqqq q qqq q qq q qqq q qqqqq q q q qq qqqqq qqq q qqqqq qqqqq q q qq q q qqqq q q qqqq q q qq q q qqqq q q q q q q qq q qq qqqq q q q q q qqq qqq q q qqqqq qq q qqq q qqq q q qq qq qq q qqq q q q q q qqqqq q q qq qq q q q q q qqq q q q q q q q qq q qqq qqq q q qq qq q q q qq qq q qq q q q q q q q q qq q q q q qq q q q
+
+5.00
+
+q
+
+q
+
+q q
+
+q q q qqq q q qq q qqqq q q q q qq qqqq q q q qqq q q qqqq q q qq qqq qqq qqqqq q qqqq qqq qqqqqqq qq q qqqqq qqqqq qqqq qqqq qq q qqqqq qqq qqqq q qq qq qqqq qqq q qqqq qqqqq qqqq qqq q q qqqqqqq qqqqq qqqqqq qqqqq qq qq qqqq q q qqqqq q qqqqq q q qqqqqqqq qqqq qqqq qq qqqqqq qqqqq qq qq q qqqqqq q qq q qq q qqqqqqq qqqq q qqqqq q qqqqqq qqq qqqq q qqqqq qq qqq qqq qqqq q qqqqqqqq q q qqqqqqq q qqqq qqqq q qqqq q qqqqqq qqqqq q qqqqq q qqqqqq q qqq q q q qqqqq qq qqq q q q qqqqq q qqqqqq q qq qq qq q q qq q q qqqqqqq q q q qq qqq qqq q qqqqqqq qqqqqq qq qq q qq qq qqq q qq q q qq q q qq q qq qq qqqqqq q qq qqq q qqqqqq qqq qq q q qqq q q q q q q q qq q q q qq q qq qqqq q qq q qq q q q q qq qq q q q q q q q q q q q q q q q q q qqq q q q q qq q q qq
+
+R2 (log scale)
+
+R2 (log scale)
+
+1.00
+
+1.00 0.02
+
+0.10
+
+0.50
+
+5.00
+
+R1 (log scale)
+
+R1 (log scale)
+
+Figure 1: Scatterplot of the plate median corrected intensity values in the signal-dependent channel (R2 ) against the plate median corrected intensity values in the constitutive channel (R1 ) for replicate 1 (left) and replicate 2 (right). Masked values are shown in grey, while positive and negative controls are shown in red and green, respectively.
+
+6
+
+In order to distinguish between changes in the readout caused by depletion of speciﬁc pathway components versus changes in the overall cell number, the next step consists in normalizing the pathway-inducible readout (R2 ) against the constitutive reporter (R1 ). This can be done using the normalizeChannels function provided in the cellHTS package. This function can also adjust for plate eﬀects on the R2 /R1 ratios (or log ratios) using the method speciﬁed in the parameter adjustPlates. For example, by setting it to "median", the normalizeChannels function applies plate median normalization by dividing or subtracting (if data has been log transformed) each value by the median of values in that plate. Below, we apply normalizeChannels to take the log ratio R2 /R1 using the data values in x$xraw, and then use plate median normalization to remove plate-to-plate variations: > x = normalizeChannels(x, fun = function(r1, r2) r2/r1, log = TRUE, + adjustPlates = "median") The normalized intensities are stored in the slot x$xnorm. This is an array of the same size as x$xraw, except in the last dimension (number of channels). We can call again writeReport for the normalized data. But ﬁrst, we have to redeﬁne the positive and negative controls for the normalized data x$xnorm, because it now corresponds to a single channel. The controls for the normalized data values are the same as those of the raw data channel R2 . > negControls = "(?i)^geneA$|^geneB$" > posControls = "(?i)^geneC$|^geneD$" > out = writeReport(x, outdir = "logRatio", posControls = posControls, + negControls = negControls) The quality reports have been created in the folder logRatio in the working directory. Below, we call the summarizeReplicates function to determine the z-score values for each replicate, and then summarize the replicated z-score values by taking the average. > x = summarizeReplicates(x, zscore = "-", summary = "mean") The resulting single z-score value per probe is stored in the slot x$score. Figure 2 shows the boxplots of the z-scores for the diﬀerent types of probes. 7
+
+−6
+
+−4
+
+−2
+
+0
+
+2
+
+4
+
+6
+
+8
+
+genea
+
+geneb
+
+sample
+
+genec
+
+gened
+
+Figure 2: Boxplots of z-scores for the diﬀerent types of probes.
+
+> ylim = quantile(x$score, c(0.001, 0.999), na.rm = TRUE) > boxplot(x$score ~ x$wellAnno, col = "lightblue", outline = FALSE, + ylim = ylim) Now that the data have been preprocessed and scored, we call again writeReport and use a web browser to view the resulting report:
+
+> out = writeReport(x, force = TRUE, outdir = "logRatio", imageScreenArgs = list(zrang + 4)), plotPlateArgs = list(xrange = c(-3, 3)), posControls = posControls, + negControls = negControls) > browseURL(out) Finally, we will save the data set to a ﬁle. > save(x, file = paste(experimentName, ".rda", sep = "")) 8
+
+References
+[1] Robert Gentleman. Reproducible research: A bioinformatics case study. Statistical Applications in Genetics and Molecular Biology, 3, 2004. 2
+
+9
+

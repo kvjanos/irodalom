@@ -1,0 +1,1684 @@
+The Cgal Arrangement Package and Its Applications
+Eﬁ Fogel, Dan Halperin, Idit Haran, Michal Meyerovitch, Oren Nechushtan, Ron Wein, and Baruch Zukerman Tel Aviv Univ. February 22, 2006
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Overview
+
+s s s s s s s s s s
+
+Cgal Arrangements Point-Location Strategies Outer-Face Complexity Boolean Set Operations Minkowski Sums in R2 The Visibility Voronoi Complex Envelopes in R3 Minkowski Sums in R3 Demo and/or Video
+The Cgal Arrangement Package
+¯ « ¬ « w s
+
+?
+
+"
+
+Overview
+
+s s s s s s s s s s
+
+Cgal Arrangements Point-Location Strategies Outer-Face Complexity Boolean Set Operations Minkowski Sums in R2 The Visibility Voronoi Complex Envelopes in R3 Minkowski Sums in R3 Demo and/or Video
+The Cgal Arrangement Package
+¯ « ¬ « w s
+
+?
+
+"
+
+Cgal Goals
+“make the large body of geometric algorithms developed in the ﬁeld of CG available for industrial and academic applications” Promote the research in Computational Geometry (CG)
+
+s
+
+s
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Cgal Goals
+“make the large body of geometric algorithms developed in the ﬁeld of CG available for industrial and academic applications” Promote the research in Computational Geometry (CG) ¯ Develop robust programs
+
+s
+
+s
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Cgal History
+Written in C++ Follows the generic programming paradigm Development started in 1995 Geometry Factory was created in 2003 Consortium of 6 active European sites:
+ Utrecht University  INRIA Sophia Antipolis  ETH Z¨rich u  MPII Saarbr¨cken u  Tel Aviv University  Freie Universit¨t Berlin a  RISC Linz  Martin-Luther-Universit¨t Halle a The Cgal Arrangement Package
+¯ « ¬ « w s
+
+?
+
+"
+
+Cgal in numbers
+350.000 lines of C++ code
+
+s s s s s s s s
+
+∼2000 pages manual Release cycle of ∼12 months Cgal 2.4: 9300 downloads (18 months) Cgal 3.0.1: 6200 downloads (8 months) 4000 subscribers to the announcement list (7000 for gcc) 800 users registered on discussion list (600 in gcc-help) 50 developers registered on developer list
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Commercial Customers of Geometry Factory
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Cgal Structure
+Basic Library Algorithms and Data Structures Visualization Files I/O Kernel Geometric Objects of constant size Geometric Operations on object of constant size Number Types Generators ...
+
+Support Library conﬁgurations, assertions,...
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Cgal Projects in TAU
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Cgal Projects in TAU
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Overview
+
+s s s s s s s s s s
+
+Cgal Arrangements Point-Location Strategies Outer-Face Complexity Boolean Set Operations Minkowski Sums in R2 The Visibility Voronoi Complex Envelopes in R3 Minkowski Sums in R3 Demo and/or Video
+The Cgal Arrangement Package
+¯ « ¬ « w s
+
+?
+
+"
+
+Arrangements
+Given a collection Γ of planar curves, the arrangement A(Γ) is the partition of the plane into vertices, edges and faces induced by the curves of Γ
+
+An arrangement of lines
+
+An arrangement of circles
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Arrangement Background
+s
+
+Arrangements have numerous applications q robot motion planning, computer vision, GIS, optimization, computational molecular biology
+
+A planar map of the Boston area showing the top of the arm of cape cod. Raw data comes from the US Census 2000 TIGER/line data ﬁles. The Cgal Arrangement Package
+¯ « ¬ « w s
+
+?
+
+"
+
+Arrangement Goals
+
+s
+
+Construct, maintain, modify, traverse, query and present subdivisions of the plane Robust and exact q All inputs are handled correctly (including degenerate) q Exact number types are used to achieve exact results Eﬃcient Generic, easy to interface, extend, and adapt Part of the Cgal basic library
+
+s
+
+s s
+
+s
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Arrangement Traits
+Separates geometric aspects from topological aspects 1 q Arrangement 2<Traits,Dcel> — main component Parameter of package q Deﬁnes the family of curves in interest q Package can be used with any family of curves for which a traits class is supplied Aggregates q Geometric types (point, curve) q Operations over types (accessors, predicates, constructors)
+1 Eﬁ Fogel, Dan Halperin, Idit Haran, Ron Wein, and Baruch Zukerman The Cgal Arrangement Package
+¯ « ¬ « w s
+
+s
+
+s
+
+s
+
+?
+
+"
+
+Arrangement Traits Requirements
+
+s
+
+Types: Curve 2, X monotone curve 2, Point 2
+
+s
+
+Methods:
+The Cgal Arrangement Package
+¯ « ¬ « w s
+
+?
+
+"
+
+ Compare two points
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Arrangement Architecture
+Arr_default_dcel
+ArrangementDcel
+
+Arrangement_2<Traits,Dcel>
+
+pointers
+Arr_non_caching_segment_basic_traits_2
+
+ArrangementBasicTraits 2
+
+Inheritance
+Arr_non_caching_segment_traits_2
+
+refinement
+ArrangementTraits 2
+
+Arr_segment_traits_2
+
+Arr_polyline_traits_2
+
+A model of
+
+Arr_conic_traits_2
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Overview
+
+s s s s s s s s s s
+
+Cgal Arrangements Point-Location Strategies Outer-Face Complexity Boolean Set Operations Minkowski Sums in R2 The Visibility Voronoi Complex Envelopes in R3 Minkowski Sums in R3 Demo and/or Video
+The Cgal Arrangement Package
+¯ « ¬ « w s
+
+?
+
+"
+
+Point Location
+Given a subdivision A of the space into cells and a query point q , ﬁnd the cell of A containing q
+Goals
+s s s
+
+Fast query processing Reasonably fast preprocessing Small space data structure
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Point-Location Strategies
+Naive Preprocess time Memory space Query time Code none none bad simple Walk none none reasonable quite simple RIC Landmarks Triangulat PST
+
+O(n log n) O(k log k) O(n log n) O(n log n) O(n)
+good
+
+O(k)
+good
+
+O(n)
+quite good modular
+
+O(n log n)(∗)
+good complicated
+
+complicated quite simple
+
+Walk RIC Triangulat PST
+
+— — — —
+
+Walk along a line Random Incremental Construction based on Trapezoidal Decomposition Triangulation Persistent search tree
+
+(*) Can be reduced to O(n)
+
+k – number of landmarks
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Landmark Point-Location Strategy
+
+(jump & walk)
+
+s
+
+s
+
+s s s s s
+
+Select landmarks: vertices, random points, grid, Halton, etc.2 Store landmarks in nearest neighbor search structure, locate landmarks in arrg using batched point location (sweepline) For query q : ﬁnd nearest landmark , walk from to q Much faster than Cgal’s naive or walk strategies Much faster preprocessing than Cgal’s RIC strategy The best combined performance — see next slide The ultimate eﬀective strategy? if programming eﬀort and
+maintainability are considered as well
+2 Idit Haran and Dan Halperin The Cgal Arrangement Package
+¯ « ¬ « w s
+
+?
+
+"
+
+Landmark Point-Location: performance example
+10 10 10 Cost per Query 10 10 10 10 10
+3
+
+2
+
+#Edges = 1,366,364
+
+1
+
+Naive Walk RIC LM(vert) LM(grid)
+
+s
+
+≈ 1.5 Million line segments
+Logarithmic scale Seconds per query
+
+s s
+
+0
+
+−1
+
+−2
+
+−3
+
+−4
+
+10
+
+0
+
+10
+
+2
+
+10 Number of Queries
+
+4
+
+10
+
+6
+
+10
+
+8
+
+cost(m) =
+
+preprocessing time + average query time m
+The Cgal Arrangement Package
+¯ « ¬ « w s
+
+?
+
+"
+
+Overview
+
+s s s s s s s s s s
+
+Cgal Arrangements Point-Location Strategies Outer-Face Complexity Boolean Set Operations Minkowski Sums in R2 The Visibility Voronoi Complex Envelopes in R3 Minkowski Sums in R3 Demo and/or Video
+The Cgal Arrangement Package
+¯ « ¬ « w s
+
+?
+
+"
+
+The Complexity of the Outer Face
+Outer Face — the unique unbounded face in A(Γ) Outer Face Complexity — the number of edges in the Outer Face (without repetitions)3
+
+(3,2) c1
+
+c5 (4,1) c7 (6,0)
+
+c4
+
+The outer-face complexity is 6
+
+(1,0)
+
+c3 (4,−1) (3,−2) c2
+
+c6
+
+3 Oren Nechushtan, Noga Alon, Dan Halperin, and Micha Sharir The Cgal Arrangement Package
+¯ « ¬ « w s
+
+?
+
+"
+
+The Complexity of the Outer Face
+
+s s s
+
+Concentrating at random-segment arrangements Striving to compute the precise complexity Gives an improved analysis of the walk point location
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Random-Segment Arrangements
+
+s s s
+
+One endpoint is chosen randomly in the unit square The direction is chosen randomly Up to 20, 000, 000 segments
+
+600 segments 579 boundary before phase transition
+
+900 segments 372 boundary after phase transition
+¯ «
+
+1200 segments 393 boundary beyond ...
+¬ « w s
+
+The Cgal Arrangement Package
+
+?
+
+"
+
+Overview
+
+s s s s s s s s s s
+
+Cgal Arrangements Point-Location Strategies Outer-Face Complexity Boolean Set Operations Minkowski Sums in R2 The Visibility Voronoi Complex Envelopes in R3 Minkowski Sums in R3 Demo and/or Video
+The Cgal Arrangement Package
+¯ « ¬ « w s
+
+?
+
+"
+
+Boolean Set Operations
+
+Union Intersection Complement For two point sets P and Q and a point r : P ∩ Q = ∅, overlapping cell(s) Intersection predicate are not explicitly computed. Intersection R=P ∩Q Union R=P ∪Q Diﬀerence R=P \Q Symmetric Diﬀerence R = (P \ Q) ∪ (Q \ P ) Complement R=P Containment predicate r ∈ P
+The Cgal Arrangement Package
+¯ « ¬ « w s
+
+?
+
+"
+
+Boolean set Operations: Terms and Deﬁnitions
+s
+
+Regularized Boolean-set operations (op∗) ∗ q P op Q = closure(interior(P op Q)) q Appear in Constructive Solid Geometry (CSG)
+x
+
+Used to avoid isolated elements and open boundaries
+
+s
+
+s
+
+s
+
+general polygon — a connected point set whose boundary edges are weakly x-monotone general polygon with holes — a general polygon that contains holes, which are general polygons general polygon set — central component q Represented by an arrangement. Robust & exact q Can output a set of general polygons with holes q Parameterized by a traits class
+The Cgal Arrangement Package
+¯ « ¬ « w s
+
+?
+
+"
+
+Boolean Set Operations
+
+complement
+
+complement
+
+complement
+
+intersection
+
+symmetric diﬀerence
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Overview
+
+s s s s s s s s s s
+
+Cgal Arrangements Point-Location Strategies Outer-Face Complexity Boolean Set Operations Minkowski Sums in R2 The Visibility Voronoi Complex Envelopes in R3 Minkowski Sums in R3 Demo and/or Video
+The Cgal Arrangement Package
+¯ « ¬ « w s
+
+?
+
+"
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+¡  
+
+Minkowski Sums in R2
+
+s
+
+s
+
+s
+
+4 Ron Wein and Dan Halperin
+¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ £ ¢ ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡   ¡  
+
+Implemented using either decomposition or convolution4 Based on Cgal’s arrangements. Robust and exact Eﬃcient
+
+q
+
+Running times are two orders of magnitude faster than the ones reported with Cgal 2.0
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Overview
+
+s s s s s s s s s s
+
+Cgal Arrangements Point-Location Strategies Outer-Face Complexity Boolean Set Operations Minkowski Sums in R2 The Visibility Voronoi Complex Envelopes in R3 Minkowski Sums in R3 Demo and/or Video
+The Cgal Arrangement Package
+¯ « ¬ « w s
+
+?
+
+"
+
+The Visibility-Voronoi Complex
+V V (c) is a hybrid between the visibility graph and the Voronoi diagram5 Parameterized by a clearance value c Evolves from the visibility graph to the Voronoi diagram, as c grows 0 → ∞ Can be used for planning natural-looking paths for a robot translating amidst obstacles Natural-Looking path — smooth, keeps where possible an amount of clearance c from the obstacles
+5 Ron Wein, Jur P. van den Berg, and Dan Halperin The Cgal Arrangement Package
+¯ « ¬ « w s
+
+s
+
+s s
+
+s
+
+?
+
+"
+
+The Visibility-Voronoi Complex
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Overview
+
+s s s s s s s s s s
+
+Cgal Arrangements Point-Location Strategies Outer-Face Complexity Boolean Set Operations Minkowski Sums in R2 The Visibility Voronoi Complex Envelopes in R3 Minkowski Sums in R3 Demo and/or Video
+The Cgal Arrangement Package
+¯ « ¬ « w s
+
+?
+
+"
+
+Envelopes in R3
+s
+
+Let F = {f1, f2, . . . , fn} be a collection of partially deﬁned bivariate functions The lower envelope EF of F is the pointwise minimum of these functions:
+
+s
+
+EF (x, y) = min fi(x, y)
+s s
+
+x, y ∈ R
+
+If a function fi is not deﬁned over (x, y), fi(x, y) = ∞ The minimization diagram is the partition of the plane into maximal connected regions such that EF is attained by the same subset of functions over each region6
+6 Michal Meyerovitch and Dan Halperin The Cgal Arrangement Package
+¯ « ¬ « w s
+
+?
+
+"
+
+Divide & Conquer Algorithm
+
+s s s
+
+Partition F into 2 sub-collections F1, F2 Recursively construct the minimization diagrams M1, M2 Merge M1, M2 to obtain the minimization diagram of F
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Divide & Conquer Algorithm
+
+s s s
+
+Partition F into 2 sub-collections F1, F2 Recursively construct the minimization diagrams M1, M2 Merge M1, M2 to obtain the minimization diagram of F
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Divide & Conquer Algorithm
+
+s s s
+
+Partition F into 2 sub-collections F1, F2 Recursively construct the minimization diagrams M1, M2 Merge M1, M2 to obtain the minimization diagram of F
+
+111 000 111 000 111 000
+
+11 00 11 00 11111 00000 11 00 11111 00000 11111 00000 11111 00000
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Divide & Conquer Algorithm
+
+s s s
+
+Partition F into 2 sub-collections F1, F2 Recursively construct the minimization diagrams M1, M2 Merge M1, M2 to obtain the minimization diagram of F
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Divide & Conquer Algorithm
+
+s s s
+
+Partition F into 2 sub-collections F1, F2 Recursively construct the minimization diagrams M1, M2 Merge M1, M2 to obtain the minimization diagram of F
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Lower Envelope
+Based on arrangements Robust & exact Exploits: Overlay Isolated points Zone traversal Currently works for: Triangles Spheres Near-future goal: Quadrics (with MPII)
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Overview
+
+s s s s s s s s s s
+
+Cgal Arrangements Point-Location Strategies Outer-Face Complexity Boolean Set Operations Minkowski Sums in R2 The Visibility Voronoi Complex Envelopes in R3 Minkowski Sums in R3 Demo and/or Video
+The Cgal Arrangement Package
+¯ « ¬ « w s
+
+?
+
+"
+
+Minkowski Sums in R3
+P and Q are two convex polyhedra (polytopes) in Rd t q P translated by a vector t is denoted by P
+M = P ⊕ Q = {p + q | p ∈ P, q ∈ Q} δ(P, Q) = min{ t | P ∩ Q = ∅, t ∈ R } π(P, Q) = min{ t | P ∩ Q = ∅, t ∈ R } πd (P, Q) = min{a | P
+da t d t d
+
+s
+
+Minkowski sum
+minimum distance penetration depth directional penetration depth
+
+∩ Q = ∅}
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+The Cubical Gaussian Map
+The Cubical Gaussian Map (CGM) C of a polytope P in R3 is a set-valued function from P to the 6 faces of the unit cube whose edges are parallel to the major axes and are of length two7 A Tetrahedron
+
+The primal
+7 Eﬁ Fogel and Dan Halperin
+
+The CGM
+
+The CGM unfolded
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+The Cubical Gaussian Map of 3D Minkowski Sums
+Amounts to computing the overlay of six arrangement pairs The Minkowski sum of two geodesic spheres level 4 slightly rotated with respect to each other
+
+The primal
+
+The CGM
+
+The CGM unfolded
+¯ « ¬ « w s
+
+The Cgal Arrangement Package
+
+?
+
+"
+
+Polytope complexities
+Object Name Primal V E F Icosahedron (Icos) 12 30 20 Dioctagonal Pyramid (DP) 17 32 17 Pentagonal Hexecontahedron (PH) 92 150 60 Truncated Icosidodecahedron (TI) 120 180 62 Geodesic Sphere level 4 (GS4) 252 750 500 Dual V HE 72 192 105 304 196 684 230 840 708 2124
+
+F 36 59 158 202 366
+
+Icos DP PH TI GS4
+
+— — — — —
+
+Icosahedron Dioctagonal Pyramid ODP — Orthogonal Dioctagonal Pyramid Pentagonal Hexecontahedron Truncated Icosidodecahedron Geodesic Sphere level 4 RGS4 — Rotated Geodesic Sphere level 4
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+Minkowski sum of polytopes in R3
+Minkowski Sum Obj. 1 Obj. 2 Primal Dual V E F V HE F Icos Icos 12 30 20 72 192 36 DP ODP 131 261 132 242 832 186 PH TI 248 586 340 514 1670 333 GS4 RGS4 1048 2568 1531 1906 6288 1250 CGM NGM LP 0.01 0.36 0.02 1.08 0.05 2.94 0.31 14.33 CH
+
+F1 F2 F
+
+0.04 0.10 20 0.35 0.31 2.2 1.55 3.85 10.9 5.80 107.35 163.3
+
+Time consumption (in seconds) of various Minkowski-sum computations CGM — the Cubical Gaussian Map based method NGM — the Nef polyhedra based method [Hachenberger, Kettner] LP — Linear Programming based algorithm [Fukuda, Weibel] CH — the Convex Hull method the ratio between the product of the number of input facets and F1 F2 — F the number of output facets
+The Cgal Arrangement Package ?
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+"
+
+Overview
+
+s s s s s s s s s s
+
+Cgal Arrangements Point-Location Strategies Outer-Face Complexity Boolean Set Operations Minkowski Sums in R2 The Visibility Voronoi Complex Envelopes in R3 Minkowski Sums in R3 Demo and/or Video
+The Cgal Arrangement Package
+¯ « ¬ « w s
+
+?
+
+"
+
+Demo and/or Video
+The arrangement of the Cgal logo
+
+s s
+
+Input: 425 line segments and 34 circles Output: 944 vertices, 2941 halfedges, and 534 faces
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+
+TOC
+s s s s s s
+
+Overview y Overview y Cgal Goals y Cgal History y Cgal in numbers y Commercial Customers of Geometry Factory y Cgal Structure y Cgal Projects in TAU y Cgal Projects in TAU y Overview y Arrangements y Arrangement Background y Arrangement Goals y Arrangement Traits y
+
+s s s s s s
+
+Arrangement Traits Requirements y Arrangement Architecture y Overview y Point Location y Point-Location Strategies y Landmark Point-Location Strategy (jump & walk) y Landmark Point-Location: performance example y Overview y The Complexity of the Outer Face y The Complexity of the Outer Face y Random-Segment Arrangements y Overview y Boolean Set Operations y
+¯ « ¬ « w s
+
+s s s s s s s s
+
+s
+
+s s s s s s
+
+The Cgal Arrangement Package
+
+?
+
+"
+
+s
+
+Boolean set Operations: Terms and Deﬁnitions y Boolean Set Operations y Overview y Minkowski Sums in R2 y Overview y The Visibility-Voronoi Complex y The Visibility-Voronoi Complex y Overview y Envelopes in R3 y Divide & Conquer Algorithm y Divide & Conquer Algorithm y Divide & Conquer Algorithm y
+
+s s s s s s s
+
+Divide & Conquer Algorithm y Divide & Conquer Algorithm y Lower Envelope y Overview y Minkowski Sums in R3 y The Cubical Gaussian Map y The Cubical Gaussian Map of 3D Minkowski Sums y Polytope complexities y Minkowski sum of polytopes in R3 y Overview y Demo and/or Video y
+
+s s s s s s s s s s s
+
+s
+
+s s s
+
+The Cgal Arrangement Package
+
+¯
+
+«
+
+¬
+
+«
+
+w s
+
+?
+
+"
+

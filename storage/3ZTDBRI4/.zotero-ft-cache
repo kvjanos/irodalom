@@ -1,0 +1,3694 @@
+Czap László
+
+KÉPFELDOLGOZÁS
+
+A jegyzet a HEFOP támogatásával készült. © Miskolci Egyetem. Minden jog fenntartva
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Tartalomjegyzék Vissza
+
+◄
+
+2
+
+►
+
+Tartalomjegyzék
+Bevezetés............................................................................................ 5 1. Az emberi látás ............................................................................... 6 1.1. Az emberi szem felépítése .......................................................................... 6 1.2. Látásunk tulajdonságai .............................................................................. 10 2. Színrendszerek ............................................................................. 16 2.1. Az RGB színrendszer................................................................................ 16 2.2. A CMY és a CMYK színrendszer ........................................................... 20 2.3. Az YUV színrendszer................................................................................ 25 2.4. A HSV színrendszer .................................................................................. 27 3. A képmegjelenítés és képfelvétel eszközei .................................. 30 3.1. A televíziók és monitorok képmegjelenítése.......................................... 30 3.2. Képfelvevı eszközök ................................................................................ 32 3.2.1. Képfelvétel az elektronikai gyártásellenırzésben...................... 34 4. Képfeldolgozási mőveletek .......................................................... 42 4.1. Pont-pont mőveletek................................................................................. 43 4.1.1. Hisztogram transzformációk ....................................................... 43 4.1.2. Aritmetikai és logikai mőveletek.................................................. 55 4.2. Lokális mőveletek ...................................................................................... 59 4.2.1. Konvolúción alapuló mőveletek.................................................. 59 4.2.2. A konvolúció néhány tulajdonsága ............................................. 79 4.2.3. Sorrendi szőrések........................................................................... 83 4.3. Mőveletek a síkfrekvencia tartományban ............................................... 86 4.3.1. A síkfrekvencia tartományban végzett szőrés és a konvolúció kapcsolata ................................................................................................107 5. Morfológiai mőveletek ................................................................110 5.1. Szegmentálási hibák korrigálása.............................................................110
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Tartalomjegyzék Vissza
+
+◄
+
+3
+
+►
+
+6. Alakzatfelismerés.........................................................................122 7. Optikai ellenırzés az elektronikai gyártásban............................125 8. Képtömörítés ...............................................................................133 9. Hangtömörítés ............................................................................144 9.1. Hangkódolás az MPEG szabvány szerint ............................................144 9.2. Beszédkódolás lineáris predikcióval ......................................................147 Tárgymutató....................................................................................151
+
+Bevezetés............................................................................................ 5 1. Az emberi látás ............................................................................... 6 1.1. Az emberi szem felépítése .......................................................................... 6 1.2. Látásunk tulajdonságai .............................................................................. 10 2. Színrendszerek ............................................................................. 16 2.1. Az RGB színrendszer................................................................................ 16 2.2. A CMY és a CMYK színrendszer ........................................................... 20 2.3. Az YUV színrendszer................................................................................ 25 2.4. A HSV színrendszer .................................................................................. 27 3. A képmegjelenítés és képfelvétel eszközei .................................. 30 3.1. A televíziók és monitorok képmegjelenítése.......................................... 30 3.2. Képfelvevı eszközök ................................................................................ 32 3.2.1. Képfelvétel az elektronikai gyártásellenırzésben...................... 34 4. Képfeldolgozási mőveletek .......................................................... 42 4.1. Pont-pont mőveletek................................................................................. 43 4.1.1. Hisztogram transzformációk ....................................................... 43 4.1.2. Aritmetikai és logikai mőveletek.................................................. 55 4.2. Lokális mőveletek ...................................................................................... 59
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Tartalomjegyzék Vissza
+
+◄
+
+4
+
+►
+
+4.2.1. Konvolúción alapuló mőveletek.................................................. 59 4.2.2. A konvolúció néhány tulajdonsága ............................................. 79 4.2.3. Sorrendi szőrések........................................................................... 83 4.3. Mőveletek a síkfrekvencia tartományban ............................................... 86 4.3.1. A síkfrekvencia tartományban végzett szőrés és a konvolúció kapcsolata ................................................................................................107 5. Morfológiai mőveletek ................................................................110 5.1. Szegmentálási hibák korrigálása.............................................................110 6. Alakzatfelismerés.........................................................................122 7. Optikai ellenırzés az elektronikus gyártásban ...........................125 8. Képtömörítés ...............................................................................133 9. Hangtömörítés ............................................................................144 9.1. Hangkódolás az MPEG szabvány szerint ............................................144 9.2. Beszédkódolás lineáris predikcióval ......................................................147 Tárgymutató....................................................................................151
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Bevezetés
+
+◄
+
+5
+
+►
+
+Bevezetés
+A számítógépek sebességének és tároló kapacitásának rohamos növekedése lehetıvé tette a nagymérető, többdimenziós objektumok feldolgozását. Szóhasználatunkban képnek a digitalizálás során kapott két- vagy többdimenziós tömböket fogjuk tekinteni, az ezeken végzett mőveleteket értjük képfeldolgozás alatt. A képfeldolgozás rendszerint a kép átalakítását vagy elemzését jelenti. A kép átalakítása során újabb kép keletkezik, amely jobban megfelel céljainknak. Ilyen lehet pl. a zajcsökkentés, a kép vagy egyes részleteinek élesítése (keményítése), de a magasabb szintő feldolgozás elıkészítı lépései is. A kép elemzése információ kinyerését jelenti a képbıl. Példaként említhetjük a képen végzett méréseket (méret, hely, helyzet, jelenlét meghatározás), vagy az optikai karakterfelismerést. A magasabb szintő analízis, a kép értelmezése egészen eltérı megközelítést igényel, ezért nem tekintjük a jegyzet anyagának. A Képfeldolgozás tárgyat a Miskolci Egyetem Gépészmérnöki és Informatikai Karán a Villamosmérnöki, Mérnök informatikus és Mechatronikai mérnök szakos hallgatók hallgatják. Az elméleti alapozást a Kommunikációelmélet és Digitális jelfeldolgozás tárgyak nyújtják. Példáinkban általában kétdimenziós képeken fogjuk elvégezni a feldolgozás lépéseit, a mőveletek kiterjesztése színes képekre, vagy a mozgókép egyes képkockáira nem jelent leküzdhetetlen nehézséget. A szerzı köszönetét fejezi ki Jordán Gábor, a JABIL Circuit Hungary munkatársa, az Agilent Technologies, és Molnár László segítségéért. Miskolc, 2007. szeptember Dr. Czap László, PhD egyetemi docens
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+5
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+6
+
+►
+
+1. Az emberi látás
+Ebben a fejezetben a látás képfeldolgozás szempontjából fontos tulajdonságaival ismerkedünk meg. Ezeket a jellemzıket elsısorban a képalkotásnál és képtömörítésnél fogjuk felhasználni. 1.1. Az emberi szem felépítése Szemünk az elektromágneses sugárzás kb. 380 és 780 nm közötti hullámhossztartományát képes érzékelni. A különbözı hullámhosszú fénysugarakat finoman változó szivárványszíneknek látjuk (1.1. ábra). A látható fény hullámhossz tartományát alulról az ultraviola, felülrıl az infravörös sugárzás határolja. Az infravörös sugárzást hısugárzásként érzékeljük. Vannak az infravörös tartományban mőködı hıkamerák, amelyek általában a 1-15 µm hullámhossztartomány egy részét fedik le.
+
+1.1. ábra. A szemünk által érzékelt színek a hullámhossz függvényében. A fényképezıgépet az emberi szem mintájára alkották meg. A fényképezıgép sötét kamrája a szem belsejének felel meg. A fény a pupillán keresztül hatol a szemgolyó belsejébe. Ennek átmérıje a fény intenzitásának függvényében változik, szabályozva a szembe jutó fény mennyiségét. A fényképezıgép fényrekesze (blende) hasonló funkciót lát el. A pupillán átjutó fénysugarakat a szemlencse fókuszálja a szemgolyó hátsó falát belülrıl borító ideghártyára (retina). Közeli tárgyak figyelésekor a szemlencse domború, távolra nézéskor lapos. A közelpont kb. 15 cm, a távolpont 6-8 m. Ezen a tartományon kívül nem tudjuk tovább domborítani, illetve lapítani a szemlencsét. A fényképezıgép objektív a lencsék mozgatásával éri el a fókuszba állítást. A szemlencse a retinán fordított állású képet hoz létre,
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+6
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+7
+
+►
+
+az agy gondoskodik róla, hogy ne fejjel lefele lássuk a világot. A szemgolyó metszetét az 1.2. ábra mutatja.
+
+1.2. ábra. Az emberi szem felépítése. Az ideghártya legérzékenyebb része a sárgafolt, ezen belül is a látógödör. Ide vetítjük a szem mozgatásával és fókuszálással a megfigyelt terület centrumát. A retina fényérzékelı sejtjeinek eloszlása jelentısen eltér a fényképezıgép filmjétıl és a digitális fényképezıgépek képérzékelıjétıl. A képérzékelık azonos sőrőséggel helyezkednek el a felületen, a retinán azonban a fényérzékelı sejtek (fotoreceptorok) eloszlása jelentıs eltéréseket mutat. A fényenergia csomagjait (fotonok) a fotoreceptorok alakítják elektromos idegi jelekké. Kétféle fényérzékelı sejtet ismerünk: a csapot és a pálcikát. Nevüket alakjukról kapták. (1.3. ábra) A csapok jó megvilágítás mellett a finom részletek és a szín látásáért felelısek. Gyenge fényben a pálcikák mőködnek hatékonyan, de csak szürke árnyalatos képet tudnak alkotni.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+7
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+8
+
+►
+
+1.3. ábra. A szem fényérzékelı sejtjei. A csapok foglalják el a látógödör legérzékenyebb területét. A látómezı széle felé jelentısen ritkulnak, a periférikus látásunk színérzékelése gyenge. A csapok a látógödör közelében helyet engednek a pálcikáknak, amelyek itt helyezkednek el a legsőrőbben. A látómezı széle felé a pálcikák is ritkulnak. A látóidegek kilépési pontja a vakfolt, itt sem csapok, sem pálcikák nem találhatók. A csapok és pálcikák eloszlását az 1.4. ábra mutatja. Egy szemünkben kb. 6,5 millió csapocska és mintegy 120 millió pálcika gondoskodik az éjszakai és nappali látásról. A szemben lezajló kémiai folyamatok teszik lehetıvé a sötéthez alkalmazkodást. Sötétben mintegy ¾ óráig a látásunk egyre javul, egészen addig, hogy a pálcikát egyetlen foton is képes gerjeszteni.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+8
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+9
+
+►
+
+1.4. ábra. A csapok és pálcikák sőrősége. Az emberi látás legalább két szempontból felülmúlja a fényképezıgépek képességeit: Az egyik a térlátás, a másik a mozgás detektálása. A két szem nézıpontja kissé eltérı, ez teszi lehetıvé a mélység érzékelését. A szemünk még a gyenge felbontású periférikus területen is kitőnıen érzékeli a mozgást, ami a túlélés fontos feltétele (pl. közlekedés). Háromféle csap gondoskodik a színes látásról. Ezek érzékenységi görbéjének maximuma a vörös (R, Red, 580 nm), a zöld (G, Green, 540 nm) és a kék (B, Blue, 450 nm) színek hullámhossztartományába esnek. A csapok az 1.5. ábra szerinti érzékenységi görbe szerinti súlyozással integrálják az ıket érı fényt. Szerencsére nem tudunk különbséget tenni a monokromatikus és az összetett fény által keltett ingerület között, ez teszi lehetıvé a képmegjelenítı eszközök megalkotását.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+9
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+10
+
+►
+
+1.5. ábra. A háromféle csap érzékenységi görbéje. 1.2. Látásunk tulajdonságai Világosság érzékelésünk jellemzıje, hogy karakterisztikája logaritmikus. Lineárisan változó világosság esetén a sötét oldalon kisebb változást látunk, a világos oldalon nagyobb ugrást tapasztalunk.
+
+1.6. ábra. Felül lineárisan, alul logaritmikusan változó világosság skála. A pupilla mérete és a szemünkben lezajló kémiai folyamatok gondoskodnak róla, hogy alkalmazkodni tudjunk a környezet megvilágításához. A tőzı napsütésben egy szürke felületrıl sokkal több fény jut a szemünkbe,
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+10
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+11
+
+►
+
+mint árnyékban egy fehér felületrıl. Az alkalmazkodó képességünk beállítja a helyes érzékeléshez szükséges „munkapontot”. Szemünk érzékenysége a hullámhossz függvényében változó. Általában elmondható, hogy a látható fény hullámhossztartományának közepén látásunk érzékenysége meghaladja a szélein tapasztalható érzékenységet. Ezen azt értjük, hogy az érzékenységi görbe maximumánál található zöld színbıl több – világosabb és sötétebb – árnyalatot tudunk megkülönböztetni, mint pl. a kevésbé érzékeny tartományban található kékbıl. Látásunknak ez a jellemzıje pl. az YUV színrendszer világosság meghatározásánál fog szerepet kapni. A relatív érzékenységet a hullámhossz függvényében az 1.7. ábra mutatja.
+
+1.7. ábra. Szemünk relatív érzékenysége a hullámhossz függvényében. A szemünk relatív felbontóképessége szintén hullámhosszfüggı, és a látható fény hullámhossztartományának közepén maximális. A felbontóképességtıl függ, hogy két pontot különállónak látunk, vagy összemosódik a képük.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+11
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+12
+
+►
+
+1.8. ábra. Szemünk relatív felbontóképessége. Található olyan távolság, hogy az 1.9. ábrán látható kék pontok összeolvadnak, míg a zöldek elkülönülnek.
+
+1.9. ábra. Tesztábra a relatív felbontóképesség érzékeltetéséhez. Rendkívüli fontossággal bír látásunk síkfrekvenciás érzékenysége. Ebben a vonatkozásban síkfrekvencián az egy látószögfokra esı periódusok számát értjük. Eltérı a síkfrekvencia szerint változó érzékenységünk a színes és a fekete-fehér képekre.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+12
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+13
+
+►
+
+1.10. ábra. Szemünk érzékenysége a síkfrekvencia változásával. Fekete-fehér képekre az érzékenységünknek maximuma van. Hajlamosak vagyunk az apró tárgyak és vékony vonalak világosságát hibásan megítélni. Meglepı lehet, hogy a nagy felületek világosságát sem látjuk pontosan. Ezekre a jelenségekre számos optikai illúzió épül.
+
+1.11. ábra. Dülöngélnek a vonalak? Az 1.11. ábrán a függıleges vonalak látszólag össze- vagy széttartanak, mert a ferde vonalakra nagyobb síkfrekvenciás érzékenységünk megzavarja a függıleges vonalak érzékelését. Színes képek esetében a kis síkfrekvenciák felé nem romlik az érzékenységünk. Szerencsére nem látunk valamit más színőnek csak azért, mert nagy. A síkfrekvenciás érzékenységünk jellemzıire építenek a képtömörítı eljárások. Befolyásolja világosságérzékelésünket a vizsgált terület szomszédsága is. A szemünk és az agyunk az objektumok elkülönítésére rendezkedett be, az objektumok határán erısíteni igyekszik a különbséget. Ezért látjuk eltérınek az 1.12. ábra egyébként azonos világosságú szürke négyzeteit.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+13
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+14
+
+►
+
+1.12. ábra. A bal, vagy a jobboldali téglalapok sötétebbek? (A hitetlenek a lap alján láthatják a kép közepének kivágása után kapott képet.) A különbségek erısítését nem csak a világosság terén mőveljük, színek, méretek is az elkülönítési törekvés hatása alá kerülhetnek.
+
+1.13. ábra. Melyik középsı kör nagyobb? A szemünket elég könnyő becsapni. Számos optikai csalódás (csalás) épül látásunk itt nem említett tökéletlenségeire is. Szórakoztató és tanulságos az illúziókat bemutató Internetes oldalak böngészése. Meg kell még említeni a textúrát, mint jelenséget. Részletek nélkül annyit érdemes tudni róluk, hogy egy felület mintázatát értjük rajta. Sokszor nem tudjuk megfogalmazni a szabályt, ami szerint változik, de a szabály megsértését azonnal észrevesszük. Az objektumokat textúrájuk alapján is elkülöníthetjük.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+14
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+15
+
+►
+
+1.14. ábra. Textúrák. Eddig az állóképek megfigyelésekor tapasztalható jelenségekrıl tettünk említést. Külön vizsgálatokat igényel a mozgóképek érzékelése. Két fontos jellemzıt kell figyelembe venni a mozgókép megjelenítésekor: • A folyamatos mozgás érzetéhez másodpercenként 20-25 mozgásfázist kell megjeleníteni. • A képernyı vagy vetítıvászon villódzásának elkerüléséhez kb. 50-szer kell felvillantani a képet. Ezeknek a tulajdonságoknak a figyelembevételével alakították ki a képmegjelenítés szabványos rendszereit. A mozifilm lejátszásakor 24 képet jelenítenek meg másodpercenként. A villódzás elkerülésére egy képet kétszer (esetleg háromszor) villantanak fel. A televízió képváltási frekvenciája az elektromos hálózat frekvenciájához igazodott. Ez nálunk 50 Hz. Ez a képernyı felvillanási frekvenciája. 25 képet továbbítanak másodpercenként, a váltottsoros letapogatás gondoskodik a frekvencia kétszerezésérıl. (Részletek a 3. fejezetben.)
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+15
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+16
+
+►
+
+2. Színrendszerek
+A színek mindennapi életünkben jelen vannak festékszínként épületeken, papírra nyomtatva vagy elektronikus formában monitoron, TV képernyıjén, videó kamera kijelzıjén stb. A különbözı megjelenési formák ugyanazt a valóságot kell, hogy ábrázolják, de az egyik a fény, a másik különbözı festékek keverésével állítja elı az adott színt. A színeket másként rögzítik, eltérıen dolgozzák fel, továbbítják, és különbözı módon adják vissza. A színkezelés feladata, hogy az eszközök különbözısége ellenére, az eredeti kép- és színjellemzık a kimeneten természetes formában jelenjenek meg. Ezért van szükség a különbözı színrendszerekre. A tudósokat évszázadok óta foglalkoztatja a színek leírása, mérése és megjelenítése. Sokféle színrendszer létezik, az adott célra valamilyen szempontból mindegyik elınyös. Másképp keveredik a fény és a festék, a televíziós mősorszórás színrendszerét úgy alakították ki, hogy a régi fekete-fehér TV-k mőködıképesek maradjanak. Minden elterjedt színrendszernek vannak elınyei és hátrányai, az alkalmazás dönti el, melyik tulajdonság fontos. 2.1. Az RGB színrendszer A szemünkben a színek érzékeléséért felelıs háromféle csap érzékenységi görbéinek maximuma környékén keltett ingerületek összeadódnak és színérzetet keltenek. A szemünkbe jutó fény komponensei összegzıdnek (additív színkeverés). Az additív színrendszer alapszínei a vörös (R), a zöld (G) és a kék (B). A komponensek kezdıbetőibıl ered a színrendszer másik elterjedt elnevezése: RGB. A színrendszer elemeinek szabványos hullámhosszát az elıállíthatóságuk figyelembevételével állapították meg: R: 700 nm, G: 546 nm, B: 435 nm. A szín megadása a háromdimenziós tér egy pontjának kijelölését jelenti. A számítógépes számábrázolás elterjedése miatt a korábbi 1 helyett 255re szokás normálni az értékeket, tehát az egyes alapszínek a 0-255 tartományt foglalják el. A három alapszínbıl mintegy 16 millió szín és árnyalat állítható elı a számítógépes képfeldolgozás során, amelynek szemünk csak töredékét képes megkülönböztetni.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+16
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+17
+
+►
+
+2.1. ábra. A fény összegzı keveredése. Ha egy adott színt akarunk ábrázolni a háromdimenziós RGB térben, a színt a koordinátáival azonosítjuk. Az R tengelyen az origótól (fekete) a pirosig, a G tengelyen a zöldig, a B tengelyen a kékig terjed a skála.
+
+2.2. ábra. Az RGB színtér.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+17
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+18
+
+►
+
+Az RG síkban a kék összetevı nulla. A négyzet origóval szemközti csúcsán a sárgát találjuk. Hasonlóan a GB síkban az origótól legtávolabb a kékeszöld helyezkedik el. Az RB síkban a két alapszín maximuma a bíbort jelöli ki. Ha az RB sík átlójából kiindulva a G tengellyel párhuzamosan készítünk egy metszetet, a sík magába foglalja a testátlót, amely az origóbeli feketétıl a legtávolabbi csúcs fehér pontjáig a szürkeárnyalatokat fedi le.
+
+2.3. ábra. A metszet átlója az RGB kocka testátlója.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+18
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+19
+
+►
+
+a bbc d e
+
+2.4. ábra. Színes kép összerakása az RGB alapszínekbıl. a., R, b., G, c., RG, d., B, e., RGB
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+19
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+20
+
+►
+
+2.2. A CMY és a CMYK színrendszer Az RGB színrendszerrel szemben – ahol az alapszínek valamelyikében szereplı összetevı az eredınek is része – a CMY eredıjébıl hiányozni fog, ami valamelyik alapszínbıl hiányzik. Ezért nevezik különbségi (szubtraktív) színrendszernek. A CMY színrendszer a festékkeverés színrendszere. A festék által fedett területrıl – fehér megvilágítás esetén – az a fény jut a szemünkbe, amit a festék nem nyel el. A szubtraktív színkeverés tehát azt jelenti, hogy amit az egyik komponens elnyel, azt az eredı is el fogja nyelni. A CMY színrendszer is az alapszíneirıl kapta a nevét: C – (Cyan) kékeszöld, M – (Magenta) bíbor, Y – (Yellow) sárga. Az RGB színrendszer alapszíneinek kiegészítı színei a CMY színrendszer alapszínei (és fordítva), így egymásba igen egyszerően átszámíthatók.
+
+C  R   M  = 255 − G      Y  B     
+Ha mindhárom alapszín nulla, a papír színét (fehér) kapjuk nyomtatás után. A CMY tér origójában tehát a fehér helyezkedik el. Mit látunk, ha pl. az Y komponens nulla, a C és M maximális? A kékeszöld elnyeli a fehér fénybıl a pirosat, a bíbor pedig a zöldet, marad a kék. A C és M eredıje tehát kék. Hasonlóan a C és Y eredıje a zöld, az M és Y-é a piros.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+20
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+21
+
+►
+
+2.5. ábra. A CMY színrendszer elemei és a szubtraktív színkeverés. Ha mindhárom összetevı maximális, feketét kapunk. Mégsem így szokás a feketét nyomtatni, mert
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+21
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+22
+
+►
+
+• ez a fekete nem tökéletes, • a sok színes festék drága, • és áztatja a papírt. Ezeket a hátrányokat küszöböli ki a negyedik komponens, a K (blacK, mivel a B már foglalt a kékre). A fekete a C, M és Y komponensek minimuma.
+
+K = k = min(C , M , Y )
+Ezzel a CMYK színrendszer elemei (az egyértelmőség kedvéért jelöljük ıket kisbetőkkel):
+c=C−K, m=M −K,
+
+y =Y −K .
+
+A három szín azonos arányú keverésével – az RGB színrendszernél tapasztaltakhoz hasonlóan – szürkeárnyalatokat kapunk. Itt azonban az origóban van a fehér és a legtávolabbi csúcsban a fekete. A CMY színrendszernél egy pontra a három összetevı megfelelı mennyisége kerül. Ennek alternatívája: A CMYK színrendszerben elıször kijuttatjuk a közös szürkét, és hozzátesszük a hiányzó mennyiséget a megfelelı festékekhez. Most is legfeljebb három festék kerül egy pontra, hiszen a minimummal megegyezı komponenshez nem kell hozzátenni. Az alapszínek és a kiegészítı színek fekete összetevıje nulla. A nyomdai gyakorlatban a festékek felhordásának sorrendje nem kötött. Kövessük végig egy kép kialakulását az egyes fázisok szerint! A példában a komponensek sorrendje: k, c, m y. A 2.6. ábrán a fekete összetevı intenzitás képét és a fekete festék kijuttatása utáni képet látjuk. Minél nagyobb a fekete összetevı (az intenzitás képen annál világosabb), annál több festék jut a képpontba, annál sötétebb lesz.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+22
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+23
+
+►
+
+a b
+
+2.6. ábra. A fekete (k) összetevı intenzitás képe (a.,) és nyomtatási képe (b.,).
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+23
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+24
+
+►
+
+a b c d e f
+
+2.7. ábra. A 2.6 ábrán megkezdett „nyomtatás” folytatása. a., c, b., ck, c., m, d., cmk, e., y, f., cmyk
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+24
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+25
+
+►
+
+2.3. Az YUV színrendszer A PAL és SECAM rendszerő televíziós szabvány megalkotása elıtt hoszszú évekig vizsgálták a szín hozzáadásának modulációs és megjelenítési lehetıségeit. Úgy kellett megvalósítani a színinformáció továbbítását, hogy
+• a meglévı fekete-fehér készülékek változatlanul használhatók legyenek, tehát a világosság az egyik összetevı, • a színsegédvivı hordozza a színinformációt, de a fekete-fehér vételt a lehetı legkisebb mértékben zavarja.
+
+A televíziós mősorszórás színrendszerében ezeknek az elvárásoknak megfelelıen szétválasztották a világosság (luminancia) és szín (krominancia) öszszetevıket. A világosságot az Y összetevı képviseli (jelentése eltér a CMY színrendszerbelitıl), figyelemmel a szemünk relatív érzékenységére. Az YUV komponenseket az RGB színrendszerbıl származtatjuk. A szín öszszetevık úgynevezett színkülönbségi jelként vannak jelen: U=0,492(B-Y), V=0,877(R-Y). Az RGB alapszínekbıl az alábbi transzformációval kaphatók meg az YUV színrendszer elemei:
+
+0,587 0,114   R  Y   0,299 U  = − 0,147 − 0,289 0,436  G       V   0,615 − 0,515 − 0,100  B      
+A vevıkészülékben az YUV elemekbıl vissza kell állítani az RGB alapszíneket, mert a képernyı vezérlésére ezeket kell használni. Az NTSC televíziós szabvány az YIQ színrendszert használja. Az YUV színrendszer rokona az YCbCr színrendszer.
+
+0,587 0,114   R  Y   0,299 Cb  = − 0,299 − 0,587 0,886  G       Cr   0,701 − 0,587 − 0,114  B      
+Mint látható, az Y összetevı megegyezik az YUV színrendszer Y-jával. A Cb=(B-Y), a Cr=(R-Y). Az YCbCr színrendszer a digitális rendszerek luminancia és krominancia komponensei. A nyolcbites számábrázoláshoz
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+25
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+26
+
+►
+
+könnyebben adaptálható, mivel az Y csak pozitív lehet, a Cb és Cr dinamikatartománya a nullára szimmetrikus, eltolással a 0-255 tartományba helyezhetı.
+
+a b c d
+
+2.8. ábra. Az YCbCr színrendszer elemei. a., eredeti kép, b., Y, c., Cb, d., Cr
+
+Szemünk érzékenysége a krominancia összetevıkre gyengébb, mint a luminancia komponensre. Az YCbCr színrendszer fontos szerepet játszik a képtömörítésben.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+26
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+27
+
+►
+
+2.4. A HSV színrendszer Képzeljük el, hogy az RGB koordinátarendszer testátlója felıl nézzük a kérdéses színnek megfelelı pontot. Az R tengely irányát tekintjük nulla foknak, ehhez képest határozzuk meg a pont irányát. Ez lesz a HSV színrendszer H (Hue, színezet) komponense. Az RGB alapszínek és kiegészítı színek oldalszöge: H (fok) 0 60 120 180 240 300 Szín piros sárga zöld kékeszöld kék bíbor
+
+2.1. táblázat. Az alapszínek és kiegészítı színek jellegzetes színezete. A HSV színrendszer második eleme az S (Saturation, telítettség). Ez a jellemzı a szín élénkségét fejezi ki. Az alapszínek és kiegészítı színek telítettek, S=1. A 2.9. ábrán az alapszínekkel (RGB vagy CMY) szemben – 180 fokos különbséggel – helyezkednek el a kiegészítı színeik. A szürke árnyalatainak telítettsége nulla. Az ábra baloldalán a színezetet és telítettséget látjuk, maximális világosság mellett. A színezet a piros irányával bezárt szög. A telítettség a kör középpontjában nulla, a kerületen egy.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+27
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+28
+
+►
+
+2.9. ábra. A HSV színrendszer elemei. A kétdimenziós ábrán a színrendszer harmadik eleme, a V (Value, világosság) nem szerepel. Az ábra jobb oldalán külön sávban látható. A H komponens magyar megfelelıjét azért nem nevezzük színnek, mert a hétköznapi életben használt szín fogalmával nincs teljesen fedésben. Különbözınek tekintett színek színezete megegyezhet. A rózsaszín kis telítettségő piros. A barna az okkersárga sötét változata. Az RGB színrendszer átszámítása a HSV színrendszerbe: Min=min(R,G,B), Max=max(R,G,B) ha Min=Max, S=0, H=0, ha R=Max, H = 60
+G−B , Max − Min B−R , Max − Min R−G , Max − Min
+
+ha G=Max, H = 120 + 60 ha B=Max, H = 240 + 60
+S=
+
+Max − Min , V=Max. Max
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+28
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató Vissza
+
+Az emberi látás
+
+◄
+
+29
+
+►
+
+A HSV színrendszernek vannak egyéb változatai is (HSB, HSI). Látásunk érzékenysége eltérı a három komponensre. A világosságból 400-500 árnyalatot, a színezetbıl mintegy 200 szintet, a telítettségbıl kb. 20 fokozatot tudunk megkülönböztetni, ha a másik két jellemzı állandó. Ha mindhárom összetevı változik (tónusos kép) összesen mintegy 4000 színárnyalat szükséges a tökéletes kép érzetéhez. A HSV színrendszer rendkívül hasznos a képfeldolgozásban. A feladatok egy része egyetlen komponens módosításával elvégezhetı. A világosság növelése-csökkentése, élesítés, kontraszt növelés-csökkentés és más világosság transzformációk csak a V komponenst érintik. Ennek nem csak azért van jelentısége, mert kevesebb számítást igényel (a képformátum konvertálása is számításigényes). Ennél fontosabb, hogy bizonyos mőveletek – pl. az RGB színtérben – színtorzuláshoz vezethetnek, ezek elkerülhetık a HSV színrendszerben végrehajtott transzformációkkal.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+29
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+A képfelvétel és képmegjelenítés eszközei Vissza
+
+◄
+
+30
+
+►
+
+3. A képmegjelenítés és képfelvétel eszközei
+A képfeldolgozás kezdeti évtizedeiben a televíziózás eszközei csatlakoztak a számítógépekhez. Ma inkább a számítástechnika eszközei vonulnak be a televíziózásba. Ebben a fejezetben röviden tárgyaljuk a televízió, illetve monitor néhány jellegzetességét. A képfelvételi eszközök közül a régi, elektroncsöves eszközökrıl nem teszünk említést, csak a félvezetı alapú képalkotás alapjait érintjük. 3.1. A televíziók és monitorok képmegjelenítése A látásunk jellemzıinél már találkoztunk a mozgóképek megjelenítésének szabályaival. Az európai televíziós szabványok másodpercenként 25 kép megjelenítését írják elı. Egy képet két félképre bontva, az egyik félképet a páros sorok, a másik félképet a páratlan sorok írásával jeleníti meg. Ez képenként két képernyı felvillanást jelent, tehát a villódzás frekvenciája 50 Hz. A PAL és SECAM szabvány a képet 625 sorra bontja. Ebbıl 576 látszik. A maradék 49 sor idején fut vissza a katódsugárcsöves készülékek elektronnyalábja a jobb alsó sarokból a bal felsıbe, de kihasználják mérıjelek, illetve a teletext továbbítására is. A bal felsı sarokban kezdett képírás hozta azt a szokást, hogy a képsík origója – a koordinátarendszernél megszokottól eltérıen – a síknegyed bal felsı sarkában van. Ez azzal az elınnyel is jár, hogy a kép mátrix reprezentációjának sorszámozásával egybeesik.
+
+3.1. ábra. A televízió képernyı váltottsoros (interlaced) letapogatása. A TV világosságjel egy soron belül analóg, így a mősorszórásnál nem merül fel a kérdés, hogy egy sor hány pontból, a kép hány oszlopból áll. Fı-
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+30
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+A képfelvétel és képmegjelenítés eszközei Vissza
+
+◄
+
+31
+
+►
+
+leg régebben, a kamera analóg jelének digitalizálásával nyerték a digitális képet. A digitalizálás során vetıdik fel a felbontás kérdése. A hagyományos képernyı méretaránya 4:3. Ha négyzet alakú képpontokat szeretnénk, a digitalizálás során az 576 sor 4/3-szorosára, vagyis 768-ra kell választani a soronkénti pontok számát. Elterjedt a 720 pontos választás is. Ennél nagyobb felbontásra a televízió nem képes. A korszerő monitoroknál szakítottak a váltottsoros letapogatással, minden felvillanáskor újrarajzolják a teljes képet. A szemünk kímélése érdekében megnövelték a képváltás frekvenciáját is, ma már 100 Hz fölötti az általános. A televíziós mősor vétele során az YUV színrendszerben vett jelet át kell alakítani a képernyı meghajtására szolgáló RGB alapszínekké. A hagyományos, katódsugárcsöves televíziók és monitorok fénye nem lineárisan változik a vezérlı feszültség függvényében. Az összefüggést exponenciális függvénnyel közelítik:
+L =Uγ
+
+Az irodalomban az együtthatóról (γ) gamma korrekciónak nevezik az eljárást. A lineáris változáshoz a meghajtó jelet úgy kell torzítani, hogy a hatványozás után legyen lineáris, vagyis (1/ γ) kitevıre kell emelni. A korrekciót monitorok vezérlése esetén a meghajtó kártyának kell elvégezni. A gamma értéke a gyakorlatban 2,2 és 2,8 közötti. A gamma növelése világosabb, kevésbé telített színekhez vezet. A γ csökkentése sötétebb, telítettebb színeket hoz létre. Nyomdai elıkészítı rendszereknél fontos, hogy a monitoron pontosan azt lássuk, amit a nyomtatás után kapunk, amit professzionális eszközökkel lehet teljesíteni. Az olvasó valószínőleg nem pontosan olyannak látja ezt a dokumentumot, mint a szerzı. A gamma korrekció elvégezhetı az RGB színtér mindhárom komponensére együtt, vagy egyenként eltérı is lehet.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+31
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+A képfelvétel és képmegjelenítés eszközei Vissza
+
+◄
+
+32
+
+►
+
+a b c d e f
+
+3.2. ábra. Gamma korrekció. a., eredeti kép, b., γ+ (RGB), c., γ- (RGB), d., γ- (R), e., γ+ (G), f., γ+ (B) 3.2. Képfelvevı eszközök A digitális képfelvevı eszközök az érzékelı áramkörök fizikai elhelyezkedése miatt a képsíkban diszkrét pozíciókban érzékelik a fényt. A mintavételezett képpontok számát általában technikai korlátok határozzák meg. Ha egy képet nagyítani akarunk, nincs az a felbontás, amely feleslegesen finom lenne. Ellentétben a hangokkal, ahol a hallható frekvenciatartomány korlátozza a sávszélességet, a képek részletgazdagságának nincs természetes korlátja. Az őrfelvételektıl az elektronmikroszkópig sok nagyságrenden át változó felbontással készíthetünk képet ugyanarról a pontról. Ha pl. egy pepita zakót helyesen akarunk ábrázolni, minél távolabbról vagy nagyobb látószöggel fényképezzük, annál nagyobb képfelbontásra van szükség. A fotóriporterek számára készített digitális fényképezıgépek képpont-
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+32
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+A képfelvétel és képmegjelenítés eszközei Vissza
+
+◄
+
+33
+
+►
+
+jainak száma tízmilliós nagyságrendő, egy színes képpontot három adat ír le. A képpontokat az angol picture element rövidítéseként pixel néven emlegetjük. (Egyesek már ezt is túl hosszúnak tartják, megjelent az irodalomban a pel elnevezés.) A katódsugárcsöves képfelvevı eszközök elektromágneses eltérítése túlságosan pontatlan volt a képen végzett mérésekhez. Nagy áttörést jelentett a CCD kamerák megjelenése, ahol a pontosságot a félvezetı eszközök elhelyezkedése határozta meg, ami nagyságrendi javulást okozott. Nem beszélve a kisebb méretrıl és energia felhasználásról, az öregedési jelenségek elmaradásáról, vagy az élettartam növekedésérıl. A CCD (Charge Coupled Device, töltéscsatolt eszköz) – talán meglepı módon – nem a képfelvétel új módjáról, hanem a jelek továbbítási eljárásáról kapta a nevét. Képzeljük el, hogy tüzet oltanak, vödrökkel. Ahelyett, hogy mindenki odaszaladna a kúttól a tőzhöz a tele vödörrel, láncba állnak és mindenki átönti a vizet a szomszéd vödrébe. Hasonló módon továbbítják a CCD áramkör elemei a töltéseket a kimenetre.
+
+3.3. ábra. A CCD áramkör töltéstovábbítása. Az RGB alapszínekre érzékeny cellák elhelyezkedésénél nem lehet szó nélkül elmenni azon sajátosság mellett, hogy a zöld cellákból rendszerint kétszer annyit találunk, mint vörös és kék társaikból (Bayer szőrı). Ismét a szemünk relatív érzékenységi görbéje bukkan fel.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+33
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+A képfelvétel és képmegjelenítés eszközei Vissza
+
+◄
+
+34
+
+►
+
+Az utóbbi idıben növekvı népszerőségnek örvend a CMOS képfelvevı áramkör. Tovább csökkenı fogyasztás mellett minden egyes képpontja külön címezhetı, akárcsak a memóriák.
+
+3.4. ábra. A CMOS képérzékelı felépítése. Az érzékelı cellák elhelyezkedhetnek egy vonalban, ilyen áramkörök mőködnek a szkennerekben. A fényképezıgépek és kamerák érzékelıi az ábrán látható mátrix alakzatba rendezıdnek.
+3.2.1. Képfelvétel az elektronikai gyártásellenırzésben
+
+A vizuális ellenırzést az elektronikai gyártásban az 1970-es és 80-as években manuálisan, emberi szemek végezték. A 90-es években fokozatosan vette át szerepüket az automatizált optikai ellenırzés (AOI, Automatic Optical Inspection). Az alkatrész sőrőség és a beültetési sebesség növekedése egyre nehezebbé tette a korábbi módszerek alkalmazását, ami a manuális ellenırzés hibaarányának növekedésében mutatkozott meg. Az automatizált optikai ellenırzés ugyanakkor a számítástechnikai háttér és a képfeldolgozás rohamos fejlıdésével egyre megbízhatóbbá és gyorsabbá vált. A felületszerelt technológia egyeduralkodóvá válásával szaporodtak az alkatrész alatt keletkezett, az optikai ellenırzéssel felderíthetetlen hibák. A megbízhatóság további fokozásának igénye hívta életre az automatikus röntgen ellenırzést (AXI, Automatic X-Ray Inspection). Optikai képfelvétel Az elektronikai szerelésben kialakított technológia lehetıvé teszi a képfelvétel kontrollált körülményeinek kialakítását. A külsı fény kizárása és a
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+34
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+A képfelvétel és képmegjelenítés eszközei Vissza
+
+◄
+
+35
+
+►
+
+megvilágítás gondos megtervezése és kialakítása állandó minıségő képalkotást garantál. A megvilágító fej feladata a vizsgált területrész homogén megvilágítása az elıírt szögben, a megfelelı színekkel. A 3.5. ábrán látható megvilágító fej fıbb jellemzıi:
+• hét LED győrő egymás fölött szegmentáltan, • szegmentált megvilágítás-vezérlés („égtájak szerint”), különbözı szögekben beállított LED-ek. A megfelelı színő megvilágítás alkalmazásával, az alkatrészbe gravírozott felíratok is vizsgálhatóvá válnak. A megfelelı megvilágítás beállítása próbálgatással lehetséges, a beállítást egy konfigurációs állományból olvassa ki a teszter az ellenırzés során. A megvilágítás iránya meghatározza a felderíthetı hibák típusát is.
+
+3.5. ábra. Megvilágító fej hét LED győrővel. A teszterekben és a beültetı gépekben különféle megvilágítási módokat alkalmaznak, ami különbözı szög alatti és különbözı színő megvilágításokat jelent. A fıbb megvilágítási módok:
+• direkt megvilágítás • indirekt, diffúz megvilágítás • szög alatti diffúz megvilágítás
+
+A közvetlen, vagy direkt megvilágítás alkalmazása esetén a fényterelı elem (plán parallel lemez vagy fémbevonatú üveglap néhány % reflexióval) középpontja az optika tengelyével esik egybe. A módszer elvi rajza és egy így kapott kép a 3.6. ábrán látható.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+35
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+A képfelvétel és képmegjelenítés eszközei Vissza
+
+◄
+
+36
+
+►
+
+3.6. ábra. A közvetlen megvilágítás. Az indirekt diffúz megvilágítás alkalmazása esetén a világítódiódák olyan szögben vannak az optikai egységbe helyezve, hogy annak törésmutatója a fénysugarakat a vizsgált terültre szórtan, merılegesen vetíti.
+
+3.7. ábra. Diffúz megvilágítás. A szög alatti diffúz képfelvételt elsısorban a forrasztott csatlakozások vizsgálatára alkalmazzák, 4 vagy 8 kamerával, tükrök segítségével, szög
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+36
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+A képfelvétel és képmegjelenítés eszközei Vissza
+
+◄
+
+37
+
+►
+
+alatti nézetbıl vizsgálja a forrasztást. A kamerák 4 kamerás rendszerben 90°-ra, míg 8 kamera esetén 45°-ban helyezkednek el egymástól.
+
+3.8. ábra. Szög alatti diffúz képfelvétel. 3D képalkotás a látható fény tartományában Egyes hibák nem deríthetık fel a kép x-y síkjában, szükség van a magasság ellenırzésére is pl. a forraszanyag vastagságának mérése céljából. A jól fókuszált ferde fénynyaláb a kamera nézıpontjából a kép síkjában eltolódik.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+37
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+A képfelvétel és képmegjelenítés eszközei Vissza
+
+◄
+
+38
+
+►
+
+Lézer Kép A fény síkja
+
+Forraszanyag Áramkör
+
+Lézer nyaláb D Forraszanyag
+
+H α
+
+Nyomtatott áramkör
+
+H = D * tan(a)
+3.9. ábra. Magasságmérés az optikai tartományban. [Agilent] Ennek az eljárásnak az a hátránya, hogy a kiértékelés sávonként történik, ezért nem áll rendelkezésre a tárgy magasságáról folyamatos információ, így a képalkotás is hosszadalmas. Az ilyen mérésbıl tulajdonképpen csak ugrásszerő, gyors változások érzékelhetık pontosan. Ez a mérési eljárás alkalmas a rétegvastagságok mérésére, de függıleges tengely mentén való elhelyezkedési hibák detektálására nem. A módszer továbbfejlesztett változatánál egy különleges optikai szőrı segítségével a nyomtatott lapra egyik irányban folyamatos, szinuszos intenzitás-eloszlású fényt vetítenek a kamera teljes látómezejére. Ezzel a mérés rendkívül gyorsan elvégezhetı, hiszen a szokásos kétdimenziós feldolgozáshoz szükséges megvilágítások után csupán egy újabb megvilágítási lépést kell beiktatni ahhoz, hogy a teljes képmezırıl a rá merıleges irányú méretekhez jussunk. Az így kapott képen bármely pontban meghatározható a magasság az alapszinthez tartozó és a pontban mért világosság eloszlás fázisából. A mérés tehát a teljes képmezıben folytonos magassági képet állít elı, melynek pontossága kizárólag a fázisdetektálás pontosságától függ. A nagyobb pontosság végett nem egy mérést, egy képet készítenek, hanem egymástól eltérı fázisokkal rendszerint négyet. Ez teszi lehetıvé, hogy a
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+38
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+A képfelvétel és képmegjelenítés eszközei Vissza
+
+◄
+
+39
+
+►
+
+mérést mindig a hullám maximuma környékén végezzék, így a mérés kevésbé függ az alkatrész reflexiós képességétıl és a megvilágító szinuszos jel hullámhosszától vagy más zavaró tényezıtıl. A folyamat még így is rendkívül gyors, egy 100×200 mm-es mezı teljes kiértékelése 10 m pontossággal 10-15 másodpercet igényel. Az 3.10. ábrán a rézfólián fekvı forraszanyagról készített háromdimenziós kép látható. A vastagság nem csak képszerően látszik, hiszen néhány tized milliméter különbség így nehezen fedezhetı fel, hanem a felület sötétebb illetve világosabb a vastagság függvényében.
+
+3.10. ábra. A forraszanyag vastagságát ábrázoló kép. [Molnár] Ez lehetıvé teszi, hogy a különbözı vastagságú felületeket automatikusan elkülöníthessük. Ez az árnyalat nem csak relatív vastagságot jelöl, hanem abszolút mértékegységben is kalibrálható. Számítással akár a térfogat is meghatározható, ami a felvitel minıségének legfontosabb mutatója. Ha a paszta elegendı, de nem túl vastag, a kemencében az alkatrészek könnyen „felúsznak”, a felületi feszültség szinte a helyükre viszi ıket. Ezzel a hibák száma jelentısen lecsökken, a kihozatal javul. Különösen fontos ez a mérés a BGA (Ball Grid Array, ónlabdás tokozás) és µBGA tokok beültetésénél, mert ezekben az esetekben a forrasztás után már csak igen drágán, AXI teszterrel kaphatunk információt a forrasztások minıségérıl.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+39
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+A képfelvétel és képmegjelenítés eszközei Vissza
+
+◄
+
+40
+
+►
+
+a b
+
+3.11. ábra. 2D (a.,) és 3D (b.,) ábra ugyanarról a felületrıl. A kétdimenziós kép csak a forraszanyag jelenlétét mutatja, a háromdimenziós az eloszlását is. [Agilent]
+
+Ezzel a megoldással természetesen nem csak a rétegvastagság ellenırizhetı, hanem az alkatrészek magassága és felületi illeszkedése is. Pontos, értékelhetı adatokat kaphatunk például, hogy az egyes alkatrészek menynyire párhuzamosan fekszenek a lapon. Elválaszthatók az azonos alapmérető, de különbözı magasságú alkatrészek, újabb adattal segítve az optikai ellenırzés hatásfokát. 3D képalkotás a röntgensugaras tartományban A röntgensugaras képfelvétel célja a háromdimenziós képalkotás, amely nem csak a felületi, hanem az alkatrészek alatti és a furatokon belüli viszonyok mérésére is alkalmas. A röntgensugaras megvilágítás mellett készített képsorozat – a kamera és a képfelvevı eszköz mozgatása révén – más-más pozícióból ábrázolja az átvilágított nyomtatott áramköri lemezt. Az így kapott képekbıl megalkotható a vizsgált terület 3D modellje. Ennek alapján az alkatrészek alatti forrasztások minısége is ellenırizhetı. Fontos jellemzı a furatkitöltés, a furatokba felszívódó forraszanyag magassága, amit más módszerrel nemigen lehet ellenırizni.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+40
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+A képfelvétel és képmegjelenítés eszközei Vissza
+
+◄
+
+41
+
+►
+
+3.12. ábra. Röntgensugaras 3D képalkotás.[Agilent] A röntgensugaras 3D tesztet a gyártási folyamat végsı fázisában célszerő végezni, kiegészítve a látható fény tartományában végzett optikai ellenırzést.
+
+3.13. ábra. Felvételek egy panelnek ugyanarról a területérıl. Az árnyékot vetı alkatrész egy másik szögbıl már nem zavaró. [Agilent]
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+41
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+42
+
+►
+
+4. Képfeldolgozási mőveletek
+Több szempont alapján osztályozhatjuk a képfeldolgozási mőveleteket. Egyik szokásos felosztás aszerint csoportosítja a mőveleteket, hogy a feldolgozás alatt álló pont milyen nagyságú környezete befolyásolja a pont új világosságát. (A példákban rendszerint szürke árnyalatos képekkel fogunk dolgozni és világosság transzformációról beszélünk. Színes képeknél általában háromszor kell elvégezni a mőveletet.)
+• Pont-pont mőveletek: Az adott képpont új világosságát csak ennek a pontnak az eredeti világossága befolyásolja. • Lokális mőveletek: Az adott képpont új világosságára a képpont megadott (pl.: 3*3 pixeles) környezetének van hatása. • Globális transzformációk: Az adott képpont új világossága a teljes képtıl függ.
+
+4.1. ábra. Mőveletek típusai a forráskép figyelembe vett környezete szerint.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+42
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+43
+
+►
+
+A mőveletek bonyolultsága, számításigénye eltérı a háromféle képfeldolgozási mőveletre. Az egyszerőség kedvéért a képet és a lokális mőveletek környezetét négyzet alakúnak tekintve a mőveletigényre vonatkozó, nem általános érvényő becslés:
+• A pont-pont transzformációk mőveletigénye N2-tel, a képpontok számával arányos. (N*N a kép mérete.) • A lokális mőveletek egy képpontra számítva P2 szorzást igényelnek, összességében N2*P2. (P*P a figyelembe vett környezet mérete.) • A globális transzformáció gyors algoritmust feltételezve kb. 4N2*log2N szorzást igényel.
+
+4.1. Pont-pont mőveletek A pont-pont mőveletek – mint láttuk – egy képpont új világosságát a többi képponttól függetlenül határozzák meg. Szokás ezeket a transzformációkat look-up-table (LUT) mőveleteknek is hívni. Az elnevezés arra a programozási trükkre utal, hogy gyorsabb az összes lehetséges – pl.: 256 – világosságszintre elıre elvégezni a mőveletet, az eredményeket egy táblázatba helyezve a transzformáció során csak a táblázatból kell kikeresni a kívánt értéket, mint minden egyes képpontra elvégezni az átszámítást. A pont-pont mőveletek egy része a kép világosság eloszlását változtatja meg. Ide soroljuk még tágabb értelemben a két azonos mérető kép adott pozíciójú pontjainak világosság értékeibıl aritmetikai vagy logikai mőveletekkel kialakított új kép megalkotását is.
+4.1.1. Hisztogram transzformációk
+
+A hisztogram a kép világosságának sőrőségfüggvénye. Értelmezési tartományát a kép világosság skálája képezi. Digitális képek esetében ez diszkrét, véges sokaságú szürke árnyalatot jelent, pl.: 8 bites ábrázolásnál 256 lehetséges értéket. A hisztogram felvételekor összeszámoljuk, hogy az egyes világosság szintekhez hány képpont tartozik, és a normálás érdekében elosztjuk a kép pontjainak számával. Így lesz a hisztogram integrálja a teljes tartományra egységnyi, ami a sőrőségfüggvény fontos tulajdonsága. Színes képeknél az egyes összetevık hisztogramját határozhatjuk meg.
+Hq = Nq N
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+43
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+44
+
+►
+
+4.2. ábra. Példa fekete-fehér kép hisztogramjára.
+
+4.3. ábra.. Példa színes kép hisztogramjára A hisztogram segítségével következtethetünk a képfelvétel beállításaira, illetve hibáira.
+• Ha a hisztogram a világosság tartománynak csak egy részét tölti ki, a kép kontrasztszegény, nem elég nagy a különbség a világos és sötét területek között. • Amennyiben a hisztogram a sötét tartományt foglalja el, a kép alulexponált. Ekkor a legsötétebb terület, a fekete gyakorisága kiugróan magas, mivel a legkisebb világosság érték több sötét árnyalatot képvisel. Ezek között azonban nem tudunk különbséget tenni.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+44
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+45
+
+►
+
+• Ha a hisztogram a világos tartományra esik, a kép túlexponált, a legvilágosabb felület gyakorisága lesz túlzott. Ekkor a túl világos területek árnyalatai között nem tudunk különbséget tenni. • Ha a legvilágosabb és legsötétebb területek gyakorisága egyaránt kiugróan magas, a kép dinamika tartománya meghaladja a képfelvevı eszköz dinamikáját.
+
+A fekete-fehér példáról megállapíthatjuk, hogy a világosság szempontjából az expozíció megfelelı.. A színes képen a vörös komponens dinamikatartománya meghaladja a fényképezıgép dinamikatartományát, mivel a vörös maximumánál túlexponálás mutatkozik, de a minimumot is lefedi. A kék összetevı enyhén alulexponált jellegő. Digitális fényképezıgépeken általában van lehetıség a kép hisztogramjának megjelenítésére. Ezzel ellenırizhetjük a beállítás helyességét utólag, egyes esetekben felvétel közben is. A hisztogram transzformációk során a kép világosság értékeit úgy módosítjuk, hogy a kép hisztogramja a kívánt formát vegye fel. Invertálás A kép negatívjának elıállításához a világos pontokat sötétre, a sötét területeket világosra kell változtatni. 8 bites számábrázolás esetén a mővelet:
+q = 256 − g ,
+
+ahol g az eredeti, q az új világosság.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+45
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+46
+
+►
+
+250
+
+200
+
+150
+
+100
+
+a b c d 4.4. ábra. Fekete-fehér kép (a.,) és negatívja (b.,) a transzformáció grafikus képével (c.,)
+50 0 0 50 100 150 200 250
+
+a b
+
+4.5. ábra. Színes kép (a.) és negatívja (b.,)
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+46
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+47
+
+►
+
+Hisztogram nyújtás Kontrasztszegény képeknél a hisztogram széthúzásával növelhetjük a kép dinamikatartományát. Az árnyalatok számát nem tudjuk bıvíteni, hiszen nem tudunk különbséget tenni a felvétel azonos világosság szintre került pontjai között. A hisztogram nyújtás után tehát egyes szürke árnyalatok nem fognak elıfordulni a képen. A hisztogram nyújtás paramétereit rendszerint manuálisan, a hisztogram alapján jelöljük ki. A kiválasztott világosság tartományt a rendelkezésre álló dinamikatartományra bıvítjük. A feldolgozás eredményeképpen kapott kép legvilágosabb (Qmax) és legsötétebb (Qmin) árnyalata, valamint az eredeti képen kijelölt legvilágosabb (Gmax) és legsötétebb (Gmin) világosságtartomány meghatároz egy szorzótényezıt. A szorzótényezıvel növelt világosságértékek minimumát a fekete szintre tolva kapjuk az eredeti világosság értékbıl (g) az új árnyalatokat (q):
+q= Q max − Q min (g − G min ) G max − G min
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+47
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+48
+
+►
+
+0.25
+
+0.2
+
+0.15
+
+0.1
+
+0.05
+
+0
+
+0
+
+20
+
+40
+
+60
+
+80
+
+100
+
+120
+
+140
+
+160
+
+180
+
+0.25
+
+0.2
+
+0.15
+
+0.1
+
+0.05
+
+0
+
+0
+
+50
+
+100
+
+150
+
+200
+
+250
+
+300
+
+250
+
+200
+
+150
+
+100
+
+50
+
+0
+
+0
+
+50
+
+100
+
+150
+
+200
+
+250
+
+4.6. ábra. Kontrasztszegény kép javítása és hisztogramjaik. A hisztogram nyújtás nem feltétlenül terjed ki a teljes képre. Ha a kép fontos részlete nem elég kontrasztos, a széthúzás érintheti csak ezt a világosságtartományt. A kép más területein is elıfordulhatnak ebbe a tartományba esı árnyalatok, a transzformáció ezeket is érinteni fogja. A megnyújtott tartomány hisztogramja „ráül” az eredeti hisztogramra.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+48
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+49
+
+►
+
+300
+
+250
+
+200
+
+150
+
+a b c d e
+
+100
+
+50
+
+0
+
+0
+
+50
+
+100
+
+150
+
+200
+
+250
+
+300
+
+4.7. ábra. Példa a hisztogram részleges nyújtására. a., eredeti kép, b., a sötét terület nyújtásával kapott kép c., az eredeti kép, d., a módosított kép hisztogramja e., a mővelethez tartozó look-up-table
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+49
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+50
+
+►
+
+Hisztogram kiegyenlítés A hisztogram nyújtás nevezetes pontjainak kijelölése nehezen automatizálható. Nem mondhatjuk pl.: hogy a kép legvilágosabb és legsötétebb pontjai közötti világosságtartományt kell bıvíteni, mert néhány világos és sötét pixel a tényleges dinamikatartománynál nagyobb világosság területet eredményez, ezáltal a nyújtás a szükségesnél kisebb mértékő lesz. Ha képeket akarunk összehasonlítani, vagy a felvétel beállításainak különbségét akarjuk kompenzálni, hasznos lehet minden kép hisztogramját azonos alakúra gyúrni. Kézenfekvı választás, hogy törekedjünk az egyenletes eloszlásra, vagyis a hisztogram legyen konstans. Ez csak közelítıleg fog sikerülni, hiszen – mint már volt szó róla – az egy világosságszintre került pontokat nem tudjuk elkülöníteni, ezeknek a feldolgozás után is azonos osztályba kell tartozni. A nagy sőrőségő tartományokat szét kell húzni. Itt úgy csökkentjük az átlagot, hogy lesznek üres szintek, a nagy értékek és a nullák átlaga kell, hogy a kívánt érték közelébe kerüljön. Az algoritmust egy példán keresztül követhetjük: Az egyszerő fejszámolás kedvéért képzeljük el, hogy a hisztogram kiegyenlítés után 32 világosság árnyalatot hozunk létre. Ekkor egyenletes eloszlás esetén a képpontok kb. 3%-a kerülne egy világosság osztályba. Vegyük a fekete (0 világosságú) pontokat. Ha nem érik el a 3%-ot, ugyanebbe a világosság osztályba soroljuk a következı árnyalatokat is, egészen addig, amíg a hisztogram összege el nem éri a 3%-ot. Ezután a következı világosságszinthez soroljuk a teljes hisztogram összeg 6%-áig terjedı pontokat, és így tovább. A kis sőrőségő pontok egy osztályba kerülnek, így közelítik a kívánt átlagot. Ha azonban pl. a fekete pontok aránya 10%, ez lefed több mint 3 osztályt, ezért a következı két szint kimarad. Így keletkeznek az üres szintek. A 4.8. ábrán vizuálisan követhetjük az eljárást: Hozzuk létre a kép világosság eloszlásfüggvényét! Ez a hisztogram integrálja (kumulatív összeg). Az eloszlásfüggvény 0-1 tartományát egyenletesen elosztva a kívánt számú szintre, a hozzájuk tartozó eredeti világosságértékekre visszavetíthetjük a határokat.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+50
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+51
+
+►
+
+1 0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1 0 0 50 100 150 200 250 300
+
+4.8. ábra. A hisztogram kiegyenlítés grafikus illusztrációja. A jobb követhetıség érdekében a forráskép 64 árnyalatot tartalmaz. A célkép 64 lehetséges világosságszintjébıl néhány kimarad.
+
+a b 4.9. ábra. Eredeti (a.,) és hisztogram kiegyenlítés utáni kép (b.,).
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+51
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+52
+
+►
+
+0.12
+
+0.1
+
+0.08
+
+0.06
+
+0.04
+
+0.02
+
+0 0 50 100 150 200 250 300
+
+a b
+
+4.10. ábra. Az elızı ábrán látható képek hisztogramjai. a., eredeti kép, b., kiegyenlítés utáni kép hisztogramja
+
+A hisztogram kiegyenlítés nem lineáris mővelet. Ez nem csak azt jelenti, hogy a feldolgozott kép nem tükrözi hően a valóságot, hanem azt is, hogy színes képeknél a komponensenként elvégzett mővelet színtorzuláshoz vezethet. Küszöbölés Képszegmentálási feladatoknál el kell választani az objektumot a háttértıl. Egyik lehetséges megoldás a világosság alapján elvégzett osztályozás. Egy alkalmas világosság küszöb alapján bináris képpé alakíthatjuk a szürke árnyalatos képet. A küszöb kijelölését segíti a hisztogram. Vizuálisan kijelölhetjük az alkalmas vágási szintet. Ennél pontosabb kijelölést tesz lehetıvé a hisztogram matematikai elemzése, amellyel pl. Bayes döntési algoritmussal minimalizálhatjuk a hibás osztályba került pontok számát. A 4.11. ábrán a kettıs küszöbérték módszer (Dual Threshold Method) néven emlegetett eljárás alkalmazását látjuk. A módszert az elektronikai szerelés optikai ellenırzésében pl. az alkatrész, a forrasztópaszta és a forrasztásgátló maszk elkülönítésére használják.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+52
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+53
+
+►
+
+0.04 0.035 0.03 0.025 0.02 0.015 0.01 0.005 0
+
+0
+
+50
+
+100
+
+150
+
+200
+
+250
+
+0.04
+
+0.035
+
+0.03
+
+0.025
+
+0.02
+
+0.015
+
+0.01
+
+0.005
+
+0
+
+0
+
+50
+
+100
+
+150
+
+200
+
+250
+
+0.04
+
+0.035
+
+0.03
+
+0.025
+
+0.02
+
+0.015
+
+a b c d e f
+
+0.01
+
+0.005
+
+0
+
+0
+
+50
+
+100
+
+150
+
+200
+
+250
+
+4.11. ábra. Szürke árnyalatos kép bináris képpé alakítása hisztogram küszöböléssel. Eredeti kép (a.,) és hisztogramja (b.,). A hisztogram elsı minimumával küszöbölt kép (c.,) és a küszöb helye (d.,). A hisztogram második minimumával küszöbölt kép (e.,) és a küszöb helye (f.,).
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+53
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+54
+
+►
+
+Hisztogram transzformáció függvény szerint A hisztogram nyújtás és küszöbölés szakaszonként lineáris, illetve lépcsıs függvénnyel írható le. Tetszıleges függvény leírhatja a transzformációt. A logaritmikus világosságérzékelésünk leképezésére használhatunk logaritmikus és exponenciális függvényeket. A gamma korrekció szintén exponenciális függvénnyel valósítható meg. Ne feledkezzünk meg itt sem arról, hogy a nemlineáris mőveletek színtorzuláshoz vezethetnek. Átszínezés A pont-pont mőveletet leíró look-up-table alkalmas arra is, hogy a világossághoz három változót rendeljen, minden szürke árnyalatot egy színre képezzen le. Így hozhatunk létre egy színpalettát, aminek a segítségével a korlátozott színválasztékot (általában 256-4096 közötti a paletta árnyalatainak száma) és a hozzá tartozó (8-12 bites) kódot megfeleltetjük.
+
+a b c d
+
+4.12. ábra. Hıkamera intenzitás képe különbözı színpalettákkal megjelenítve.a., szürkeárnyalatos kép, b., a hıkamera saját színskálájával c., a MATLAB cool és d., copper színpalettájával
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+54
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+55
+
+►
+
+Az intenzitásképek átszínezése után kapott színnek semmi köze a felület eredeti színéhez, tekinthetjük a mőveletet álszínezésnek is. Az ábrázolás értelme, hogy könnyebben felismerhetık az azonos intenzitású felületek és a különbségek nem csak világosságban, hanem színben is megnyilvánulnak.
+4.1.2. Aritmetikai és logikai mőveletek
+
+Az aritmetikai és logikai mőveleteknek lehet egy vagy több operandusa. Az egy operandussal dolgozó mőveletek a klasszikus look-up-table alapú hisztogram transzformációk. A 4.13. ábrán lineáris és logaritmikus skála szerint változó világosságú oszlopokat látunk. A lineáris a világosabb, a logaritmikus a sötétebb tartományban változik meredekebben.
+
+1 0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2
+
+1 0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1 0
+
+a b c d
+
+0.1 0
+
+0
+
+50
+
+100
+
+150
+
+200
+
+250
+
+0
+
+50
+
+100
+
+150
+
+200
+
+250
+
+4.13. ábra. Lineárisan (a.,) és logaritmikusan (b.,) változó világosságú oszlopok, a hozzájuk tartozó lineáris (c.,) és logaritmikus (d.,) skálával.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+55
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+56
+
+►
+
+Az egy operandussal rendelkezı logikai mőveletek tipikus példája a negáció, ami a bináris képek negatívját állítja elı.
+
+20
+
+20
+
+40
+
+40
+
+60
+
+60
+
+80
+
+80
+
+100
+
+100
+
+120 20 40 60 80 100 120
+
+120 20 40 60 80 100 120
+
+a b
+
+4.14. ábra. Bináris kép (a.,) és negáltja (b.,).
+
+Két azonos mérető árnyalatos képen elvégezhetık a szokványos számtani mőveletek. A kép manipulálása – pl. textúra ráültetése – válik lehetıvé ezekkel az átalakításokkal. A könnyen értelmezhetı mőveleteknek van elıre jól látható eredménye. Minden mővelet után el kell végezni a szintillesztést, hiszen a világosság tartomány – pl. a szorzásnál és osztásnál – drasztikusan megváltozhat.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+56
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+57
+
+►
+
+a b c d e f g h
+
+4.15. ábra. Aritmetikai mőveletek. a., elsı forráskép: i1, b., második forráskép: i2, c., i1+i2, d., i1*i2, e., i1-i2, f., i2-i1, g., i1/(i2+1)., h., i2/(i1+1)
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+57
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+58
+
+►
+
+A két operandusú logikai mőveletek a logikai és, vagy, kizáró vagy és társaik. Ha feltételezzük, hogy az egyik logikai állapot az objektumnak, a másik a háttérnek felel meg, a logikai függvények az objektumokkal végzett mőveleteket testesítik meg.
+
+20
+
+20
+
+40
+
+40
+
+60
+
+60
+
+80
+
+80
+
+100
+
+100
+
+120 20 40 60 80 100 120
+
+120 20 40 60 80 100 120
+
+20
+
+20
+
+40
+
+40
+
+60
+
+60
+
+80
+
+80
+
+100
+
+100
+
+120 20 40 60 80 100 120
+
+120 20 40 60 80 100 120
+
+20
+
+20
+
+40
+
+40
+
+60
+
+60
+
+80
+
+80
+
+100
+
+100
+
+120 20 40 60 80 100 120
+
+120 20 40 60 80 100 120
+
+a b c d e f
+
+4.16. ábra. Logikai mőveletek bináris képeken. a., i1, b., i2, c., i1ÉSi2, d., i1ÉS(NEMi2), e., i1VAGYi2, f., i1XVAGYi2.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+58
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+59
+
+►
+
+4.2. Lokális mőveletek A lokális mőveletek eredménye nem csak a képpont eredeti világosságától, hanem a szomszédos képpontoktól is függ. A képpont új világosságát a transzformációnál figyelembe vett környezet mérete és a kijelölt mővelet határozza meg. A lokális mőveletek közül a konvolúciót és a pontok világosságának sorrendjén alapuló rank szőrést – különös tekintettel a medián szőrésre – fogjuk tárgyalni.
+4.2.1. Konvolúción alapuló mőveletek
+
+Konvolúción a képpont és környezete világosságának súlyozott összegét értjük. A súlyozó együtthatókat a konvolúció operátora tartalmazza. Szigorúan véve a képpont környezetét tükrözni kellene, így kerülne párba az operátor és az operandus egy-egy eleme:
+q(k , l ) =
+
+r =− R s =−S
+
+∑ ∑ p (r , s) g (k − r , l − s) ,
+
+R
+
+S
+
+ahol p az operátor, g ill. q a képpont eredeti és új világossága. Az indexek megválasztása jelzi azt a gyakorlatot, hogy az operátor rendszerint páratlan számú sort és oszlopot tartalmaz, így van középsı eleme. A képpont környezetének tükrözése helyett tükrözhetjük az operátort is, ugyanazok az elemek fognak párba kerülni:
+q(k , l ) =
+
+r =−R s =−S
+
+∑ ∑ p ( − r ,− s ) g ( k + r , l + s )
+
+R
+
+S
+
+Vezessünk be egy új operátort! Legyen t a p vízszintes és függıleges tengelyre tükrözött változata!
+t ( r , s ) = p ( − r ,− s )
+
+Nem megy az általánosság rovására, ha ezt a tükrözött alakot tekintjük a konvolúció operátorának. Ezzel:
+q(k , l ) =
+
+r =− R s =−S
+
+∑ ∑ t (r , s) g (k + r , l + s )
+
+R
+
+S
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+59
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+60
+
+►
+
+Ez a kifejezés lehetıvé teszi a konvolúció szemléletes bemutatását: Veszszük a kép egy pontját (k-adik sor, l-edik oszlop). Eltoljuk az operátort úgy, hogy középsı eleme az adott pontot, az operátor a pont (2R+1)x(2S+1) pixeles környezetét fedje. Összeszorozzuk az operátor elemeit az alattuk lévı képpontok világosságával és összegezzük a szorzatokat. Ez lesz a képpont új világossága. Elvégezzük ezeket a mőveleteket az összes képpontra. ○ ○ . ○ . . .
+. .
+
+○ ○ ○ ○ ○ ○ ○ ● ○ ○ ○ ○
+
+⊗
+
+□ □ □ □ □ □ □ □ □
+
+○ ○ ○
+
+○ ○ ○
+
+○ ○ . ○ . . .
+
+.
+
+.
+
+○ ○ ○ ◙ ◙ ◙ ◙ ◘ ◙ ◙ ◙ ◙
+
+○ ○ ○
+
+○ ○ ○
+
+4.17. ábra. A konvolúció szemléltetése
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+60
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+61
+
+►
+
+Zajszőrés A képfelvétel során a homogén területek – különösen gyenge megvilágítás mellett – nem egészen azonos világosságú és színő képpontokat eredményeznek. Ezt úgy modellezhetjük, hogy a hibátlan képhez véletlen változó zaj adódik. A képjavítás egyik fontos feladata a zaj csökkentése. Ha egy képpont világosságához zaj adódik, világossága eltér a környezetétıl. Ezt a különbséget csökkenthetjük, ha a képpont világosságát környezete átlagával helyettesítjük. Az átlagolás alkalmas a zaj redukálására. A zajcsökkentı operátorok fontos tulajdonsága, hogy elemeinek összege egy. Ha nem így lenne, a kép átlagos világossága eltolódna. Példák 3x3 mérető zajszőrı operátorra:
+
+1 1 1 1 2 1  1  ; z = 1  2 4 2 z1 = 1 1 1 2  9 16  1 1 1 1 2 1     
+Egy 5x5 mérető zajszőrı operátor: 1 1 1  1 z3 = 25  1 1 
+1 1 1 1 1 1 1 1  1 1 1 1  1 1 1 1 1 1 1 1 
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+61
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+62
+
+►
+
+100
+
+100
+
+200
+
+200
+
+300
+
+300
+
+400
+
+400
+
+500
+
+500
+
+600
+
+100
+
+200
+
+300
+
+400
+
+500
+
+600
+
+700
+
+800
+
+600
+
+100
+
+200
+
+300
+
+400
+
+500
+
+600
+
+700
+
+800
+
+100
+
+100
+
+200
+
+200
+
+300
+
+300
+
+400
+
+400
+
+a b c d
+
+500
+
+500
+
+600
+
+100
+
+200
+
+300
+
+400
+
+500
+
+600
+
+700
+
+800
+
+600
+
+100
+
+200
+
+300
+
+400
+
+500
+
+600
+
+700
+
+800
+
+4.18. ábra. Zajszőrés átlagolással a., eredeti zajos kép, b., i⊗z1 c., i⊗z2, d., i⊗z3 Az átlagolás csökkenti az eltérést a környezet világosságától, de a kiugró folt területe nı. A szétterülı folt mérete megegyezik az operátor méretével. Teljesen homogén környezetben az azonos együtthatójú operátorok (pl. z1, z3) a kiugró világosságú pontot homogén folttá terjesztik szét. Ha az operátor súlyozó együtthatói eltérıek, ez megjelenik a folt intenzitás különbségében is.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+62
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+63
+
+►
+
+165
+
+165
+
+170
+
+170
+
+175
+
+175
+
+180
+
+180
+
+185 120 122 124 126 128 130 132 134 136
+
+185 120 122 124 126 128 130 132 134 136
+
+165
+
+165
+
+170
+
+170
+
+175
+
+175
+
+180
+
+180
+
+a b c d
+
+185 120 122 124 126 128 130 132 134 136
+
+185 120 122 124 126 128 130 132 134 136
+
+4.19. ábra. A környezettıl eltérı világosságú pont „elkenıdése” a zajszőrés hatására a., erdeti kép (i), b., i⊗z1, c., i⊗z2, d., i⊗z3 Az átlagolás akkor is megtörténik, ha nem szeretnénk, így a zajszőrés tompítja az élek meredekségét. Minél erısebb a zajszőrés, annál jobban érvényesül a meredekség csökkenés, lágyabb lesz a kép. A 4.20. ábrán kinagyítva látjuk a 4.18. ábra részletét. Ezen lemérhetjük a zajszőrés hatását és mellékhatását egyaránt.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+63
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+64
+
+►
+
+10
+
+10
+
+20
+
+20
+
+30
+
+30
+
+40
+
+40
+
+50
+
+50
+
+60 10 20 30 40 50 60 70 80
+
+60 10 20 30 40 50 60 70 80
+
+10
+
+10
+
+20
+
+20
+
+30
+
+30
+
+40
+
+40
+
+50
+
+50
+
+60 10 20 30 40 50 60 70 80
+
+60 10 20 30 40 50 60 70 80
+
+a b c d
+
+4.20. ábra. Az élek tompulása az átlagolás „mellékhatása” a., eredeti kép (i), b., i⊗z3 c., i⊗z2, d., i⊗z3
+300
+
+250
+
+200
+
+150
+
+100
+
+50
+
+0 0 5 10 15 20 25
+
+4.21. ábra. Egy lehetséges világosság profil (---), az átlagolás tompítja az éleket (---),
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+64
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+65
+
+►
+
+Élkiemelés, élesítés Képfeldolgozási feladatoknál hasznos lehet az objektumok határvonalának kijelölése (edge detection). Akkor tudjuk az objektumot a háttértıl elválasztani, ha világossága (színe, textúrája) eltérı. Ott keresünk éleket, ahol világos és sötét területek érintkeznek. Az élek keresése élkiemelést, és az élkijelölést jelenti. Élesítésrıl (sharpening) akkor beszélünk, ha hangsúlyosabbá akarjuk tenni az éleket, keményebbé akarjuk tenni a képet. A különbségképzés alkalmas az élkiemelésre, hiszen homogén foltoknál nulla, és annál nagyobb, minél nagyobb a világosságok közötti különbség. A vízszintes és függıleges irányú változásokat parciális differencia képzésével emelhetjük ki. Függıleges éleknél például vízszintes irányban tapasztalunk világosság változást. d (k , l ) =
+∆g ∆x = g (k , l + 1) − g (k , l )
+k ,l
+
+0.6 0.8 1 1.2 1.4 2
+1 0.5 0 2 1 0 -1 2 1 4 6 8 10 12 14 16 18 4 6 8 10 12 14 16 18
+
+4
+
+6
+
+8
+
+10
+
+12
+
+14
+
+16
+
+18
+
+0
+
+-1 2 4 6 8 10 12 14 16 18
+
+4.22. ábra. Függıleges élek és a vízszintes irányú parciális differencia. Vízszintesen 20 pixelbıl álló képrészlet (a.,), világosság változás (b.,---), elsı differencia (b.,---), második differencia (b.,---)
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+65
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+66
+
+►
+
+Amint az ábrán látható, a különbség lehet pozitív és negatív, aszerint, hogy balról jobbra haladva nı vagy csökken a világosság. A pozitív és negatív elıjelő differencia egyesítésére két megoldás alakult ki:
+• A második differencia mindkét irányú változásnál egyaránt ad pozitív és negatív eredményeket. (Laplace operátorok) • A vízszintes és függıleges irányú differenciából meghatározható a gradiens nagysága és iránya. (Roberts, Prewitt, Sobel operátorok)
+
+A Laplace operátorok Figyeljük meg a 4.22. ábrán, hogy a differencia az él bal oldalán lesz nagy abszolút értékő. Az él valójában az (l+1)-edik és az l-edik minta között található, de ott a digitális kép nincs értelmezve. Az élt képviselı különbséget az élnek vagy a baloldali, vagy a jobboldali szomszédjához tudjuk rendelni. Az elsı differencia tehát az élt eltolja fél pixellel balra.
+
+Ha a második differenciát ugyanígy értelmeznénk, az él újabb fél pixellel balra tolódna, ami az él egy pixeles eltolódásához vezetne. A második differencia értelmezésénél ezért a különbséget a jobboldali szomszédhoz rendeljük: dd (k , l ) = −
+∆d ∆x = d (k , l − 1) − d (k , l ) =
+k ,l
+
+g (k , l ) − g (k , l − 1) − [g (k , l + 1) − g (k , l )] =
+− g (k , l − 1) + 2 g (k , l ) − g (k , l + 1)
+
+A vízszintes irányú második differenciát az együtthatók alapján az lh = [− 1 2 − 1] operátorral végzett konvolúció eredményeképpen kapjuk. A függıleges irányú második differenciát az
+
+− 1 lv =  2    − 1  
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+66
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+67
+
+►
+
+operátor képviseli. A vízszintes és függıleges él együttes megjelenítésére a két operátor összege alkalmas:
+
+ 0 −1 0  l4 = − 1 4 − 1    0 −1 0   
+Mivel a ferde éleknek is van vízszintes és függıleges összetevıje, az l4 operátor a ferde éleket is jelzi. Átló irányú különbségekkel finomíthatjuk az operátor irányérzékenységét:
+
+− 1 − 1 − 1 l8 = − 1 8 − 1   − 1 − 1 − 1  
+Az lh, lv, l4, l8 operátorokat Laplace operátoroknak nevezzük. Felmerül a kérdés, hogy a Laplace operátorokkal végzett konvolúció eredményét hogyan ábrázoljuk. A homogén foltok helyén nullákat (kis értékeket), az éleknél nagy pozitív vagy negatív számokat kapunk. Ha a legnagyobb értéket a fehérnek, a legkisebbet a feketének feleltetjük meg (bipoláris ábrázolás), a homogén foltok középszürkék lesznek. Ez az ábrázolás az objektumokat sötét és világos vonallal is körberajzolja (4.23. b., ábra.). A következıkben tárgyalandó élkiemelési módszereknél abszolút értéket kapunk. Ekkor a homogén foltok feketék, az élek fehérek lesznek. Ehhez az ábrázoláshoz hasonlít a Laplace operátorral végzett élkiemelés unipoláris ábrázolása: A nulla szintet feleltetjük meg a feketének, ennél feketébb a negatív értékő pont sem lehet, ezért csak a világos körvonalakat fogjuk látni. 4.23. c., ábra.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+67
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+68
+
+►
+
+a b c
+
+4.23. ábra. A Laplace operátor eredményének ábrázolási lehetıségei a., eredeti kép, b., bipoláris, c., unipoláris él megjelenítés
+
+Vizsgáljuk meg a 4.24. ábrán a világosság változását! Az él meredekségét növelhetjük, ha az eredeti világossághoz hozzáadjuk az élkiemelés eredményének egy részét.
+300
+
+250
+
+200
+
+150
+
+100
+
+50
+
+0
+
+-50
+
+0
+
+5
+
+10
+
+15
+
+20
+
+25
+
+4.24. ábra. Egy lehetséges világosság profil (---), az élkiemelés eredménye (---), ezek összege (---) meredekebb éleket eredményez A Laplace operátor definíciójából következik, hogy az elsı differencia dinamikatartománya a kép dinamikatartományának kétszerese lehet, a második differenciáé négyszerese. Ha a képhez az éleket hozzáadnánk, igen durva éleket kapnánk, ezért az éleket skálázva keményebbé tehetjük a képet. A kép másolására alkalmas az identikus operátor:
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+68
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+69
+
+►
+
+0 0 0  id = 0 1 0   0 0 0   
+Ez nem tesz mást, mint minden képpontot – hosszas számítással – önmagával helyettesít. Mérete azért 3x3, hogy megegyezzen a Laplace operátor méretével. Az önmagában értelmetlen identikus operátor arra jó, hogy egy másik operátorral összeadva, az eredményhez hozzáadja az eredeti képet. Pl.:
+
+ 0 −1 0  id + h4 = − 1 5 − 1    0 −1 0   
+operátor az élekhez egy mővelettel hozzáadja az eredeti képet. Az id+kh4 operátor k skálatényezıje alkalmas a kép élesítésének hangolására. A 4.25. ábrán. k = 1 / 16 , 1 / 8 és 1 / 4 .
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+69
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+70
+
+►
+
+a b c d
+
+4.25. ábra. Kép élesítése különbözı tényezıkkel: a., eredeti kép: id, b., id+l4/16, c., id+l4/8, d., id+l4/4
+
+Gradiens számításon alapuló élkiemelés A gradiens számításon alapuló élkiemelési módszerek közös jellemzıje, hogy két, egymásra merıleges irányban számol gradienst, mindkettınek megvan a saját operátora. A kétirányú gradiensbıl szokványos módon határozható meg a gradiens nagysága és iránya. A Roberts operátorok az átlók irányában képeznek különbségeket. − 1 0 0 − 1 r1 =   ; r2 = 1 0  ;    0 1
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+70
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+71
+
+►
+
+R1 = i ⊗ r1 ; R2 = i ⊗ r2
+2 Gr = R12 + R2 ; Φ = arctg
+
+R1 R2
+
+A kijelölt mőveletek nem mátrixszorzást és osztást, hanem elemenként végzett számításokat jelentenek. Mivel a Roberts operátor átlós különbsé) bezárt szögét geket számol, a Φ szög a gradiens 45 fokos iránnyal ( jelenti.
+
+a b c d
+
+4.26. ábra. Élkiemelés Roberts operátorral. a., eredeti kép, b., a gradiens nagysága, c., a gradiens iránya, d., vonalvastagság
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+71
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+72
+
+►
+
+A gradiens iránya grafikusan nehezen értékelhetı. Az ábrázolás a -90 foknak a feketét, a 90 foknak a fehéret felelteti meg. A Roberts operátor azon kivételek közé tartozik, amelyeknél az operátor páros számú sort és páros számú oszlopot tartalmaz. A Prewitt operátor 3x3 mérető, van középsı eleme, amelyhez a különbséget rendeljük.
+
+− 1 − 1 − 1 p1 =  0 0 0  ;   1 1 1  
+
+− 1 0 1 p2 = − 1 0 1 ;   − 1 0 1  
+
+P = i ⊗ p1 ; P2 = i ⊗ p2 1
+Gr = P 2 + P22 ; Φ = arctg 1 P 1 P2
+
+A Prewitt operátorral végzett élkiemelés jellemzıi:
+• Vízszintes és függıleges különbségeket képez, a Φ szög a 0 fokos irányhoz( )viszonyítva értendı. • A középsı, nullával kitöltött sor illetve oszlop miatt az élek két pixel vastagságúak lesznek. Ha pl. egy függıleges él mentén ugrásszerően változik a világosság, ugyanazt az eredményt kapjuk a határnak akár a világos, akár a sötét oldalát fedi a csupa 0 oszlop. •
+-1 -1 -1 0 0 0 1 1 1 -1 -1 -1 0 0 0 1 1 1
+
+• A három 1, illetve -1 együtthatóval lefedett foltra átlagolást végez az operátor. Valójában tehát két, egyenként hárompixeles folt átlagvilágosságának különbségét kapjuk.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+72
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+73
+
+►
+
+a b
+
+4.27. ábra. A Prewitt operátorral végzett élkiemelés eredménye: a., a gradiens nagysága, b., vonalvastagság
+
+A Sobel operátor abban különbözik a Prewitt operátortól, hogy az elemzés alatt álló pont sorát illetve oszlopát kétszeres súllyal veszi figyelembe.
+
+− 1 − 2 − 1  − 1 0 1 0  ; s = − 2 0 2 ; 0 0 s1 =  2   1   − 1 0 1 2 1   
+
+S1 = i ⊗ s1 ; S2 = i ⊗ s2
+2 Gr = S12 + S 2 ; Φ = arctg
+
+S1 S2
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+73
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+74
+
+►
+
+a b
+
+4.28. ábra. Prewitt és Sobel operátorral végzett élkiemelés összehasonlítása. a., Prewitt, b., Sobel
+
+A képfeldolgozási mőveleteket nagy felbontású képeknél több millió pontra kell elvégezni, ezért nagy jelentısége van a számítást gyorsító egyszerősítéseknek. A gradiens nagyságát a négyzetösszegek négyzetgyöke helyett szokás az abszolút értékek összegével közelíteni. A kifejezést a Sobel operátorral kapott eredményre írjuk fel, de használható a Roberts és a Prewitt élkiemelés alkalmazásakor is.
+
+Gr ≅ S1 + S2
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+74
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+75
+
+►
+
+4.29. ábra. Élkiemelés a definíció szerinti (a.,) és a közelítı gradiens számítással (b.,). A két eredmény nem egyezik meg, de alig látszik különbség, elfogadhatónak tőnik a közelítı eredmény is. Rossz minıségő (zajos) képeknél az élesítés alkalmazása kifejezetten ellenjavallt, mert felerısíti a hibákat. A só és bors (salt and pepper) jellegő zajokra az élkiemelés akkurátusan körberajzolja a hibákat.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+75
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+76
+
+►
+
+a b c d
+
+4.30. ábra. Só és bors zajjal terhelt kép élkiemelése. a., eredeto kép, b., Prewitt operátorral végzett élkiemelés eredménye, c., eredeti kép részlete, d., élkiemelt kép ugyanazon részlete
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+76
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+77
+
+►
+
+Gyenge minıségő képek esetében is szükség lehet az élek kijelölésére. Ilyenkor célszerő a zajelnyomást és az élkiemelést egyesíteni. Ha a Prewitt operátor átlagoló területét megnöveljük, erısíthetjük a zajcsökkentı funkciót. − 1 − 1  − 1  p7 a = − 1 − 1  − 1 − 1 
+−1 −1 −1 −1 −1 −1 −1 −1 −1 −1 −1 −1 −1 −1
+0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1  1  1 1  1 1 
+
+− 1 − 1 − 1 − 1 − 1 − 1 − 1 − 1 − 1 − 1 − 1 − 1 − 1 − 1   − 1 − 1 − 1 − 1 − 1 − 1 − 1   p7b =  0 0 0 0 0 0 0 1 1 1 1 1 1 1   1 1 1 1 1 1 1 1 1 1 1 1 1 1  
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+77
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+78
+
+►
+
+a b c d
+
+4.31. ábra. Zajos kép élkiemelése a zajszőrés erısítésével a., zajos eredeti kép, b., Roberts, c., Prewitt, d., átlagoló Prewitt operátorral.
+
+Az elıbbiekben felsorolt operátorok egy adott irányba esı gradienst számolják. Ha elég finoman letapogatjuk az irány-gradienseket, kicsi lesz a különbség a gradiens valódi iránya és a legközelebbi irány-gradiens szöge között. Ha pl. 45 fokonként meghatározzuk a gradienst, 22,5 foknál nagyobb eltérés nem fordulhat elı. A Robinson operátorok nyolc irányban számolnak gradienst. Egy pontban a nyolc irány-gradiens maximumát tekintjük a gradiens nagyságának, a maximumhoz tartozó szöget a gradi-
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+78
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+79
+
+►
+
+ens irányának. A Robinson operátorok a Sobel operátor forgatásával keletkeznek.
+
+1 n1 =  2  1  0 n2 =  1  2 
+
+0 0 0
+
+− 1 −1  ; n = − 2 − 2 4  −1 − 1  
+
+0 0 0 1 0 −1
+
+1  2  1   2 1  0  1 0  − 1 
+
+− 1 − 2 0 0 − 1 ; n5 =  − 1    − 2 1 0 
+
+−1 − 2 n3 =  0 0  1 2  − 2 n4 =  − 1  0 
+
+− 1 2 1 ; n = 0 0 0 6  −1 − 2 1  
+
+−1
+
+0 1
+
+0 2 ; n =  1 1 7  0 2  
+
+0 0 − 1  − 1 − 2  1
+
+A számításigény szempontjából nem közömbös, hogy a Laplace élkiemelés egy operátora, illetve a gradiens abszolút értékét és fázisát meghatározó élkiemelések két operátora helyett nyolc operátorral kell számolni. Ha észrevesszük, hogy az egy sorban lévı Robinson maszkok egymásnak mínusz egyszeresei, akkor is marad négy. Arról sem feledkezzünk meg, hogy a maximumkeresés sem megy gyorsan sok-sok képpontra. A megoldás gyakorlati haszna megkérdıjelezhetı.
+4.2.2. A konvolúció néhány tulajdonsága
+
+A konvolúció végrehajtása során felmerül a kérdés, hogy mit tegyünk a kép szélein elhelyezkedı képpontokkal. Azokra a képpontokra ugyanis, amelyek a kép széleitıl mért R soros illetve S oszlopos sávba esnek, az operátor egy része a képen kívülre esik. Három lehetıség közül választhatunk:
+• csak az érvényes területtel számolunk Hátránya: A kép 2R sorral és 2S oszloppal kisebb mérető lesz, mintegy körbe nyírjuk a képet.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+79
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+80
+
+►
+
+• kiegészítjük a képet nullákkal Hátránya: Zajszőréskor a világos képszél sötétedik. Élkereséskor a kép szélén világos helyeken élt kapunk. • tükrözzük a kép széleit úgy, hogy a megnövelt kép érvényes területe éppen az eredeti kép méretével egyezzen meg
+
+A kép bal és jobb oldalán egy-egy S oszlopos függıleges sávot és a kép alján és tetején egy-egy R soros csíkot tengelyesen tükrözünk a kép szélsı oszlopára, illetve sorára. A kép négy sarkának RxS mérető területeit középpontosan tükrözzük a kép sarkain lévı képpontra. Ezzel „sima” átmenetet képezünk a kép szélein és elkerüljük az elızı megoldásoknál fellépı hibákat.
+
+5
+
+5
+
+10
+
+10
+
+15
+
+15
+
+20
+
+20
+
+25
+
+25
+
+30
+
+30
+
+5
+
+10
+
+15
+
+20
+
+25
+
+30
+
+5
+
+10
+
+15
+
+20
+
+25
+
+30
+
+4.32. ábra. A kép széleit nullákkal kiegészítve zajszőrés után a világos terület a kép szélén sötétedik. a b a., eredeti kép, b., 5x5 mérető (z3) átlagoló operátor eredménye
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+80
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+81
+
+►
+
+5
+
+5
+
+10
+
+10
+
+15
+
+15
+
+20
+
+20
+
+25
+
+25
+
+30
+
+30
+
+5
+
+10
+
+15
+
+20
+
+25
+
+30
+
+5
+
+10
+
+15
+
+20
+
+25
+
+30
+
+4.33. ábra. A kép széleit nullákkal kiegészítve élkiemelés után a világos terület széle hamis élként jelenik meg. a b a., eredeti kép, b., élkiemelés l8 Laplace operátorral
+
+4.34. ábra. A kép széleinek tükrözése konvolúcióhoz: Tükrözéssel körben 20-20 pixellel megnövelt kép (a szemléltetés kedvéért az eredeti kép sötétebb).
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+81
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+82
+
+►
+
+5
+
+5
+
+10
+
+10
+
+15
+
+15
+
+20
+
+20
+
+25
+
+25
+
+30
+
+30
+
+5
+
+10
+
+15
+
+20
+
+25
+
+30
+
+5
+
+10
+
+15
+
+20
+
+25
+
+30
+
+a b
+
+4.35. ábra. A tükrözéssel végzett konvolúció eredménye a 4.33. ábra példáira a., átlagolás, b., élkiemelés
+
+A konvolúció számításának egyszerősítésére felhasználhatjuk a mővelet matematikai jellemzıit pl. asszociativitását, linearitását. A konvolúció aszszociatív mővelet:
+A ⊗ ( B ⊗ C ) = ( A ⊗ B) ⊗ C
+
+Vagyis, ha A és B operátorok, C a kép, akkor a B operátorral végzett konvolúció eredményére alkalmazott A operátor egyenértékő a két operátor konvolúciójával elvégzett egyetlen konvolúcióval. Pl.: Ha kétszer egymásután alkalmazzuk a 3x3 mérető átlagoló szőrıt, az eredmény megkapható egy 5x5 mérető szőrı használatával: 1 2 1 1 1 1 1  z1 = 1 1 1 ; z1 ⊗ z1 = 3  9 81  1 1 1   2 1 
+2 3 2 1 4 6 4 2  6 9 6 3  4 6 4 2 2 3 2 1 
+
+A konvolúció lineáris mővelet, érvényes rá a szuperpozíció elve.
+A ⊗ C + B ⊗ C = ( A + B) ⊗ C
+
+Vagyis, ha a két operátorral végzett mővelet eredményét összeadjuk, az operátorok összegével végzett konvolúciót kapjuk. Pl.: Az lh és lv Laplace operátorok eredményeinek összege megegyezik az l4 operátorral végzett mővelet eredményével.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+82
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+83
+
+►
+
+Érdemes átgondolni a mőveleti idıket. Két nxn mérető mátrix konvolúciója (2n-1)x(2n-1) mérető lesz, pl. két 3x3 mérető operátorból 5x5 mérető keletkezik. Mivel a konvolúció komplexitása az operátor elemeinek számával arányos ebben az esetben 2*9*N2 szorzás áll szemben a 25*N2 szorzással. A másik egyesítési példánkban az operátorok összegzésével 2*3*N2 mőveletet kell összevetni 9*N2 mővelettel. (Az egydimenziós operátoroknál ráadásul tovább gyorsítható az algoritmus a gördülı összegzés kihasználásával.) Ezek az esetek azt mutatják, hogy az operátorok integrálása a végrehajtási idı növekedéséhez vezet. Az operátorok integrálása helyett tehát inkább a dekompozícióval, a nagyobb mérető operátorok kisebb mérető operátorokra bontásával érdemes próbálkozni.
+4.2.3. Sorrendi szőrések
+
+A sorrendi szőrések (rank) a lokális transzformációk speciális változatát képviselik. A konvolúciótól eltérıen nem lineáris mőveletek. Sorrendi szőréskor a feldolgozás alatt álló képpont megadott (pl. 3x3 pixeles) környezetének világosságait nagyság szerint sorba rendezzük, a képpont új világossága a rangsor adott pozíciójában található érték lesz. Ha a rangsor középsı elemét választjuk, medián szőrésrıl beszélünk. A medián szőrés a kis kiterjedéső, nagyon elütı világosságú (salt and pepper, só és bors) zajok csökkentésének igen hatékony eszköze. Figyelemre méltó, hogy a zajszőrés nem jár az élek meredekségének csökkenésével, nem válik homályossá a kép. Egy PxP mérető szőrés a (P2-1)/2 pixelnél kevesebb képpontból álló foltokat képes a környezetébe olvasztani.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+83
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+84
+
+►
+
+100 200 300 400 500 600 700 800 100 200 300 400 500 600
+
+100 200 300 400 500 600 700 800 100 200 300 400 500 600
+
+a b 4.36. ábra. Impulzusszerő hibák javítása medián szőréssel. a., eredeti kép, b., medián szőrés után kapott kép Emlékezzünk vissza, hogy az átlagoló szőrés „elkente” a hibákat és homályossá tette a képet. A Gauss eloszlású zajra viszont a medián szőrés nem hatékony. A rangsorból választhatjuk a minimumot és a maximumot is. A minimum a sötét területeket növeli (a világosokat csökkenti). A maximum a világos területeket növeli (a sötéteket csökkenti).
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+84
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+85
+
+►
+
+20
+
+20
+
+40
+
+40
+
+60
+
+60
+
+80
+
+80
+
+100
+
+100
+
+120 20 40 60 80 100 120
+
+120 20 40 60 80 100 120
+
+20
+
+20
+
+40
+
+40
+
+60
+
+60
+
+80
+
+80
+
+100
+
+100
+
+a b c d
+
+120 20 40 60 80 100 120
+
+120 20 40 60 80 100 120
+
+4.37. ábra. Sorrendi maximum szőrés bináris (a., b.,) és árnyalatos képekre (c., d.,). a., c., eredeti kép, b., d., a rank szőrés eredménye
+
+20
+
+20
+
+40
+
+40
+
+60
+
+60
+
+80
+
+80
+
+100
+
+100
+
+120
+
+120 20 40 60 80 100 120 20 40 60 80 100 120
+
+a b
+
+4.38. ábra. Sorrendi minimum szőrés az elıbbi bináris és árnyalatos képekre. a., bináris, b., árnyalatos képekre
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+85
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+86
+
+►
+
+4.3. Mőveletek a síkfrekvencia tartományban Az eddigi mőveleteket a képsíkban, a látható képpontokon végeztük. A globális mőveletek a síkfüggvények tartományában a komponensek amplitúdóját illetve fázisát módosítják, ennek hatására változik meg a kép. A globális mőveletek lépései:
+• Meghatározzuk a kép Fourier transzformáltját. • A Fourier transzformált szőrésével egyes komponenseket erısítünk, illetve csillapítunk. • Inverz Fourier transzformációval elıállítjuk a módosított képet.
+
+Az idıfüggvényekre ismert a Fourier integrál
+F ( w) =
+∞
+
+−∞
+
+∫ f (t )e
+∞
+
+− j ωt
+
+dt ,
+
+és az inverz Fourier integrál:
+f (t ) = 1 2π
+
+−∞
+
+∫ F (ω )e
+
+jωt
+
+dω .
+
+Ezek diszkrét idejő változata (DFT):
+A(n) = ∑ a (k )e
+k =0 N −1
+
+− jkn
+
+2π N
+
+,
+
+és (IDFT)
+a(k ) = 1 N
+
+∑ A(n)e
+n=0
+
+N −1
+
+jkn
+
+2π N
+
+.
+
+Néhány megjegyzés a kifejezések értelmezéséhez:
+• A transzformáció az idıtartománybeli N darab a(k) valós mintához a frekvencia tartományban N darab A(n) komplex számot rendel. Ez N/2 független komplex számot, vagyis N független adatot jelent, hiszen A(n)=A(N-n)* (*=komplex konjugált), amirıl meggyızıdhetünk, ha a DFT egyenletébe n helyére (N-n)-t helyettesítünk. • Mindkét tartományban N minta szerint periodikus jelet kapunk, hiszen A(n)=A(n+N) és a(n)=a(n+N). Tehát a transzformált idıintervallu-
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+86
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+87
+
+►
+
+mon kívül nem nullát kapunk, hanem az idıfüggvény ismétlıdését, periodikus folytatását. Ugyanez igaz a frekvenciatartományban, ahol a Fourier transzformált 2π / T periódus körfrekvenciával ismétlıdik (T a mintavételi idı). • Az utóbbi tulajdonság következménye a kétdimenziós esetre, hogy a kép jobb szélének periodikus folytatása a kép bal oldalához csatlakozik, és fordítva. Hasonlóan, a kép alja és teteje kerülnek egymás mellé. Nem az a baj, hogy a kép területén kívül nem nullát kapunk, hiszen úgysem helyettesítjük be csak a képen belüli értékeket. Akkor merül fel probléma, amikor a kép egymás mellé került széleinél világosság ugrás lép fel. Ez a Fourier transzformáltban idegen, a képhez nem tartozó spektrális komponensek megjelenéséhez vezet, ami a szőrés után torzítást okozhat. • A diszkrét Fourier transzformáció kifejezéseibıl látható, hogy nincs szükség IDFT algoritmusra. Ha a DFT elvégzése után vesszük az eredmény komplex konjugáltját és elosztjuk a minták számával, megkapjuk az IDFT-t. Az idıfüggvény spektruma harmonikus (szinuszos, koszinuszos) függvények sokaságát tartalmazza.
+
+1 0 -1 1 0 -1 1 0 -1 1 0 -1 50 100 150 200 250 300 350 400 450 500 50 100 150 200 250 300 350 400 450 500
+
+50
+
+100
+
+150
+
+200
+
+250
+
+300
+
+350
+
+400
+
+450
+
+500
+
+50
+
+100
+
+150
+
+200
+
+250
+
+300
+
+350
+
+400
+
+450
+
+500
+
+4.39. ábra. A Fourier sor néhány összetevıje.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+87
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+88
+
+►
+
+A Fourier transzformáció értelemszerően kiterjeszthetı kétdimenziós (2D) függvényekre (csak a diszkrét változatot írjuk fel):
+G (m, n) =
+M −1 N −1 k =0 l =0
+
+∑∑ g (k , l )e
+M −1 N −1 m =0 n =0
+
+− jkm
+
+2π M
+
+e
+
+− j ln
+
+2π N
+
+1 g (k , l ) = MN
+
+∑∑ G(m, n)e
+
+jkm
+
+2π M
+
+e
+
+j ln
+
+2π N
+
+Ha az összegzés sorrendjét megváltoztatjuk
+G (m, n) = 1 g (k , l ) = M
+M −1 N −1 2π − j ln   − jkm 2π g (k , l )e N e M ∑ ∑ k =0  l = 0 
+
+M −1
+
+2π j ln  1 N −1  jkm 2π N ∑0  N ∑ G (m, n)e e M m=  n =0 
+
+Ha megvizsgáljuk a szögletes zárójelben lévı kifejezéseket – mivel k és m állandó – az egydimenziós diszkrét Fourier transzformációra ismerhetünk. Más szavakkal: A kétdimenziós diszkrét Fourier transzformációt visszavezethetjük az egydimenziós DFT-re: Elvégezzük elıször a mátrix soraira, majd az eredményül kapott mátrix oszlopaira az egydimenziós DFT-t. Ugyanarra az eredményre jutunk, ha elıször oszlopok szerint, utána sorok szerint transzformálunk. Ugyanez elmondható a kétdimenziós inverz diszkrét Fourier transzformációra. A Fourier transzformáció rövid idejő végrehajtásához az elıbbiek szerint elegendı, ha az egydimenziós DFT-re rendelkezünk hatékony megoldással. Erre fejlesztették ki a gyors Fourier transzformációt (FFT – Fast Fourier Transform). A kétdimenziós függvények angol elnevezése (spatial function) síkfüggvényt és térfüggvényt is jelent. A fogalmak tisztázásához vizsgáljuk meg, hogyan ábrázolhatunk egy kétdimenziós függvényt. Az egyik ábrázolási mód szerint a függvény egy felületet ír le, az x,y koordináták által jelölt helyen a függvényérték a felület magasságát (z koordináta) adja meg. Egy másik lehetséges ábrázolási mód a koordináták által megjelölt helyen a függvény értékével arányos világosságú pontot jelenít meg.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+88
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+89
+
+►
+
+a b 4.40. ábra. Harmonikus függvény (a., c.,) és a közismert Lena kép (b., d.,) felületi (a., b.,) és intenzitás (c., d.,) ábrázolása. c d A magyar terminológia meghatározásához természetes választásnak tőnik, ha a felületi ábrázolást térfüggvénynek, a világosság ábrázolást síkfüggvénynek nevezzük. Mivel a képek ábrázolása rendszerint a képpontok világosságával történik, a síkfüggvény kifejezést fogjuk használni. Felmerül a kérdés, hogy milyenek a kétdimenziós Fourier transzformáció bázisfüggvényei. Az Euler összefüggés alapján az ejx koszinuszos valós és szinuszos képzetes összetevıket takar.
+e jx = cos( x) + j sin( x)
+
+A kétdimenziós DFT kifejezésének kiértékelése alapján megállapíthatjuk, hogy k,l indexő tag függılegesen k, vízszintesen l periódust tartalmazó
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+89
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+90
+
+►
+
+koszinusz és szinusz függvény. A koszinuszos tag az origóban (a kép bal felsı sarka) egyet tartalmaz, a szinuszos tag nullát. Ha a -1 és +1 között változó harmonikus függvényeket úgy ábrázoljuk, hogy a -1-nek a feketét, +1-nek a fehéret feleltetjük meg, a koszinuszos bázisfüggvények bal felsı sarkában fehéret, a szinuszos tagok origójában szürkét látunk. (4.41. ábra) Figyeljük meg azt is, hogy – pl. az elsı oszlopban és sorban – a harmonikus függvények k, illetve l periódusát találjuk.
+
+a b
+
+4.41. ábra. k=2, l=3 indexő koszinuszos (a.,) és szinuszos (b.,) bázisfüggvények
+
+A kétdimenziós diszkrét Fourier transzformáció kifejezése szerint – mivel az index tartomány megegyezik a sorok illetve oszlopok számával – az árnyalatos képet a Fourier transzformáció a kép pontjainak számával megegyezı számú koszinuszos és ugyanennyi szinuszos összetevıre bontja, vagyis a képet 2 • M • N bázisfüggvény összegeként állítja elı. Az egyes N  bázisfüggvények hullámhossza a vízszintes  λh =  és függılel   M ges λv = összetevık hullámhosszából számolható (pixelekben mérve): k
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+90
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+91
+
+►
+
+1  1   1    =  +  =      λ   λv   λh   l   k    +  = N M  l 2M 2 + k 2 N 2 M 2N 2
+2 2
+
+2
+
+2
+
+2
+
+Ezzel:
+
+λ=
+
+MN l M 2 + k2N 2
+2
+
+(pixel).
+
+A hullámhossz reciproka a síkfrekvencia. A (k,l) és (k,N-l) indexő bázisfüggvények nem függetlenek egymástól. A hullámfront iránya megváltozik, a két bázisfüggvény egymás függıleges tengelyre tükrözött képe.
+
+20
+
+20
+
+40
+
+40
+
+60
+
+60
+
+80
+
+80
+
+100
+
+100
+
+120 20 40 60 80 100 120
+
+120 20 40 60 80 100 120
+
+a b
+
+4.42. ábra. A k=7, l=3 (a.,) és k=7, l=125 (b.,) indexő bázisfüggvény, a kép mérete: 128x128 pixel
+
+A Fourier transzformáció elvégzése után a (0,0) indexő tag tartalmazza a kép egyenkomponensét, átlagos világosságát. Ha a transzformáció eredményét akarjuk ábrázolni, talán legcélszerőbb a Fourier transzformált abszolút értékét megjeleníteni kép formájában, hiszen a fázis vizuálisan nehezen értékelhetı. Ha a képet lineáris világosság skálán ábrázolnánk, leg-
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+91
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+92
+
+►
+
+többször egy fehér pontot kapnánk a bal felsı sarokban (0,0), a kép többi része fekete lenne. Ennek az az oka, hogy az összetevık abszolút értékében nagyságrendi eltérések vannak. Az abszolút érték ábrázolását ezért legtöbbször logaritmikus léptékben ábrázoljuk: a világosság a Fourier komponens abszolút értékének logaritmusával arányos. (Hamar rájövünk, hogy a logaritmus képzés elıtt egy kis pozitív számot célszerő hozzáadni a 0-k logaritmusának elkerülése végett.) A 2D DFT kifejezésébıl kiderül, hogy a (k,l), a (k,N-l), az (M-k,l), és az (M-k,N-l) indexő tagok abszolút értéke megegyezik. (Az ejx abszolút értéke mindig egy, a felsorolt indexő tagok másban nem térnek el.) Az
+
+A(m, n) = G (m, n)
+abszolút érték képként ábrázolva az egyes komponenseket az 4.43. ábrán megadott sorrendben kapjuk. (Az indexekbe az elızı bekezdés szerint 0(M/2-1) és a 0-(N/2-1) tartományt helyettesítettük.)
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+92
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+93
+
+►
+
+0,0 1,0 2,0
+
+0,1 1,1 2,1
+
+0,2 1,2 2,2
+
+0, n-1
+
+0,n
+
+0,2 1,2 2,2
+
+0,1 1,1 2,1
+
+m-1 ,0 m
+
+m-1 ,n-1 m ,n-1
+
+m-1 ,n m,n
+
+m-1 ,1 m,1
+
+2,0 1,0
+
+2,1 1,1
+
+2,2 1,2 1, n-1 1,n
+
+2,2 1,2
+
+2,1 1,1
+
+4.43. ábra. A kép Fourier transzformáltja abszolút értékének sorrendje (M/2=m, N/2=n). Az ábrázolás sajátossága, hogy a síkfrekvencia a sarkaktól a középpont felé haladva nı. Az azonos abszolút értékő és azonos síkfrekvenciájú komponensek nehezen párosíthatók. Megkönnyíthetjük a vizuális kiértékelést, ha a síknegyedeket átlósan megcseréljük.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+93
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+94
+
+►
+
+m,n
+
+m,1
+
+m
+
+m ,n-1
+
+2,2 1,n 0,n 1,2 0,2 1,2 2,2
+
+2,1 1,1 0,1 1,1 2,1
+
+2,0 1,0 0,0 1,0 2,0
+
+2,1 1,1 0,1 1,1 2,1
+
+2,2 1,2 0,2 1,2 2,2 1,n1 0,n1
+
+m-1 ,n
+
+m-1 ,1
+
+m-1 ,0
+
+m-1 ,n-1
+
+4.44. ábra. A Fourier transzformált felcserélt sorrendje. A felcserélt sorrendő mátrixban az origó, az egyenkomponenst képviselı (0,0) indexő összetevı „középre” került. (Páros számú sor illetve oszlop esetén nincs középsı elem.) Távolodva tıle a síkfrekvencia nı. Az azonos síkfrekvenciájú komponensek a középponttól azonos távolságra, egy kör mentén helyezkednek el. Egy aluláteresztı szőrı karakterisztikáján láthatjuk a kétféle ábrázolást. Figyeljük meg, hogy az eredeti sorrendnél a sarkakban eltérı minták vannak, ezért igen körültekintıen kell a szőrıt megtervezni. Egyszerőbb a dolgunk a felcserélt sorrendő változattal, ahol a középpont körül körkörösen változik az együttható.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+94
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+95
+
+►
+
+2
+
+2
+
+4
+
+4
+
+6
+
+6
+
+8
+
+8
+
+10
+
+10
+
+12
+
+12
+
+14
+
+14
+
+16 2 4 6 8 10 12 14 16
+
+16 2 4 6 8 10 12 14 16
+
+a b
+
+4.45. ábra. Aluláteresztı szőrı karakterisztikája eredeti (a.,) és felcserélt (b.,) sorrend esetén.
+
+A Fourier transzformáltban a nagy homogén területeket a kis síkfrekvenciájú, az apró objektumokat és az éleket a nagy síkfrekvenciájú komponensek képviselik. A síkfrekvencia tartományban is megfogalmazhatók azok a feladatok, amelyeket konvolúcióval el tudunk végezni. A zajcsökkentés a nagy síkfrekvenciájú komponensek csillapításával, az élesítés ugyanezen komponensek erısítésével érhetı el. A kétdimenziós szőrıtervezésre nem térünk ki. Általában körkörösen szimmetrikus a szőrı karakterisztikája. A teljesen kiszőrt komponens együtthatója nulla. A változatlanul átvitt komponensek együtthatója egy. A kiemelt komponensek együtthatója egynél nagyobb. A szőrı karakterisztikája több módon ábrázolható. A felcserélt sorrendő megjelenítésnél az egyenkomponens helyezkedik el középen, távolodva nı a síkfrekvencia. Szemléletes a háromdimenziós nézeti kép és intenzitás ábra, de nehezen olvashatók le az értékek. A szőrıprofil függvényszerő ábrázolása lehetıvé teszi a nevezetes síkfrekvenciák és erısítések-csillapítások leolvasását.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+95
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+96
+
+►
+
+1 0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1 0
+
+a b c
+
+50
+
+100
+
+150
+
+200
+
+250
+
+4.46. ábra. A szőrıkarakterisztika ábrázolási módjai: a., 3D, b., intenzitás, c., profil A pontosabb értelmezés érdekében a példáknál a szőrıprofilt fogjuk megadni. Vizsgáljuk meg egy tesztképen az aluláteresztı, felüláteresztı és sáváteresztı szőrık hatását!
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+96
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+97
+
+►
+
+1 0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1 0 50 100 150 200 250
+
+1 0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1 0 50 100 150 200 250
+
+1 0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1 0 50 100 150 200 250
+
+a b c d e f g h i j k
+
+4.47. ábra. Szőrés tesztképeken. a., b., eredeti tesztképek, c., d., aluláteresztı szőrés eredménye, e., szőrıkarakterisztika, f., g., felüláteresztı szőrés eredménye, h., szőrıkarakterisztika, i., j., sáváteresztı szőrés eredménye, k., szőrıkarakterisztika,
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+97
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+98
+
+►
+
+Aluláteresztı szőrés Aluláteresztı szőréssel a zaj csökkentését, illetve enyhe csillapítással a kép lágyítását érhetjük el. A 4.48. ábra zajos kép síkfrekvencia tartománybeli zajszőrését mutatja. Természetesen a „mellékhatás” – az élek meredekségének csökkenése – nem marad el.
+
+1 0.9 0.8 0.7 0.6 0.5
+
+a b c d
+
+0.4 0.3 0.2 0.1 0 20 40 60 80 100 120
+
+4.48. ábra. Zajcsökkentés aluláteresztı szőréssel. a., eredeti zajos kép, b., szőrt kép, c., szőrıkarakterisztika A határfrekvencia (a 0,5 erısítéső síkfrekvencia) változatlanul hagyása mellett szőkítsük minimálisra az átmeneti tartományt!
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+98
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+99
+
+►
+
+1 0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1 0 20 40 60 80 100 120
+
+a b
+
+4.49. ábra. Alulátaresztı szőrés „ideális” aluláteresztı szőrıvel. a., szőrt kép, b., szőrıkarakterisztika
+
+A hasonló zajcsökkentı hatás mellett feltőnı változás az elızı szőrt képhez képest az élek tovaterjedése, fodrozódása. Ennek oka, hogy a négyszögimpulzus keresztmetszető szőrı karakterisztikájának inverz Fourier sin ( x ) transzformáltja alakú. A rendszerelmélet szerint ilyen alakú az egyx sin ( x ) ségimpulzusra – esetünkben egy pontra – adott válasz. A elsı nex gatív félhulláma és az azt követı pozitív félhullám elég jelentıs amlitúdójú ahhoz, hogy sötét és világos sávként látható legyen. Amennyiben a képen sin ( x ) él látható, ezzel párhuzamosan fog megjelenni a hullámzása. A x sin ( x ) szőrı sávszélessége és a hullámhossza ellentétesen változik: Minél x kisebb a szőrı sávszélessége, annál szélesebbek a fodrozódó sávok. A 4.50. ábrán a határfrekvencia 48. Vagyis azt a síkhullámot, amelynek 48, vagy kevesebb periódusa esik a kép szélességére, változatlanul hagyja, az ennél kisebb hullámhosszú síkhullámokat pedig nem engedi át.
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+99
+
+►
+
+Képfeldolgozás Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Képfeldolgozási mőveletek Vissza
+
+◄
+
+100
+
+►
+
+1 0.9
+
+100
+
+80 0.8 0.7 0.6 0.5 0.4 0.3 0.2 20 40 60
+
+0
+
+a b c d
+
+0.1 0 20 40 60 80 100 120 -20 50 100 150 200 250
+
+4.50. ábra. Ideális aluláteresztı szőrı válasza. a., pontszerő gerjesztésre, sin ( x ) b., vonalszerő gerjesztésre, c., szőrıkarakterisztika, d., alakú válasz x A 4.51. ábrán a határfrekvencia 16. Figyeljük meg a szának növekedését!
+sin ( x ) hullámhoszx
+
+Bevezetés | Tartalomjegyzék | Tárgymutató
+
+Vissza
+
+◄
+
+100
+
+►
+

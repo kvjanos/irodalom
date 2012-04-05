@@ -1,0 +1,389 @@
+Chapter 13
+
+F h o rescence Microscopy in Three Dimensions
+DAVID A. AGARD," YASUSHI HIRAOKA," PETER SHAW,+AND JOHN W. SEDAT"
+*Howard Hughes Medical Institute and Department of Biochemistry University of California, Sun Francisco Sun Francisco, California 94143 qobn Inner Institute
+Colney Lane, Nomich NR4 7UH, England
+
+United Kingdom
+
+I. Introduction 11. Image Formation in Three Dimensions 111. Removal of Out-of-Focus Information A. Nearest-Neighbor Deblurring B . Three-Dimensional Inverse Filtering C. Constrained Iterative Deconvolution D. Combination of Multiple Views IV. Synthetic Projection and Stereographic Imaging V. Experimental Considerations A. Lens Choice B. Data Collection C. Photobleaching VI. Display VII. Experimental Results for Imaging Chromosomes VIII. Summary References
+
+I. Introduction
+Light microscopy is unique in its ability to allow the examination of biological specimens in a hydrated state in living samples or under
+353
+METHODS IN CELL BIOLOGY. VOL. 30
+Copyright 0 1989 by Academic Press. Inc. All rights of reproduction in any form reserved.
+
+354
+
+DAVID A. AGARD el al.
+
+conditions that closely approximate the living state. As discussed elsewhere in this volume and in Volume 29, fluorescence microscopy adds to the fundamental power of light microscopy the ability to examine the spatial distribution of specific cellular components. The availability of fluorescently-labeled antibodies for protein localization, dyes such as Hoechst 33258 or DAPI to specifically label DNA (Arndt-Jovin and Jovin, Chapter 16, this volume) as well as pH- (Waggoner, 1986) and Ca2+(Grynkiewicz et al., 1985; see Tsien, Chapter 5 , this volume) dependent fluorophores allows details of cellular organization and function to be probed with a precision previously unknown. Fundamental issues often concern the spatial relationships and interactions of cellular components. In this regard it must be remembered that cells are intrinsically three-dimensional structures. Unfortunately, the high-numerical aperture (NA) objective lenses required for highresolution spatial analysis and optimal light gathering power have a very limited depth of focus (typically less than 0.4 pm for a 63x 1.4NA oil lens). This is too narrow to image an entire cell clearly, yet too wide to give good optical sectioning. Thus any image of the specimen is contaminated with out-of-focus information from focal planes above and below the current focus setting. Often this problem can be so severe as to preclude the desired analysis. Although the situation is somewhat better with interference microscopic methods such as differential interference contrast which can optically minimize out-of-focus contributions, the lack of specific labels renders these methods less useful. Fortunately, the development of relatively inexpensive computers and digital image acquisition systems has now made possible the threedimensional reconstruction of images taken from the optical microscope. Three-dimensional data are collected by recording a set of images taken at sequential focal planes throughout the specimen. By analogy with physical sectioning techniques, this method is called optical sectioning. Most of the common light microscopic imaging methods can be used with this technique. Each recorded image represents the sum of in-focus information from the focal plane and out-of-focus information from the remainder of the sample. Much of the out-of-focus information can be computationally removed. Out-of-focus removal can be accomplished implicitly as in confocal microscopic methods (see Chapter 14 by Brakenhoff et al., this volume) or explicitly in optical section microscopy. For optical section microscopy, digital image processing methods are used to remove the out-of-focus contributions. In practice, both methods require computer manipulation of the data, and sufficient advancements have been made in the image processing that similar results can be obtained with minimal computational treatment.
+
+13.
+
+FLUORESCENCE MICROSCOPY IN THREE DIMENSIONS
+
+355
+
+In many cases in cell biology, it is not necessary to fully reconstruct the specimen in three dimensions. For relatively thin specimens or where only a representative view is desired, it may be sufficient to provide a single “cleaned-up’’ image. This can be accomplished directly via confocal microscopy or by collecting data from three image planes, one above and one below the desired focal plane and using the nearest-neighbor processing schemes described below. In other cases it may be desirable to examine the entire specimen either as an in-focus projection or as an in-focus stereo pair. With either confocal or conventional optics, this will require that the sample be optically sectioned and that all the data be integrated into the final mono or stereo image. For conventional microscopy, we call this synthesis of a projeted image (or stereo pair) from a set of individual images “synthetic‘ projection microscopy.” The choice between approaches will ultimately depend on such issues as photobleaching, time resolution, choice of available excitation wavelengths, existing equipment, etc. As discussed below, the nature of threedimensional imaging dictates that the generation of stereoscopic images or fully in-focus synthetic projections can be accomplished with considerably less photobleaching using conventional optical sectioning microscopy rather than using confocal methods. This may be critically important in the analysis of living cells. Using either approach, it is now possible to analyze cellular architecture of intact specimens in three dimensions. In this chapter, we briefly discuss the theory of image formation within the microscope and the use of optical section microscopy coupled with image processing methods to generate in-focus projected images, stereo pairs, and full three-dimensional representations. Throughout, we will attempt to concentrate on practical issues such as data collection, computational methods for out-of-focus removal, and ways of displaying the results. Finally, we will consider the impact of technological advancements as they relate to image quality and real-time analysis.
+
+11. Image Formation in Three Dimensions
+Although one normally thinks of a light microscope as a twodimensional imaging device, it can be used to record data from threedimensional specimens. It is important to remember that in two dimensions and especially in three dimensions, all microscopic imaging systems are imperfect, hence they distort the image being observed in a characteristic manner. Although the high-quality, multielement objective lenses found in modern microscopes have been designed to minimize image
+
+3%
+
+DAVID A . AGARD er al.
+
+distortion, residual chromatic and spherical aberrations and the finite numerical aperture all lead to errors in recording images from twodimensional specimens (Inouk, 1986). Not surprisingly, because of limited depth of focus, three-dimensional specimens are more drastically affected. Perhaps the most straightforward way to understand what happens in an optical system is to consider how an idealized point object would appear. The imperfect optical properties will cause the point to spread out and take on a characteristic shape which is called the Point Spread Function or PSF. In practice, the microscope’s PSF is determined almost exclusively by the objective lens, making it the most critical imaging component in the microscope. Once the microscope’s PSF is known, the way in which an arbitrary image is distorted can be predicted from the following imaging equation describing the convolution of the “true” image with the PSF:
+
+where o is the observed image, i the “true” image and s the PSF or smearing function. For a general discussion of convolutions, see the relevant sections in Bracewell (1965) or Casteleman (1979). As considered previously (Agard, 1984; Castleman, 1979) this treatment can be readily extended to three dimensions:
+o ( x , y , z ) = C C C i ( u , v , w ) s(u - x , v - y , w - z )
+uvw
+
+(2)
+
+where the z index now refers to the focus direction. That is, at any point ( x , y) in any focal plane z, the observed image is sum of contributions from the entire specimen volume weighted by the smearing function s. This three-dimensional PSF can be derived directly from a set of twodimensional PSFs taken at different distances from the focal plane. Equation (2) can be written in a more compact form using * to signify the convolution operation of Eqs. (1) and (2): o = i * s . It is often convenient to recast Eqs. (1) and (2) in terms of their Fourier transforms:
+
+O(X, ) = Z(X, Y ) S(X, Y ) Y
+and
+
+O(X, ,Z ) = Z(X, Y ,Z ) S(X, Y ,2) Y
+
+(3)
+
+where capitals are used to refer to the Fourier transforms and the convolution is now simplified as a multiplication. The Fourier transform of the PSF is called the CTF or contrast transfer function. Hopkins (1955),
+
+13.
+
+FLUORESCENCE MICROSCOPY IN THREE DIMENSIONS
+
+357
+
+Stokseth (1969), and Castleman (1979) have all described more-or-less approximate formulae for calculating the two-dimensional CTF of an objective lens as a function of focus S(X, Y, Az). Previously, we have used the approximation given by Castleman (Agard and Sedat, 1984; Gruenbaum et al., 1984). The full three-dimensional CTF S(X, Y, Z) can be calculated from the set of two-dimensional CTFs by Fourier transformation:
+
+S(X, Y ,2)= S(X, Y , Az) e21riArZ (4) This Fourier transformation can be accomplished numerically (Agard, 1984) or analytically (Erhardt et al., 1985). Unfortunately, many assumptions of ideality go into the calculation of the two-dimensional CTFs. The inaccuracy of these assumptions becomes especially pronounced for high-numerical aperture (high-NA) lenses and becomes greatly exaggerated when calculating three-dimensionsal CTFs. Another approach to obtaining the three-dimensional CTF is by direct experimental measurement using very small (<O. 1 pm diameter, smaller than the resolution limit) fluorescent beads to act as point sources. Recently, the use of very high quality charge coupled devices (CCDs, Hiraoka et al., 1987; and Aikens et al., volume 29) has provided the necessary data quality to permit the experimental determination of threedimensional CTFs of several high-numerical aperture objective lenses under epifluorescence conditions (Hiraoka et al., 1988). A set of point images taken at different levels of defocus is shown in Fig. 1. It should be apparent that unlike ideal lenses, the PSFs of real lenses are not circularly symmetric and can show varying amounts of residual spherical aberration (visualized as lack of symmetry above and below the focal plane). The two-dimensional PSFs of Fig. 1 can be radially averaged and Fourier transformed to yield a set of radially symmetric two-dimensional CTFs which can then be Fourier transformed [Eq. (4)) to yield the threedimensional CTF (Fig. 2) which can be compared to the theoretical CTF for the same lens. It is important to note that there is a significant difference in behavior of the two CTFs, especially at low spatial frequencies. Much of the difference results from the fact that the high-numerical objective lens serves as a high-NA condenser and provides a partial confocal behavior to the imaging process. Thus we feel it is extremely important to use the experimental CTF wherever possible. As there is probably less difference between similar high-NA lenses than there is between experimental and theoretical functions, it is reasonable to simply interpolate from experimental curves to correct for changes expected to result from changing NA and wavelength.
+
+a
+
+FIG.1. Through-focus behavior of point images. Fluorescent microspheres (0.1 pm diameter; Pandex Laboratories, Inc.) were examined using a Leitz 1.4NA 63x planapo oil immersion lens with immersion oil recommended by Leitz. The serial focal series was taken with the CD in 0.25-pm focal steps. (a) The point images from t 1.75 to -2.0 pm are shown every0.25-pm from left to right and top to bottom; -3.0, -3.5, -4.0, and -4,5 pm are shown in b. The x-z edge view of the three-dimensional stack of 31 point images from +3.0 to -4.5 pm at 0.25-pm intervals is shown in c; the in-focus plane is marked by an arrow. All images are displayed on a logarithmic scale to facilitate viewing. From Hiraoka ef al. (1987).
+
+13.
+
+FLUORESCENCE MICROSCOPY IN THREE DIMENSIONS
+
+359
+
+experimental data theoretical data x10 ,theoretical data
+1
+
+5.0
+
+FIG.2. Experimental three-dimensional CTF from an epifluorescent microscope. Optical section data from individual fluorescent microbeads were collected at 0.25-pm intervals using a Zeiss 1.2NA coverslipless water immersion lens. Data from several beads within each section image were averaged, three-dimension-Fourier transformed, and cyclindrically averaged in Fourier space. The resultant radially symmetric three-dimensional CTF is shown (R is the radial term corresponding to the X-Yplane, and Z denotes the focal direction). The inset shows Z = 0 lines for the experimental data and from theoretical calculations for the same lens. Note the significantly different falloffs. Even when scaled up 10-fold, the theoretical curve still fails to match the experimental data at low resolution.
+
+111. Removal of Out-of-Focus Information
+Given accurate knowledge of the three-dimensional PSF or CTF, it should be possible to remove the out-of-focus information that contaminates each of the observed images. However, examination of the threedimensional CTF indicates that there is a region of Fourier space along the Z-axis (focus direction) where little or no data are observed. Because of
+
+360
+
+DAVID A. AGARD et al.
+
+this, it is not possible to make a perfect restoration; the very-low-resolution Z-axis terms are mostly severely compromised in any restoration scheme. Because of the optical properties of confocal microscopy, the amount of missing data is greatly reduced; however, resolution is still substantially reduced in the Z-direction. Fortunately, most biological imaging problems involve localizing spatially distinct objects; this reduces the importance of the very-low-resolution Z terms. In general, most specimens can be accurately reconstructed. Not surprisingly, doing a better job with the deblurring requires more work. Because not all problems require ultimate three-dimensional resolution, we have developed three processing schemes providing three levels of deblurhg: nearest neighbor, three-dimensional inverse filtering, and constrained-iterative three-dimensional deconvolution. It is important to note that even the simplest of the methods produces a substantial improvement and is suitable for all but the most demanding applications, with results roughly comparable to the MRC-Lasersharp confocal microscope.
+
+A. Nearest-Neighbor Deblurring
+The simplest scheme for deblurring optical section data sets uses image data from a single focal plane above and a single focal plane below to correct the central focal plane. As signals from the adjacent planes will contribute most strongly to the central plane, their effects are most important to consider. This was the rationale first used by Castleman (1979) and later by us (Agard, 1984) to justify using only nearest neighbors:
+
+o. = i. * so + ij-l J I
+
+* sP1 + ij+l *
+
++
+
+(5)
+
+where the subscripts on i and o refer to the z plane numbers and the subscripts on s refer to the number of interplane spacings (Az) away from focus for the two-dimensional PSF, s. Thus if we know the ijkl, we could then use our knowledge of so and sk to calculate ij . By assuming for the ~ purposes of subtraction that ijkl = o ~ +we ,can then calculate an approximation to i j :
+ij = [oj - c(oj-] + oj+l)* sl]
+
+*g
+
+(6)
+
+where c is an adjustable constant, the negligible difference between s-] and s + is ignored, and g is the filter function corresponding to the inverse of so. ~ Although in Castleman’s original analysis c = 0.5, we found that this overcorrected the image, as judged by holes in the image corresponding to strong regions on the adjacent planes. Our best results were obtained with
+
+13.
+
+FLUORESCENCE MICROSCOPY IN THREE DIMENSIONS
+
+361
+
+c = 0.45 (Gruenbaum et af., 1984). In fact, the results with this method were far better than expected even with interplanar spacings of 50.25 pm. Further analysis suggests a reason for the favorable behavior as well as an improvement. Let’s consider explicitly all terms for the triplet of sections that contain ii up to ii.t2:
+
+* so + ii-l * s1 + ii+l * s1 + ii-2 * s2 + ii+2 * s2 Oj- 1 = ii * s1 + ij-l * so + ii+l * s2 + iiP2 * s1 + ij+2 * s3 ... oi+l = ii * s, + ii-l * s2 + ii+l * so + ijP2 * s3 + ii+2 * s1
+0.= i. I 1
+
+Now if we blur oi. by the difference between so and sl, sA,then all so terms become exactly equivalent to s l . Furthermore, for Az < 1 pm, s1 * sA = s2 and s2 * sA= s3. Summing the blurred adjacent sections and gathering terms:
+(0i-1
+
++ 0,+1) * SA
+
+0, - ~ ( 0 i - 1
+
++ 0 j + 1 ) * SA
+
+* ~1 * s A + (ii-l + ii+]) * ( ~ 1 ~2 * sA) + + (iiP2 + ii+2) * (s2 + $3 * s A ) + - = i, * (SO - 2 ~ * s A1 ~ ) (7) + (ijPl + i,+l) * (sl - c(sI + s2 * sA)) + (ij-, + ii+2) * (s2 - C ( S ~+ s3 * sA))+ =
+
+2ii
+
+*
+
+*
+
+At low spatial frequencies, all of these filters contribute nearly equally, thus to best remove the low frequencies, c should be set to 0.5. Unfortunately, with c = 0.5, all of the low spatial frequencies from ii are also removed. As discussed in Agard (1984), c = 0.45 seems optimal in practice. At high spatial frequencies, the difference between nonequivalent blurring functions (e.g., s1 and s2 * sA)becomes significant and only 1/2 of the desired correction is made. Furthermore, Eq. (7) suggests that the inverse filter function, g, should be the inverse of so - 2csl * sAand not simply of so as given in Eq. (6). Another possible improvement is to effectively make c a function of frequency so that it starts at a value of 0.45 at low frequencies and increases to a value of 0.9 at high spatial frequencies. It is somewhat simpler to consider this filter in Fourier space; thus a reasonable function might be So/(& + SISA), where the capital S denotes the CTF instead of the PSF. Putting this all together, we can now rewrite Eq. (6) as
+
+[o, - C(O,-~ + oi+J * f ]* g (8) where c is again a constant of about 0.45 and the Fourier transform of the new filter function f is given by
+
+i ,
+
+=
+
+= sdA/(SO
+
++ SISA)
+
+(9)
+
+362
+
+DAVID A. AGARD et al.
+
+The choice for the sharpening function g in practice is not very critical. With the use of the more complex filter function F, above, it is reasonable to again use an inverse filter based on so. For such inverse filtering situations, it is standard practice to use a Wiener inverse filter to minimize the effects of noise that can dominate at high spatial frequencies. The Fourier transform of the inverse filter is then defined as (10) with a being an empirical constant that depends on the noise level in the data. A value of 0.5 will lead to negligible enhancement (suitable for very noisy data), while a small value such as 0.01 should work well on rather noise-free data. The real space analogs of the filter functions defined in Eqs. (9) and (10) can be approximated as small matrices, in the range of 5 x 5 to 11 x 11, to allow the computations required by Eq. (8) to be done using generally available image processing hardware. Thus, it should be possible to do the all of the required calculations in essentially real time.
+
+G
+
+= So/(S,
+
++ a)
+
+B . Three-Dimensional Inverse Filtering
+A more accurate approach to removal of the out-of-focus information requires that the full contributions of all of the observed data be utilized. The most direct way to utilize the entire data set is to perform a threedimensional inverse filter operation. Erhardt used this approach with a theoretical CTF (Erhardt et al., 1985). As discussed above, we find that the differences between experimental and theoretical CTFs are significant; hence we get best results using a Wiener filter and the experimental CTF:
+
+Z(X, Y ,2) = O ( X , Y ,Z)/[O(X,Z)* + a] Y, (11) where a is a constant whose choice is based on the signal-to-noise ratio of the data and, since no other enhancements are being performed, should be in the range of 0.001 to 0.1. Although performing three-dimensional filter or inverse filter operations is quite commonplace, the practical implementation with discrete Fourier transforms such as the FFT deserves a few comments. The F I T is cyclical, that is, the sampling in Fourier space is such that all axial dimensions should be thought of as being infinitely replicated. As a consequence, left and right, top and bottom, etc., image borders are immediately adjacent to one another, creating discontinuities. The importance of these discontinuities is directly related to their magnitude and the threedimensional PSF. In the x-y plane it is often possible to choose a region that encompasses the object so that only background deviations are
+
+13.
+
+FLUORESCENCE MICROSCOPY IN THREE DIMENSIONS
+
+363
+
+involved. When this is not possible, borders can be smoothly rolled down to a background value using for example, a Gaussian weighting function. The three-dimensional light microscope CTF is such that errors arising from x-y discontinuities are weighted toward higher frequencies, producing mainly local perturbations at the edges. Furthermore, procedures like rolling down to background are consistent with the in-plane CTF and hence are quite effective. Unfortunately, the same is not true in the z (focal) direction. Because data along the z-axis in the three-dimensional Fourier space are unobserved in the microscopy experiment, it is imperative that the values from the top of the stack and the bottom of the stack make a very smooth transition from one to the other. We have found that expanding the z-axis by 1.5 to 2x with data arranged as a weighted pixel-by-pixel linear combination of the top and bottom sections works quite well. The need to store and transform the expanded data can be essentially eliminated by arranging that the three-dimensional FFT be done first as a set of two-dimensional FFTs based on the observed data, followed by z-axis one-dimensional transforms. Before each z-axis line is transformed, it is expanded by linearly interpolating between the first and last values. When performing a three-dimensional filter, the expanded values are transformed in z, filtered, inverse transformed in z, and only those sections corresponding to those originally observed are inverse transformed in the x-y plane. The result is reasonable behavior with minimal computational or storage overhead. Furthermore, as radix-2 FFTs are more efficient, z expansion to the next power-of-2 provides a computationally efficient way to deal with data collected as an arbitrary number of sections.
+
+C. Constrained Iterative Deconvolution
+In terms of signal recovery in the presence of noise, the Wiener inverse filter provides a nearly optimal linear restoration. One drawback of all such linear methods is that negative ripples build up around strong features which can obscure or distort nearby weaker features. Nonlinear restoration methods that constrain the result to be positive can eliminate this problem while using positivity and other a priori information to provide a better restoration. The drawback is that these methods are invariably iterative and hence quite computationally expensive in three dimensions. For some time, we have have been working on constrained iterative deconvolution schemes for data processing problems in one dimension (Agard et al., 1981; Thomas and Agard, 1985), two dimensions (Agard and Sedat, 1980), and three dimensions (Agard, 1984). We have recently made changes that
+
+364
+
+DAVID A. AGARD er al.
+
+significantly improve performance for three-dimensional optical sectioning data. The method is stable, and shows substantially accelerated convergence compared to previous methods. Convergence is reached in 5-10 cycles (instead of 20-50) and since most of the improvement occurs in the first 5 cycles, iterations can be terminated early with little degradation. The strategy is to develop a positively constrained solution, g, that, when convolved with the known smearing function s, will regenerate the observed data o. The pixel-by-pixel differences between the convolved guess and the observed data are used to update the guess. Two different update schemes can be used: an additive method initially developed by van Cittert and later modified by Jannson (Jannson et al., 1970) and by us (Agard et al., 1981), and a multiplicative method developed by Gold (1964): (a) (b) (c) (d) ok = ik
+ik+l
+
+*s
+
+= 1'k
+
++ y(o)(o - ok)
+ik+'
+=
+
+if ik+'
+=
+
+s 0 then
+
+0
+
+k = k + 1
+1 - [ok- A12/A2
+
+where A is a constant set to the maximum value of 0/2. For the Gold method, the update equation on line b is changed to (b')
+
+ik+'
+
+= ik(o/ok)
+
+In three dimensions these schemes suffer from rather slow convergence, although the Gold method is faster. The problem stems from inadequate correction of the high-frequency components. This can be seen by the following argument performed only with the additive method for simplicity. At each cycle we desire to correct our current guess with a function, 6, so that o = (g, + 6) * s or in Fourier space: 0 = (G, + 6 s Rearranging, ). we get (13) From this we can see that a better approximation to the update is to use an inverse filtered version of the difference between the observed data and the convolved guess. In practice, we use a Wiener filter to minimize effects of noise and only perform the inverse filtered update for the first two cycles. After that, we switch to the modified Van Cittert update described above [Eq. (12)]. At each cycle, the new guess is corrected to maintain positivity and any other desired real-space constraints, such as spatial boundedness. Every five cycles or so, the guess is smoothed with a Gaussian filter to
+
+6 = (0- G,S)/S
+
+13.
+
+FLUORESCENCE MICROSCOPY IN THREE DIMENSIONS
+
+365
+
+minimize the buildup of noise. The result is an extremely powerful reconstruction scheme that avoids negative ripples that plague linear methods, minimizes noise buildup, is exceedingly stable, and converges quite rapidly.
+
+D. Combination of Multiple Views
+All of the discussions so far have assumed that a single set of optical sections was recorded in the imaging experiment. The microscope's three-dimensional CTF indicates that the resolution is substantially greater in the x-y direction than it is in z. Resolution in the focal direction is further complicated by the missing data near the z-axis. As discussed previously (Agard, 1984), this suggests that a significant improvement in imaging could be obtained by combining two optical section data sets collected at 90" to one another. In fact, by collecting several data sets at different tilt angles, it should be possible to reconstruct a threedimensional image with uniform resolution in all directions; limited only by the in-plane resolution of the objective lens. There are two practical problems with this approach. First, it is necessary to be able to tilt the specimen to reasonable angles. Although it is not possible to use a slide (the maximum tilt is 1+15"), we have had significant success by mounting the specimen on the outside of a glass fiber using poly-L-lysine as an adhesive. Using a Zeiss 1.2NA water immersion lens it has been possible to achieve tilts of 2 5 4 5 " . A second, very significant problem is the need to properly align the data sets to better than 500 A before they can be merged. In principle this can be accomplished by designing an ultraprecise eucentric tilt stage or by computational methods. Since it is unlikely that the requisite physical alignment can be obtained, the computational approach must be considered. Although, the methodology is rather involved, we have recently developed all of the necessary computer programs and have successfully merged several three-dimensional data sets. Although still preliminary, it does appear that substantial resolution improvements in the z-direction can be obtained. A full description of the approach will be published elsewhere.
+
+IV. Synthetic Projection and Stereographic Imaging
+For many problems of biological interest, reconstructing the entire three-dimensional fluorescence distribution within the sample is either unnecessary or irrelevant. This is often the case when dealing with tissue
+
+366
+
+DAVID A. AGARD er al.
+
+culture cells or other specimens that are only a few microns thick. Such samples are sufficiently three-dimensional so that out-of-focus effects can obscure relevant information, but all that may be desired is localization in the x-y plane or perhaps calculation of a stereo pair. Either of these two types of calculations can be performed exceedingly efficiently using optical section microscopy. In fact, the optical behavior of the microscope is such that the necessary calculations can be performed more rapidly and with considerably less photobleaching than is possible with confocal microscopy. Although the details of this method will be published elsewhere, an outline of the procedure will be given here. We call the technique synthetic projection microscopy because it synthesizes an in-focus projected image of the object from a small number of optical sections. A simple variation is then used to generate stereo pairs. Consider a three-dimensional object i(x,y, z ) whose projection we wish to calculate. Let ij refer to the set of optical sections taken at intervals of approximately the depth of focus of the objective lens being used. In practice values between 0.5 and 1.0 pm are reasonable. Then the desired , projected image distribution i is given by: i, = Z i j / N . Using the Fourier projection theorem (Bracewell, 1965), the desired two-dimensional projection ip can be understood to arise only from the Z = 0 central section of the object’s three-dimensional Fourier transform, Z(X, Y,Z):
+
+i,
+
+=
+
+Z(X, Y, ) * ( * x + y y ) 0 2
+
+By a similar argument, the relationship between the projection of the observed data and its Fourier transform is given by
+2) Furthermore, we know that the relationship between Z(X, Y, and O(X, ,Z ) is specified by the three-dimensional CTF,S(X, Y , Z ) as Y
+
+O(X, ,Z ) = Z(X, Y ,Z ) S(X, Y ,Z ) Y
+Combining Eq. (14)-(16) gives the following result:
+
+(16)
+
+I(X, 0) Y, S(X, 0) Y, e2*(xx+yY) op = which, by the convolution theorem, can be returned to real space:
+0 = ,
+
+ip * szo
+
+where szo is the two-dimensional Fourier transform of the Z = 0 plane of the three-dimensional CTF. The desired in-focus projected image can then be obtained by deconvolving the observed op with szo. This can be done either by a Weiner filter or by a two-dimensional constrained iterative
+
+13.
+
+FLUORESCENCE MICROSCOPY IN THREE DIMENSIONS
+
+367
+
+deconvolution. As discussed earlier, the inverse filter can be recast as a local matrix convolution problem, allowing real time processing. Generation of stereo pairs is accomplished during the summation of the observed frames. Two sums are accumulated for each new frame. The old trick of sliding the new image an integral number of pixels left to generate the left image and an equivalent number to the right for the right image works very well. The pixel displacement correlates with the stereo viewing angle and should generally be rather small. After the two separate images are accumulated, they are then deblurred as described for mono images.
+
+V. Experimental Considerations
+A. Lens Choice
+Perhaps the most important microscopic considerations for threedimensional imaging are the choice of the objective lens and its proper use. For high-resolution analysis, the use of a high-NA (NA 2 1.2) lens is crucial. High-quality lenses can now be obtained with NAs between 1.2 and 1.4 over the magnification range of 40X to 1OOX. An extremely important consideration for three-dimensional imaging that is generally neglected concerns residual spherical aberration in the objective lens. Immersion objective lenses are designed to image specimens located immediately against the underside of a defined thickness coverslip. Spherical aberration increases dramatically if this condition is not met. Furthermore, all of the high-NA oil lenses that we have tested show residual spherical aberrations. Small amounts of spherical aberration have rather little effect on two-dimensional imaging, but will substantially degrade three-dimensional images. A simple way of checking for spherical aberration is to image a small bright object equal distances above and below the plane of optimal focus. As pointed out by Shinya InouC, spherical aberration manifests itself as a lack of symmetry in the out-of-focus images. Ideally, one would use a lens with a correction collar and adjust it for minimum asymmetry. Unfortunately, none of the high-NA oil lenses have correction collars. We have taken two approaches in dealing with this problem: (1) when possible we have used a Zeiss 1.2NA coverslipless water immersion lens, thereby avoiding the use of a coverslip entirely, or (2) we have experimentally found the correct index of refraction immersion oil to properly compensate for the spherical aberration with the oil lenses being used in the laboratory. For example, the proper index of refraction oil for our Leitz 1.4NA planapo lens is d5"" = 1.518 instead of 1.515.
+
+368
+
+DAVID A. AGARD er al.
+
+B. Data Collection
+Beyond objective lens considerations, there are a few aspects of data collection that warrant discussion. The first is that it is particularly useful to automate the collection of the through-focus microscopic images. To allow high-resolution three-dimensional imaging it is useful to be able to step in focus 50.1 pm. This is readily accomplished by attaching a microstepper motor to the fine-focus knob of the microscope, either directly or through an electromagnetic clutch (Mathog et al., 1985). Microstepper motors are available from several manufacturers and have between 10,000 and 50,000 steps per revolution; complete computer-controllable systems using an RS-232 interface are also available (for example, from Compumoter Inc., Petaluma, CA). Data acquisition is best performed using a high-quality image detector such as a cooled CCD camera (Photometrics Ltd., Tucson, Az). As discussed by Aikens et al., in Volume 29 of this series and Hiraoka et al. (1987), the combination of high, sensitivity, large dynamic range, photometric linearity, and geometric precision makes the CCD a nearly ideal imaging device. In many ways, three-dimensional imaging relies on being able to interpret the diflerences between adjacent images. Thus, all of these properties are important. If three-dimensional resolution is not a crucial factor, it is quite reasonable to use a SIT camera and image processor to digitally average for 64-256 frames to minimize noise. However, it should be emphasized that the results obtainable with the CCD are truly remarkable.
+
+C. Photobleaching
+In recording three-dimensional data it is common to record anywhere from 10 to 64 separate images from a given sample. This requirement simultaneously places demands on the sensitivity of the detector and on sample preparation. Of particular importance is the use of antioxidants (Giloh and Sedat, 1982; Bock et al., 1985) to minimize photobleaching of the fluorophore.
+
+VI. Display
+Once three-dimensional images are collected and deblurred, it is necessary to be able to examine this vast amount of data in order to extract the relevant biological information. Unfortunately, we have found the use of contouring, either as three-dimensional cage contours (FRODO, Jones,
+
+13.
+
+FLUORESCENCE MICROSCOPY IN THREE DIMENSIONS
+
+369
+
+1982) or as solid surface representations, inappropriate for examining specimens. In many ways, this is the most difficult aspect of threedimensional microscopic imaging. A common way to examine three-dimensional image data is to consider it as a set of slices that can be displayed one after the other as a digital-loop movie. This can be accomplished using either capabilities of the display hardware on the image processor or using a frame-accurate video recording device, probably the best of which is the optical video disk recorder (Panasonic) which permits full random access control on recording and playback. Although this approach is by far the easiest to accomplish, it is the least satisfactory. Unfortunately, human perception is not really geared to remembering shapes when moving forward and backward. As users of any macromolecular display system know, the trick to perceiving three dimensions is to use a rotating, projected view of the object. Thus, in generating the digital-loop movies, a set of rotated projected views is substituted for the translational set normally used. We have found this approach to be far superior, and use it routinely. The process of calculating rotated projected views can be greatly speeded up by combining the two operations. Consider a two-dimensional slice of the three-dimensional image taken perpendicular to the desired rotation axis: for example, the x-z-plane for tilts about the y-axis. Then the desired coordinate transformation is given by
+x’ = cos a ( x - x,) - sin a(z - z ) ,
+z’ = sin a ( x - x,)
+
++ cos a(z - z,) + zk
+a
+
++ xh
+
+Instead of rotating all the data and then projecting it down the Z‘ axis, we loop through the desired x’ range and the original z solving for x as we go.
+
+(18) The value to be added into the projection vector at x’ is then given by one-dimensional interpolation:
+(a) (b) (c) (d) loop on x’ in output projection vector loop on z in image calculate x in image that corresponds to current x ’ , z linearly interpolate in image to get value and add to value in projection vector at x ‘
+
+x = [(x’ - x ; )
+
++ sin a(z - z,)]/cos
+
++ x,
+
+By saving one loop, this approach can speed calculations by as much as 30-fold. For la(2 45”, because of the cos a in the denominator, it is advisable to loop on x ’ , x and solve for z . Rotations about other axes can likewise be efficiently accomplished.
+
+370
+
+DAVID A. AGARD et al.
+
+Sets of rotated stereo pairs can be used to enhance the realism of the display. Both Tektronix (Portland, OR) and StereoGraphics (San Rafael, CA) have developed electrooptic polarizing screens that can be mounted on the front of the video display monitor. The left and right images are alternately displayed on the CRT, and the polarizing screen will switch from left to right circular polarization in synchrony with the images. Viewers need only wear left and right circular polarized “sun glasses” to see stereo. When combined with rotation, the effect is quite dramatic; more importantly, it is possible to extract significantly more biological information from the images.
+
+VII. Experimental Results for Imaging Chromosomes
+Much of our laboratories’ effort has been devoted to elucidating the detailed high-resolution structure of eukaryotic chromosomes and their spatial organization within the nucleus. Three-dimensional high-voltage and intermediate-voltage electron microscopic tomographic approaches are being used to analyze how the fundamental 110 8, nucleosomal fibers are organized into higher-order structures within mitotic and interphase chromosomes (Belmont et al., 1987). For some time we have been using Drosophila melanogaster polytene chromosomes as a model interphase system for studying the relationship between three-dimensional spatial organization within the nucleus and biological function (Agard and Sedat , 1984; Mathog et al., 1984; Gruenbaum et al., 1984; Hochstrasser et al., 1986). The earliest studies were done with images recorded on film and then digitized and aligned before deblurring. The process was greatly simplified with the use of direct video data acquisition. Before and after comparisons of a single section from a data set of 24 focal planes (1.2 pm spacing) of a 4’ ,6-diamidino-2phenylindole (DAP1)-stained salivary gland polytene nucleus is shown in Fig. 3. The images were deblurred with the nearest-neighbor scheme of Eq. (6). The results of these studies as well as the development of a growing interest in chromosome dynamical behavior during the cell cycle have led us to attempt to analyze the three-dimensional organization of diploid chromosomes as a function of the cell, cycle. The comparative difficulty associated with examining a diploid nucleus 5 pm in diameter is demonstrated in Fig. 3. By comparison with the polytene studies, an increase in three-dimensional resolution of nearly an order of magnitude was required. Several factors were crucial in reaching the necessary resolution; foremost were the use of a cooled CCD to collect very-high-quality image
+
+13.
+
+FLUORESCENCE MICROSCOPY IN THREE DIMENSIONS
+
+371
+
+FIG.3. Low-resolution polytene chromosome images before and after processing. Drosophila salivary glands were stained with the DNA-specific dye DAPI as described in Mathog et al. (1984). Twenty four images were recorded at 1.2-pm focal intervals using a SIT camera and each image was digitally averaged for 256 video frames. The nearest-neighbor algorithm [Eq. (6)] was used to process the images. A representative before section is shown in A and the corresponding after processing image is shown in B. Puffed regions indicating intense transcriptional activity are clearly seen in B. The inset in A shows a Drosophila embryonic diploid nucleus at the same magnification for comparison.
+
+data and the use of the experimental CTF (which required the CCD to be determined) in the image processing. The substantial improvement in image quality, which was made possible primarily through the use of the CCD camera, and secondarily through the use of a finer interplanar spacing, is shown in Fig. 4.Processing again made use of the same simple nearest-neighbor scheme used in Fig. 3 which can be implemented on essentially any image processing system. High-resolution three-dimensional images of diploid chromosomes from Drosophilu rnelunoguster early embryos are shown as several optical sections before (Fig. 5A) and after (Fig. 5B) image processing. A stereo pair computed from the entire nucleus is shown in Fig. 6. Stereo pairs calculated from another diploid Drosophilu nucleus are shown in Fig. 7A. The sister and homologous chromatids are clearly separated; the bright regions represent clusters of centric heterochromatin. The threedimensional paths of each of the chromatids have been traced using our interactive modeling software (Mathog, 1985). This is the first step in our analysis of the dynamical behavior of diploid chromosomes throughout the cell cycle. Once a model describing the three-dimensional path of a chromatid has been built, it is then possible to use that model as a map for topologically
+
+372
+
+DAVID A. AGARD er al.
+
+FIG. 4. High-resolution polytene chromosome images before and after processing. Polytene chromosomes were stained with DAPI and imaged on our cooled CCD system (Hiraoka et al., 1987) with an interplanar spacing of 0.25 pm. Data were processed as in Fig. 3. Note the significantly higher resolution possible using the CCD to collect better data and finer interplanar spacings.
+
+unfolding the chromosome. This is extremely useful to us because it allows us to uniquely identify each chromatid using its characteristic staining pattern. An example of this is shown in Fig. 8.
+
+VIII. Summary
+The combination of the specificity provided by fluorescence microscopy and the ability to quantitatively analyze specimens in three dimensions allows the fundamental organization of cells to be probed as never before. Key features in this emergent technology have been the development of a wide variety of fluorescent dyes or fluorescently labeled probes to provide the requisite specificity. High-quality, cooled charge-coupled devices have recently become available. Functioning as nearly ideal imagers or “electronic film,” they are more sensitive than photomultipliers and provide extraordinarily accurate direct digital readout from the microscope.
+
+13.
+
+FLUORESCENCE MICROSCOPY IN THREE DIMENSIONS
+
+373
+
+FIG.5 . Embryonic diploid nucleus before and after the removal of out-of-focus image information. D.melunogasrer embryos stained with 0.1 pg/ml DAPI were attached a glass slide and mounted in buffer A without a coverslip. Using a Zeiss coverslipless water lens ( 6 3 /NA = 1.2). optical section images were taken on the CCD at 0.25-pm focal intervals. ~ Optical section images were processed by the iterative constrained three-dimensional deconvolution method [Eq. (12)] with the experimental C F determined for the water lens. I ' This figure shows the same nucleus shown in the inset of Fig. 3 before (A) and after (B) processing; each section in the figure is separated by 1 pm in the z-direction. Bar represents 1 pm.
+
+374
+
+DAVID A. AGARD ef al.
+
+FIG.6. Stereo image of diploid embryonic chromosomes. A stereo projection was constructed from the optical sections shown in Fig. 5 after deblurring using the rotated projection method [Eq. (18)].
+
+Not only is this precision crucial for accurate quantitative imaging such as that required for the ratioing necessary to determine intracellular ion concentrations, but it also opens the way for sophisticated image processing. It is important to realize that image processing isn’t simply a means to improve image aesthetics, but can directly provide new, biologically important information. The impact of modern video microscopy techniques (Allen, 1985; InouC, 1986) attests to the fact that many biologically relevant phenomena take place at the limits of conventional microscopy. Image processing can be used to substantially enhance the resolution and contrast obtainable in two dimensions, enabling the invisible to be seen and quantitated. Cells are intrinsically three-dimensional. This can simply be a nuisance because of limited depth of focus of the microscope or it could be a fundamental aspect of the problem being studied. In either case, image processing techniques can be used to rapidly provide the desired representation of the data. In this chapter we have discussed the nature of image
+
+Fig. 7. Stereo model of the 3D spatial arrangement of diploid chromosomes. The stereo image ( A ) was constructed from optical section images taken with 0. I p m step size in L. Out-of-focus information w s removed as i n Fig. 5 . Chromosome paths were traced in the stack of optical sections using our interactive modeling software (Mathop. 1985) and are shown in stereo in ( B ) . Each line represents a sister chromatid: the central bright area is the centric heterochromatin cluster. Bar represents I pm.
+
+13.
+
+FLUORESCENCE MICROSCOPY IN THREE DIMENSIONS
+
+375
+
+FIG.8. Cytological assignment of diploid chromosomes. Gently squashed embryos were ~ imaged at 0.5-pm focal intervals, using a Leitz oil lens ( 6 3 /NA = 1.4). Immersion oil with the refractive index of 1.518 (Cargille Laboratory, Inc.) was used to minimize spherical aberration. Chromosome paths were traced and then the traced chromosomes were computationally straightened using the modeled chromosome path. This figure demonstrates the results of straightening the third chromosome. c, Centromere.
+
+formation in three dimensions and dealt with several means to remove contaminating out-of-focus information. The most straightforward of these methods uses only information from adjacent focal planes to correct the central one. This approach can be readily applied to virtually any problem and with most commonly available image processing hardware to provide a substantially deblurred image in almost real time. In addition to covering more sophisticated algorithms where the utmost in three-dimensional imaging is required, we have developed a method for extremely rapidly and accurately producing an in-focus, high-resolution “synthetic projection” image from a thick specimen. This is equivalent to that produced by a microscope having the impossible combination of a high-NA objective lens and an infinite depth of focus. A variation on this method allows efficient calculation of stereo pairs. Because these synthetic projection methods are efficient both computationally and in their use of the fluorescent light emitted from the sample, they are ideally suited for examining living cells or when using fluorophores that are very sensitive to photobleaching. Currently, real-time threedimensional imaging is limited equally by the necessary integration time required to form a high-quality CCD image (approximately 0.5 second) and the rather slow readout rates available with the high-precikion Photometics CCD camera controllers (approximately 1 second for a 512 X 512 area at
+
+376
+
+DAVID A. AGARD et al.
+
+12 bits). High-quality stereo imaging can be accomplished with about 10 views. By comparison, computation time is negligible. Thus it should now be possible to generate complete stereo pairs at a rate of 1every 20 seconds or so. CCD readout rates can be expected to substantially increase in the next year, and the use of more intense light sources or by compromising somewhat on image quality by tolerating slightly noisier images, lower resolutions, or reduced stereo depth should reduce the time per stereo pair to about 2-5 seconds. This should be sufficiently fast to allow complex biological dynamical phenomena to be studied in three dimensions in living cells. Although our studies have focused on the three-dimensional organization of chromosomes within the nucleus, it should be apparent that the methods being used are quite general and are suitable for many problems in structural cell biology. In our own laboratories, we have begun collaborations with colleagues at UCSF to study polarization phenomena in epithelial cells and spatial aspects of regulated transport through the Golgi. With the development of processing, display, and modeling software, it is now possible to quantitatively determine, analyze, and compare three-dimensional distributions of cellular components.
+ACKNOWLEDGMENTS
+We would like to thank Andrew Belmont for critical reading of the manuscript. This work was supported in part by NIH GM25101-09 and NIH GM32803-03 to J.W.S. and NIH GM31627 to D.A.A., and more recently by Howard Hughes Medical Institute (J.W.S. and D.A.A.). D.A.A. was also supported by a grant from the NSF Presidential Young Investigator Programs. Y.H. was supported by Damon Runyon-Walter Winchell Cancer Fund Fellowship DRG903.
+
+REFERENCES
+Agard, D. A. (1984). Annu. Rev. Biophys. Bioeng. 13, 191. Agard, D. A., and Sedat, J. W., (1980) Proc. SOC.Photo-Opt. Instrum. Eng. 264,110. Agard, D. A., and Sedat, J. W. (1984) Nature (London) 302, 676. Agard, D. A,, Steinberg, R. A., and Stroud, R. M. (1981). Anal. Biochern. 111, 257. Allen, R. D. (1985). Annu. Rev. Biophys. Chem. 14, 265. Belmont, A. S., Sedat, J. W., and Agard, D. A. (1987). J . Cell Biol. 105, 77. Bock, G . , Hilchenback, K., Schoenstein, K, and Larch, G. (1985). J . Histchem. Cytochern. 33, 699. Bracewell, R. (1965). “The Fourier Transform and Its Applications,” pp. 108-12. McGrawHill, New York. Castleman, K. R. (1979). “Digital Image Processing.” Prentice-Hall, Englewood Cliffs, New Jersey. Erhardt, A., Zinser, G., Komitowski, D., and Bille, J. (1985). Appl. Opt. 24, 194. Giloh, H., and Sedat, J. W. (1982). Science 217, 1252.
+
+13.
+
+FLUORESCENCE MICROSCOPY IN THREE DIMENSIONS
+
+377
+
+Gold, R. (1964). AEC Research and development report. ANL 6984, Argonne National Laboratory, Argonne, Illinois. Gruenbaum, Y., Hochstrasser, M., Mathog, D., Saumweber, H., Agard, D. A. and Sedat, J. W. (1984). J. Cell Sci. Suppl. 1,223. Grynkiewicz, G., Poonie, M., and Tsien, R. Y. (1985). J . Biol. Chem. 260, 3440. Hiraoka, Y., Sedat, J. W., and Agard, D. A. (1987). Science 238, 36. Hochstrasser, M., Mathog, D., Gruenbaum, Y., Saumweber, H., and Sedat, J. W. (1986). J . Cell Biol. 102, 112. Hopkins, H. H. (1955). Proc. R. Soc. (London) Ses. A 231, 91. Inoue, S. (1986). In “Video Microscopy,” Plenum, New York. Jannson, P. A., Hunt, R. M., and Plyler, E. K. (1970). J . Opt. Soc. Am. 60, 596. Jones, T. A. (1982). In “Computational Crystallography” (D. Sayre, ed.), pp. 303-317. Oxford Univ. Press, London. Mathog, D. (1985). J . Microsc. 137, 253. Mathog, D . , Hochstrasser, M., Gruenbaum, Y., Saumweber, H., and Sedat, J. W. (1984). Nature (London)308,414. Mathog, D., Hochstrasser, M., and Sedat, J. W. (1985). J. Microsc. 137,241. Stokseth, P. A. (1969). J . Opt. Soc. Am. 59, 1314. Thomas, G. J., Jr., and Agard, D. A. (1984). Biophys. J. 46,763-768. Waggoner, A. S., (1986). In “Applications of Fluorescence in the Biomedical Sciences” (D. L. Taylor, A. S. Waggoner, R. F. Murphy, F. Lanni, and R. R. Birge, eds.) pp. 3-28. Liss, New York. Williams, D. A , , Fogarty, K. E., Tsien, R. Y., and Fay, F. S. (1985). Nature (London) 318.558.
+

@@ -1,0 +1,53 @@
+Quantifying Cell Viability in Cultured Cells
+Jiyun Byun*1,2, DeeAnn Hartung*3,4, Stuart Feinstein3,4, and B. S. Manjunath1,2
+
+Analyzing cell viability is crucial in understanding the underlying molecular mechanisms of disease. With more than 20 million cases worldwide, Alzheimer’s disease (AD) is now the most common neurodegenerative disease. There are two pathological hallmarks of the disease, neuritic plaques and neurofibrillary tangles (NFTs). The extracellular plaques are composed of amyloid-beta (Aβ), an aberrant cleavage product of amyloid precursor protein (APP), and the intracellular NFTs are composed of hyperphosphorylated, aggregated tau protein. Genetic studies have shown that tau action lies downstream of amyloid-beta and is required for amyloid-beta to induce cell death; however, the link between them is unknown (Figure 1).
+APP Dysfunction
+???
+
+Tau Dysfunction NFTs
+
+Neuron Cell Death (Alzheimer’s)
+
+Aβ Plaques
+
+Figure 1. Neuronal cell death as a result of dysfunctions of APP and tau protein. The causal relationship between APP/Aβ and tau protein is not yet known.
+
+We present a novel method to segment complex cell clusters from confocal microscopy images of COS1 cells. The proposed method provides a reliable alive/dead cell ratio which will test the hypothesis that tau confers an acute hypersensitivity of microtubules to soluble, oligomeric amyloid-beta and that Taxol, a microtubule-stabilizing drug, provides neuroprotective effects. COS1 cells (immortalized African monkey kidney cells) were transfected with the longest isoform of tau and treated under various conditions. The experimental design consists of both wild-type COS1 cells (non-transfected) and tau transfected COS1 cells and these cells were imaged at 7 different timepoints after treatment (2 hrs, 6 hrs, 12 hrs, 24 hrs, 48 hrs, 72 hrs, and 120 hrs). At each time point, the cells are treated with 10 µM propidium iodide (red), 100 nM calcein AM (green) and Hoechst (blue) to identify dead, alive, and total number of cells, respectively. Images were collected with an Olympus Fluoview laser scanning confocal microscope (Figure 2).
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+Figure 2. Example images of wild type COS1 cells collected by confocal microscopy. Cells are analyzed with propidium iodide (red), calcein AM (green) and Hoechst (blue). (a) 2 hours after treatment. (b) 24 hours after treatment. (c) 48 hours after treatment. (d) 120 hours after treatment.
+
+Since COS1 cells are actively diving, cells in the image display distinctive shapes. For example, dividing cells tend to touch each other and appear in clumps comprising two or more cells (e.g. Figure 2 (c) and (d)). We design a rule for the classifying clustered cells and normal cells for consistent counting. First, cells are segmented by adaptive thresholding followed by morphological operations. Six different statistics are computed from each binary object: area, perimeter, compactness, minor axis, major axis, and axis ratio of an object. These statistics are used to discriminate clustered cells from normal cells within an image. Concavity depth (CD) is a concaveness measure. CD of each pixel on a boundary point is defined as its perpendicular distance from the corresponding convex hull segment. Concavity plots are computed to detect the pair of concavity pixels to split the
+1 Center for Bio-image Informatics, 2 Dept of Electrical and Computer Engineering, 3 Neuroscience Research Institute, 4 Dept of Molecular, Cellular and Developmental Biology, University of California, Santa Barbara, CA. http://www.bioimage.ucsb.edu * These authors contributed equally to this work. This research is supported by NSF # ITR-0331697 and the data collection is supported by NIH # NS35010
+
+binary cell clusters. By circular shift of CD of each pixel with respect to the major axis of the binary object, the pair of concavity pixel can be easily detected (Figure 3 (c)). A cell cluster is split by the line joining two concavity pixels (e.g. A and B in Figure 3) as shown in Figure 3. (d). Figure 4 shows the result of applying splitting algorithm.
+
+B A
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+Figure 3. Splitting a cell cluster. (a) An example binary image of a cell cluster. (b) A cell cluster with two concavity points A and B. Major axis of the cluster is computed (denoted in green) and convex hull points are detected to compute the concavity death of each pixel on the boundary of the object. (c) Concavity plot: concavity depth (CD) of each pixel is computed and the rotation normalization of computed CD is achieved by circular shift. A and B in the plot denotes local maxima of each side of major axis of the object. (d) Split result of a cluster.
+
+(a) (b) Figure 4. Example images of wild type COS1 cells collected by confocal microscopy. (a) Classification result of a binary image. The boundary of normal cells and cell clusters are displayed in red and green respectively. (b) The result of applying splitting algorithm showing all cell clusters are split correctly.
+
+We apply the developed method to 42 images of wild type COS1 cells without treatment at seven different time points (2, 6, 12, 24, 48, 72, and 120 hours. The cell density of the untreated COS1 cells is computed by dividing the total number of cells by the image area.
+The result (Figure 5) shows a gradual increase in cell density from 2 hours to 24 hours, but a dramatic increase from 48 to 120 hours.
+
+Figure 5. Cell density (/mm2) of untreated COS1 cells across the seven time points.
+
+The proposed method successfully split the cell clusters classified within an image. As a result, the method can provide the consistent cell counts regardless of the experimental condition. The proposed method provides a reliable way to determine alive/dead cells from confocal microscopy images.
+

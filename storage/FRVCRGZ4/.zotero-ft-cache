@@ -1,0 +1,385 @@
+REVIEWS
+
+POST-TRANSCRIPTIONAL GENE SILENCING BY DOUBLESTRANDED RNA
+Scott M. Hammond*‡, Amy A. Caudy*§ and Gregory J. Hannon*
+Imagine being able to knock out your favourite gene with only a day’s work. Not just in one model system, but in virtually any organism: plants, flies, mice or cultured cells. This sort of experimental dream might one day become reality as we learn to harness the power of RNA interference, the process by which double-stranded RNA induces the silencing of homologous endogenous genes. How this phenomenon works is slowly becoming clear, and might help us to develop an effortless tool to probe gene function in cells and animals.
+One of the most effective ways to determine the biological function of a protein is to examine the phenotype of organisms that contain mutations in its encoding gene. Typically, such mutations are either created in a directed manner, using homologous recombination, for example in yeast or mammals, or identified by searching collections of randomly mutagenized organisms for lesions in a gene of interest, as is commonly done in worms and flies. Alternative methods for silencing specific genes have also provided potentially powerful approaches. Antisense methods, using either DNA or RNA, are relatively straightforward techniques for probing gene function; however, these methodologies have consistently suffered from the spectre of artefacts that arise from questionable specificity and incomplete efficacy. Recently, a new method for silencing specific genes has emerged1. In diverse organisms, double-stranded (ds)RNAs have been shown to inhibit gene expression in a sequence-specific manner. This biological process, termed RNA interference, or RNAi, shows several features that border on the mystical. In Caenorhabditis elegans, gene silencing by RNAi can be initiated simply by soaking worms in dsRNA or by feeding worms Escherichia coli that express the dsRNA2. RNAi is a potent method, requiring only a few molecules of dsRNA per cell to silence expression. Not only can silencing spread from the digestive tract of worms to the remainder of the organism, but the effect can also be transmitted through the germ line for several generations1. These discoveries have intrigued the biological community — an interest that is also fuelled by the increasing power of RNAi as a tool to convert the accumulating hordes of genomic information into a deeper understanding of biological function. In this review, we highlight some of the recent progress that has been made towards understanding the mechanisms that underlie dsRNA-induced gene silencing and we briefly discuss ways in which this biological phenomenon is being harnessed as an experimental tool.
+The discovery of RNAi
+
+*Cold Spring Harbor Laboratory, 1 Bungtown Road, Cold Spring Harbor, New York 11724, USA. ‡Genetica Inc., 1 Kendall Square, Building 600, Cambridge, Massachusetts 01239, USA. §Watson School of Biological Sciences, Cold Spring Harbor Laboratory, 1 Bungtown Road, Cold Spring Harbor, New York 11724, USA. Correspondence to G.J.H. e-mail: hannon@cshl.org
+
+The discovery of RNAi grew out of a desire to use antisense approaches to probe gene function in C. elegans. In an effort to determine the function of the par-1 gene, Guo and Kemphues injected antisense par-1 RNA into worms3. This created the expected phenotype — embryonic lethality. However, a serious paradox was raised by the observation that injection of the control, sense-orientation RNA created an identical phenotype. With hindsight, this was reminiscent of observations that had been made in plants, in which increased gene dosage also caused loss of gene expression. However, at the time (six years ago), the inhibition of gene expression was thought to be caused by the saturation of the factors that are needed for par-1 translation. The key breakthrough came when Fire and Mello1,
+
+110
+
+| FEBRUARY 2001 | VOLUME 2
+
+www.nature.com/reviews/genetics
+
+© 2001 Macmillan Magazines Ltd
+
+REVIEWS
+who had also observed that either sense- or antisenseorientated RNAs inhibited gene function, asked whether injection of both the sense and the antisense strands into worms might give an additive, and so more complete, effect. Shockingly, the mixture of sense and antisense strands silenced expression of a target gene roughly tenfold more efficiently than either strand alone. Interpreting this dsRNA-induced effect as a new phenomenon, the authors named the process RNA interference, or RNAi. The ability of dsRNA to affect gene expression was already well known in mammals; here, a series of interferon-inducible pathways respond to dsRNA by inhibiting translation through the action of a dsRNA-activated protein kinase (DAI or PKR)4. The key difference between this response and RNAi was their respective specificity: the PKR response inhibited gene expression globally, whereas RNAi had a specific effect on gene expression. A more specific dsRNA response in mammalian cells had also been proposed to operate through the localized activation of a ribonuclease (RNASE L) that responds indirectly to dsRNA5. The latter pathway might have provided a plausible explanation for RNAi, as it was clear that the targeted mRNA was destroyed in response to dsRNA. However, a series of startling observations made it clear that RNAi was mechanistically distinct from any previously known dsRNA response. One of the first indications that RNAi was a novel biological phenomenon was the potency of its effect. Injection into the worm of only a few molecules of dsRNA per cell was sufficient to almost completely silence the expression of a specific gene. Furthermore, the effect seemed to be NON 1 CELL-AUTONOMOUS or, at the very least, systemic . Injection of dsRNA into the gut of the worm caused silencing throughout the animal, and also in the F1 progeny1. Transmission could occur through either the male or female germ line with almost complete PENETRANCE. The heritable nature of RNAi was compatible with the idea that dsRNA exerted its effect through the EPIGENETIC suppression of chromosomal loci. However, several lines of evidence indicated that dsRNA might have induced gene silencing at the post-transcriptional rather than at the transcriptional level. For example, only dsRNAs corresponding to transcribed regions of genes could induce silencing1,6 — even dsRNAs directed against intronic regions were largely ineffective1,7. Although the odd phenomenology of RNAi was not compatible with any previously known biological process, the authors of the original studies made some mechanistic predictions that, to their credit, have survived recent genetic and biochemical studies. They proposed that the key to the interference process is the recognition of the target mRNA by the dsRNA or a derivative thereof. Because the incoming dsRNA need not be present at stoichiometric levels, they proposed the existence of either a highly efficient catalytic machine or an amplification step. In the former case, they posited that the machinery of RNAi would search out homologous mRNAs, which would subsequently be destroyed by a nuclease that was directed to them by base-pairing interactions. In the latter case, they proposed an amplification of the signal, possibly through a replicative expansion of either the dsRNA or its derivative. The nature of the derivative that was either to direct the nuclease or to function as the template for amplification remained a mystery, because it could not be detected in worms that were undergoing silencing. As discussed below, a candidate for such an entity has been identified, first in plants and subsequently in Drosophila melanogaster. Ironically, a corresponding molecule has only recently been found in C. elegans8.
+RNAi and cosuppression
+
+RNASE L
+
+A ubiquitous vertebrate RNase that is activated indirectly by double-stranded RNA. This enzyme lacks the sequence specificity of RNA interference.
+NON-CELL-AUTONOMOUS
+
+A mutation that behaves noncell-autonomously is one that affects cells other than those that possess the mutation.
+PENETRANCE
+
+The proportion of genotypically mutant organisms that show the mutant phenotype. If all genotypically mutant individuals show the mutant phenotype, then the genotype is said to be completely penetrant.
+EPIGENETIC
+
+Transmission of phenotypes by mechanisms other than changes in DNA sequence.
+NUCLEAR RUN-ON ASSAY
+
+Direct measurement of transcriptional activity of a gene by incorporation of labelled UTP into its mRNA.
+5-AZA DEOXYCYTIDINE
+
+A potent and specific inhibitor of DNA methylation.
+
+While the use of RNAi as a reverse-genetic tool took the worm world by storm, continuing studies in plants revealed that previously studied silencing phenomena were reminiscent of RNAi in worms. In retrospect, it is clear that the phenomenon of RNAi was first discovered in plants (not in worms) as post-transcriptional gene silencing, or PTGS9,10 (BOX 1). With the development of tools for introducing transgenes into plants, attempts were made to engineer plants with more desirable characteristics. Among such efforts were those of Rich Jorgensen and his group, who tried to deepen the purple colour of petunias9,10. Unexpectedly, many plants failed to express the introduced transgenes. Furthermore, if the transgene contained homology to a cellular gene, the endogenous copy was also often silenced. The term ‘cosuppression’ was coined to describe the ability of exogenous elements to also alter the expression of endogenous genes. There seemed to be at least two mechanisms through which silencing of both transgenes and endogenous loci could occur. As defined by these mechanisms, in one class of plants, transgene-induced silencing was accompanied by heavy methylation of silenced loci, presumably leading to a blockade at the transcriptional level (transcriptional gene silencing or TGS; see BOX 1)11,12. In these cases, reversal of methylation by treatment with 5-AZA-DEOXYCYTIDINE relieved repression. A genetic screen in Arabidopsis thaliana uncovered two genes, decreased DNA methylation 1 (DDM1) and HOG1, that are required for maintenance of TGS. Mutation of either of these genes not only relieved repression but also resulted in a loss of methylation at targeted loci12. In some cases, however, methylation and silencing could be uncoupled. Disruption of the maintenance of methylation (MOM) gene resulted in activation of methylated genes, without affecting methylation. Interestingly, this gene is homologous to the SWI2 family components of ATP-dependent chromatin-remodelling complexes. This might indicate that a primary enforcer of silencing is altered chromatin structure, which functions with methylation to achieve suppression13. In a second class of plant, PTGS occurred. This was clearly shown by NUCLEAR RUN-ON ASSAYS, which indicated that transcript was being made but that it failed to accumulate in the cytoplasm14. Furthermore, silencing was a systemic phenomenon. Silencing of the endogenous gene could spread from the source plant by grafting tissue onto a host plant that did not contain the transgene15. A clue to the basis of this phenomenon came
+
+NATURE REVIEWS | GENETICS
+
+VOLUME 2 | FEBRUARY 2001 | 1 1 1
+
+© 2001 Macmillan Magazines Ltd
+
+REVIEWS
+al and post-transcriptional mechanisms might not be mutually exclusive. Ultimately, stable and heritable silencing in plants might result from a cross-talk between processes that affect the genomic copy of the gene that is to be silenced and processes that affect the corresponding mRNA14. Transgene cosuppression is not limited to plants but has also been shown in fungi, Drosophila17, C. elegans18 and rodent fibroblasts19. Transgene silencing in the ascomycete fungus, Neurospora crassa, had been termed ‘quelling’ and occurs at the post-transcriptional level (BOX 1). Furthermore, silencing that has been triggered in a transgenic nucleus can spread to a wild-type one in a HETEROKARYON20. In Drosophila, single copies of a white–adh (for alcohol dehydrogenase) fusion transgene can induce silencing of the endogenous adh gene17. This effect was more pronounced in flies that were homozygous for the transgene than those that were hemizygous, possibly owing to interaction between the two alleles. This led the authors to suggest that silencing was most probably occurring at the transcriptional level. In a different study, transgenes that were present as an inverted repeat were more effectively silenced than those arranged in direct repeats21. This DNA structure, when transcribed, yields RNA in a STEM-LOOP CONFORMATION. As with virally induced gene silencing, it is probable that, at least in the latter case, silencing is triggered by a dsRNA that induces PTGS through the RNAi pathway. Definitive links between transgene cosuppression and RNAi have come from genetic analysis. Searches for mutant organisms that are resistant to either RNAi or transgene cosuppression (specifically, to quelling) have revealed a common set of molecules. Furthermore, some mutations that prevent RNAi in C. elegans also relieve transgene cosuppression18. It is unclear whether cosuppression that occurs at the transcriptional level or that is provoked by unlinked and single-copy transgenes is related to RNAi. Further investigation is required to reveal the details of these regulatory processes and to illuminate the role of the RNAi pathway in these types of silencing event.
+Guide RNAs
+
+Box 1 | Variations in homology-dependent gene silencing Homology-dependent gene silencing has been recorded in various organisms, ranging from plants to animals to fungi. Because of the different experimental systems used to study this phenomenon, several terms have emerged, often describing potentially similar processes. These terms are summarized below. Silencing is generally defined on the basis of two properties: the inducing agent and the mechanism of silencing. Post-transcriptional gene silencing (PTGS) This is a general term that applies to RNA interference (RNAi) in animals, and to some types of virally- and transgene-induced silencing in plants. The transcription of the gene is unaffected; however, gene expression is lost because mRNA molecules become unstable. Transcriptional gene silencing (TGS) This is generally observed in plants but has also been seen in animals. Gene expression is reduced by a blockade at the transcriptional level. Evidence indicates that transcriptional repression might be caused by chromatin modification or DNA methylation. Transgene-induced silencing Silencing is caused by the presence of transgenes in the genome. Repression is usually related to copy number. Tandemly arrayed transgenes are more effective inducers of silencing than dispersed transgenes, with inverted repeats being the most effective. Silencing can occur transcriptionally or post-transcriptionally. Virus-induced silencing Silencing is induced by the presence of viral genomic RNA. Only replication-competent viruses cause silencing, indicating that double-stranded (ds)RNA molecules might be the inducing agents. Cosuppression Silencing of an endogenous gene due to the presence of a homologous transgene or virus. Cosuppression can occur at the transcriptional or post-transcriptional level (PTGS or TGS). RNAi This type of PTGS is induced directly by dsRNA. It was first defined in Caenorhabditis elegans and seems to be mechanistically related, if not identical, to PTGS in plants. Quelling This term is specific for transgene-induced PTGS in Neurospora crassa. The insert shows C.elegans embryos produced by worms that had been fed BIR-1 or dsRNA. BIR-1 deficiency (right photo) produces a profound cytokinesis deficiency as compared with controls (left photo)76. (Images kindly provided by S. Milstein and M. O. Hengartner.)
+
+HETEROKARYON
+
+A cell that contains two nuclei in a common cytoplasm.
+STEM-LOOP STRUCTURE
+
+A lollipop-shaped structure that is formed when a singlestranded nucleic acid molecule loops back on itself to form a complementary double helix (stem) topped by a loop.
+
+from observations made by Baulcombe and colleagues, who were using potato virus X as a vector for generating transgenic plants. It was believed that extremely high levels of transgene expression could be obtained through amplification of the viral RNA by its own RNA-dependent RNA polymerase. Unexpectedly, plants infected with virus vector (containing a reporter) did not yield highly expressing lines. Instead, plants had moderate levels of reporter gene expression, combined with viral resistance. This response, which resembled PTGS, was also effective against genes that contained sequence homology to the viral RNA. As with many RNA viruses, potato virus X generates dsRNA during its replication cycle. Replication defective viruses did not generate this response, indicating the viral RNA was the trigger16. With hindsight, this was a strong indication that PTGS in plants is similar to RNAi in worms; however, the observations of Baulcombe’s group pre-dated the seminal insights of Mello and Fire in C. elegans. It should be noted that suppression by transcription-
+
+As clearly articulated in the original models for RNAi that were proposed by Fire and Mello1, the most logical way to recognize a target mRNA would be through complementary base pairing. So investigators searched for nucleic acids that were coincident with silencing and that were homologous to the silenced gene. These proved elusive, not so much because of a physically exotic nature but because of their size. The key insight came from Baulcombe and Hamilton, who identified a small RNA species of ~25 nucleotides that was present in plants undergoing either cosuppression or virusinduced gene silencing, but that was absent from plants that were not undergoing silencing22. Because the RNAs that triggered silencing were large (>500 nucleotides), the small RNAs could have been participants in the silencing process, products of it, or both. Several lines of evidence indicated a possible integral role. First was the presence of small RNAs that were homologous to both
+
+112
+
+| FEBRUARY 2001 | VOLUME 2
+
+www.nature.com/reviews/genetics
+
+© 2001 Macmillan Magazines Ltd
+
+REVIEWS
+the sense and antisense strands of the silenced gene, making it unlikely that these were degradation products of the targeted mRNA. Second was the fact that production of the small RNAs did not require the presence of the homologous endogenous gene. In fact, RNA viruses that replicate in the cytoplasm could provoke the production of small RNAs homologous to a gene fragment of their RNA genome. As stated above, silencing by PTGS/RNAi at one site in a plant or worm can spread throughout the organism. Small RNAs could also be found at sites distant from those at which silencing had been induced, and the presence of these species correlated with loss of expression22. So, in plants, the presence of these small RNAs correlated with the silencing process, irrespective of whether silencing had been triggered by cytoplasmic dsRNAs or by genomic transgenes. The evidence for a general role for small RNAs was provided by the subsequent discovery of these small RNAs in Drosophila tissue culture cells in which RNAi had been provoked by introducing large (>500 nucleotide) exogenous dsRNAs23, in Drosophila embryo extracts that were carrying out RNAi in vitro24 and in Drosophila embryos that had been injected with dsRNA25. The presence of ~25-nucleotide RNAs in flies provided a strong indication that RNAi in animals and PTGS in plants were mechanistically similar, a hypothesis that has been borne out by genetic and biochemical evidence. Recently, small RNAs have been identified in plants undergoing TGS that had been induced by expression of stem loop RNAs26. It should be noted, however, that the data are only correlative. These small RNAs might not actually feed into a transcription-silencing complex, but instead feed into an unobserved PTGS activity. Nevertheless, this finding raises the possibility that a general mechanism applies to PTGS and TGS.
+Mechanistic basis of RNAi and PTGS
+
+RNA species, progress in both genetic and biochemical dissection of the silencing process has begun to produce a basic understanding of the interference mechanism. Genetic approaches. Shortly after RNAi was discovered in C. elegans, geneticists began to search for mutants that were defective in this response. In parallel, genetic screens were being done in Neurospora and Arabidopsis and, more recently, in Chlamydomonas reinhardtii27, to identify genes that are required for transgene- and virally induced PTGS. Loci are accumulating from all of these systems and are summarized in TABLE 1 as a guide to the discussion below. Mutants have been identified that affect the formation of silencing activity, the effector step of silencing and the persistence of silencing. These mutants indicate that formation of the silencer and the actual silencing events might be distinct and separable processes. Although none of these mutants has been assigned a definitive mechanistic role in the silencing process, their study has been informative. In particular, mutant plants and animals have additional phenotypes that hint at important biological functions for RNAi and related silencing phenomena. Two mutants have been shown to affect the formation of silencing activity. These have been placed at the initiation step because heterozygous worms (containing wild-type activity) that have been exposed to dsRNA can transmit RNAi to homozygous mutant offspring, even though homozygous animals can mount no silencing activity in response to an introduced double strand. These are the C. elegans RNAideficient mutants rde-4 and rde-1. The rde-1 gene was identified in a screen for first-generation RNAi mutants (rather than mutants in inherited RNAi). The RDE-1 protein is homologous to the quellingdefective (qde-2) gene in Neurospora28 and to ARGONAUTE (AGO-1) in Arabidopsis29. Whereas rde-1 and qde-2 have no apparent phenotypes other than defects in RNAi or quelling, the Arabidopsis AGO-1 mutant, which has recently been shown to be defective in PTGS29, has several developmental abnormalities. AGO-1 mutants have altered leaf differentiation, a reduced number of secondary meristems and are sterile because of defects in flower development 30. Mutations in other members of the Arabidopsis AGO gene family cause similar developmental effects29, and stem cell phenotypes are also a characteristic feature of AGO family mutants in Drosophila31. The rde-1 family is evolutionarily conserved, with several genes in all organisms that have been examined, with the exception of Schizosaccharomyces pombe. In mammals, a member of the RDE-1 family has been identified as a translation-initiation factor32, and a member of this protein family has been localized to the endoplasmic reticulum in rat cells 33. It is not known whether this protein is involved in RNAi in mammals or whether its function has diverged. Two mutants have also been identified in the second, effector step of silencing activity; these have been defined as such because a heterozygous worm injected
+
+One of the great mysteries surrounding RNAi is how a cell can respond to virtually any incoming dsRNA by efficiently and specifically silencing genes that are homologous to it. Since the seminal discovery of small
+Table 1 | Mutants that resist interference
+Caenorhabditis Neurospora Arabidopsis Putative function Involvement elegans crassa thaliana of protein of protein in RNAi rde-1 rde-2 rde-3 rde-4 mut-2 mut-7 ego-1 qde-1 qde-3 SGS-1 SGS-3 qde-2 AGO-1 Unknown Not cloned Not cloned Not cloned Not cloned RNaseD SGS-2/SDE-1 RdRP Werner Bloom helicase Unknown Unknown Effector Initiation of activity Initiation of activity Effector
+
+(AGO, argonante; ego, enhancers of glp-1; mut, mutator; rde, RNAi-deficient; RdRP, RNAdependent RNA polymerase; SGS, suppressor of gene silencing; qde, quelling-deficient.)
+
+NATURE REVIEWS | GENETICS
+
+VOLUME 2 | FEBRUARY 2001 | 1 1 3
+
+© 2001 Macmillan Magazines Ltd
+
+REVIEWS
+offspring (him phenotype) that results from spontaneous loss of an X chromosome during meiosis to produce the XO male. The connection between these chromosome-segregation defects and RNAi is not known. This strong genetic relationship between RNAi and transposon silencing supports the idea that RNAi is involved in genome defence and maintenance of genome stability (BOX 2), and raises questions concerning the route by which transposons and other multicopy genetic elements provoke an RNAi response. A group of mutants known for their role in C. elegans NONSENSE-MEDIATED DECAY have been shown to affect the persistence of interference42. These mutants are termed suppressors of morphological effects on genitalia 2,5 and 6 (smg-2, smg-5, and smg-6). The smg-5 and smg-6 genes are not cloned, but smg-2 has homology to a yeast RNA helicase43. No smg-2 homologues have been discovered in Neurospora. However, helicases have been linked to silencing through the Neurospora quelling mutant qde-3 (REF. 44). This helicase, like mut-7, is related to the human Werner syndrome and Bloom syndrome proteins. The incredible potency and systemic effects of both RNAi and PTGS have caused many observers to propose a role for RNA-dependent RNA polymerases (RdRPs) in the triggering and amplification of the silencing effect. Whereas RNAi in C. elegans is clearly initiated by dsRNA, PTGS in plants can be initiated just by very high levels of expression of a sense-orientated transcript from a transgene. This has led to the proposal that RdRPs recognize ‘aberrant’ RNAs and convert them to a double-stranded form. One plausible mechanism is that the accumulation of prematurely terminated transcripts provides a source of free 3′ hydroxyl termini that are not masked by polyAbinding proteins. These could function as a primer for the creation of a hairpin that would act as the silencing trigger. Whether by producing dsRNA or by amplifying it, the importance of RdRPs is apparent from the discovery of RdRPs among the silencing mutants of C. elegans, Neurospora and Arabidopsis. The C. elegans ego-1 gene was originally identified as a mutation that causes defective germline development45. The ego-1 mutant was subsequently shown to be defective in responses to dsRNAs that are homologous to some genes that are expressed in the germ line46 (where EGO-1 is predominantly expressed). In this mutant, RNAi functions normally for somatic genes. The Neurospora qde-1 mutant, which has a mutation in RdRP, is deficient in quelling but shows no other phenotype47. The Arabidopsis RdRP SGS2/SDE-1 was discovered in two separate screens for PTGS mutants48,49. Interestingly, mutant plants fail to accumulate small RNAs corresponding to the sense transcript of an ectopically expressed gene, but accumulate guide RNAs to an endogenously replicating RNA virus48. Correspondingly, SGS-2/SDE-1 mutant plants can silence a virus that replicates through a dsRNA intermediate but cannot silence a transgene, which might require the RdRP to generate the silencing trigger48. It has been proposed that the viral RdRP might substitute for the cellular RdRP in the silencing
+
+Box 2 | Biological function of double-stranded RNA-induced silencing The ability of double-stranded (ds) RNA to provoke gene silencing is a response that has been conserved throughout evolution, indicating it might be important biologically. An often proposed function is as a generalized defence mechanism against unwanted nucleic acids, either in the form of viruses or in the form of parasitic DNA sequences in the genome. There is a good deal of genetic support for the importance of RNAi and PTGS in genome defence. Many Caenorhabditis elegans mutants deficient in RNAi also show transposon mobilization. Similar connections can be drawn in Drosophila melanogaster and Chlamydomonas reinhardtii27,66,67. Derepression of transposons has obvious implications for genome stability. For instance, mobilized transposons might act as insertional mutagens. Many genomes contain highly repetitive sequences, including transposons, which normally reside in heterochromatin. Derepression of transposons could also disrupt the heterochromatic state and provide homologous sequences for recombination (for example, through double-strand-break repair) between non-homologous regions of chromosomes. In this way, transposon activation could result in large scale destabilization of the genome. A role for PTGS in transposon control has not yet been observed in plants, but PTGS is clearly involved in the response to RNA viruses. A substantial number of plant viruses have evolved proteins that counter silencing68,69. Many of these viral proteins had been previously identified as pathogenicity determinants, which points to the key role that PTGS has in antiviral defence. These viral opponents of PTGS are diverse and are likely to interfere at multiple steps in silencing. The key question that remains unanswered is whether RNAi and related phenomena have a role in regulating the expression of cellular genes. Although there is at present no direct support for this idea, there are indications from the phenotype of RNAiresistant mutants. In particular, mutation of the AGO-1 gene in Arabidopsis thaliana impairs silencing but also causes numerous developmental abnormalities29,30. So either the silencing process must be important during development or the AGO-1 protein must have multiple biological functions.
+
+NONSENSE-MEDIATED DECAY
+
+The process by which the cell destroys mRNAs that are untranslatable owing to the presence of a nonsense codon within the coding region.
+
+with dsRNA fails to transmit RNAi to homozygous mutant offspring 34. Worms with mutations in the RNAi deficient-2 (rde-2) and mutator-7 (mut-7) genes are less deficient in RNAi than the initiator-step mutants, suggesting that there might be several pathways for silencing. In addition to defects in RNAi, the effector mutants have increased levels of transposon activity and defects in transgene silencing35. These other phenotypes imply that part of the RNAi machinery is involved in silencing transposons and in cosuppression. However, the lack of transposon mobilization in the RNAi-initiation mutants indicates that transposon silencing and RNAi might not occur by completely identical mechanisms. The rde-2 gene product has not yet been identified. The mut-7 gene product has homology to both RNase D and to the exonuclease domain of the gene that is disrupted in human Werner syndrome; however, a functional helicase motif that is associated with the Werner protein is apparently lacking36. The Werner syndrome helicase has both DNase and RNase activities37–40, and the MUT-7 protein contains all of the key catalytic residues for nuclease activity. MUT-7 is therefore a reasonable candidate for the catalytic engine of the machinery that destroys mRNAs that have been targeted by RNAi. Other mutants that are defective in RNAi also show transposon mobilization. These include rde-3 (REF. 35) and mut-2 (REFS 35,36,41). In addition, these mutations can cause sterility and produce a high incidence of male
+
+114
+
+| FEBRUARY 2001 | VOLUME 2
+
+www.nature.com/reviews/genetics
+
+© 2001 Macmillan Magazines Ltd
+
+REVIEWS
+process. However, it is unclear whether the viral RdRP is required solely for production of the viral replication intermediate that functions as a silencing trigger or whether the viral RdRP might also function in the silencing process itself. The apparent absence of a RdRP homologue in the Drosophila genome has raised questions about the universality of this aspect of the silencing mechanism. However, a much more complete and detailed analysis will be required to definitively rule out the existence of a fly RdRP. Biochemical approaches. As genetic routes continue to link proteins to the silencing process, the challenge is to understand precisely how each one fits into the silencing mechanism. In this regard, the development of two related in vitro systems is now beginning to shed light on the biochemistry of RNAi. The first was developed by Tuschl and colleagues, who reported that extracts from Drosophila embryos specifically prevented the synthesis of luciferase from a synthetic mRNA upon addition of a cognate dsRNA 50. The interference activity in the extracts could be amplified by pre-incubation, such that they would still function upon repeated dilution; this was reminiscent of the apparent amplification of the interference effect that occurs during silencing in vivo. Finally, the authors showed that inhibition of gene expression was most probably due to degradation of mRNAs that correspond to the added dsRNA. This study was followed shortly by work from our laboratory, which reported the development of an in vitro system derived from Drosophila S2 cells (an embryonic cell line)23. The principal difference between the two experimental systems is that, in S2 cells, RNAi is initiated in intact cells by transfection with dsRNA, whereas in the embryo lysates, RNAi is initiated in vitro by the addition of dsRNAs. Our work solidified the idea that RNAi was the result of nuclease digestion of the mRNA but also revealed several key features of the silencing process. The nuclease, which was designated RISC (RNA-induced silencing complex) could be extracted from cells in association with ribosomes. Although this result could be dismissed as an experimental artefact, it was consistent with a previous proposal that RNAi acts as a translational surveillance mechanism. However, neither translation nor capped and polyadenylated mRNAs were not required in either Drosophila embryo or S2 cell extracts to observe RNAi in vitro23,24. To test the model that destruction of mRNA was directed by the dsRNA or a derivative thereof, we asked whether the nuclease activity had an integral nucleic acid component. Through partial purification, we found that a ~22-nucleotide RNA that was homologous to the substrate that fractionated together with the RISC and was required for its activity. This led to a model in which the small RNAs that were originally observed in plants functioned as a specificity subunit to direct a multicomponent nuclease towards destruction of homologous mRNAs. Therefore, we coined the name “guide RNAs” for these small RNAs. As formation of the nuclease had occurred inside transfected cells, it was difficult to determine whether the guide RNAs were derived directly from the incoming dsRNA or derived through replication of the dsRNA by RdRPs, which have been linked to RNAi in other systems. A key insight into this problem came again from the Drosophlia embryo. Zamore and colleagues, in a follow-up to their earlier study50, identified an activity in Drosophila embryo lysates that could cleave long dsRNAs into discrete ~21–23nucleotide fragments24. This implied that guide RNAs were derived from the dsRNA itself. Erickson and colleagues supported this view by showing that injection of labelled dsRNA into Drosophila embryos led to production of labelled guide RNAs25. Although this did not rule out the possibility that guide RNAs are supplemented by RNAs made by an RdRP, further work indicated that an RdRP activity might not be necessary. Using slightly mismatched dsRNAs, it was shown that the antisense strand is more critical for silencing25. This would make sense if the antisense strand leads directly to guide RNAs, which results in targeting of the sense transcript by hybridization. If replication was taking place, either strand could lead ultimately to homologous antisense guide RNAs. In support of the model that these small RNAs guide mRNA destruction, Zamore and colleagues showed that the dsRNA determined the boundaries of cleavage of the mRNA and that the mRNA was also cut at 21–23nucleotide intervals24. The latter observation implies
+
+a
+
+Processing/unwinding
+
+RISC formation
+
+Helicase dsRNA
+
+EXO ENDO
+
+RecA
+
+Replication
+
+b
+Helicase EXO ENDO mRNA targeting Helicase EXO ENDO
+
+Endo-/Exonucleolytic degradation AAAAA
+
+RecA
+
+RecA
+
+Figure 1 | How does RNAi work? Genetic and biochemical data indicate a possible two-step mechanism for RNA interference (RNAi): an initiation step and an effector step. a | In the first step, input double-stranded (ds) RNA is processed into 21–23-nucleotide ‘guide sequences’. Whether they are single- or double-stranded remains an open question. An RNA amplification step (shaded box) has been suggested on the basis of the unusual properties of the interference phenomenon in whole animals, but this has not been reproduced definitively in vitro. b | The guide RNAs are incorporated into a nuclease complex, called the RNA-induced silencing complex (RISC), which acts in the second effector step to destroy mRNAs that are recognized by the guide RNAs through base-pairing interactions. We also suggest the incorporation of an active mechanism to search for homologous mRNAs. (Endo, endonucleolytic nuclease; exo, exonucleolytic nuclease; recA, homology-searching activity related to E. coli recA.) Animated online
+
+NATURE REVIEWS | GENETICS
+
+VOLUME 2 | FEBRUARY 2001 | 1 1 5
+
+© 2001 Macmillan Magazines Ltd
+
+REVIEWS
+mechanisms determined in vitro and the genetic analyses of diverse systems. An additional benefit could come from the development of in vitro assays from systems such as C. elegans or Arabidopsis, in which genetic mutants already exist, or by the identification of RNAi-resistant mutants in Drosophila.
+Current model
+
+Box 3 | Delivering double-stranded RNA
+Method Organism C. elegans Drosophila Trypanosomes C. elegans77 Drosophila55 Trypanosomes78 Plants79 Pros Cons
+
+dsRNA
+
+• Fast • Non-inducible • Effective • Most effective in • Works in many embryonic systems systems • Stable • Inducible • Tissue specific • Time consuming to generate • Cloning can be problematic
+
+Stem-loop expression 5′ 3′ dsRNA
+
+Trypanosomes78,80 • Stable • Inducible • Tissue specific Dual promoter 5′ 3′ 3′ dsRNA 5′ Plants VIRUS • Most common technique in plants
+
+• Time consuming to generate • Promoters can silence each other
+
+• Limited to plants at present
+
+The original protocol for initiating RNA interference (RNAi) in Caenorhabditis elegans involved the direct introduction of double-stranded (ds)RNA by injection. By contrast, PTGS could be most easily induced in plants by infection with potato virus X. Although these two methods are still highly effective in their respective organisms, several other approaches have been developed for these, and for other organisms (including Drosophila melanogaster, see figure above). These permit initiation of RNAi at specific developmental stages, or in selected tissues. One way of achieving this involves expressing an RNA molecule that folds into a stem-loop structure, which mimics a double-stranded RNA. Alternatively, both (sense and antisense) strands of the dsRNA can be transcribed using separate promoters. With inducible, or tissuespecific promoters, the RNAi response can be tailored to the experimental requirements. Although both approaches have met with success, the stem-loop strategy is more widespread.
+
+RECA (recA)
+
+A multifunctional protein in E. coli that is involved in DNA recombination and postreplicative DNA repair. This protein also has an energydependent homologysearching activity.
+
+that, at some step in the pathway (either during generation of the 22-nucleotide fragment or mRNA cleavage by RISC), a nuclease might act processively on the substrate. These investigators also showed that RNAi was ATP-dependent. Although it was not completely clear which step of the process required ATP, the authors did show that the production of guide RNAs was greatly attenuated in the absence of ATP. These initial forays into the biochemistry of RNAi have yet to link genetically identified players to specific roles in the silencing process. However, purification of both the RISC and of the nuclease that produces guide RNAs is continuing. It is likely that these efforts will begin to forge links between the biochemical
+
+The biochemical analyses described above have given us an understanding of the interference process that is sufficient to build at least a superficial model (FIG. 1). The trigger for silencing by RNAi (and perhaps also in some cases of transgene-induced cosuppression) is clearly dsRNA. This is recognized by a nuclease that cleaves the dsRNA into ~21–23-nucleotide fragments. The prototypical nuclease that is specific for dsRNA belongs to the RNaseIII family of enzymes, which have been proposed to be components of RNAi51,52. The first biochemical measurement of such an enzyme was reported by Zamore and colleagues24, and a candidate protein has been identified by our lab53. Guide RNAs are assembled with one or more protein components to form the RISC. The RISC enzyme uses the instruction provided by the guide RNAs to identify mRNA substrates for degradation. Although the model accounts for the basic observations that have been made in vitro, it fails to account for many of the unusual properties of these silencing phenomena in vivo. For example, it is unclear how the RISC enzyme can identify its substrates so efficiently. The limited efficacy of antisense RNAs in many organisms suggests that base-pairing between complementary RNAs in vivo is not a common or favoured situation. So it seems likely that the RISC enzyme contains some mechanism to search the cellular transcriptome for its specific substrates, similar to the ability of RECA family proteins to search genomic DNA for homologous sequences54. Furthermore, the model makes no attempt to account for the systemic nature and heritability of silencing. However, we are optimistic that, as the biochemistry and genetics of the interference process evolve, we might be able to fit these unusual properties into a more detailed description of the silencing process.
+RNAi today and in the future
+
+Table 2 | RNA interference as a tool in various organisms
+RNAi as a tool today C. elegans Drosophila Plants Planaria Trypanosome Works, but some limitations RNAi in the future Zebrafish Xenopus Mouse embryo Mammalian cultured cells Mouse Human?
+
+The use of RNAi as a method to alter gene expression has been attempted in a wide variety of organisms, using different methods (BOX 3) and with varying degrees of success (TABLE 2). In C. elegans, Drosophila and plants, RNAi seems to be an effective, specific and therefore valuble tool for reverse genetics. A second class of organism, including zebrafish, Xenopus and mouse, has been shown to have some capacity for RNAi; however, there seem to be significant limitations. In almost all cases, treatment of worms with dsRNA gives a phenocopy of the genetic null mutant (BOX 4). Typically, adult hermaphrodites are soaked with dsRNA or are fed E. coli cells that express the dsRNA. Specificity is usually high, although closely related sequences can
+
+116
+
+| FEBRUARY 2001 | VOLUME 2
+
+www.nature.com/reviews/genetics
+
+© 2001 Macmillan Magazines Ltd
+
+REVIEWS
+by adding the dsRNA to the culture medium59. Among the reasons that both C.elegans and Drosophila have benefited so markedly from RNAi is the difficulty (in the case of C.elegans, the impossibility) of generating targeted null mutations analogous to mouse knockouts60. This is also the case in planaria and trypanosomes, two other organisms in which RNAi technology can be applied61,62. The related phenomenon of virus-induced gene silencing is a potentially powerful approach for plant genetics. Introducing the inducing agent can be done in many ways. One option is to engineer the plant vector Agrobacterium tumifaciens to deliver a hairpin expression construct, and another is to use plant viruses such as potato virus X. In the latter case, dsRNA that is generated during viral replication in the plant silences the endogenous genes that are homologous to any sequences carried within the virus. These technologies will encourage loss-of-function RNAi screens to be done in plants, similar to those being done in C.elegans56,57. Many investigators are eager to see RNAi technologies applied as genetic tools in vertebrate organisms (TABLE 2). Some hope for this possibility is provided by the discovery that dsRNA can induce sequence-specific silencing in early mouse embryos63,64. Unfortunately, the use of this approach is, at present, limited to a narrow developmental window, and effects provoked in early embryos do not persist after implantation64. It has recently been reported that dsRNAs can silence the expression of exogenous genes in Chinese hamster ovary cells65. Although it has yet to be definitively shown that the mechanisms by which dsRNAs induce silencing in mammals are similar to those that seem to be conserved in plants, flies, worms and fungi, it seems probable that the interference mechanism is universal. So a deeper understanding of RNAi in various experimental systems might lead to insights into how to harness this potentially latent process in mammalian cell culture and in mammalian animals.
+Conclusions
+
+Box 4 | What does RNA interference do for me?
+
+The discovery of RNA interference (RNAi) has revolutionized reverse-genetic approaches in diverse systems. RNAi has become a standard procedure in C. elegans (see above figure) and is being harnessed in large-scale genomics efforts in plants. It has also allowed the functional analysis of genes in Drosophila melanogaster and cultured Drosophila cells, and in more exotic organisms such as planaria and trypanosomes70,71. RNAi has been used successfully in Drosophila, particularly for the study of embryonic phenotypes. However, recent demonstrations that enforced the production of hairpin RNAs in adults can silence gene expression promise to expand the utility of this approach72. Several recent papers have suggested that RNAi might also prove useful in vertebrate systems. The first indication came from zebrafish, in which silencing was observed after injection of double-stranded (ds)RNA into embryos73,74. The effect seemed less potent than that seen in C. elegans, with only 20–30% of embryos being affected. Subsequently, concerns about cross-interference have slowed the acceptance of this technology75, so further work is needed before drawing a conclusion regarding the utility of RNAi in zebrafish. The report that dsRNA can specifically interfere with gene expression in mammals was more startling. Injection of dsRNA into early stage mouse embryos specifically antagonized both endogenous and exogenous genes63,64. The effects, however, were transient, lasting roughly until the time of implantation. This raises the possibility that increased knowledge of the mechanisms of RNAi will provide the means to prolong the effect and make dsRNA-induced gene silencing a generally useful tool for probing gene function in mammals. The insert shows C.elegans embryos produced by worms that had been fed BIR-1 or dsRNA. BIR-1 deficiency (right photo) produces a profound cytokinesis deficiency as compared with controls (left photo)76. (Images kindly provided by S. Milstein and M. O. Hengartner.)
+
+cross-interfere8. Alternatively, worms can be engineered that express a stem-loop RNA from a stable episome or from genomic integrants55. This allows the generation of stable phenotypically null strains. Although RNAi has been most widely harnessed for reverse genetics, wholegenome approaches are on the horizon. Recent reports have described the use of RNAi to systematically and individually ablate each gene on entire C. elegans chromosomes56,57. RNAi technology is proving beneficial for the study of Drosophila embryology. Injection of early stage embryos leads to null phenotypes at later stages. But this approach is restricted to a relatively narrow developmental window. A more general approach to achieve gene silencing in embryos or in adult flies is through the expression of stem-loop RNAs; however, this requires the time consuming operation of generating transgenic animals58. Finally, RNAi is being harnessed for reverse genetics in cultured Drosophila cells. This process is almost trivial because silencing can be achieved simply
+
+Since the independent discovery of seemingly unrelated silencing phenomena in plants, fungi and animals, we have come to realize that dsRNA can activate an evolutionarily conserved mechanism of gene regulation. Over the past few years, we have come to understand the basic mechanism through which silencing occurs. However, only through a combination of biochemical and genetic approaches in several experimental models can we hope to elucidate the mechanistic basis of dsRNA-induced silencing and to appreciate its biological importance.
+Links
+DATABASE LINKS par-1 | DDM1 | rde-4 | rde-1 | qde-2 |
+
+AGO-1 | rde-2 | mut-7 | Werner syndrome | mut-2 | smg-2 | smg-5 | smg-6 | qde-3 | Bloom syndrome | ego-1 | SGS-2 | SDE-1
+
+NATURE REVIEWS | GENETICS
+
+VOLUME 2 | FEBRUARY 2001 | 1 1 7
+
+© 2001 Macmillan Magazines Ltd
+
+REVIEWS
+1. Fire, A. et al. Potent and specific genetic interference by double-stranded RNA in Caenorhabditis elegans. Nature 391, 806–811 (1998). This was the first paper to describe the phenomenon of RNA interference (RNAi). Tabara, H., Grishok, A. & Mello, C. Soaking in the genome sequence. Science 282, 430–431 (1998). Guo, S. & Kemphues, K. J. par-1, a gene required for establishing polarity in C. elegans embryos, encodes a putative Ser/Thr kinase that is asymmetrically distributed. Cell 81, 611–620 (1995). Williams, B. R. PKR; a sentinel kinase for cellular stress. Oncogene 18, 6112–6120 (1999). Stark, G. R., Kerr, I. M., Williams, B. R., Silverman, R. H. & Schreiber, R. D. How cells respond to interferons. Annu. Rev. Biochem. 67, 227–264 (1998). Montgomery, M. K., Xu, S. & Fire, A. RNA as a target of double-stranded RNA-mediated genetic interference in Caenorhabditis elegans. Proc. Natl Acad. Sci. USA 95, 15502–15507 (1998). Bosher, J. M., Dufourcq, P., Sookhareea, S. & Labouesse, M. RNA interference can target pre-mRNA: consequences for gene expression in a Caenorhabditis elegans operon. Genetics 153, 1245–1256 (1999). Parrish, S., Fleenor, J., Xu, S., Mello, C. & Fire, A. Functional anatomy of a dsRNA trigger: differential requirement for the two trigger strands in RNA interference. Mol. Cell 6, 1077–1087 (2000). Que, Q. & Jorgensen, R. A. Homology-based control of gene expression patterns in transgenic petunia flowers. Dev. Genet. 22, 100–109 (1998). Jorgensen, R. A., Cluster, P. D., English, J., Que, Q. & Napoli, C. A. Chalcone synthase cosuppression phenotypes in petunia flowers: comparison of sense vs. antisense constructs and single-copy vs. complex T-DNA sequences. Plant Mol. Biol. 31, 957–973 (1996). Luff, B., Pawlowski, L. & Bender, J. An inverted repeat triggers cytosine methylation of identical sequences in Arabidopsis. Mol. Cell 3, 505–511 (1999). Furner, I. J., Sheikh, M. A. & Collett, C. E. Gene silencing and homology-dependent gene silencing in Arabidopsis: genetic modifiers and DNA methylation. Genetics 149, 651–662 (1998). Amedeo, P., Habu, Y., Afsar, K., Scheid, O. M. & Paszkowski, J. Disruption of the plant gene MOM releases transcriptional silencing of methylated genes. Nature 405, 203–206 (2000). Ingelbrecht, I., Van Houdt, H., Van Montagu, M. & Depicker, A. Posttranscriptional silencing of reporter transgenes in tobacco correlates with DNA methylation. Proc. Natl Acad. Sci. USA 91, 10502–10506 (1994). Palauqui, J. C., Elmayan, T., Pollien, J. M. & Vaucheret, H. Systemic acquired silencing: transgene-specific posttranscriptional silencing is transmitted by grafting from silenced stocks to non-silenced scions. EMBO J. 16, 4738–4745 (1997); erratum 17, 2137 (1998). Angell, S. M. & Baulcombe, D. C. Consistent gene silencing in transgenic plants expressing a replicating potato virus X RNA. EMBO J. 16, 3675–3684 (1997). Pal-Bhadra, M., Bhadra, U. & Birchler, J. A. Cosuppression in Drosophila: gene silencing of Alcohol dehydrogenase by white-Adh transgenes is Polycomb dependent. Cell 90, 479–490 (1997). Dernburg, A. F., Zalevsky, J., Colaiacovo, M. P. & Villeneuve, A. M. Transgene-mediated cosuppression in the C. elegans germ line. Genes Dev. 14, 1578–1583 (2000). Bahramian, M. B. & Zarbl, H. Transcriptional and posttranscriptional silencing of rodent alpha1(I) collagen by a homologous transcriptionally self-silenced transgene. Mol. Cell. Biol. 19, 274–283 (1999). Cogoni, C. et al. Transgene silencing of the al-1 gene in vegetative cells of Neurospora is mediated by a cytoplasmic effector and does not depend on DNA–DNA interactions or DNA methylation. EMBO J. 15, 3153–3163 (1996). Dorer, D. R. & Henikoff, S. Expansions of transgene repeats cause heterochromatin formation and gene silencing in Drosophila. Cell 77, 993–1002 (1994). Hamilton, A. J. & Baulcombe, D. C. A species of small antisense RNA in posttranscriptional gene silencing in plants. Science 286, 950–952 (1999). A potential mediator of post-transcriptional gene silencing (PTGS) was identified for the first time. This small ~25-nucleotide RNA has become a hallmark of silencing processes that are mediated by double-stranded (ds) RNA molecules. Hammond, S. M., Bernstein, E., Beach, D. & Hannon, G. J. An RNA-directed nuclease mediates post-transcriptional gene silencing in Drosophila cells. Nature 404, 293–296 (2000). The authors identify a dsRNA-inducible nuclease activity that targets mRNAs for degradation. They also show that this enzyme is associated with ~22nucleotide RNA fragments (guide RNAs) that might determine target specificity. Zamore, P. D., Tuschl, T., Sharp, P. A. & Bartel, D. P. RNAi: double-stranded RNA directs the ATP-dependent cleavage of mRNA at 21 to 23 nucleotide intervals. Cell 101, 25–33 (2000). By developing their earlier work on an in vitro RNAi system, these authors show that ~22-nucleotide guide RNAs can be produced directly from longer dsRNAs in vitro and that target mRNAs are cleaved in response to dsRNAs at ~22-nucleotide intervals. Yang, D., Lu, H. & Erickson, J. W. Evidence that processed small dsRNAs may mediate sequence specific mRNA degradation during RNAi in Drosophila embryos. Curr. Biol. 10, 1191–1200 (2000). Mette, M. F., Aufsatz, W., van der Winden, J., Matzke, M. A. & Matzke, A. J. M. Transcriptional silencing and promoter methylation triggered by double-stranded RNA. EMBO J. 19, 5194–5201 (2000). Wu-Scharf, D., Jeong, B., Zhang, C. & Cerutti, H. Transgene and transposon silencing in chlamydomonas reinhardtii by a DEAH-Box RNA helicase. Science 290, 1159–1163 (2000). Catalanotto, C., Azzalin, G., Macino, G. & Cogoni, C. Gene silencing in worms and fungi. Nature 404, 245 (2000). Fagard, M., Boutet, S., Morel, J. B., Bellini, C. & Vaucheret, H. AGO1, QDE-2, and RDE-1 are related proteins required for post-transcriptional gene silencing in plants, quelling in fungi, and RNA interference in animals. Proc. Natl Acad. Sci. USA 97, 11650–11654 (2000). Bohmert, K. et al. AGO1 defines a novel locus of Arabidopsis controlling leaf development. EMBO J. 17, 170–180 (1998). Lin, H. & Spradling, A. C. A novel group of pumilio mutations affects the asymmetric division of germline stem cells in the Drosophila ovary. Development 124, 2463–2476 (1997). Zou, C., Zhang, Z., Wu, S. & Osterman, J. C. Molecular cloning and characterization of a rabbit eIF2C protein. Gene 211, 187–194 (1998). Cikaluk, D. E. et al. GERp95, a membrane-associated protein that belongs to a family of proteins involved in stem cell differentiation. Mol. Biol. Cell 10, 3357–3372 (1999). Grishok, A., Tabara, H. & Mello, C. C. Genetic requirements for inheritance of RNAi in C. elegans. Science 287, 2494–2497 (2000). Tabara, H. et al. The rde-1 gene, RNA interference, and transposon silencing in C. elegans. Cell 99, 123–132 (1999). With reference 26, this is one of the first reports of the genetic analysis of RNAi in C. elegans. This paper establishes a link between RNAi and transposon silencing and links the ARGONAUTE family of proteins to the silencing process. Ketting, R. F., Haverkamp, T. H., van Luenen, H. G. & Plasterk, R. H. Mut-7 of C. elegans, required for transposon silencing and RNA interference, is a homolog of Werner syndrome helicase and RNaseD. Cell 99, 133–141 (1999). Establishes a link between RNAi and transposon silencing and identifies a putative nuclease as an effector of silencing. Suzuki, N., Shiratori, M., Goto, M. & Furuichi, Y. Werner syndrome helicase contains a 5′→3′ exonuclease activity that digests DNA and RNA strands in DNA/DNA and RNA/DNA duplexes dependent on unwinding. Nucleic Acids Res. 27, 2361–2368 (1999). Kamath-Loeb, A. S., Shen, J. C., Loeb, L. A. & Fry, M. Werner syndrome protein. II. Characterization of the integral 3′→5′ DNA exonuclease. J. Biol. Chem. 273, 34145–34150 (1998). Shen, J. C. et al. Werner syndrome protein. I. DNA helicase and DNA exonuclease reside on the same polypeptide. J. Biol. Chem. 273, 34139–34144 (1998). Huang, S. et al. The premature ageing syndrome protein, WRN, is a 3′→5′ exonuclease. Nature Genet. 20, 114–116 (1998). Collins, J. J. & Anderson, P. The Tc5 family of transposable elements in Caenorhabditis elegans. Genetics 137, 771–781 (1994). Domeier, M. E. et al. A link between RNA interference and nonsense-mediated decay in Caenorhabditis elegans. Science 289, 1928–1931 (2000). Page, M. F., Carr, B., Anders, K. R., Grimson, A. & Anderson, P. SMG-2 is a phosphorylated protein required for mRNA surveillance in Caenorhabditis elegans and related to Upf1p of yeast. Mol. Cell. Biol. 19, 5943–5951 (1999). Cogoni, C. & Macino, G. Posttranscriptional gene silencing in Neurospora by a RecQ DNA helicase. Science 286, 2342–2344 (1999). Qiao, L. et al. Enhancers of glp-1, a gene required for cellsignaling in Caenorhabditis elegans, define a set of genes required for germline development. Genetics 141, 551–569 (1995). Smardon, A. et al. EGO-1 is related to RNA-directed RNA polymerase and functions in germ-line development and RNA interference in C. elegans. Curr. Biol. 10, 169–178 (2000); erratum in 10, R393–R394 (2000). Cogoni, C. & Macino, G. Gene silencing in Neurospora crassa requires a protein homologous to RNA-dependent RNA polymerase. Nature 399, 166–169 (1999). Dalmay, T., Hamilton, A., Rudd, S., Angell, S. & Baulcombe, D. C. An RNA-dependent RNA polymerase gene in Arabidopsis is required for posttranscriptional gene silencing mediated by a transgene but not by a virus. Cell 101, 543–553 (2000). Mourrain, P. et al. Arabidopsis SGS2 and SGS3 genes are required for posttranscriptional gene silencing and natural virus resistance. Cell 101, 533–542 (2000). Tuschl, T., Zamore, P. D., Lehmann, R., Bartel, D. P. & Sharp, P. A. Targeted mRNA degradation by doublestranded RNA in vitro. Genes Dev. 13, 3191–3197 (1999). Bass, B. L. Double-stranded RNA as a template for gene silencing. Cell 101, 235–238 (2000). Cerutti, L., Mian, N. & Bateman, A. Domains in gene silencing and cell differentiation proteins: the novel PAZ domain and redefinition of the piwi domain. Trends Biochem. Sci. 10, 481–482 (2000). Bernstein, E., Caudy, A. C., Hammond, S. M. & Hannon, G. J. Role for a bidentate ribonuclease in the initiation step of RNA interference, Nature 409, 363–366 (2001). Kowalczykowski, S. C. Initiation of genetic recombination and recombination-dependent replication. Trends Biochem. Sci. 25, 156–165 (2000). Tavernarakis, N., Wang, S. L., Dorovkov, M., Ryazanov, A. & Driscoll, M. Heritable and inducible genetic interference by double-stranded RNA encoded by transgenes. Nature Genet. 24, 180–183 (2000). Fraser, A. G. et al. Functional genomic analysis of C. elegans chromosome I by systematic RNA interference. Nature 408, 325–330 (2000). Gonczy, P. et al. Functional genomic analysis of cell division in C. elegans using RNAi of genes on chromosome III. Nature 408, 331–336 (2000). Kennerdell, J. R. & Carthew, R. W. Heritable gene silencing in Drosophila using double stranded RNA. Nature Biotechnol. 17, 896–898 (2000). Clemens, J. C. et al. Use of double-stranded RNA interference in Drosophila cell lines to dissect signal transduction pathways. Proc. Natl Acad. Sci. USA 97, 6499–6503 (2000). Rong, Y. S. & Golic, K. G. Gene targeting by homologous recombination in Drosophila. Science 288, 2013–2018 (2000). Ngo, H., Tschudi, C., Gull, K. & Ullu, E. Double-stranded RNA induces mRNA degradation in Trypanosoma brucei. Proc. Natl Acad. Sci. USA 95, 14687–14692 (1998) Alvarado, A. S. & Newmark, P. A. Double stranded RNA specifically disrupts gene expression during planarian regeneration. Proc. Natl Acad. Sci. USA 96, 5049–5054 (1999). Svoboda, P., Stein, P., Hayashi, H. & Schultz, R. M. Selective reduction of dormant maternal mRNAs in mouse oocytes by RNA interference. Development 127, 4147–4156 (2000). Wianny, F. & Zernicka-Goetz, M. Specific interference with gene function by double-stranded RNA in early mouse development. Nature Cell Biol. 2, 70–75 (2000). Ui-Tei, K., Zenno, S., Miyata, Y. & Saigo, K. Sensitive assay of RNA interference in Drosophila and Chinese hamster cultured cells using firefly luciferase gene as target. FEBS Lett. 479, 79–82 (2000). Jensen, S., Gassama, M. P. & Heidmann, T. Cosuppression of I transposon activity in Drosophila by Icontaining sense and antisense transgenes. Genetics 153, 1767–1774 (1999). Malinsky, S., Bucheton, A. & Busseau, I. New insights on homology-dependent silencing of I factor activity by transgenes containing ORF1 in Drosophila melanogaster. Genetics 156, 1147–1155 (2000). Brigneti, G. et al. Viral pathogenicity determinants are suppressors of transgene silencing in Nicotiana benthamiana. EMBO J. 17, 6739–6746 (1998). Voinnet, O., Pinto, Y. M. & Baulcombe, D. C. Suppression of gene silencing: a general strategy used by diverse DNA and RNA viruses of plants. Proc. Natl Acad. Sci. USA 96,
+
+44.
+
+2. 3.
+
+24.
+
+45.
+
+46.
+
+4. 5.
+
+47.
+
+25.
+
+6.
+
+48.
+
+26.
+
+7.
+
+49.
+
+27.
+
+8.
+
+50.
+
+28.
+
+51. 52.
+
+9.
+
+29.
+
+10.
+
+53.
+
+30.
+
+11.
+
+54.
+
+31.
+
+12.
+
+55.
+
+32.
+
+13.
+
+56.
+
+33.
+
+57.
+
+14.
+
+34.
+
+58.
+
+15.
+
+35.
+
+59.
+
+16.
+
+60.
+
+17.
+
+36.
+
+61.
+
+62.
+
+18.
+
+63.
+
+19.
+
+37.
+
+64.
+
+20.
+
+38.
+
+65.
+
+21.
+
+39.
+
+66.
+
+22.
+
+40.
+
+67.
+
+41.
+
+42.
+
+68.
+
+23.
+
+43.
+
+69.
+
+118
+
+| FEBRUARY 2001 | VOLUME 2
+
+www.nature.com/reviews/genetics
+
+© 2001 Macmillan Magazines Ltd
+
+REVIEWS
+14147–14152 (1999). This is one of several papers that establishes a second biological function for RNAi by linking dsRNA-induced silencing to virus resistance in plants. Ruiz, F., Vayssie, L., Klotz, C., Sperling, L. & Madeddu, L. Homology-dependent gene silencing in Paramecium. Mol. Biol. Cell 9, 931–943 (1998). Shi, H. et al. Genetic interference in Trypanosoma brucei by heritable and inducible double-stranded RNA. RNA 6, 1069–1076 (2000). Kennerdell, J. R. & Carthew, R. W. Heritable gene silencing in Drosophila using double-stranded RNA. Nature Biotechnol. 18, 896–898 (2000). Li, Y. X., Farrell, M. J., Liu, R., Mohanty, N. & Kirby, M. L. Double-stranded RNA injection produces null phenotypes in zebrafish. Dev. Biol. 217, 394–405 (2000); erratum 220, 432 (2000). Wargelius, A., Ellingsen, S. & Fjose, A. Double-stranded RNA induces specific developmental defects in zebrafish embryos. Biochem. Biophys. Res. Commun. 263, 156–161 (1999). Oates, A. C., Bruce, A. E. & Ho, R. K. Too much interference: injection of double-stranded RNA has nonspecific effects in the zebrafish embryo. Dev. Biol. 224, 20–28 (2000). Fraser, A. G., James, C., Evan, G. I. & Hengartner, M. O. Caenorhabditis elegans inhibitor of apoptosis protein (IAP) homologue BIR-1 plays a conserved role in cytokinesis. Curr. Biol. 9, 292–301 (1999). Tavernarakis, N., Wang, S. L., Dorovkov, M., Ryazanov, A. & Driscoll, M. Heritable and inducible genetic interference by double-stranded RNA encoded by transgenes. Nature Genet. 24, 180–183 (2000). Shi, H. et al. Genetic interference in Trypanosoma brucei by heritable and inducible double-stranded RNA. RNA 6, 1069–1076 (2000). Chuang, C. F. & Meyerowitz, E. M. Specific and heritable genetic interference by double-stranded RNA in Arabidopsis thaliana. Proc. Natl Acad. Sci. USA 97, 4985–4990 (2000). 80. Wang, Z., Morris, J. C., Drew, M. E. & Englund, P. T. Interference of Trypanosoma brucei gene expression by RNA Interference using an integratable vector with opposing T7 promoters. J. Biol. Chem. 275, 40174–40179 (2000).
+
+75.
+
+70.
+
+76.
+
+71.
+
+Acknowledgements
+The authors thank R. Ketting (Hubrecht Laboratory, Utrecht) and A. Denli (Cold Spring Harbor Laboratories) for critical reading of the manuscript. A.A.C. is a George A. and Margorie H. Anderson Fellow of the Watson School of Biological Sciences and a Predoctoral Fellow of the Howard Hughes Medical Institute. SMH is a Visiting Scientist from Genetica, Inc. (Cambridge, Massachusetts). G.J.H. is a Pew Scholar in the Biomedical Sciences. This work was supported in part by grants from the NIH (G.J.H.).
+
+72.
+
+77.
+
+73.
+
+78.
+
+74.
+
+79.
+
+NATURE REVIEWS | GENETICS
+
+VOLUME 2 | FEBRUARY 2001 | 1 1 9
+
+© 2001 Macmillan Magazines Ltd
+

@@ -1,0 +1,179 @@
+Pattern Recognition Letters 19 Ž1998. 741–747
+
+Quantitative evaluation of color image segmentation results
+M. Borsotti a , P. Campadelli
+a b
+
+1
+
+a,2
+
+, R. Schettini
+
+b,)
+
+Dip. di Scienze dell’Informazione, UniÕersita degli Studi di Milano, Via Comelico 39, Milano, Italy ` ITIM, Istituto Tecnologie Informatiche Multimediali, CNR, Consiglio Nazionale delle Ricerche, Via Ampere 56, 20131 Milano, Italy Received 9 September 1997; revised 11 February 1998
+
+Abstract In this paper we consider the problem of the automatic evaluation of the results of color image segmentation. Liu and Yang Ž1994. have proposed an evaluation function, inspired by the qualitative criteria for good image segmentation established by Haralick and Shapiro Ž1985., that does not require that the user set any parameter or threshold value. We identify some limitations in this evaluation function, and propose two enhanced functions that correspond more closely to visual judgment. q 1998 Elsevier Science B.V. All rights reserved.
+Keywords: Color image segmentation; Segmentation evaluation; Segmentation algorithms comparison
+
+1. Introduction Over the past decades many low-level region segmentation algorithms have been proposed ŽHaralick and Shapiro, 1985; Pal and Pal, 1993.. The aim of these algorithms is the domain-independent partition of the image into a set of regions that are visually distinct and uniform with respect to some property, such as gray level, texture or color. While several authors have recognized that correct segmentation can not be achieved without specific domain knowledge Že.g., Ton et al., 1991; Pavlidis and Liow, 1990., low-level segmentation is often applied as the
+
+) Corresponding author. Tel.: q39 2 70643288; fax: q39 2 70643292, q39 2 2663030; e-mail: centaura@itim.mi.cnr.it. 1 Electronic Annexes available. See http:rrwww. elsevier.nl.locaterpatrec. 2 E-mail: campadelli@dsi.unimi.it.
+
+first step in a bottom-up strategy of image analysis. In this fashion, segmentation is often evaluated only visually, or on the basis of the effectiveness of the segmentation produced in the subsequent domain-dependent step of processing Že.g. Schettini, 1993; Saber et al., 1997.. Zhang Ž1996. has recently published an extensive survey of existing methods for evaluating image segmentation. His analysis suggests that empirical methods are to be preferred, as there is still no general theory of image segmentation. He also points out that, in general, evaluation functions require some scalingrweighting parameters, which often have to be set on the basis of human intuition or judgment. Liu and Yang Ž1994. have proposed a function that does not require any user-set parameter or threshold values, for the quantitative evaluation of the performance of algorithms for the segmentation of color images. As we believe that this type of parameter-free, quantitative measure would be very
+
+0167-8655r98r$19.00 q 1998 Elsevier Science B.V. All rights reserved. PII: S 0 1 6 7 - 8 6 5 5 Ž 9 8 . 0 0 0 5 2 - X
+
+742
+
+M. Borsotti et al.r Pattern Recognition Letters 19 (1998) 741–747
+
+useful for automated applications, we have carefully tested Liu and Yang’s evaluation function, and in the process identified some limitations ŽBorsotti, 1996; Campadelli et al., 1997.. We have now gone on to design two enhanced functions that still do not require any user-set parameter or threshold value, and correspond more closely to visual judgment.
+
+2. The evaluation function of Liu and Yang The function proposed by Liu and Yang Ž1994. has been designed to incorporate, directly or indirectly, three out of the four heuristic criteria suggested by Haralick and Shapiro Ž1985. for evaluating the results of segmentations without having to set any threshold values for any of the subjective properties of region size, shape or homogeneity. The incorporated criteria are: Ž1. the regions must be uniform and homogeneous, Ž2. the region’s interiors must be simple, without too many small holes, and Ž3. adjacent regions must present significantly different values for uniform characteristics. The authors, commenting on their experimental results, suggest that their function also accounts indirectly for the smoothness of the boundaries Žpart of the Haralick and Shapiro’s fourth criterion, which includes boundary accuracy. and, as a future project, propose incorporating in an algorithm the evaluation function that guides the segmentation process itself. Their evaluation function is empirically defined as FŽ I . s
+
+of the image; the second, 'R , penalizes segmentations that form too many regions; the last term, the sum, penalizes segmentations having non-homogeneous regions. Since the average color error e i of the region is significantly higher for large regions than for small ones, e i has been scaled by the factor A i . The authors, who report a good match between function values and visual evaluation of the corresponding image segmentations, have used function F to automatically select the best segmentation with the variation of several features of their algorithm, such as the color space and the dissimilarity measure ŽLiu and Yang, 1994.. However, analysis of Eq. Ž1. shows that the presence of many regions in the segmented image is penalized only by the global measure 'R . Since the average color error of small regions is often close to zero, the function tends to evaluate very noisy segmentations favorably. Consider, for example, the 200 = 200 24-bit pixel image ‘Strawberry’ in Fig. 1. It represents a printed fabric digitalized by a flat bed scanner, and shows regions of fairly uniform color, together with textured areas. Some segmented images, ranked according to their F Ž I . values, are shown in Fig. 2. For details on how these segmentations were obtained, see ŽBorsotti, 1996.. They have been ordered in ascending values of F Ž I . from the best to the worst: Fig. 2a shows nearly all the main regions, the borders are smooth, and there are no
+
+(
+
+'R Ý 1000 Ž N = M .
+
+1
+
+R is1
+
+e i2
+
+(A
+
+,
+
+Ž 1.
+
+i
+
+where I is the segmented image, N = M the image size, and R the number of regions of the segmented image, while A i and e i are, respectively, the area and the average color error of the ith region; e i is defined as the sum of the Euclidean distances between the RGB color vectors of the pixels of region i and the color vector attributed to region i in the segmented image. The smaller the value of F Ž I ., the better the segmentation result should be. Eq. Ž1. is composed of three terms: the first is a normalization factor that takes into account the size
+
+Fig. 1. Original ‘strawberry’ image. Available in color as an Electronic Annex Žhttp:rrwww.elsevier.nlrlocaterpatrec..
+
+M. Borsotti et al.r Pattern Recognition Letters 19 (1998) 741–747
+
+743
+
+Fig. 2. ‘Strawberry’ image segmentations, scores and relative ranks. Algorithms: competitive learning ŽArbib and Uchiyama, 1994., Hopfield network ŽCampadelli et al., 1997., art2 ŽCarpenter and Grossberg, 1987., histogram analysis ŽCarlotto, 1987.. Parameters: n s cluster number, k s net iterations, r s vigilance, t s histogram smoothing.
+
+holes Žsmall regions.; Fig. 2b is actually pure noise; Fig. 2c approaches the quality of Fig. 2a, but presents some holes in the strawberry region; the image of Fig. 2d has thick borders and some very noisy regions. Considering the Haralick and Shapiro’s
+
+evaluation criteria informing Liu and Yang’s evaluation function, we think that, apart from any subjective ranking of Fig. 2c and Fig. 2d, Fig. 2b presents the worst segmentation and should, therefore, be ranked last instead of second.
+
+744
+
+M. Borsotti et al.r Pattern Recognition Letters 19 (1998) 741–747
+
+3. The revised evaluation functions Having ascertained that it is mainly in the evaluation of noisy segmentations that F fails to satisfy Haralick and Shapiro’s criteria, our objective was to modify evaluation function F without corrupting its form and performance on not-noisy segmentations. We experimented many modifications of function F to make it penalize segmentation featuring many small regions more heavily. We began by modifying 'R , the second term in Eq. Ž1., in order to obtain a new term with a higher value for segmented images formed by many small regions. The first, obvious attempt was to change the square root with other power functions, such as 1, 3r2, etc., but experimentation showed that this approach was not successful. We then tried another, substituting the term 'R in Eq. Ž1. with a new term weighting the frequency of regions’ size with their respective sizes. The evaluation function thus obtained is FX Ž I . s 1 10000 Ž N = M .
+R
+
+tion with more small regions, assigning the two segmentations unrealistically different scores. The problem is that this new term is a multiplicative term outside the sum measuring regional color errors: the resulting function F X is not sensitive enough to small segmentation differences. Our attempts to reduce this effect by applying various decreasing functions, so that the term value decreased to zero faster, provided no solution that showed a significant improvement ŽBorsotti, 1996.. This observation and the fact that F X , like F, has the inelegant property of reaching its minimum value Žzero. on non-segmented images led us to modify the structure of F in a different way, changing the last term of function F in order to penalize both small regions and regions that have a large color error. We experimented different solutions and found that a particularly well performing function is QŽ I . s 1 10000 Ž N = M .
+R
+
+'R
+q
+
+(
+
+Max
+
+Ý
+As1
+
+R Ž A.
+
+1q 1rA
+
+=Ý
+is1
+
+e i2 1 q log A i
+
+=Ý
+is1
+
+e i2
+
+ž
+
+RŽ Ai . Ai
+
+2
+
+/
+
+,
+
+Ž 3.
+
+(A
+
+,
+
+Ž 2.
+
+i
+
+where RŽ A. is the number of regions having exactly area A, and Max the area of the largest region in the segmented image. The exponent Ž1 q 1rA. enhances the small regions’ contribution, so the sum grows as the number of small regions increases. The value of the new term is close to 'R when very few small regions are found. The order of the segmented images of Fig. 2 according to F X was now 2a, 2d, 2b, 2c. This ranking appeared correct, but we were puzzled by the relatively large difference between the F X scores for the segmentations in Fig. 2d and Fig. 2b, which differ in reality for just a few small regions. This is due to the fact that the sum of the average color errors for the regions,
+R
+
+Ý
+is1
+
+e i2
+
+(A
+
+,
+
+i
+
+is nearly the same for both segmentations, while the new term in Eq. Ž2. is much larger for the segmenta-
+
+where all the entities are as previously defined for F, while RŽ A i ., as defined in F X , represents the number of regions having an area equal to A i . The body of the sum is composed of two terms: the first is high only for non-homogeneous regions Žtypically, large ones., while the second term is high only for regions whose area A i is equal to the area of many other regions in the segmented image Žtypically, small ones.. In designing this new term we took into account the fact that we may expect that the number of regions of area A i in given an image will be small if area A i has a high value; and in this case RŽ A i .rA i contributes little to the sum. On the other hand, the number of regions of area A i may be large if the area A i has a low value; in this case RŽ A i .rA i contributes strongly to the sum. Heuristically we can say that RŽ A i . is almost always 1 for large regions, and can be much larger than 1 for small regions. In any case, the denominator A i drastically forces the term RŽ A i .rA i to near zero for large regions, and lets it grow for small regions. Two further modifications of F were made to obtain Q. The first term in the sum also differs from
+
+M. Borsotti et al.r Pattern Recognition Letters 19 (1998) 741–747
+
+745
+
+its corresponding term in F: A i has been replaced with Ž1 q log A i . to obtain a stronger penalization of non-homogeneous regions. Finally, the arbitrary normalization term has been scaled by 10 to obtain a range of values similar to those of F and F X . The evaluation given by Q is shown in Fig. 2: the order is the same as that obtained by F X , but the scores better reflect the visual evaluation of segmentation ‘quality’. Fig. 2b, in particular, has a very high score, meaning that it should not be considered for further processing.
+Fig. 4. Original ‘peppers’ image. Available in color as an Electronic Annex Žhttp:rrwww.elsevier.nlrlocaterpatrec..
+
+(
+
+4. Experimental results We have compared the ranking performance of F, F X and Q on ten test images processed by six clustering methods – multithresholding by a histogram analysis algorithm ŽCarlotto, 1987., a competitive learning clustering algorithm ŽArbib and Uchiyama, 1994., two Adaptive Resonance Theory ŽART. based algorithms ŽBaraldi and Parmiggiani, 1995; Carpenter and Grossberg, 1987., a Reactive Tabu Search ŽRTS. based algorithm ŽAl-Sultan, 1995. and the widely used Isodata algorithm ŽBall and Hall, 1967. –, and three additional methods which use spatial information to enhance the results of the clustering – two Hopfield neural networks ŽCampadelli et al., 1997; Yu and Tsai, 1991., and a constraint satisfaction neural network ŽLin et al., 1992.. Readers desiring more detailed information
+
+Fig. 3. Original ‘house’ image. Available in color as an Electronic Annex Žhttp:rrwww.elsevier.nlrlocaterpatrec..
+
+about the algorithms implemented are referred to ŽBorsotti, 1996.. For each test image we applied each segmentation algorithm in turn, varying the input parameters Žsuch as the number of clusters. and then compared the ranking obtained by applying F, F X and Q with the results of visual evaluation Žin agreement with Pal and Pal Ž1993. who write in their review of image segmentation techniques ‘‘a human being is the best judge to evaluate the output of any segmentation algorithm’’.. The F evaluation function generally ranks ‘good’ segmentations results correctly, but overrates ‘bad’ – typically, noisy – segmentations. F X produces the same ranking as Q, and this agrees with the subjective visual order. However, the variations in Q values match more closely than those in F X the corresponding variations in visual judgment. Typical results for the ‘house’ and ‘peppers’ images ŽFigs. 3 and 4. are given in Figs. 5 and 6, where the values of F, F X and Q and the relative ranking positions are shown alongside the images. Fig. 5a–d shows four segmentations of the ‘house’ image obtained by the competitive learning clustering algorithm of Arbib and Uchiyama Ž1994. with 5, 6, 7 and 8 color clusters, respectively. Fig. 6a–d shows four segmentations of the ‘peppers’ image obtained with the Simplified Adaptive Resonance Theory algorithm ŽBaraldi and Parmiggiani, 1995.. According to this algorithm a single vigilance parameter, r g w0,1x,
+
+746
+
+M. Borsotti et al.r Pattern Recognition Letters 19 (1998) 741–747
+
+0.75 and 0.80, respectively; the last two ŽFig. 6c and Fig. 6d. with the vigilance parameter at 0.85. The segmentation in Fig. 6d was then post-processed by a Hopfield neural network to enhance the results of the clustering with spatial information ŽCampadelli et al., 1997.. F X and the Q ranked the segmentations of these images in the same way, and this was also the
+
+Fig. 5. ‘House’ image segmentations, scores and relative ranks. Algorithms: competitive learning ŽArbib and Uchiyama, 1994.. Parameter: ns cluster number.
+
+regulates the sensitivity to color differences: a higher value corresponds to a finer classification of the color images in clusters, although the exact correspondence between the vigilance parameter and the resulting number of clusters can not be predicted. The first two segmentations ŽFig. 6a and Fig. 6b. were obtained with the vigilance parameters set at
+
+Fig. 6. ‘Peppers’ image segmentations, scores and relative ranks. Algorithms: Hopfield network ŽCampadelli et al., 1997., sart ŽBaraldi and Parmiggiani, 1995.. Parameters: k s net iterations, r s vigilance.
+
+M. Borsotti et al.r Pattern Recognition Letters 19 (1998) 741–747
+
+747
+
+case of the more than 500 segmented color images we tested. For this reason ranking alone is not a criterion in choosing between the two functions. However, as said above, the variations in the Q score correspond more closely than those of F X to the visual evaluation of the different segmentations. For example, the ratio between the F X scores for Fig. 2a and Fig. 2c is about twenty, and only about six for Fig. 2b and Fig. 2c, while the corresponding Q ratios are, respectively, two and over 2200, an estimation closer to subjective judgment. Fig. 5a, Fig. 5b and Fig. 5c are visually similar, and the values obtained with both F X and Q reflect this. However, for the image of Fig. 5d, F X registers a score only 1.5-times the score of the images of Fig. 5a, Fig. 5b and Fig. 5c, while the Q value for Fig. 5d is about 10-times the Q values for Fig. 5a, Fig. 5b and Fig. 5c, again showing a closer correspondence to visual judgment. The low-level segmentations of the ‘pepper’ image are much harder to evaluate subjectively because of the intrinsic difficulty of judging the low-level segmentations of an image that presents so many shades of color, shadows and highlights: in this case, while the ranking appears correct, it is practically impossible to correlate between the numerical value of the scores with the ‘quality’ of the segmentation.
+
+tations, but Q should be preferred to F X as a guide for tuning segmentation algorithms. References
+Al-Sultan, K.S., 1995. A tabu search approach to the clustering problem. Pattern Recognition 28 Ž9., 1443–1451. Arbib, M.A., Uchiyama, T., 1994. Color image segmentation using competitive learning. IEEE Trans. on Pattern Analysis and Machine Intelligence 16 Ž12., 1197–1206. Ball, G.H., Hall, D.J., 1967. A clustering technique for summarizing multivariate data. Behav. Sci. 12, 153–155. Baraldi, A., Parmiggiani, F., 1995. A neural network for unsupervised categorization of multivalued input patterns: an application to satellite image clustering. IEEE Trans. on Geoscience and Remote Sensing 33 Ž2., 305–316. Borsotti, M., 1996. Segmentazione di immagini a colori mediante clustering. Universita degli Studi di Milano, Tesi di Laurea in ` Scienze dell’Informazione, A.A. 1995–1996. Carlotto, M.J., 1987. Histogram analysis using a scale-space approach. IEEE Trans. on Pattern Analysis and Machine Intelligence 9, 121–129. Carpenter, G.A., Grossberg, S., 1987. ART2: self-organization of stable category recognition codes for analog input patterns. Applied Optics 26, 4919–4930. Campadelli, P., Medici, D., Schettini, R., 1997. Color image segmentation using Hopfield networks. Image and Vision Computing 15, 161–166. Haralick, R.H., Shapiro, L.G., 1985. Image segmentation techniques. Computer Vision Graphics Image Processing 29, 100– 132. Lin, W.C., Tsao, E.C.K., Chen, C.T., 1992. Constraint satisfaction neural networks for image segmentation. Pattern Recognition 25 Ž7., 679–693. Liu, J., Yang, Y.-H., 1994. Multiresolution color image segmentation. IEEE Trans. on Pattern Analysis and Machine Intelligence 16 Ž7., 689–700. Pal, N.R., Pal, S.K., 1993. A review on image segmentation techniques. Pattern Recognition 26 Ž9., 1294–1294. Pavlidis, T., Liow, Y.-T., 1990. Integrating region growing and edge detection. IEEE Trans. on Pattern Analysis and Machine Intelligence 12 Ž3., 225–233. Saber, E., Murat Tekalp, A., Bozdagi, G., 1997. Fusion of color and egde information for improved segmentation and edge linking. Image and Vision Computing 15, 769–780. Schettini, R., 1993. A segmentation algorithm for color images. Pattern Recognition Letters 14 Ž6., 499–506. Ton, J., Stricklen, J., Lain, A.K., 1991. Knowledge-based segmentation of landsat images. IEEE Trans. on Geoscience and Remote Sensing 29 Ž2., 222–232. Yu, S.S., Tsai, W.H., 1991. Relaxation by the Hopfield neural network. Pattern Recognition 25 Ž2., 197–209. Zhang, Y.J., 1996. A survey of evaluation methods for image segmentation. Pattern Recognition 29 Ž8., 1335–1346.
+
+5. Conclusions There is a growing demand in image analysis for an automation of the evaluation of low-level segmentations that does not require that the user set any parameter or threshold values. Unfortunately, few evaluation schemes of this kind have been developed ŽZhang, 1996.. The function F, proposed by Liu and Yang Ž1994., represents an elegant attempt to evaluate color segmentation results quantitatively and objectively. In this note, after a critical analysis of the strengths and limitations of evaluation function F, we have proposed two enhanced functions F X and Q, which retain all the merits of the F function while eliminating the drawbacks. The results of our experimentation suggest that both F X and Q can successfully pick out the ‘best’ in a set of possible segmen-
+

@@ -1,0 +1,1007 @@
+52
+
+IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, VOL. 20, NO. 1, JANUARY 1998
+
+What Size Test Set Gives Good Error Rate Estimates?
+Isabelle Guyon, John Makhoul, Fellow, IEEE, Richard Schwartz, and Vladimir Vapnik
+Abstract—We address the problem of determining what size test set guarantees statistically significant results in a character recognition task, as a function of the expected error rate. We provide a statistical analysis showing that if, for example, the expected character error rate is around 1 percent, then, with a test set of at least 10,000 statistically independent handwritten characters (which could be obtained by taking 100 characters from each of 100 different writers), we guarantee, with 95 percent confidence, that: (1) The expected value of the character error rate is not worse than 1.25 E, where E is the empirical character error rate of the best recognizer, calculated on the test set; and (2) a difference of 0.3 E between the error rates of two recognizers is significant. We developed this framework with character recognition applications in mind, but it applies as well to speech recognition and to other pattern recognition problems. Index Terms—Pattern recognition, test set, test set size, benchmark, hypothesis testing, designed experiment, statistical significance, estimation, guaranteed estimators, recognition error.
+
+—————————— 3 ——————————
+
+1 INTRODUCTION
+
+T
+
+problem often arises when organizing benchmarks in pattern recognition to determine what size test set will give statistically significant results. This is a chicken and egg problem, since before getting the recognizer performance, it is not possible to determine the statistical significance. Nevertheless, since approximate values of the error rates of particular recognizers on similar tasks are known, it is possible to estimate what reasonable size a test set should have. In this paper, we use fairly straightforward statistical arguments [1] to address that problem. The method has been designed to help in preparing the data for the first UNIPEN benchmark [2], but the results are fairly general and a broader applicability is expected. We tackle the problem from the point of view of the benchmark organizer. Thus, our approach differs from the classical “hypothesis testing” framework (see, e.g., [1]) in that we do not test the statistical significance of the result of an actual experiment. Rather, we seek bounds on the minimum number of test examples that guarantee our future benchmark to provide: a good estimate of the state-of-theart error rate on the target task and good confidence that one system is better than another, for a relatively small difference in their error rates.
+HE
+
+2) We estimate test set sizes, assuming that the errors are independently and identically distributed. 3) We introduce the problem of “correlations” between errors due, for instance, to having many consecutive examples provided by the same writer. We generalize the results to the case of multiple factors of correlation, including: recording conditions and linguistic material. 4) We treat the problem of the statistical significance of the difference in performance of two recognizers. 5) We summarize the practical aspects for determining the number of examples necessary to obtain statistical significance and analyze examples. 6) We suggest some statistical tests to be performed after the benchmark to verify the quality of the results. The reader interested in only practical aspects of the results can go directly to Section 6.
+
+2 PRINCIPLE OF THE METHOD: GUARANTEED ESTIMATORS
+2.1 Punctual Estimators and Guaranteed Estimators
+The problem addressed in a pattern recognition benchmark is to calculate and compare error rates of various recognizers. The error rate p of a given recognizer is esti mated by computing the average error p over a finite number n of test examples or patterns. Let xi, i = 1, ..., n, represent the recognition results for the test patterns, i.e., xi = 1 if there is a recognition error for pattern i, and xi = 0 otherwise. The average error rate, then, is computed as  p= 1 n
+
+1) We introduce the principle of our method and the notion of guaranteed estimators.
+¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥¥
+
+• I. Guyon is an independent consultant working at 955 Creston Road, Berkeley, CA 94708. E-mail: isabelle@clopinet.com. • V. Vapnik is with AT&T Labs, Red Bank, NJ 07701. E-mail: vlad@research.att.com. • J. Makhoul and R. Schwartz are with BBN Systems and Technologies, Cambridge, MA 02138. E-mail: {makhoul, schwartz}@bbn.com.
+Manuscript received 11 Dec. 1995; revised 25 Aug. 1997. Recommended for acceptance by J.J. Hull. For information on obtaining reprints of this article, please send e-mail to: tpami@computer.org, and reference IEEECS Log Number 105690.
+
+Â xi .
+i
+
+n
+
+(1)
+
+Patterns are assumed to be drawn randomly and independently from a source of patterns. For a particular
+
+0162-8828/98/$10.00 © 1998 IEEE
+
+Authorized licensed use limited to: ASTAR. Downloaded on February 15, 2009 at 23:35 from IEEE Xplore. Restrictions apply.
+
+GUYON ET AL.: WHAT SIZE TEST SET GIVES GOOD ERROR RATE ESTIMATES?
+
+53
+
+recognizer, the failure or success of recognition of the ith pattern is the realization xi of a random variable Xi. The random variable X = 1 n
+
+Â Xi
+i =1
+
+n
+
+(2)
+
+is a punctual estimator of the mean, the expected value of  which is p. The average error rate p is a realization of X . For pattern recognition benchmarks we are also interested in confidence intervals. Two scenarios are possible here. With a certain confidence (1 - a), 0 £ a £ 1, we want the expected value of the error rate p to be either within a certain range:   p - e n, a < p < p + e n, a  p < p + e n, a
+
+0 5
+
+0 5
+
+(3)
+Fig. 1. One sided risk: With probability (1 - a), z < za.
+
+(two-sided risk), or simply not to exceed a certain value:
+
+0 5
+
+(4) Better bounds are obtained if more is known about the probability distribution. In particular, assume that Xi is distributed according to the Normal law (Gaussian distri2 bution) of mean m = p and variance s , and with probability function: r m ,s ( x ) = The random variable X =
+2
+
+(one-sided risk). In this paper, we use the one-sided risk because it is not of concern to us if the expected value of the error rate is better than what we estimate.  The random variable of which p + e(n, a) is a realization is a guaranteed estimator of the mean. We are guaranteed, with risk a of being wrong, that the mean does not exceed  p + e(n, a):  Prob p ≥ p + e n, a
+
+1 s 2p
+n
+
+2
+
+0 57 £ a .
+
+e
+
+1 -2
+
+3 8
+
+x-m 2 s
+
+.
+
+(9)
+
+(5)
+
+Â i = 1 Xi
+
+is distributed according
+
+2.2 Methods for Obtaining Estimators
+Punctual estimators are often obtained by the Maximum Likelihood (ML) method. For instance, the estimator X = 1n
+
+to the Normal law of mean np and of variance the sum of the variances: ns (assuming the Xi are independent). Thus the random variable X = 1 n
+
+1 6Â
+
+n i =1
+
+Xi is the ML estimator of the mean for the
+
+1 6Â
+p-X s n
+
+n i =1
+
+Xi is distributed ac2
+
+Gaussian distribution. It is consistent (its realizations converge to the mean for an infinite amount of examples) and unbiased (its expected value is equal to the mean). Guaranteed estimators are obtained either from the properties of the underlying probability distribution, if it is known, or from distribution-independent bounds. One of the most well-known distribution-independent bounds is the Chebychev inequality (see, e.g., [1]):  Prob p - p ≥ or, for the one-sided version:  Prob p - p ≥
+2
+
+cording to the Normal law of mean p and of variance s /n. Consequently, the random variable: Z= (10)
+
+ 
+
+s an s
+
+ £ a , 
+
+(6)
+
+obeys the standardized Normal law (with mean 0 and vari2 ance 1). The distribution of this law is tabulated, which allows us to determine the threshold za under which we find all realizations of Z with probability (1 - a) (Fig. 1). The bound of interest, then, is:  Prob p - p ≥
+
+ 
+
+ £ a , 2an 
+n 2
+
+ 
+
+za s n
+
+ £ a , 
+
+(11)
+
+(7)
+1
+
+where s is the variance of Xi , estimated, for instance, as:  s2 = 1 n-1  Â 1 p - xi 6
+i =1
+
+,
+
+(8)
+
+ where p is a realization of X . The standardized Normal law distribution table provides values of za for various values of one-sided risk a (see, e.g., [1]). A relatively good approximation of za in this range of values is given by:
+za . - ln a ,
+
+(12)
+
+Other tighter bounds have been proposed more recently by Chernoff [3], Hoeffding [4], and others for the binomial distribution. Those bounds are tighter than Chebychev’s inequality, but Chebychev’s inequality is distribution independent.
+1. The denominator (n - 1) can be approximated by n for large values of n. It accounts for the fact that p is not known and is also estimated from data, which removes one “degree of freedom.”
+
+where ln is the Neperian logarithm (see Table 1). This approximation is convenient since it provides us with a functional relation between a and za which will prove to be useful in our calculations.
+2. When the variance is not known and has to be estimated from data as well as the mean, Z obeys Student’s law with (n - 1) degrees of freedom. For values of n sufficiently large (n > 30), the Normal law is a very good approximation to Student’s law.
+
+Authorized licensed use limited to: ASTAR. Downloaded on February 15, 2009 at 23:35 from IEEE Xplore. Restrictions apply.
+
+54
+
+IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, VOL. 20, NO. 1, JANUARY 1998
+
+TABLE 1 VALUES OF z a FOR ONE-SIDED RISK AND RELATED COEFFICIENTS APPEARING IN OTHER BOUNDS
+a
+0.01 0.05 0.10
+
+za
+2.33 1.65 1.28
+
+za
+
+2
+
+-ln a
+2.15 1.73 1.52
+
+- ln a
+4.61 3.00 2.30
+
+-2 ln a
+3.03 2.45 2.15
+
+-2 ln a
+9.21 5.99 4.60
+
+5.29 2.72 1.64
+
+2.3 Number of Test Examples Needed
+Before the benchmark, guaranteed estimators (inequality (4)) are used to determine the number of test examples needed to guarantee a certain margin of error e(n, a) (e.g., e n, a = za s n for the Normal law). In this paper, we fix e(n, a) to be a given fraction of p:
+Fig. 2. Recognition process of i.i.d. data: patterns are, for instance, handwritten characters and class labels are, for instance, “0,” “1,” ..., “a,” “b,”... The ensemble {data source, recognizer} is a random binary source which produces 1 with probability p and 0 with probability (1 - p), where p is the expected value of the error rate of the recognizer.
+
+0 5
+
+e(n, a) = bp
+
+(13)
+
+ p=
+
+and we solve (13) for n to obtain the desired number of test examples. The values of p and s which are necessary to determine n are generally unknown. Thus our estimate of n will depend on the hypotheses we make for p and s. These hypotheses are based on the results of other similar benchmarks and/or on human performance. After the bench  mark, actual values of p and s are computed and guaranteed estimators can be used again to verify the statistical significance of the results (hypothesis testing, see Section 7).
+
+k , n
+
+(15)
+
+where k is the number of errors. The expected value of the  error rate is p and p is the empirical value of the error rate estimated on the test set. We are seeking a guaranteed estimator which provides the guarantee that, with probability (1 - a), p is not larger than  p plus a certain error e(n, a):
+ Prob p ≥ p + e n, a
+
+2
+
+0 57 = Â r
+np - k ≥ en
+
+n, p
+
+(k ) £ a .
+
+(16)
+
+If we express e(n, a) as a small fraction b of p, then (16) becomes:
+r n, p k £ 1- b np
+
+3 TEST SET SIZE NEEDED FOR I.I.D. ERRORS
+3.1 Recognition Errors as Bernoulli Trials
+In many benchmarks, the errors on the test examples are not independently and identically distributed (i.i.d). In particular, for speech and handwriting recognition, speaker/writer-independent tasks are usually tested with data containing long sequences of examples from each of a number of speakers/writers (see Section 4). There may be also error correlations introduced by the recognizer itself if, for instance, use is made of a language model. In the present section, we consider the simple case of i.i.d. errors, an illustration of which could be a speaker/writer-dependent isolated word recognition task, using a specific vocabulary distribution and specific recording conditions. Consider a source of i.i.d. data which are drawn according to a certain probability distribution P(pattern, class) = P(pattern) P(class|pattern) and a recognizer which recognizes those data independently of each other with a probability of error p. The ensemble {data source, recognizer} is a source of binary events: 1 for error and 0 for no error, with probability p of drawing a 1 and (1 - p) of drawing a 0 (Fig. 2). Such a random process is known under various names, including “random walk” and “Bernoulli trials.” The random variable K counting the number of errors in n trials is distributed according to the binomial distribution: n k r n, p (k ) = k p 1 - p
+
+1 6
+
+Â
+
+(k) £ a .
+
+(17)
+
+We are interested in solving this equation for n but, unfortunately, there is no analytical solution. Furthermore, a numerical solution is tedious. To simplify matters, we approximate the binomial law by the Normal law (probability function (9)) of mean np and of variance np(1 - p). With this approximation, Z= pp 1- p n
+
+1 6
+
+K n
+
+.
+
+(18)
+
+obeys the standardized Normal law (with mean 0 and variance 1). Similarly, (11) reduces to:  Prob p - p ≥ za
+
+ 
+
+p 1- p n
+
+1
+
+6  £ a , 
+
+(19)
+
+where za is a threshold under which we find all realizations of Z, with probability (1 - a). Therefore, from (19) we can assert with probability (1 - a) that: with
+
+  1
+
+6
+
+n- k
+
+,
+
+(14)
+
+0 5 p11 - p6 e 0n, a 5 = z .
+ p - p < e n, a ,
+a
+
+(20)
+
+n
+
+(21)
+
+of mean np and variance np(1 - p). For a test set size of n examples, the following is an estimate of p:
+
+Assume that we want to fix e(n, a) to a given fraction b of p: (22) e n, a = bp .
+
+0 5
+
+Authorized licensed use limited to: ASTAR. Downloaded on February 15, 2009 at 23:35 from IEEE Xplore. Restrictions apply.
+
+GUYON ET AL.: WHAT SIZE TEST SET GIVES GOOD ERROR RATE ESTIMATES?
+
+55
+
+TABLE 2 TEST SET SIZES NEEDED FOR I.I.D. ERRORS: TABLE OBTAINED BY APPROXIMATING THE BINOMIAL LAW WITH THE NORMAL LAW
+p
+b\a 0.1 0.2 0.01 53,746 13,436
+
+0.01
+0.05 26,952 6,738 0.10 16,220 4,055 0.01 17,553 4,388
+
+0.03
+0.05 8,803 2,201 0.10 5,297 1,324 0.01 4,886 1,221
+
+0.1
+0.05 2,450 612 0.10 1,474 368
+
+We assume that the best recognizer will not have an error rate p lower than 1 percent, 3 percent, or 10 percent. With such test set sizes, with risk a of being wrong, the expected value of the error rate will not be  worse than 1/(1 - b) times the empirical test error rate p .
+
+From (20), (21), and (22), we can assert, with risk a of being wrong that a number of examples:
+
+ z  11 - p6 n=  b p
+2 a
+
+(23)
+
+is sufficient to guarantee that the expected value of the er ror rate p is not worse than p 1 - b . To use this formula, p needs to be estimated from the results of previous bench-
+
+1
+
+6
+
+Performance of word recognizers using lexicons vary a lot depending on the size of the lexicon. For a task of intermediate difficulty, such as the recognition of handprinted characters with a 25,000 word vocabulary, the best recognizers will probably not have a word error rate lower than 3 percent (p = 0.03). For p = 0.03, we obtain: n . 3,000 words (29) It is important to note that the above derivation and results do not depend on the number of classes being recognized. In fact, to get statistically meaningful results, it may not even be necessary to have samples of all the classes in the test. For example, in the word recognition example given above, the number of test words that is recommended is only 3,000 words, even if the vocabulary is 25,000 words. However, the 3,000 words must be obtained randomly from a variety of writers. The suggested test sizes given above assume that the data/errors are i.i.d., which they are not in practice. In a realistic test, where the data/errors are correlated, the required number of test examples increases somewhat, as we will see in the next section.
+
+marks and za can be taken from Table 1 or conveniently approximated by za . - ln a . For small values of p, we will use the simplified formula: n=
+
+ z  b
+a
+
+2
+
+1 . p
+
+(24)
+
+The validity of the approximation of the binomial law by the Normal law in the tail of the distribution is questionable, even for large values of the product np. However, a bound due to Chernoff [3] asserts that with probability (1 - a):
+ p-p< -2 ln a p . n
+
+(25)
+
+Following a similar derivation as above, the number of examples needed to satisfy this more pessimistic bound is: n= -2 ln a b 2p . (26)
+
+4 TEST SET SIZE NEEDED WHEN THE WRITER DIVERSITY IS LIMITED
+The variability of the test results is affected by a number of parameters, including number of writers, conditions of data collection, and choices of test material. The theoretical solution to that problem when designing a test set is to vary as much as possible these parameters to reflect “all” the situations which could arise in the “real” world. In practice, we have little or no handle over most parameters. The solution which was adopted for the UNIPEN project [2] is to gather data collected by a large number of institutions and therefore obtain a variety of writers, conditions of data collection, and choices of test material. There is enough data that we can consider splitting it into several test sets and a training set. Our strategy is to use data from every institution to maximize the variety of conditions of data collection and choices of test material. The problem reduces to finding how many writers and how many examples per writer should go into each set, knowing that data are valuable for training and that we want to keep the test sets as small as possible. In this section, we assume that the data are drawn from a double random process: first a writer i is picked at random from an unknown probability distribution P(writeri). Then, an example is drawn at random according to another unknown
+
+By comparing (24) and (26), we see that, at worst, the approximation of the binomial law by the Normal law suggests the use of a test set which is two times too small. For practical purposes, we will use a simplified formula, which lies between the Normal law and the pessimistic bound, obtained for typical values of a and b (a = 0.05 and b = 0.2): 100 n. . (27) p
+
+3.1.1 Numerical Application
+From (27), for small values of p, n is inversely proportional to p. Therefore, the choice of n (the number of test samples needed) is determined by the smallest error rate which is provided by the best recognizer. A survey of the handwriting recognition literature and of the results of recent benchmarks [5], [6], [7] indicates that the best recognizers of isolated handwritten characters will probably not have a character error rate lower than 1 percent (p = 0.01). For p = 0.01, we obtain: n . 10,000 characters (28)
+
+Authorized licensed use limited to: ASTAR. Downloaded on February 15, 2009 at 23:35 from IEEE Xplore. Restrictions apply.
+
+56
+
+IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, VOL. 20, NO. 1, JANUARY 1998
+
+drawn according to their underlying distribution. An esti6 mate of this quantity is given by: . (30) m It is important for the discussion that will follow to no2 tice that s is not the expected value of (pi - p) . When all writers are identical (pi ∫ p), this last quantity is null, 2 whereas what we call the “between-writer” variance s tends to p(1 - p)/nw (the variance of the mean error of a given writer, that we call “within-writer” variance). Since X.. is the mean over m writers of Xi., its variance is 2 s /m. Under the assumption that the writer error rates are Normally distributed, the random variable: p - X. . Z= (31) s m obeys the standardized Normal law (with mean 0 and variance 1). With a risk a of being wrong, we have: s  p - p < za (32) m  where p is a realization of X.., and za a threshold obtained from table of the Normal distribution (see Table 1). This provides us with a guaranteed estimator of the average error rate per writer:  p - p < e m, a with: e m, a = za  s
+2
+
+  Â 1pi - p6 . i =1
+m
+
+2
+
+Fig. 3. Recognition of multiwriter data: We consider a double random process. A writer i is first picked at random. Then a pattern is picked from that writer’s distribution Pi(pattern).
+
+probability distribution Pi(pattern). Pi(error) = P(error|writeri) is then fully determined from Pi(pattern), P(class|pattern), and the recognizer (Fig. 3). The overall error distribution is 3 given by P(error) = Âi P(writeri)Pi(error). We will assume that Pi(error) still follows a Bernoulli process, with probability pi that the recognizer makes an error and (1 - pi) that it recognizes correctly. We will assume that Pi(error) providing the probability of error pi is distributed according to 4 the Normal law of mean p and variance s. The direct solution to this problem would be to compute guaranteed estimators of the error rate for the distribution P(error) = Âi P(writeri)Pi(error). We simplify the problem by calculating first the number of writers needed to guarantee a good estimate of the mean, neglecting the uncertainty on the writer means. We then estimate the minimum number of examples per writer needed. The considerations developed in this section have strong connections with the analysis of variance (ANOVA) statistical test [1].
+
+0 5
+s
+
+(33)
+
+4.1 Number of Writers
+We call Xij the random variables the realizations of which are the indicators xij (xij = 0 or 1) of the errors made by a given recognizer on examples j obtained from writers i. We introduce further the notation Xi . = 1 nw
+5
+
+. (34) m Assume that we want to fix e(m, a) to a given fraction of p: e(m, a) = bp. (35) From (34) and (35), we can assert, with risk a of being wrong, that a number of writers: m=
+
+0 5
+
+1 6Â
+
+nw j =1
+
+Xij
+
+for the writer mean over nw examples. The expected value of Xi. is pi and its variance, the “within-writer” variance, is  pi(1 - pi)/nw . pi/nw. Realizations of Xi. are called pi . We denote by X. . = 1 m
+
+ z s   bp 
+a
+
+2
+
+(36)
+
+1 6Â
+
+m i =1
+
+Xi . the global mean over
+
+is sufficient to guarantee that the expected value of the av erage error rate across writers is not worse than p 1 - b , where p is the expected error rate, s is the “betweenwriter” variance and za can be taken from Table 1 for given risks a of underestimating m. As before, za can be conveniently approximated by za . - ln a .
+2
+
+1
+
+6
+
+m writers. The expected value of X.. is called p and a reali zation of it is p . 2 We call s the variance of the Xi.s, also called the “between-writer” variance. It is the expected value of 2 (X i . - p) over writers drawn according to their underlying distributions, for test sets of nw examples per writer, also
+3. We sometimes talk about “correlations” between errors, hinting that errors might depend on one another. We can either view the problem as an i.i.d. problem with a more complex overall distribution or as a non-i.i.d. problem for which drawing a pattern from a particular writer increases the chance of drawing again a pattern from the same writer. For simplicity, we treat the problem as an i.i.d. problem with a more complex overall distribution. 4. This is a rather strong assumption. In general, nothing allows us to assert that this is true. Since the distribution of average writer error rates in unknown, it is difficult to find good guaranteed estimators which do not make simplifying assumptions. The empirical distributions provided in [5] indicate that in the case of isolated handwritten character recognition, this assumption is more or less reasonable. 5. For simplicity, we assume that all the writers have the same number nw of examples per writer.
+
+4.1.1 Numerical Application
+We remind the reader that s is a function of the number of examples per writer nw. However, for large values of nw, it is largely independent of nw. In Table 3, we calculated estimates of the number of writers needed for various values of a and b and the ratio s/p. In   Fig. 4, we show a plot of s versus p for data obtained from the NIST benchmark of OCR for isolated handwritten characters [5]. The “between-writer” standard deviation of those    data s lies roughly between 0.5 p and p . In [8], the authors
+6. We neglect the corrective terms that arise because the means are estimated from data (see [1] for details).
+
+Authorized licensed use limited to: ASTAR. Downloaded on February 15, 2009 at 23:35 from IEEE Xplore. Restrictions apply.
+
+GUYON ET AL.: WHAT SIZE TEST SET GIVES GOOD ERROR RATE ESTIMATES?
+
+57
+
+TABLE 3 NUMBER OF WRITERS NEEDED
+s/p
+b\a 0.1 0.2 0.01 136 34
+
+0.5
+0.05 68 17 0.10 41 10 0.01 543 136
+
+1
+0.05 272 68 0.10 164 41 0.01 2,172 543
+
+2
+0.05 1,089 272 0.10 655 164
+
+It is assumed that the best recognizer will have an expected character error rate p and a “between-writer” standard deviation around s . 0.5p, s . p, or s . 2p. Using the prescribed number of writers, with risk  a of being wrong, the expected value of the error rate will not be worse than p 1 - b .
+
+0 5
+
+also report a “between-writer” standard deviation which is of the order of the mean. Therefore, we adopted the value: (37) s.p in our calculations. We know that p nw is a lower bound of s. Therefore, with the value s . p, our hypothesis that s is largely independent of nw will be verified when nw @ 1/p. It is unclear whether the ratio s/p is affected by changes in the classes of interest (e.g., words instead of characters) and whether this result applies to speech as well. We hope that new benchmark results will allow us to refine that value in the future. Assuming s . p, we obtain the simplified formula:
+
+4.2.1 Each Writer Error Rate Is Statistically Significant
+The most stringent criterion is to ask for the error rate for each writer to be individually statistically significant. For instance, if we use a = 0.05, b = 0.2, and p = 0.01, we obtain from (27) a number of characters per writer of approximately: nw . 10,000 characters/writer (40)
+
+and the total number of characters comes to n¢ = mnw = 100 ¥ 10,000 = 1,000,000. With this calculation, n¢ @ n (41)
+
+z  m=  b
+a
+
+2
+
+where n is calculated according to (27), using i.i.d. hypotheses (n = 10,000). Note that, unless the goal is to estimate individual writer error rates accurately, n¢ is an overestimate of the number of characters needed.
+
+(38)
+
+4.2.2 All Writers Are Identical
+The other extreme is to ignore the correlations between examples of the same writer and make the assumption that all writers are identical. This means that the expected value of the error rate of a given recognizer has the same value p for all writers. Let us further assume that the test set is composed of identical size subsets of nw examples per writer.  We call pi the empirical error rate of a given recognizer for   writer i. The differences between p1 , p2 ,  are only due to the fact that they are estimated on a limited data set of size n. These differences are reflected by the “within-writer” variance p(1 - p)/nw. It is known from the ANOVA test [1] that when all the writers are identical, the expected values of the “within-writer” variance and the “between-writer” variance are equal. By replacing s = p(1 - p)/nw in (36), we obtain m = n / nw, where n is given by (24). Consequently, the total number of examples is the same as the one calculated for i.i.d. errors: n¢ = n (42)
+2
+
+With s = p, for 68 writers, with 95 percent confidence (a = 0.05), the expected value of the error rate is not worse than 1.25 times the error rate of the best recognizer (b = 0.2). One needs to double the number of writers to get 99 percent confidence (a = 0.01) and to multiply it by four to decrease the margin of error to 0.1 (b = 0.1). In the following, we adopt: m . 100 writers (39)
+
+4.2 Number of Examples Per Writer
+We examine now the problem of determining the number of examples per writer. In the numerical examples, we fix the values of a and b to a = 0.05 and b = 0.2, the number of writers to m . 100 and the error rate of the best recognizer to p = 0.01. In each subsection below, we make a different assumption and derive a different requirement.
+
+For a = 0.05, b = 0.2, and p = 0.01, the number of characters of 10,000 obtained from (27) is the total size of the test set n¢ = n = mnw. The number of characters per writer is only nw = n/m = 10,000 ÷ 100: nw = 100 characters/writer (43)
+
+4.2.3 Balance Between “Within-Writer” and “BetweenWriter” Variance
+Fig. 4. Between writer variance as a function of the error rate: Each point represents the results of one recognizer from the benchmark of isolated handwritten characters published by NIST in 1992 [5]. A strong correlation between the between-writer variance and the error rate is observed.
+
+We make now the more realistic assumption that the empirical writer error rates are random variables Xi., normally 2 distributed with mean p and variance s . In our notation, p
+
+Authorized licensed use limited to: ASTAR. Downloaded on February 15, 2009 at 23:35 from IEEE Xplore. Restrictions apply.
+
+58
+
+IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, VOL. 20, NO. 1, JANUARY 1998
+
+TABLE 4 NUMBER OF EXAMPLES PER WRITER
+g nw 100 10,000 50 5,000 20 2,000 10 1,000 5 500 2 200 1 100
+
+It is assumed that the best recognizer will not have an average character error rate p lower than 1 percent and will have a “between-writer” standard deviation also around 1 percent. g is the ratio between the “between-writer” variance and the “within-writer” variance.
+
+ is the expected value of the writer error rates pi (which are 2 no longer identical), s is the “between-writer” variance, an estimate of which is given by (30). The number of examples per writer nw can be expressed as a function of the ratio g of the “between-writer” variance 2 s and the “within-writer” variance p(1 - p)/nw. For small error rates, the “within-writer” variance can be approximated by p/nw. We define a new parameter: g = nws 2 n s2 . w p p 1- p
+
+Since g cannot be smaller than one, by definition, we will use: g . max(1, nwp) (49)
+
+4.3 Generalization to Multiple Factors of Correlation Between Errors
+Variations in writers is only one of many possible factors of error correlation. Other factors j may include variations in recording conditions, variations in linguistic material, etc. (see Fig. 5). Various coefficients g j may be calculated to take these various factors into account. From (33) and (34), and using the approximation za = - ln a , for each correlation factor taken separately, one should satisfy:  Prob p - p ≥
+
+1
+
+6
+
+(44)
+
+The number of examples per writer as a function of g is given by: gp nw = 2 (45) s From (36) and (45), the total number of examples given by n¢ = mnw is: n¢ = g n (46) where n is the number of examples calculated for i.i.d. errors (24). Notice that the case g = 1 corresponds to having all writers identical. Testing whether g is significantly different from 1 is the basis of the ANOVA test [1].
+
+ 
+
+- ln a
+
+s mj
+
+ £a. 
+
+(50)
+
+If n¢ is the total number of examples and mj is the number of values taken by the correlation factor considered (e.g., j = writer, mj = number of writers), then nj = n¢ mj is the number of examples for each value (e.g., nj = number of examples per writer). By introducing g j = njs 2 p , we obtain: Prob
+
+4.2.4 Numerical Application
+In Table 4, we give the values of the number of examples per writer n when g varies, for p = s = 0.01. • For g = 1, we find again the number of characters per writer which assumes all writers are identical (see Section 4.2.2). • For g = 100, we get approximately the number of characters per writer which ensures that, with risk a = 0.05,  the error rate of each writer pi is no more than 1.25 pi , which corresponds to b = 0.2. (see Section 4.2.1). • Experts in character recognition suggest to take a number of characters per writer around: nw = 1,000 characters/writer (47)
+
+ p - p ≥  p
+
+- ln a
+
+gj n¢
+
+ £a. 
+
+(51)
+
+Let us call Nj the total number of factors. In principle, a problem of Nj factors of correlation between errors is a Nj dimensional problem. We first assume that all the factors are independent. We further simplify the problem to Nj one-dimensional problems and require that the conditions (51) to be satisfied simultaneously for all factors. Let us call max g j the largest value of g j for the factors considered,
+
+which corresponds to g = 10. For 100 writers, a test set size of n¢ = mnw = 100,000 characters would be obtained. Note that, with such a value of g and with risk a = 0.05, the error rate pi of each writer individually has a larger error bar (b = 0.5). In practice, the number of examples per writer nw may be given. In this case, the number n of examples using the i.i.d. assumption is first determined. From nw and estimates of p and s, g is calculated. The total number of examples is then calculated from (46). From the experimental data shown in Fig. 4, if s is unknown, g can be approximated by: g . nwp. (48)
+
+  p - p  p ≥ - ln a g n¢  £  p - p g  Â Prob p ≥ - ln a n¢  £ N a  
+Prob
+max j j j j
+
+(52)
+
+and, therefore, substituting a¢ = Nj a yields: Prob
+
+ p - p  p ≥
+
+- ln a ¢ Nj
+
+2
+
+7
+
+max gj n¢
+
+  £ a ¢ .
+
+(53)
+
+We obtain the total number of examples n¢ satisfying a  given relative error bar b = (p - p )/p, with risk a of being wrong, by solving:
+
+Authorized licensed use limited to: ASTAR. Downloaded on February 15, 2009 at 23:35 from IEEE Xplore. Restrictions apply.
+
+GUYON ET AL.: WHAT SIZE TEST SET GIVES GOOD ERROR RATE ESTIMATES?
+
+59
+
+Fig. 5. Factors affecting error correlations: Errors may be correlated because of a number of factors, including (a) writing style, (b) recording conditions, (c) shape similarities within a given category, and (d) use of a language model.
+max gj n¢
+
+recognition for recognizer 1 or 2 on randomly drawn ex  amples. We call p1 and p2 their empirical error rates calculated on a test set of size n, and p1 and p2 the expected values of the error rates. We assume that the number of errors of both recognizers are distributed according to the binomial law, which we approximate by the Normal law. The variances of X1 and X2 are var(Xi) = pi(1 - pi)/n, i Œ {1, 2}. Our goal is to find the smallest number of test examples n needed to assert, with a certain confidence, that recognizer 1 is better than recognizer 2, for a given difference in   their error rates p2 - p1 > 0 . This can be formalized as determining the smallest number of examples n such that, with risk a of being wrong, we can reject the hypothesis H0   that p1 = p2 for a given value of p2 - p1 > 0 . The alternative hypothesis H1 that p2 > p1 is then accepted, with risk a of being wrong. If the two random variable X1 and X2 are independent, var(X2 - X1) = var(X2) + var(X1). If we further make the hypothesis H0 that p1 = p2 = p, then var X2 - X1 = 2 For small values of p, we have: var X2 - X1 .
+
+1
+
+6
+
+p 1- p . n 2p . n
+
+1
+
+6
+
+(56)
+
+b p ≥
+
+- ln a Nj
+
+2
+
+7
+
+(54)
+- ln a and
+
+1
+
+6
+
+(57)
+
+From the value of n given by (24) with za =
+
+Under our approximations, if the hypothesis H0 is true, then the random variable Z= X2 - X1 2p n (58)
+
+noticing that, for small values of a (a < 0.3), - ln (a/ Nj ) £ -(1 + ln Nj ) ln a, we obtain that with risk a of being wrong,
+max n¢ = g j 1 + ln Nj n
+
+2
+
+7
+
+(55)
+
+obeys the standardized Normal law (of mean 0 and variance 1). Therefore: Prob
+
+training examples guarantee that the expected value of the error rate p is not worse than p/(1 - b). Consequently, having multiple factors of error correlation increases the number of examples only with the logarithm of the number of factors, according to (55). We do not have at this point experimental data that allows us to justify our simplifying assumptions and validate this formula.
+
+ p - p ≥ z  £ a ,  2p n 
+2 1 a
+
+(59)
+
+where za can be determined from tables of the Normal law (see Table 1). Thus, if   p2 - p1 ≥ za 2 p n , (60)
+
+5 TEST SET SIZES WHICH ALLOW COMPARING THE PERFORMANCE OF TWO RECOGNIZERS
+In this section, we address the problem of determining which test set size ensures that a given difference between the error rates of two recognizers is statistically significant. We first revert to the assumption that errors are i.i.d. The method used is very simple. Since the number of common errors of the two recognizers is not known before testing, we cannot use more sophisticated methods such as the McNemar’s test [9] or the method proposed in [10] which account for correlated errors. We will, however, introduce these methods in Section 7 to do a posteriori hypothesis testing. We then address the problem of correlation between errors which is treated in a similar way as in the previous section.
+
+we will reject H0, with risk a of being wrong, and declare that recognizer 1 is significantly better than recognizer 2. Conversely, if we impose a given relative difference:   p - p1 , (61) b = 2 p where p = (p1 + p2)/2, then to determine whether recognizer 1 is significantly better than recognizer 2, we need a minimum number of test examples of: n=
+
+ z  b
+a
+
+2
+
+2 . p
+
+(62)
+
+It is interesting to compare this formula to (24) for which b  is a bound on (p - p )/p.
+
+5.1.1 Numerical Application
+ Assuming that the best recognizer has an error rate of p1 , if  the second best recognizer has an error rate of p1 + bp which is only slightly worse, what size test set would allow us to conclude that #1 is better than #2? In Table 5, we vary the
+
+5.1 The Case of i.i.d. Errors
+Using similar notation as in previous sections, we call X1 and X2 the random variables indicating failure or success of
+
+Authorized licensed use limited to: ASTAR. Downloaded on February 15, 2009 at 23:35 from IEEE Xplore. Restrictions apply.
+
+60
+
+IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, VOL. 20, NO. 1, JANUARY 1998
+
+TABLE 5 TEST SET SIZES NEEDED TO DIFFERENTIATE TWO RECOGNIZERS
+p
+b\a 0.50 0.30 0.10 0.05 0.03 0.01 0.01 4,343 12,064 108,578 434,312 1.2110 1.0910
+6 7
+
+0.01
+0.05 2,178 6,050 54,450 217,800 605,000 5.4410
+6
+
+0.03
+0.10 1,311 3,641 32,768 131,072 364,089 3.2810
+6
+
+0.1
+0.10 437 1,214 10,923 43,691 121,363 1.1010
+6
+
+0.01 1,448 4,021 36,193 144,771 402,141 3.6210
+6
+
+0.05 726 2,017 18,150 72,600 201,667 1.8210
+6
+
+0.01 434 1,206 10,858 43,431 120,642 1.0910
+6
+
+0.05 218 605 5,445 21,780 60,500 544,500
+
+0.10 131 364 3,277 13,107 36,409 327,680
+
+It is assumed that the average error rate of the two recognizers considered are p = 1 percent, 3 percent, or 10 percent. The number   in the table indicates the minimum size test set which guarantees the significance of the relative difference b = p2 - p1 p , with risk a of being wrong. i.i.d. errors are assumed and the binomial law is approximated by the Normal law.
+
+1
+
+6
+
+confidence threshold a for various values of p = (p1 + p2)/2   and b = ( p2 - p1 )/p. For a typical value of a (a = 0.05), using the notation    Dp = p2 - p1 , we obtain the following simplified formula: n. 10 p  Dp 2 . (63)
+
+If the two recognizers perform equivalently (H0 is true), they have the same expected error rate p and betweensegment variance s . If X1 and X2 are independent, the variance of X2 - X1 is 2s /m. Under such set of hypotheses, the random variable: X2 - X1 (65) 2s m obeys approximately the standardized Normal law. If H0 is true,   p2 - p1 Prob ≥ za £ a 2s m
+2 2
+
+Therefore, assuming i.i.d. errors and p = 0.01, using n . 10,000 characters (64) guarantees the statistical significance of a difference of 0.3 per cent character error Dp = 0.003 , with 95 percent confidence
+
+1
+
+6
+
+(a = 0.05). This corresponds to a relative difference b = 0.3.
+
+ 
+
+ 
+
+(66)
+
+5.2 Correlated Errors
+When errors are correlated, it is possible to proceed like in Section 4 and introduce g factors. The corresponding hypothesis test is called a “matched-pair” test [9]. Matchedpair tests were derived for the particular case when the correlation factor is “linguistic material”: the average difference in error rates between the two recognizers are calculated on each “segment” individually, where a “segment” is typically a sentence. But the test can be generalized to other correlation factors, where a “segment” can represent all the data from one writer.
+
+In other words, with risk a of being wrong, if:
+  p2 - p1 ≥ 2 za s m
+
+(67)
+
+we can reject H0 and assert that recognizer 1 is better than recognizer 2. Therefore, the number of segments that guarantees the    statistical significance of Dp = p2 - p1 with probability a of being wrong, is: z s (68) m=2 a .  Dp
+
+   
+a
+
+ Introducing the parameter b = Dp p , we have:
+
+5.3 Number of “Segments”
+The test data is divided into m “segments” which are homogeneous with respect to a particular correlation factor (e.g., m writers or m sentences). We are seeking the minimum value of m which guarantees that, if the error rate of recognizer 2 is larger than the error rate of recognizer 1 by a certain margin, we can assert with a certain probability that recognizer 1 is better than recognizer 2. Our hypothesis H 0 that we wish to reject is again that p 1 = p2 = p. The derivation follows steps that are similar to those in i i Section 4. Let us call X1 and X2 the errors of recognizers 1 and 2 on the same segment i. We introduce two random i i i i variables X1 and X2 which are the averages of X1 and X2 over n examples. Realizations of these variables are empirii i cal error rates, p1 and p2 , for segment i. We also introduce the means X1 and X2 over all segments.
+
+ z s  . m = 2  bp 
+2
+
+(69)
+
+It is interesting to compare this formula with (36).
+
+5.4 Number of Examples Per Segment
+Let us call ns the number of examples per segment. If H0 is true, the within-segment variance is p(1 - p)/ns . p/ns. Similarly, as in Section 3.2.3, we define a coefficient g, ratio 2 of the between-segment variance s over the withinsegment variance: g = s . p ns
+2
+
+(70)
+
+The total number of examples is then given by: n¢ = mns = g n where n is given by (62). (71)
+
+Authorized licensed use limited to: ASTAR. Downloaded on February 15, 2009 at 23:35 from IEEE Xplore. Restrictions apply.
+
+GUYON ET AL.: WHAT SIZE TEST SET GIVES GOOD ERROR RATE ESTIMATES?
+
+61
+
+5.5 Generalization to Multiple Factors of Correlation
+Similarly, as in Section 4.3, one can generalize to the case of max multiple factors or correlation. Let us call g j = maxj g j and
+Nj the total number of factors of error correlation, one has:
+max n¢ = g j 1 + ln Nj n .
+
+TABLE 6 SUMMARY OF THE STEPS TAKEN TO DETERMINE THE TEST SET SIZE
+p:
+j: Expected error rate of the best recognizer (e.g., 1 percent error gives p = 0.01). Factor of correlation between recognizer errors (e.g., j = writer, j = recording conditions, j = linguistic constrains, j = shape category). Error rate variance for a given j, when j varies (e.g., swriter . p). Number of examples per j (e.g., 100 examples per writer). Number of factors of correlation (e.g., Nj = 4). Risk of predicting too few examples (e.g., a = 0.05).  Guaranteed bound on the relative difference p - p p between the expected error rate and the empirical error rate (e.g., bA = 0.2).   Minimum relative difference p 2 - p1 is better that 2 (e.g., bB = 0.3).
+
+2
+
+7
+
+(72)
+
+6 SUMMARY AND DISCUSSION
+6.1 Test Set Size Determination
+In Table 6, we summarize the various steps of our method. In practice, it is relatively easy to obtain values for p, bA, bB, nj , Nj , and a, but the values of s j might be hard to guess. We can consider our method as a bootstrap method: As more results of benchmarks are available, it becomes easier to obtain a reasonable estimates of s j and the calculation of the size of the test set for future benchmarks becomes more accurate. If nothing is known about s j , one can assume s j . p and use g j . max (1, nj p). It is important to remember when designing a writerindependent test that if data from one writer is present in the test set, no data from that same writer should go into the training set. The same applies to other correlation factors j when designing an j -independent test. In our numerical examples, we found that, if errors are i.i.d., for an error rate of p = 0.01 (a typical character error rate), n = 10,000 examples suffice, and for an error rate of p = 0.03 (a typical word error rate), n = 3,000 examples suffice. At the 95 percent confidence level (a = 0.05), this corresponds to a relative difference bA = 0.2. The expected value   of the error rate should not exceed 1/(1 - bA) p = 1.25 p ,  where p is the error rate on the test set. This also corresponds to a relative error bB = 0.3. A difference in error rate between  two recognizers of D p = 0.3p is statistically significant. To account for correlations between errors, we estimated that gw (j = writer) is of the order of 10. If we assume that
+max g j .g w and that Nj . 4, then, the corrected number of max examples needed is: n¢ = g j (1 + lnNj) n . 10(1 + ln4)
+
+sj :
+
+2
+
+nj : Nj : a:
+b A:
+
+0
+
+5
+
+bB:
+
+2
+
+7 p between the empirical
+
+error rates of two recognizers to be compared that guarantees 1
+
+nA: nB: nA : ¢ nB : ¢
+
+Number of test examples needed assuming i.i.d. errors for method A. Number of test examples needed assuming i.i.d. errors for method B. Number of test examples needed, taking correlations into account for method A. Number of test examples needed, taking correlations into account for method B. Total number of test examples needed, combining methods A and B. (a) sj
+2
+
+n¢ :
+
+max Prepare: p, sj, nj, Nj, a; g j = maxj
+
+p nj
+
+(gj . max (1, njp)) Method B
+
+Method A  Prepare: bA ≥ p - p -lna
+2 b Ap
+
+0
+
+5p
+
+  Prepare: bB = p 2 - p1
+
+2
+
+7p
+B
+
+nA = nA = g j ¢
+max
+
+nB =
+j
+
+-2 lna
+
+21 + lnN 7n
+
+A
+
+Pick: n ¢ = max n A , nB ¢ ¢ (b)
+
+1
+
+nB = g j ¢
+
+max
+
+6
+
+21 + lnN 7n
+j
+
+bB p
+
+2
+
+10,000 . 200,000.
+
+6.2 Literature Overview
+We investigated in various papers and technical reports the test set sizes that are used by pattern recognition researchers and are believed to be reasonable: • In [5], the U.S. National Institute of Standards and Technology (NIST) organized a benchmark for Optical Character Recognition (OCR) of isolated handwritten characters. Three test sets were used, each one having 500 writers. The “digit” test set (10 classes or shape categories) had a total of 60,000 characters, the “uppercase letter” test set (26 classes) had 12,000 characters and the “lowercase letter” test set (26 classes) had also 12,000 characters. Therefore, the two letter test sets had approximately one letter/writer/class whereas the digit test set had 12 digits/writer/class. The authors mention that the first
+
+(a) Notations and typical values of the parameters. (b) Number of examples needed such that, with risk a of being wrong, (1) the expected value p of the error rate of the best recognizer is not worse than 1/(1 - bA) times its empiri cal value p computed on the test set; (2) a relative difference of bB between the error rates of two recognizers is significant.
+
+10,000 digits were typical of the full digit test set, suggesting that this one was oversized. These figures are related to our predictions in the following way: • For the two letter test sets, assuming an error rate of 1 percent (p = 0.01), we predict that n = 10,000 characters are needed if i.i.d. errors are assumed. The i.i.d. assumption is reasonable here since the test sets contain one letter/writer/class. NIST chose test sets of n = 12,000 characters. Our prediction corroborate this choice.
+
+Authorized licensed use limited to: ASTAR. Downloaded on February 15, 2009 at 23:35 from IEEE Xplore. Restrictions apply.
+
+62
+
+IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, VOL. 20, NO. 1, JANUARY 1998
+
+• For the digit test set, it is not possible to gather 10,000 i.i.d. examples because 500 writers times 10 classes make only 5,000 reasonably independent examples. Therefore we need to estimate the corrective factors. Having nw = 120 characters per writer, we estimate gw . pnw = 1.2. Only Nj = 2 factors of correlation are involved (writer and shape category). We verify that the gc corresponding to the shape category correlations is smaller than gw. The total correlation factor is therefore: gw (1 + lnNj) = 1.2 (1 + ln2) . 2. Therefore, we predict that only n¢ = 20,000 examples would be needed for this test. The test set of 60,000 digits used by NIST is oversized, according to this prediction. • In [6], NIST organized an OCR benchmark for Census Bureau forms. Each answer field was handprinted in uppercase letters (26 classes) and contained a few words. The test database consisted of 9,000 answer fields. Since each writer had to answer approximately 30 questions, we estimated that the database contained 300 different writers. Since each field had approximately 15 characters, we estimated that the total number of characters must have been approximately 135,000. Therefore, there was an average of 17 letters/writer/class. • According to our prediction, assuming again a character error rate of 1 percent (p = 0.01), we predict that n = 10,000 characters are needed if i.i.d. errors are assumed. We identified Nj = 3 obvious sources of error correlations: writer, class (or shape category) and linguistic constraints (within a given field). We estimate that the number of examples per writer is approximately nw = 450. We have, gw . pnw = 4.5. We verify that the gc corresponding to the shape category and the gl corresponding to linguistic constraints are both smaller than gw. Therefore, the corrective coefficient is: gw (1 + lnNj) = 4.5 (1 + ln3) . 9. We predict that only n¢ = 90,000 examples would be needed for this test. This is smaller than, but of the same order of magnitude as the NIST test set.
+
+ Solving for p - p , we obtain:  p-p<
+
+2  za 4np 1+ 1+ 2 . 2n za
+
+ 
+
+ 
+
+(76)
+
+Therefore, if we pass the following test:
+2  4np za 1+ 1+ 2 2n za
+
+ 
+
+ < bp 
+
+(77)
+
+we accept H0 with risk a of being wrong. Otherwise, the number of examples n is too small to guarantee a relative error bar of b.
+
+7.2 Comparison of Two Recognizers
+In this section we assume that errors are i.i.d. and that a number n of test examples was chosen according to (62).   Two recognizers have obtained error rates p1 and p2 ,   p1 < p2 . We first want to test the hypothesis H0: p1 = p2. The test that we describe is analogous to the formulation of the McNemar test found in [9] and bears strong similarities with the method proposed in [10]. We present it here for clarity with notations consistent with the rest of the paper. It is enough to compare the two recognizers on those examples where only one of the recognizers has an error. We call n1 and n2 the number of errors that each classifier makes and the other does not make. We call p1 and p2 = 1 - p1 the conditional probabilities of error of each recognizer, given that one recognizer only gives the wrong answer. The number n1 is distributed according to the Binomial law of expected value (n1 + n2)p1 and variance (n1 + n2)p1(1 - p1) = (n1 + n2)p1p2. Similarly, n2 is distributed according to the binomial law of expected value (n1 + n2)p2 and variance (n1 + n2)p2(1 - p2) = (n1 + n2)p1p2.  Let us introduce the random variable P2, of which p 2 = n2/(n1 + n2) is a realization. P2 has expected value p2 and variance p1p2/(n1 + n2). For large values of n1 and n2, the random variable:
+Z= ’ 2 -p 2 p 1p 2 n 1 + n 2
+
+1
+
+6
+
+(78)
+
+7 HYPOTHESIS TESTING
+In this section, we summarize a number of hypothesis tests described in the literature. These tests can be used, after the benchmark, to verify the statistical significance of the results.
+
+obeys approximately the standardized Normal law. In the particular case of p1 = p2 = 1/2 (i.e., if H0 is true), Z becomes:
+Z= ’2 - 1 2
+1 4 n 1 +n 2
+
+1
+
+6
+
+.
+
+(79)
+
+7.1 Precision of the Error Rate
+In this section we assume that errors are i.i.d. and that a number n of test examples was chosen, according to (24).  The best recognizer obtained an error rate p on those test examples. We first want to test the hypothesis H0:  p - p < bp Equation (19) for small values of p becomes:
+ p - p < za p . n
+
+Therefore, if H0 is true, with probability (1 - a), the following inequality holds:  p2   or, since p 2 = 1 - p 1 :
+
+1 za < 2 2
+
+1 n1 + n 2 za n1 + n 2
+
+,
+
+(80)
+
+(73)
+
+  p2 - p1 < (74)
+
+.
+
+(81)
+
+We can further rewrite it as:
+
+Let us call n the total size of the test set, n12 the number of  common mistakes of the two recognizers, p1 the error rate of  the first recognizer and p2 that of the second one. We have:
+
+1
+
+ p-p
+
+6
+
+2
+
+<
+
+2 2 za za   p-p + p. n n
+
+1
+
+6
+
+(75)
+
+1n
+
+1
+
+    + n 2 p 2 - p 1 = n 2 - n 1 = n 2 + n 12 - n 1 + n 12 - n p2 - p1 . (82)
+
+62
+
+7
+
+1
+
+6 2
+
+7
+
+Authorized licensed use limited to: ASTAR. Downloaded on February 15, 2009 at 23:35 from IEEE Xplore. Restrictions apply.
+
+GUYON ET AL.: WHAT SIZE TEST SET GIVES GOOD ERROR RATE ESTIMATES?
+
+63
+
+Therefore, from (81) and (82), if
+za   p2 - p1 ≥ n n1 + n2
+
+(83)
+
+then, with risk a of being wrong, we can accept that recognizer 1 is better than recognizer 2.
+
+7.3 Analysis of Variance
+Finally, we may want to recalculate the coefficients gj, in light of the results of the benchmark. A description of the ANOVA test of equality of the expected values can be found in [1]. We can use ANOVA to test the equality of the error rates for different values of the same factor j (e.g., different writers). This test can be run for the various factors of correlation j by de termining whether g j is significantly different from one. If  maxj g j is smaller than maxj g j that we used in our calculations of the number of test examples, our results will be known with less accuracy than we anticipated.
+
+tions can be performed with multiplicative coefficients taking into account correlations, as explained above. These guidelines should provide some insight for benchmark organizers. Of course, this simplified framework might not be strictly applicable in all situations. For instance, the number of examples per writer might vary substantially from writer to writer in a given database. In such a case, a specific data splitting algorithm must be derived, keeping in mind the general principle: 1) maximize data diversity in the test set, with respect to data source, shape categories and linguistic material; 2) in a writer/speaker independent task, forbid data from the same writer/speaker to be both in the training and test sets; 3) impose a minimum number of 100 writers/speakers; 4) reach the minimum number of examples prescribed. Finally, we should emphasize that nowhere did we make the hypothesis that our test set sizes were for writer/speaker independent tasks only. They apply as well to writer/speaker dependent tasks, in which data from the same writer is both in the training and the test set.
+
+8 CONCLUSION
+The number of examples in a test set should be inversely proportional to the error rate of the best recognizer. For errors independently and identically distributed (i.i.d), a rule of thumb is to use n = 100/p, where n is the test set size and p is the error rate of the best recognizer, as estimated, for instance, by the human error rate. This ensures that with 95 percent confidence the probability of error is not worse  than 1.25 p . For instance, for p = 1 percent character error rate, n = 10,000 characters are needed; for p = 3 percent word error rate, n = 3,000 words are needed. In reality, errors are not i.i.d. because large chunks of data come from the same data collection device or from the same writer and because recognizers might make correlated errors, in particular if they use contextual information to perform recognition (e.g., language models). We examined particularly the case of correlations introduced by data coming from the same writer. If the between-writer variance is the same as the error rate p, using 100 writers ensures that with 95 percent confidence   the true error rate is no more than 1.25 p , where p is the empirical error rate, calculated on the test set. The number of examples per writer can be determined if the ratio gw of the between-writer variance to the within-writer variance is known. The size of the test set is then given by n¢ = gwn, where n is the test set size determined with the assumption that the errors are i.i.d. If Nj factors of correlations must be taken into account, the size of the test set increases to
+max max n¢ = g j 1 + ln Nj n examples. Typical values are 1 £ g j £ 10
+
+ACKNOWLEDGMENTS
+We would like to thank our colleagues Lambert Schomaker of the NICI in the Netherlands and Stan Janet of the U.S. NIST for their helpful suggestions on how to improve this paper and Réjean Plamondon of l’Ecole Polytechnique de Montréal for pointing out several references. Part of this work was done while Isabelle Guyon was working at AT&T Bell Laboratories, Holmdel, New Jersey.
+
+REFERENCES
+A.M. Mood, F.A. Graybill, and D.C. Boes, Introduction to the Theory of Statistics. McGraw Hill, 1974. [2] I. Guyon, L. Shomaker, R. Plamondon, M. Liberman, and S. Janet, “UNIPEN Project of On-Line Data Exchange and Benchmarks, Proc. 12th Int’l Conf. Pattern Recognition, IAPR-IEEE, 1994. [3] H. Chernoff, “A Measure of Asymptotic Efficiency for Tests of a Hypothesis Based on the Sums of Observations,” Annals of Mathematical Statistics, vol. 23, pp. 493-509, 1952. [4] W. Hoeffding, “Probability Inequalities for Sums of Bounded Random Variables,“ J. Am. Statistics Assoc., vol. 58, pp. 13-30, 1963. [5] R. A. Wilkinson, J. Geist, S. Janet, P.J. Grother, C.J.C. Burges, R. Creccy, B. Hammond, J.J. Hull, N.J. Larsen, T.P. Vogl, and C. Wilson, “The First Census Optical Character Recognition Systems Conference,” Technical Report NISTIR-4912, NIST, U.S. Dept. of Commerce, 1992. [6] J. Geist, R.A. Wilkinson, S. Janet, P.J. Grother, B. Hammond, N.W. Larsen, R.M. Klear, M.J. Matsko, C.J.C. Burges, R. Creecy, J.J. Hull, T.P. Vogl, and C. Wilson, “The Second Census Optical Character Recognition Systems Conference,” Technical Report NISTIR-5452, NIST, U.S. Dept. of Commerce, 1994. [7] I. Guyon, M. Schenkel, and J. Denker, Overview and Synthesis of On-Line Cursive Handwriting Recognition Techniques. World Scientific, in press. [8] I. Guyon, D. Henderson, P. Albrecht, Y. Le Cun, and J. Denker, “Writer Independent and Writer Adaptive Neural Network for On-Line Character Recognition,” S. Impedovo, ed., From Pixels to Features III, pp. 493-506. Amsterdam: Elsevier, 1992. [9] L. Gillick and S.J. Cox, “Some Statistical Issues in the Comparison of Speech Recognition Algorithms,” Proc. ICASSP, IEEE 1989. [10] L. Bottou and V. Vapnik, “Local Learning Algorithms,” Technical Report TM-11359-920124-05, AT&T Laboratories, Holmdel, N.J., 1992. [1]
+
+2
+
+7
+
+and 1 £ Nj £ 4. We examined the number of examples needed to be able to discriminate between two recognizers with very close error rates. To ensure that with 95 percent confidence a dif ference D p in error rate is significant, the test set size must 2   exceed n = 10p/D p i.i.d. examples. For a difference D p = 0.3 percent, approximately n = 10,000 examples are needed if this rule is followed. If data or errors are not i.i.d., correc-
+
+Authorized licensed use limited to: ASTAR. Downloaded on February 15, 2009 at 23:35 from IEEE Xplore. Restrictions apply.
+
+64
+
+IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, VOL. 20, NO. 1, JANUARY 1998
+
+Isabelle Guyon received an engineering diploma from the Ecole Superieure de Physique et Chimie Industrielle de Paris, in 1985 and PhD in physical sciences from the Universite Pierre et Marie Curie, Paris, in 1988. She was a research scientist at AT&T Bell Labs Research, New Jersey, from 1989 to 1996. She now has her own company, ClopiNet, which provides consulting services. Dr. Guyon's work focuses on learning systems and, in particular, neural networks and Markov models. She has also strong interests in pattern recognition algorithms in general, classical statistics, and learning theory. She has coauthored many papers in handwriting recognition. John Makhoul is an alumnus of the American University of Beirut and the Ohio State University, and received his PhD in electrical engineering from MIT in 1970, with specialization in speech recognition. He is currently a chief scientist at BBN Systems and Technologies, Cambridge, Massachusetts. He is also an adjunct professor at Northeastern University and the University of Massachussetts, Boston, and a research affiliate at the MIT Speech Communication Laboratory. He has been with BBN directing various projects in speech recognition, spoken language systems, speech coding, speech synthesis, speech enhancement, signal processing, neural networks, and character recognition. Dr. Makhoul is a fellow of the IEEE and the Acoustical Society of America.
+
+Richard Schwartz received an S.B. degree in electrical engineering from MIT. He joined BBN Systems and Technologies, Cambridge, Massachusetts in 1972, and is currently a principal scientist. He specializes in speech recognition, speech synthesis, speech coding, speech enhancement in noise, speaker identification and verification, neural networks, statistical language understanding, and character recognition.
+
+Vladimir Vapnik, Technology Consultant AT&T Labs-Research, is one of the creators of generalization theory in statistical inference, the socalled VC-theory (abbreviation for the VapnikChervonenkis theory). Dr. Vapnik is the author of many articles and books devoted to different problems of the statistical learning theory.
+
+Authorized licensed use limited to: ASTAR. Downloaded on February 15, 2009 at 23:35 from IEEE Xplore. Restrictions apply.
+

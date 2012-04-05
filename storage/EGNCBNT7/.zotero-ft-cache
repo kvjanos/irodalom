@@ -1,0 +1,57 @@
+BIOINFORMATICS APPLICATIONS NOTE
+Gene expression
+
+Vol. 23 no. 2 2007, pages 247–248 doi:10.1093/bioinformatics/btl564
+
+AGScan: a pluggable microarray image quantiﬁcation software based on the ImageJ library
+R. Cathelin, F. Lopez1 and Ch. KloppÃ
+´ ´ ´ INRA, Sigenae, UR875 Biometrie et Intelligence Artiﬁcielle/Genetique Cellulaire, BP 52627, 31326 Castanet-Tolosan Cedex, France and 1TAGC, INSERM-ERM 206, Parc Scientiﬁque de Luminy, 13288 Marseille, France
+Received on August 25, 2006; revised on October 10, 2006; accepted on November 3, 2006 Advance Access publication November 8, 2006 Associate Editor: Trey Ideker ABSTRACT Summary: Many different programs are available to analyze microarray images. Most programs are commercial packages, some are free. In the latter group only few propose automatic grid alignment and batch mode. More often than not a program implements only one quantification algorithm. AGScan is an open source program that works on all major platforms. It is based on the ImageJ library [Rasband (1997–2006)] and offers a plug-in extension system to add new functions to manipulate images, align grid and quantify spots. It is appropriate for daily laboratory use and also as a framework for new algorithms. Availability: The program is freely distributed under X11 Licence. The install instructions can be found in the user manual. The software can be downloaded from http://mulcyber.toulouse.inra.fr/projects/agscan/. The questions and plug-ins can be sent to the contact listed below. Contact: christophe.klopp@toulouse.inra.fr
+
+Image file opening and manipulation
+AGSCan (Fig. 1) can open and display one to three channel images. The build-in ﬁle format is 16 bits TIFF. Other formats can be added using the plug-in system. Fuji ISAC format is already available. To position a grid upon an image manually enough contrast between the spots and the background is required. AGScan provides contrast, brightness and colour balance features. It also enables different rotations to allow the image to be presented the way the slide has been spotted. The image can be trimmed to ﬁt the size of the slide.
+
+Grid design
+AGScan has two grid levels, the ﬁrst one deﬁning the size of a spot, the number of spots per line and column in the block; the second deﬁning the number of meta rows, meta columns and inter block space. This allows most of the slide designs to be accommodated.
+
+Grid alignment BACKGROUND
+Many programs are available for microarray image quantiﬁcation. But new methods and algorithms are still being produced to solve quantiﬁcation speciﬁc problems due to spot shape for example or to propose grid positioning automation solutions. In most of these cases, the provided software has a simple user interface, which does not give access to the functions which are needed for a daily base usage. The idea behind AGScan is to provide the community with an infrastructure like software enabling the easy addition of new methods or features by a plug-in based system. AGScan has been built using elements from BZScan2 (1) and includes ImageJ (2) as an image processing library. The ImageJ community is very active and regularly adds new methods to its library. These new methods will allow microarray quantiﬁcation speciﬁc problems to be addressed. Grid alignment can be performed manually or automatically. The alignment process adjusts the position, the angle and also the size of the grid. By selecting a corner of the grid, it is possible to extend or reduce it in any of the four directions. The automatic available process ﬁrst aligns the grid globally and then performs a local alignment per block. As shown in Figure 1, the table under the image is updated during the alignment process. The automatic global and local alignment algorithms come from BZScan (Lopez et al., 2004).
+
+Spot quantification
+Once the grid is aligned AGScan performs the spot quantiﬁcation assigning several quantiﬁcation values to each spot according to the algorithm used. The table under the image shows all the quantiﬁcation values calculated during the process. The user can re-quantify certain parts (blocks and spots) of the image if need be. The one and two channels quantiﬁcation algorithms come respectively from BZScan (Lopez et al., 2004) and Magic (Heyer et al., 2005). For two channel images two algorithms are available to separate spot signal from background: ﬁxed or adaptive circle. The ﬁxed circle is centred in the grid square, with a user-speciﬁed radius. The adaptive circle algorithm analyses the signal in each grid square to calculates the appropriate centre and radius.
+
+PROGRAM FEATURES
+AGScan is written in Java and has NLS (National Language Support). Its features can be divided according to the quantiﬁcation process steps: image manipulation, grid design, grid alignment and spot quantiﬁcation. There is also a batch mode to process multiple images using the same grid. These elements correspond to the main menu bar and the icon bar layout. Miscellaneous features have been assembled in the tool menu item.
+Ã
+
+Batch mode
+AGScan can be set to run in batch mode for one channel images. For this purpose a batch is created, which incorporates a grid and
+
+To whom correspondence should be addressed.
+
+Ó The Author 2006. Published by Oxford University Press. All rights reserved. For Permissions, please email: journals.permissions@oxfordjournals.org
+
+247
+
+R.Cathelin et al.
+
+Fig. 1. AGScan main display window.
+
+a set of corresponding images. The type of alignment and quantiﬁcation are determined at the beginning of the process. For each image a result ﬁle and a snapshot view of the alignment are produced in order to verify the quality of the alignment rapidly. Most of these features are built into the software but some of them have been implemented as plug-ins. The structure of the software has been designed to simplify the addition of new features.
+
+The source code contains very simple examples of plug-ins allowing new developers to become acquainted with the api.
+
+CONCLUSION
+AGScan ﬁlls a need for an open, extensible, automatic microarray image processing platform. The ImageJ library provides many algorithms to determine spot locations and quantiﬁcation. The simple plug-in system allows the development of new functionalities and their easy integration. Further details including a User Manual and sample data ﬁles are available on the website.
+
+THE PLUG-IN SYSTEM
+AGScan directory structure contains a plug-in directory. The ﬁles stored in this directory are parsed during initialization and all Java class encountered with a plug-in like structure is added as menu items to the user interface. Plug-ins extend several base types corresponding to their use:  SformatPlugin: image file formats (an example for Fuji BAS .inf file type is available),  SimagePlugin: image manipulation,  SAlignPlugin: grid positioning,  SquantifPlugin: spot quantification. Plug-ins also have an active Type property, such as ALIGMENT_TYPE, which indicates when this menu item becomes active in the user interface.
+
+ACKNOWLEDGEMENTS
+The authors thank many users and training period attendees for useful suggestions about AGScan and gratefully acknowledge support from AGENOP. Conflict of Interest: none declared.
+
+REFERENCES
+Rasband,W.S. (1997–2006) ImageJ, U. S. National Institutes of Health, Bethesda, MD, USA. Lopez,F. et al. (2004) Feature extraction and signal processing for nylon DNA microarrays. BMC Genomics, 5, 38–42. Heyer,L.J. et al. (2005) MAGIC Tool: integrated microarray data analysis. Bioinformatics, 9, 2114–2115.
+
+248
+

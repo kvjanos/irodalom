@@ -1,0 +1,1556 @@
+An Introduction to Pattern Recognition
+Michael Alder
+
+HeavenForBooks.com
+
+An Introduction to Pattern Recognition
+by
+
+Michael Alder
+
+HeavenForBooks.com
+
+An Introduction to Pattern Recognition
+
+This Edition ©Mike Alder, 2001
+
+Warning: This edition is not to be copied, transmitted excerpted or printed except on terms authorised by the publisher
+
+HeavenForBooks.com
+
+An Introduction to Pattern Recognition: Statistical, Neural Net and Syntactic methods of getting robots to see and hear.
+
+Next: Contents
+
+An Introduction to Pattern Recognition: Statistical, Neural Net and Syntactic methods of getting robots to see and hear.
+Michael D. Alder September 19, 1997
+
+Preface
+Automation, the use of robots in industry, has not progressed with the speed that many had hoped it would. The forecasts of twenty years ago are looking fairly silly today: the fact that they were produced largely by journalists for the benefit of boardrooms of accountants and MBA's may have something to do with this, but the question of why so little has been accomplished remains. The problems were, of course, harder than they looked to naive optimists. Robots have been built that can move around on wheels or legs, robots of a sort are used on production lines for routine tasks such as welding. But a robot that can clear the table, throw the eggshells in with the garbage and wash up the dishes, instead of washing up the eggshells and throwing the dishes in the garbage, is still some distance off. Pattern Classification, more often called Pattern Recognition, is the primary bottleneck in the task of automation. Robots without sensors have their uses, but they are limited and dangerous. In fact one might plausibly argue that a robot without sensors isn't a real robot at all, whatever the hardware manufacturers may say. But equipping a robot with vision is easy only at the hardware level. It is neither expensive nor technically difficult to connect a camera and frame grabber board to a computer, the robot's `brain'. The problem is with the software, or more exactly with the algorithms which have to decide what the robot is looking at; the input is an array of pixels, coloured dots, the software has to decide whether this is an image of an eggshell or a teacup. A task which human beings can master by age eight, when they decode the firing of the different light receptors in the retina of the eye, this is computationally very difficult, and we have only the crudest ideas of how it is done. At the hardware level there are marked similarities between the eye and a camera (although there are differences too). At the algorithmic level, we have only a shallow understanding of the issues.
+http://ciips.ee.uwa.edu.au/~mike/PatRec/ (1 of 11) [12/12/2000 4:01:56 AM]
+
+An Introduction to Pattern Recognition: Statistical, Neural Net and Syntactic methods of getting robots to see and hear.
+
+Human beings are very good at learning a large amount of information about the universe and how it can be treated; transferring this information to a program tends to be slow if not impossible. This has been apparent for some time, and a great deal of effort has been put into research into practical methods of getting robots to recognise things in images and sounds. The Centre for Intelligent Information Processing Systems (CIIPS), of the University of Western Australia, has been working in the area for some years now. We have been particularly concerned with neural nets and applications to pattern recognition in speech and vision, because adaptive or learning methods are clearly of great potential value. The present book has been used as a postgraduate textbook at CIIPS for a Master's level course in Pattern Recognition. The contents of the book are therefore oriented largely to image and to some extent speech pattern recognition, with some concentration on neural net methods. Students who did the course for which this book was originally written, also completed units in Automatic Speech Recognition Algorithms, Engineering Mathematics (covering elements of Information Theory, Coding Theory and Linear and Multilinear algebra), Artificial Neural Nets, Image Processing, Sensors and Instrumentation and Adaptive Filtering. There is some overlap in the material of this book and several of the other courses, but it has been kept to a minimum. Examination for the Pattern Recognition course consisted of a sequence of four micro-projects which together made up one mini-project. Since the students for whom this book was written had a variety of backgrounds, it is intended to be accessible. Since the major obstructions to further progress seem to be fundamental, it seems pointless to try to produce a handbook of methods without analysis. Engineering works well when it is founded on some well understood scientific basis, and it turns into alchemy and witchcraft when this is not the case. The situation at present in respect of our scientific basis is that it is, like the curate's egg, good in parts. We are solidly grounded at the hardware level. On the other hand, the software tools for encoding algorithms (C, C++, MatLab) are fairly primitive, and our grasp of what algorithms to use is negligible. I have tried therefore to focus on the ideas and the (limited) extent to which they work, since progress is likely to require new ideas, which in turn requires us to have a fair grasp of what the old ideas are. The belief that engineers as a class are not intelligent enough to grasp any ideas at all, and must be trained to jump through hoops, although common among mathematicians, is not one which attracts my sympathy. Instead of exposing the fundamental ideas in algebra (which in these degenerate days is less intelligible than Latin) I therefore try to make them plain in English. There is a risk in this; the ideas of science or engineering are quite diferent from those of philosophy (as practised in these degenerate days) or literary criticism (ditto). I don't mean they are about different things, they are different in kind. Newton wrote `Hypotheses non fingo', which literally translates as `I do not make hypotheses', which is of course quite untrue, he made up some spectacularly successful hypotheses, such as universal gravitation. The difference between the two statements is partly in the hypotheses and partly in the fingo. Newton's `hypotheses' could be tested by observation or calculation, whereas the explanations of, say, optics, given in Lucretius De Rerum Naturae were recognisably `philosophical' in the sense that they resembled the writings of many contemporary philosophers and literary critics. They may persuade, they may give the sensation of profound insight, but they do not reduce to some essentially prosaic routine for determining if they are actually true, or at least useful. Newton's did. This was one of the great philosophical advances made by Newton, and it has been underestimated by philosophers since.
+http://ciips.ee.uwa.edu.au/~mike/PatRec/ (2 of 11) [12/12/2000 4:01:56 AM]
+
+The reader should therefore approach the discussion about the underlying ideas with the attitude of irreverence and disrespect that most engineers, quite properly, bring to non-technical prose. He should ask: what procedures does this lead to, and how may they be tested? We deal with high level abstractions, but they are aimed always at reducing our understanding of something prodigiously complicated to something simple. It is necessary to make some assumptions about the reader and only fair to say what they are. I assume, first, that the reader has a tolerably good grasp of Linear Algebra concepts. The concepts are more important than the techniques of matrix manipulation, because there are excellent packages which can do the calculations if you know what to compute. There is a splendid book on Linear Algebra available from the publisher HeavenForBooks.com I assume, second, a moderate familiarity with elementary ideas of Statistics, and also of contemporary Mathematical notation such as any Engineer or Scientist will have encountered in a modern undergraduate course. I found it necessary in this book to deal with underlying ideas of Statistics which are seldom mentioned in undergraduate courses. I assume, finally, the kind of general exposure to computing terminology familiar to anyone who can read, say, Byte magazine, and also that the reader can program in C or some similar language. I do not assume the reader is of the male sex. I usually use the pronoun `he' in referring to the reader because it saves a letter and is the convention for the generic case. The proposition that this will depress some women readers to the point where they will give up reading and go off and become subservient housewives does not strike me as sufficiently plausible to be worth considering further. This is intended to be a happy, friendly book. It is written in an informal, one might almost say breezy, manner, which might irritate the humourless and those possessed of a conviction that intellectual respectability entails stuffiness. I used to believe that all academic books on difficult subjects were obliged for some mysterious reason to be oppressive, but a survey of the better writers of the past has shown me that this is in fact a contemporary habit and in my view a bad one. I have therefore chosen to abandon a convention which must drive intelligent people away from Science and Engineering in large numbers. The book has jokes, opinionated remarks and pungent value judgments in it, which might serve to entertain readers and keep them on their toes, so to speak. They may also irritate a few who believe that the pretence that the writer has no opinions should be maintained even at the cost of making the book boring. What this convention usually accomplishes is a sort of bland porridge which discourages critical thought about fundamental assumptions, and thought about fundamental assumptions is precisely what this area badly needs.
+
+An Introduction to Pattern Recognition: Statistical, Neural Net and Syntactic methods of getting robots to see and hear.
+
+So I make no apology for the occasional provocative judgement; argue with me if you disagree. It is quite easy to do that via the net, and since I enjoy arguing (it is a pleasant game), most of my provocations are deliberate. Disagreeing with people in an amiable, friendly way, and learning something about why people feel the way they do, is an important part of an education; merely learning the correct things to say doesn't get you very far in Mathematics, Science or Engineering. Cultured men or women should be able to dissent with poise, to refute the argument without losing the friend. The judgements are, of course, my own; CIIPS and the Mathematics Department and I are not responsible for each other. Nor is it to be expected that the University of Western Australia should ensure that my views are politically correct. If it did that, it wouldn't be a university. In a good university, It is a case of Tot homines, quot sententiae, there are as many opinions as people. Sometimes more! I am most grateful to my colleagues and students at the Centre for assistance in many forms; I have shamelessly borrowed their work as examples of the principles discussed herein. I must mention Dr. Chris deSilva with whom I have worked over many years, Dr. Gek Lim whose energy and enthusiasm for Quadratic Neural Nets has enabled them to become demonstrably useful, and Professor Yianni Attikiouzel, director of CIIPS, without whom neither this book nor the course would have come into existence.
+
+q q
+
+Contents Basic Concepts
+r
+
+Measurement and Representation
+s s s
+
+From objects to points in space Telling the guys from the gals Paradigms Metric Methods Neural Net Methods (Old Style) Statistical Methods
+s s
+
+r
+
+Decisions, decisions..
+s s s
+
+Parametric Non-parametric
+
+s r r r r
+
+CART et al
+
+Clustering: supervised v unsupervised learning Dynamic Patterns Structured Patterns Alternative Representations
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/ (4 of 11) [12/12/2000 4:01:57 AM]
+
+An Introduction to Pattern Recognition: Statistical, Neural Net and Syntactic methods of getting robots to see and hear.
+
+s s s r r r q
+
+Strings, propositions, predicates and logic Fuzzy Thinking Robots
+
+Summary of this chapter Exercises Bibliography Preliminaries
+s
+
+Image Measurements
+r
+
+Image File Formats
+
+r r
+
+Generalities Image segmentation: finding the objects
+s s s s
+
+Mathematical Morphology Little Boxes Border Tracing Conclusions on Segmentation Issues and methods Invariance in practice Quick and Dumb Scanline intersections and weights Moments Zernike moments and the FFT
+s
+
+r
+
+Measurement Principles
+s s
+
+r
+
+Measurement practice
+s s s s
+
+Historical Note
+
+s s s r r r r
+
+Masks and templates Invariants Simplifications and Complications
+
+Syntactic Methods Summary of OCR Measurement Methods Other Kinds of Binary Image Greyscale images of characters
+s
+
+Segmentation: Edge Detection
+
+r
+
+Greyscale Images in general
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/ (5 of 11) [12/12/2000 4:01:57 AM]
+
+An Introduction to Pattern Recognition: Statistical, Neural Net and Syntactic methods of getting robots to see and hear.
+
+s s s s r
+
+Segmentation Measuring Greyscale Images Quantisation Textures Generalities Quantisation Edge detection Markov Random Fields Measurements
+
+Colour Images
+s s s s s
+
+r r r r r r r q
+
+Spot counting IR and acoustic Images Quasi-Images Dynamic Images Summary of Chapter Two Exercises Bibliography History, and Deep Philosophical Stuff
+s s s
+
+Statistical Ideas
+r
+
+The Origins of Probability: random variables Histograms and Probability Density Functions Models and Probabilistic Models Models and Data: Some models are better than others Where do Models come from? Bayes' Theorem Bayesian Statistics Subjective Bayesians Codes: Information theoretic preliminaries Compression for coin models
+
+r
+
+Probabilistic Models as Data Compression Schemes
+s
+
+r
+
+Maximum Likelihood Models
+s
+
+r
+
+Bayesian Methods
+s s s
+
+r
+
+Minimum Description Length Models
+s s
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/ (6 of 11) [12/12/2000 4:01:57 AM]
+
+An Introduction to Pattern Recognition: Statistical, Neural Net and Syntactic methods of getting robots to see and hear.
+
+s s r r r q
+
+Compression for pdfs Summary of Rissanen Complexity
+
+Summary of the chapter Exercises Bibliography
+
+Decisions: Statistical methods
+r r
+
+The view into Computing PDFs: Gaussians
+s
+
+One Gaussian per cluster
+s
+
+Dimension 2 The EM algorithm for Gaussian Mixture Modelling
+
+s
+
+Lots of Gaussians: The EM algorithm
+s
+
+s r
+
+Other Possibilities Cost Functions Non-parametric Bayes Decisions Other Metrics Overhead Example The Akaike Information Criterion Problems with EM
+
+Bayesian Decision
+s s s
+
+r
+
+How many things in the mix?
+s s s s
+
+r r r q
+
+Summary of Chapter Exercises Bibliography History: the good old days
+s s s s
+
+Decisions: Neural Nets(Old Style)
+r
+
+The Dawn of Neural Nets The death of Neural Nets The Rebirth of Neural Nets The End of History The Perceptron Training Rule
+
+r
+
+Training the Perceptron
+s
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/ (7 of 11) [12/12/2000 4:01:57 AM]
+
+An Introduction to Pattern Recognition: Statistical, Neural Net and Syntactic methods of getting robots to see and hear.
+
+r
+
+Committees
+s s s s s
+
+Committees and XOR Training Committees Capacities of Committees: generalised XOR Four Layer Nets Building up functions Back-Propagation Mysteries of Functional Analysis Committees vs Back-Propagation
+
+r
+
+Smooth thresholding functions
+s s s
+
+r r
+
+Compression: is the model worth the computation? Other types of (Classical) net
+s s s s
+
+General Issues The Kohonen Net Probabilistic Neural Nets Hopfield Networks
+s s s s s s
+
+Introduction Network Characteristics Network Operation The Network Equations Theory of the Network Applications Introduction Simulated Annealing Network Characteristics Network Operation Theory of the Network Applications Introduction Network Characteristics Network Operation
+
+s
+
+The Boltzmann Machine
+s s s s s s
+
+s
+
+Bidirectional Associative Memory
+s s s
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/ (8 of 11) [12/12/2000 4:01:57 AM]
+
+An Introduction to Pattern Recognition: Statistical, Neural Net and Syntactic methods of getting robots to see and hear.
+
+s s s s
+
+The Network Equations Theory of the Network Applications Introduction Network Characteristics Network Operation Theory of the Network Applications Introduction Network Structure The Network Equations Training the Network Applications
+
+ART
+s s s s s
+
+s
+
+Neocognitron
+s s s s s
+
+s s r r r q
+
+References Quadratic Neural Nets: issues
+
+Summary of Chapter Five Exercises Bibliography Automatic Speech Recognition
+s s
+
+Continuous Dynamic Patterns
+r
+
+Talking into a microphone Traditional methods: VQ and HMM
+s
+
+The Baum-Welch and Viterbi Algorithms for Hidden Markov Models
+
+s s s s r
+
+Network Topology and Initialisation Invariance Other HMM applications Connected and Continuous Speech Linear Systems Moving Average Filters Autoregressive Time Series
+
+Filters
+s s s
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/ (9 of 11) [12/12/2000 4:01:58 AM]
+
+An Introduction to Pattern Recognition: Statistical, Neural Net and Syntactic methods of getting robots to see and hear.
+
+s s s s s r r r q
+
+Linear Predictive Coding or ARMA modelling Into States Wiener Filters Adaptive Filters, Kalman Filters
+
+Fundamentals of dynamic patterns Exercises Bibliography Alphabets, Languages and Grammars
+s s s s
+
+Discrete Dynamic Patterns
+r
+
+Definitions and Examples ReWrite Grammars Grammatical Inference Inference of ReWrite grammars
+
+r r r r r r r q
+
+Streams, predictors and smoothers Chunking by Entropy Stochastic Equivalence Quasi-Linguistic Streams Graphs and Diagram Grammars Exercises Bibliography Precursors Linear Images Curved Elements Parameter Regimes Invariance: Classifying Transformations Intrinsic and Extrisic Chunking (Binding) Backtrack Occlusion and other metric matters Neural Modelling
+s
+
+Syntactic Pattern Recognition
+r r r r r
+
+r r r r
+
+Self-Tuning Neurons
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/ (10 of 11) [12/12/2000 4:01:58 AM]
+
+An Introduction to Pattern Recognition: Statistical, Neural Net and Syntactic methods of getting robots to see and hear.
+
+s s s r r r q
+
+Geometry and Dynamics Extensions to Higher Order Statistics Layering
+
+Summary of Chapter Exercises Bibliography
+
+About this document ...
+
+Next: Contents Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/ (11 of 11) [12/12/2000 4:01:58 AM]
+
+Contents
+
+Next: Basic Concepts Up: An Introduction to Pattern Previous: An Introduction to Pattern
+
+Contents
+q q
+
+Contents Basic Concepts
+r
+
+Measurement and Representation
+s s s
+
+From objects to points in space Telling the guys from the gals Paradigms Metric Methods Neural Net Methods (Old Style) Statistical Methods
+s s
+
+r
+
+Decisions, decisions..
+s s s
+
+Parametric Non-parametric
+
+s r r r r
+
+CART et al
+
+Clustering: supervised v unsupervised learning Dynamic Patterns Structured Patterns Alternative Representations
+s s s
+
+Strings, propositions, predicates and logic Fuzzy Thinking Robots
+
+r r r q
+
+Summary of this chapter Exercises Bibliography Preliminaries
+s
+
+Image Measurements
+r
+
+Image File Formats
+
+r
+
+Generalities
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node1.html (1 of 7) [12/12/2000 4:02:27 AM]
+
+Contents
+
+r
+
+Image segmentation: finding the objects
+s s s s
+
+Mathematical Morphology Little Boxes Border Tracing Conclusions on Segmentation Issues and methods Invariance in practice Quick and Dumb Scanline intersections and weights Moments Zernike moments and the FFT
+s
+
+r
+
+Measurement Principles
+s s
+
+r
+
+Measurement practice
+s s s s
+
+Historical Note
+
+s s s r r r r
+
+Masks and templates Invariants Chaincoding
+
+Syntactic Methods Summary of OCR Measurement Methods Other Kinds of Binary Image Greyscale images of characters
+s
+
+Segmentation: Edge Detection Segmentation Measuring Greyscale Images Quantisation Textures Generalities Quantisation Edge detection Markov Random Fields Measurements
+
+r
+
+Greyscale Images in general
+s s s s
+
+r
+
+Colour Images
+s s s s s
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node1.html (2 of 7) [12/12/2000 4:02:27 AM]
+
+Contents
+
+r r r r r r r q
+
+Spot counting IR and acoustic Images Quasi-Images Dynamic Images Summary of Chapter Two Exercises Bibliography History, and Deep Philosophical Stuff
+s s s
+
+Statistical Ideas
+r
+
+The Origins of Probability: random variables Histograms and Probability Density Functions Models and Probabilistic Models Models and Data: Some models are better than others Where do Models come from? Bayes' Theorem Bayesian Statistics Subjective Bayesians Codes: Information theoretic preliminaries Compression for coin models Compression for pdfs Summary of Rissanen Complexity
+
+r
+
+Probabilistic Models as Data Compression Schemes
+s
+
+r
+
+Maximum Likelihood Models
+s
+
+r
+
+Bayesian Methods
+s s s
+
+r
+
+Minimum Description Length Models
+s s s s
+
+r r r q
+
+Summary of the chapter Exercises Bibliography
+
+Decisions: Statistical methods
+r r
+
+The view into Computing PDFs: Gaussians
+s
+
+One Gaussian per cluster
+s
+
+Dimension 2
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node1.html (3 of 7) [12/12/2000 4:02:27 AM]
+
+Contents
+
+s
+
+Lots of Gaussians: The EM algorithm
+s
+
+The EM algorithm for Gaussian Mixture Modelling
+
+s r
+
+Other Possibilities Cost Functions Non-parametric Bayes Decisions Other Metrics Overhead Example The Akaike Information Criterion Problems with EM
+
+Bayesian Decision
+s s s
+
+r
+
+How many things in the mix?
+s s s s
+
+r r r q
+
+Summary of Chapter Exercises Bibliography History: the good old days
+s s s s
+
+Decisions: Neural Nets(Old Style)
+r
+
+The Dawn of Neural Nets The death of Neural Nets The Rebirth of Neural Nets The End of History The Perceptron Training Rule Committees and XOR Training Committees Capacities of Committees: generalised XOR Four Layer Nets Building up functions Back-Propagation Mysteries of Functional Analysis Committees vs Back-Propagation
+
+r
+
+Training the Perceptron
+s
+
+r
+
+Committees
+s s s s s
+
+r
+
+Smooth thresholding functions
+s s s
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node1.html (4 of 7) [12/12/2000 4:02:27 AM]
+
+Contents
+
+r r
+
+Compression: is the model worth the computation? Other types of (Classical) net
+s s s s
+
+General Issues The Kohonen Net Probabilistic Neural Nets Hopfield Networks
+s s s s s s
+
+Introduction Network Characteristics Network Operation The Network Equations Theory of the Network Applications Introduction Simulated Annealing Network Characteristics Network Operation Theory of the Network Applications Introduction Network Characteristics Network Operation The Network Equations Theory of the Network Applications Introduction Network Characteristics Network Operation Theory of the Network Applications
+
+s
+
+The Boltzmann Machine
+s s s s s s
+
+s
+
+Bidirectional Associative Memory
+s s s s s s
+
+s
+
+ART
+s s s s s
+
+s
+
+Neocognitron
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node1.html (5 of 7) [12/12/2000 4:02:27 AM]
+
+Contents
+
+s s s s s s s r r r q
+
+Introduction Network Structure The Network Equations Training the Network Applications
+
+References Quadratic Neural Nets: issues
+
+Summary of Chapter Five Exercises Bibliography Automatic Speech Recognition
+s s
+
+Continuous Dynamic Patterns
+r
+
+Talking into a microphone Traditional methods: VQ and HMM
+s
+
+The Baum-Welch and Viterbi Algorithms for Hidden Markov Models
+
+s s s s r
+
+Network Topology and Initialisation Invariance Other HMM applications Connected and Continuous Speech Linear Systems Moving Average Filters Autoregressive Time Series Linear Predictive Coding or ARMA modelling Into States Wiener Filters Adaptive Filters, Kalman Filters
+
+Filters
+s s s s s s s s
+
+r r r q
+
+Fundamentals of dynamic patterns Exercises Bibliography Alphabets, Languages and Grammars
+
+Discrete Dynamic Patterns
+r
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node1.html (6 of 7) [12/12/2000 4:02:27 AM]
+
+Contents
+
+s s s s r r r r r r r q
+
+Definitions and Examples ReWrite Grammars Grammatical Inference Inference of ReWrite grammars
+
+Streams, predictors and smoothers Chunking by Entropy Stochastic Equivalence Quasi-Linguistic Streams Graphs and Diagram Grammars Exercises Bibliography Precursors Linear Images Curved Elements Parameter Regimes Invariance: Classifying Transformations Intrinsic and Extrisic Chunking (Binding) Backtrack Occlusion and other metric matters Neural Modelling
+s s s s
+
+Syntactic Pattern Recognition
+r r r r r
+
+r r r r
+
+Self-Tuning Neurons Geometry and Dynamics Extensions to Higher Order Statistics Layering
+
+r r r
+
+Summary of Chapter Exercises Bibliography
+
+Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node1.html (7 of 7) [12/12/2000 4:02:27 AM]
+
+Basic Concepts
+
+Next: Measurement and Representation Up: An Introduction to Pattern Previous: Contents
+
+Basic Concepts
+In this chapter I survey the scene in a leisurely and informal way, outlining ideas and avoiding the computational and the nitty gritty until such time as they can fall into place. We are concerned in chapter one with the overview from a great height, the synoptic perspective, the strategic issues. In other words, this is going to be a superficial introduction; it will be sketchy, chatty and may drive the reader who is expecting detail into frenzies of frustration. So put yourself in philosophical mode, undo your collar, loosen your tie, take off your shoes and put your feet up. Pour yourself a drink and get ready to think in airy generalities. The details come later.
+
+q
+
+Measurement and Representation
+r r r
+
+From objects to points in space Telling the guys from the gals Paradigms Metric Methods Neural Net Methods (Old Style) Statistical Methods
+s s
+
+q
+
+Decisions, decisions..
+r r r
+
+Parametric Non-parametric
+
+r q q q q
+
+CART et al
+
+Clustering: supervised v unsupervised learning Dynamic Patterns Structured Patterns Alternative Representations
+r r r
+
+Strings, propositions, predicates and logic Fuzzy Thinking Robots
+
+q q
+
+Summary of this chapter Exercises
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node2.html (1 of 2) [12/12/2000 4:02:32 AM]
+
+Basic Concepts
+
+q
+
+Bibliography
+
+Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node2.html (2 of 2) [12/12/2000 4:02:32 AM]
+
+Measurement and Representation
+
+Next: From objects to points Up: Basic Concepts Previous: Basic Concepts
+
+Measurement and Representation
+q q q
+
+From objects to points in space Telling the guys from the gals Paradigms
+
+Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node3.html [12/12/2000 4:02:35 AM]
+
+From objects to points in space
+
+Next: Telling the guys from Up: Measurement and Representation Previous: Measurement and Representation
+
+From objects to points in space
+If you point a video camera at the world, you get back an array of pixels each with a particular gray level or colour. You might get a square array of 512 by 512 such pixels, and each pixel value would, on a gray scale, perhaps, be represented by a number between 0 (black) and 255 (white). If the image is in colour, there will be three such numbers for each of the pixels, say the intensity of red, blue and green at the pixel location. The numbers may change from system to system and from country to country, but you can expect to find, in each case, that the image may be described by an array of `real' numbers, or in for some positive integer n. The number n, the length of the mathematical terminology, a vector in vector, can therefore be of the order of a million. To describe the image of the screen on which I am writing this text, which has 1024 by 1280 pixels and a lot of possible colours, I would need 3,932,160 numbers. This is rather more than the ordinary television screen, but about what High Definition Television will require. . A sequence of images An image on my monitor can, therefore, be coded as a vector in such as would occur in a sixty second commercial sequenced at 25 frames a second, is a trajectory in this space. I don't say this is the best way to think of things, in fact it is a truly awful way (for reasons we shall come to), but it's one way.
+
+More generally, when a scientist or engineer wants to say something about a physical system, he is less inclined to launch into a haiku or sonnet than he is to clap a set of measuring instruments on it, whether it be an electrical circuit, a steam boiler, or the solar system. This set of instruments will usually produce a collection of numbers. In other words, the physical system gets coded as a vector in for some positive integer n. The nature of the coding is clearly important, but once it has been set up, it doesn't change. By contrast, the measurements often do; we refer to this as the system changing in time. In real life, real numbers do not actually occur: decimal strings come in some limited length, numbers are specified to some precision. Since this precision can change, it is inconvenient to bother about what it is in some particular case, and we talk rather sloppily of vectors of real numbers. is quite useful when n is 1, 2 or 3, but that larger values I have known people who have claimed that were invented by Mathematicians only for the purpose of terrorising honest engineers and physicists, and can safely be ignored. Follow this advice at your peril. It is worth pointing out, perhaps, that the representation of the states of a physical system as points in
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node4.html (1 of 4) [12/12/2000 4:02:49 AM]
+
+From objects to points in space
+
+has been one of the great success stories of the world. Natural language has been found to be inadequate for talking about complicated things. Without going into a philosophical discursion about why this particular language works so well, two points may be worth considering. The first is that it separates two aspects of making sense of the world, it separates out the `world' from the properties of the measuring apparatus, making it easier to think about these things separately. The second is that it allows the power of geometric thinking, incorporating metric or more generally topological ideas, something which is much harder inside the discrete languages. The claim that `God is a Geometer', based upon the success of geometry in Physics, may be no more than the assertion that geometrical languages are better at talking about the world than non-geometrical ones. The general failure of Artificial Intellligence paradigms to crack the hard problems of how human beings process information may be in part due to the limitations of the language employed (often LISP!) In the case of a microphone monitoring sound levels, there are many ways of coding the signal. It can be simply a matter of a voltage changing in time, that is, n = 1. Or we can take a Fourier Transform and obtain a simulated filter bank, or we can put the signal through a set of hardware filters. In these cases n may be, typically, anywhere between 12 and 256. The system may change in continuous or discrete time, although since we are going to get the vectors into a computer at some point, we may take it that the continuously changing vector `signal' is discretely sampled at some appropriate rate. What appropriate means depends on the system. Sometimes it means once a microsecond, other times it means once a month. We describe such dynamical systems in two ways; frequently we need to describe the law of time development, which is done by writing down a formula for a vector field, or as it used to be called, a system of ordinary differential equations. Sometimes we have to specify only some particular history of representing time to the space of change: this is done formally by specifying a map from possible states. We can simply list the vectors corresponding to different times, or we may be able to find a formula for calculating the vector output by the map when some time value is used as input to the map. It is both entertaining and instructive to consider the map:
+
+If we imagine that at each time t between 0 and a little bug is to be found at the location in given by f(t), then it is easy to see that the bug wanders around the unit circle at uniform speed, finishing up back where it started, at the location after time units. The terminology which we use to
+
+describe a bug moving in the two dimensional space
+
+is the same as that used to describe a system
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node4.html (2 of 4) [12/12/2000 4:02:49 AM]
+
+From objects to points in space
+
+changing its state in the n-dimensional space
+
+. In particular, whether n is 2, 3 or a few million, we
+
+as a point in the space, and we shall make extensive use of the standard shall refer to a vector in mathematician's trick of thinking of pictures in low dimensions while writing out the results of his thoughts in a form where the dimension is not even mentioned. This allows us to discuss an infinite number of problems at the same time, a very smart trick indeed. For those unused to it this is breathtaking, and the hubris involved makes beginners nervous, but one gets used to it.
+
+Figure 1.1: A bug marching around the unit circle according to the map f.
+
+This way of thinking is particularly useful when time is changing the state of the system we are trying to recognise, as would happen if one were trying to tell the difference between a bird and a butterfly by their motion in a video sequence, or more significantly if one is trying to distinguish between two spoken words. The two problems, telling birds from butterflies and telling a spoken `yes' from a `no', are very similar, but the representation space for the words is much higher than for the birds and butterflies. `Yes' and `no' are trajectories in a space of dimension, in our case, 12 or 16, whereas the bird and butterfly move in a three dimensional space and their motion is projected down to a two dimensional space by a video camera. We shall return to this when we come to discuss Automatic Speech Recognition. Let us restrict attention for the time being, however, to the static case of a system where we are not much concerned with the time changing behaviour. Suppose we have some images of characters, say the letters
+
+A
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node4.html (3 of 4) [12/12/2000 4:02:49 AM]
+
+From objects to points in space
+
+and B
+
+Then each of these, as pixel arrays, is a vector of dimension up to a million. If we wish to be able to say of a new image whether it is an A or a B, then our new image will also be a point in some rather high dimensional space. We have to decide which group it belongs with, the collection of points representing an A or the collection representing a B. There are better ways of representing such images as we shall see, but they will still involve points in vector spaces of dimension higher than 3. So as to put our thoughts in order, we replace the problem of telling an image of an A from one of a B with a problem where it is much easier to visualise what is going on because the dimension is much lower. We consider the problem of telling men from women.
+
+Next: Telling the guys from Up: Measurement and Representation Previous: Measurement and Representation Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node4.html (4 of 4) [12/12/2000 4:02:49 AM]
+
+Telling the guys from the gals
+
+Next: Paradigms Up: Measurement and Representation Previous: From objects to points
+
+Telling the guys from the gals
+Suppose we take a large number of men and measure their height and weight. We plot the results of our measurements by putting a point on a piece of paper for each man measured. I have marked a cross on Fig.1.2. for each man, in such a position that you can easily read off his weight and height. Well, you could do if I had been so thoughtful as to provide gradations and units. Now I take a large collection of women and perform the same measurements, and I plot the results by marking, for each woman, a circle.
+
+Figure 1.2: X is male, O is female, what is P?
+
+The results as indicated in Fig.1.2. are plausible in that they show that on average men are bigger than and heavier than women although there is a certain amount of overlap of the two samples. The diagram
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node5.html (1 of 2) [12/12/2000 4:02:57 AM]
+
+Telling the guys from the gals
+
+also shows that tall people tend to be heavier than short people, which seems reasonable. Now suppose someone gives us the point P and assures us that it was obtained by making the usual measurements, in the same order, on some person not previously measured. The question is, do we think that the last person, marked by a P, is male or female? There are, of course, better ways of telling, but they involve taking other measurements; it would be indelicate to specify what crosses my mind, and I leave it to the reader to devise something suitable. If this is all the data we have to go on, and we have to make a guess, what guess would be most sensible? If instead of only two classes we had a larger number, also having, perhaps, horses and giraffes to distinguish, the problem would not be essentially different. If instead of working in dimension 2 as a result of choosing to measure only two attributes of the objects, men, women and maybe horses and giraffes, we were in dimension 12 as a result of choosing to measure twelve attributes, again the problem would be essentially the same- although it would be impracticable to draw a picture. I say it would be essentially the same; well it would be very different for a human being to make sense of lots of columns of numbers, but a computer program hasn't got eyes. The computer program has to be an embodiment of a set of rules which operates on a collection of columns of numbers, and the length of the column is not likely to be particularly vital. Any algorithm which will solve the two class, two dimensional case, should also solve the k class n dimensional case, with only minor modifications.
+
+Next: Paradigms Up: Measurement and Representation Previous: From objects to points Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node5.html (2 of 2) [12/12/2000 4:02:57 AM]
+
+Paradigms
+
+Next: Decisions, decisions.. Up: Measurement and Representation Previous: Telling the guys from
+
+Paradigms
+The problem of telling the guys from the gals encapsulates a large part of Pattern Recognition. It may seem frivolous to put it in these terms, but the problem has all the essential content of the general problem (and it helps to focus the mind!) In general, we have a set of objects which human beings have decided belong into a finite number of classes or categories, for example, the objects might be human beings, or letters of the alphabet. We have some choice of measuring process which is applied to each object to turn it into a point in some space, or alternatively a vector or array of numbers. (If the vectors all have length n we say they are n-dimensional: 2 and 3 dimensional vectors correspond in an obvious way to points in a plane and in the space we live in by simply setting up a co-ordinate system. Hence the for some n, where the label tells us what terminology.) So we have a set of labelled points in category the objects belong to. Now a new point is obtained by applying the measuring process to a new object, and the problem is to decide which class it should be assigned to. There is a clear division of the problem of automatically recognising objects by machine into two parts. The first part is the measuring process. What are good things to measure? This is known in the jargon of the trade as the `feature selection problem', and the resulting the problem. obtained is called the feature space for
+
+A little thought suggests that this could be the hard part. One might reasonably conclude, after a little more thought, that there is no way a machine could be made which would be able to always measure the best possible things. Even if we restrict the problem to a machine which looks at the world, that is to dealing with images of things as the objects we want to recognise or classify, it seems impossible to say in advance what ought to be measured from the image in order to make the classification as reliable as possible. What is usually done is that a human being looks at some of the images, works out what he thinks the significant `features' are, and then tries to figure out a way of extracting numbers from images so as to capture quantitatively the amount of each `feature', thus mapping objects to points in the feature for some n. This is obviously cheating, since ideally the machine ought to work out for itself, space, from the data, what these `features' are, but there are, as yet, no better procedures. The second part is, having made some measurements on the image (or other object) and turned it into a point in a vector space, how does one calculate the class of a new point? What we need is some rule or algorithm because the data will be stored in a computer. The algorithm must somehow be able to compare, by some arithmetic/logical process, the new vector with the vectors where the class is known, and come out with a plausible guess. Exercise! It is a good idea to make these issues as concrete as possible, so you should, at this point, get some real data so as to focus the mind. This needs a kitchen weighing scales and a ruler, and a kitchen.
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node6.html (1 of 3) [12/12/2000 4:03:06 AM]
+
+Paradigms
+
+Get some eggs and some potatoes, For each egg first weigh it, write down its weight, then measure its greatest diameter, and write that down underneath. Repeat for all the eggs. This gives the egg list. Half a dozen (six) eggs should be enough. Now do the same with a similar number of potatoes. This will give a potato list. Plot the eggs on a piece of graph paper, just as for the guys and the gals, marking each one in red, repeat for the potatoes marking each as a point in blue. Now take three objects from the kitchen at random (in my case, when I did this, I chose a coffee cup, a spoon and a box of matches); take another egg and another potato, make the same measurements on the five objects, and mark them on your graph paper in black. Now how easy is it to tell the new egg from the new potatoe by looking at the graph paper? Can you see that all the other three objects are neither eggs nor potatoes? If the pairs of numbers were to be fed into a computer for a decision as to whether a new object is an egg or a potato, (or neither), what rule would you give the computer program for deciding? What things should you have measured in order to reliably tell eggs from potatoes? Eggs from coffee-cups? There are other issues which will cross the mind of the reflective reader: how did the human beings decide the actual categories in the first place? Don't laugh, but just how do you tell a man from a woman? By looking at them? In that case, your retinal cells and your brain cells between them must contain the information. If you came to an opinion about the best category to assign P in the problem of Fig.1.2. just by looking at it, what unarticulated rule did you apply to reach that conclusion? Could one articulate a rule that would agree with your judgement for a large range of cases of location of the new point P? Given any such rule, how does one persuade oneself that it is a good rule? It is believed by almost all zoologists that an animal is a machine made out of meat, a robot constructed from colloids, and that this machine implements rules for processing sensory data with its brain in order to survive. This usually entails being able to classify images of other animals: your telling a man from a woman by looking is just a special case. We have then, an existence proof that the classification problems in which we are interested do in fact have solutions; the trouble is the algorithms are embedded in what is known in the trade as `wetware' and are difficult to extract from the brain of the user. Users of brains have been known to object to the suggestion, and anyway, nobody knows what to look for. It is believed by some philosophers that the zoologists are wrong, and that minds do not work by any algorithmic processes. Since fruit bats can distinguish insects from thrown lumps of mud, either fruit bats have minds that work by non-algorithmic processes just like philosophers, or there is some fundamental difference between you telling a man from a woman and a fruit bat telling mud from insects, or the philosophers are babbling again. If one adopts the philosopher's position, one puts this book away and finds another way to pass the time. Now the philosopher may be right or he may be wrong; if he is right and you give up reading now, he will have saved you some heartbreak trying to solve an unsolvable problem. On the other hand, if he is right and if you continue with the book you will have a lot of fun even if you don't get to understand how brains work. If the philosopher is wrong and you give up, you will certainly have lost out on the fun and may lose out on a solution. So we conclude, by inexorable logic, that it is a mistake to listen to such philosophers, something which most engineers take as
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node6.html (2 of 3) [12/12/2000 4:03:06 AM]
+
+Paradigms
+
+axiomatic anyway. Wonderful stuff logic, even if it was invented by a philosopher. It is currently intellectually respectable to muse about the issue of how brains accomplish these tasks, and it is even more intellectually respectable (because harder) to experiment with suggested methods on a computer. If we take the view that brains somehow accomplish pattern classification or something rather like it, then it is of interest to make informed conjectures about how they do it, and one test of our conjectures is to see how well our algorithms perform in comparison with animals. We do not investigate the comparison in this book, but we do try to produce algorithms which can be so tested, and our algorithms are motivated by theoretical considerations and speculations on how brains do the same task. So we are doing Cognitive Science on the side. Having persuaded ourselves that the goal is noble and worthy of our energies, let us return to our muttons and start on the job of getting closer to that goal. The usual way, as was explained above, of tackling the first part, of choosing a measuring process, is to leave it to the experimenter to devise one in any way he can. If he has chosen a good measuring process, then the second part will be easy: if the height and weight of the individual were the best you can do, telling men from women is hard, but if you choose to measure some other things, the two sets of points, the X's and O's, can be well separated and a new point P is either close to the X's or close to the O's or it isn't a human being at all. So you can tell retrospectively if your choice of what to measure was good or bad, up to a point. It not infrequently happens that all known choices are bad, which presents us with interesting issues. I shall return to this aspect of Pattern Recognition later when I treat Syntactic or Structured Pattern Recognition. belonging to two or more The second part assumes that we are dealing with (labelled) point sets in types. Then we seek a rule which gives us, for any new point, a label. There are lots of such rules. We consider a few in the next section. Remember that you are supposed to be relaxed and casual at this stage, doing some general thinking and turning matters over in your mind! Can you think, in the light of eggs, potatoes and coffee-cups, of some simple rules for yourself?
+
+Next: Decisions, decisions.. Up: Measurement and Representation Previous: Telling the guys from Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node6.html (3 of 3) [12/12/2000 4:03:06 AM]
+
+Decisions, decisions..
+
+Next: Metric Methods Up: Basic Concepts Previous: Paradigms
+
+Decisions, decisions..
+q q q
+
+Metric Methods Neural Net Methods (Old Style) Statistical Methods
+r r
+
+Parametric Non-parametric
+
+q
+
+CART et al
+
+Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node7.html [12/12/2000 4:03:09 AM]
+
+Metric Methods
+
+Next: Neural Net Methods (Old Up: Decisions, decisions.. Previous: Decisions, decisions..
+
+Metric Methods
+One of the simplest methods is to find the closest point of the labelled set of points to the new point P, and assign to the new point whatever category the closest point has. So if (for the data set of guys and gals) the nearest point to P is an X, then we conclude that P should be a man. If a rationale is needed, we could argue that the measurement process is intended to extract important properties of the objects, and if we come out with values for the readings which are close together, then the objects must be similar. And if they are similar in respect of the measurements we have made, they ought, in any reasonable universe, to be similar in respect of the category they belong to as well. Of course it isn't clear that the universe we actually live in is the least bit reasonable. Such a rationale may help us devise the algorithm in the first place, but it may also allow us to persuade ourselves that the method is a good one. Such means of persuasion are unscientific and frowned upon in all the best circles. There are better ways of ensuring that it is a good method, namely testing to see how often it gives the right answer. It is noteworthy that no matter how appealing to the intuitions a method may be, there is an ultimate test which involves trying it out on real data. Of course, rationales tend to be very appealing to the intuitions of the person who thought of them, and less appealing to others. It is, however, worth reflecting on rationales, particularly after having looked at a bit more data; sometimes one can see the flaws in the rationales, and devise alternative methods. The metric method is easy to implement in complete generality for n measurements, we just have to go through the whole list of points where we know the category and compute the distance from the given point P. How do we do this? Well, the usual Euclidean distance between the vectors
+
+and
+
+is simply
+
+, which is easy to compute. Now we
+
+find that point x for which this distance from the new point P is a minimum. All that remains is to note its category. If anyone wants to know where the formula for the euclidean distance comes from in higher dimensions, it's a definition, and it gives the right answers in dimensions one, two and three. You have a better idea?
+
+Figure 1.3: X is male, O is female, what is this P?
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node8.html (1 of 3) [12/12/2000 4:03:20 AM]
+
+Metric Methods
+
+Reflection suggests some drawbacks. One is that we need to compute a comparison with all the data points in the set. This could be an awful lot. Another is, what do we do in a case such as Fig.1.3., above, where the new point P doesn't look as if it belongs to either category? An algorithm which returns `Haven't the faintest idea, probably neither' when asked if the P of Fig.1.3. is a man or a woman would have some advantages, but the metric method needs some modification before it can do this. It is true that P is a long way from the closest point of either category, but how long is a long way? Exercise: Is P in Fig.1.3 likely to be (a) a kangaroo or (b) a pole vaulter's pole? A more subtle objection would occur only to a geometer, a species of the genus Mathematician. It is this: why should you use the euclidean distance? What is so reasonable about taking the square root of the sum of the squares of the differences of the co-ordinates? Sure, it is what you are used to in two dimensions and three, but so what? If you had the data of Fig.1.4. for example, do you believe that the point P is, on the whole, `closer to' the X's or the O's?
+
+Figure 1.4: Which is P closer to, the X's or the O's?
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node8.html (2 of 3) [12/12/2000 4:03:20 AM]
+
+Metric Methods
+
+There is a case for saying that the X-axis in Fig.1.4. has been stretched out by something like three times the Y-axis, and so when measuring the distance, we should not give the X and Y coordinates the same weight. If we were to divide the X co-ordinates by 3, then P would be closer to the X's, whereas using the euclidean distance it is closer to the O's. It can come as a nasty shock to the engineer to realise that there are an awful lot of different metrics , and the old, easy one isn't necessarily the right one to use. But it (ways of measuring distances) on should be obvious that if we measure weight in kilograms and height in centimetres, we shall get different answers from those we would obtain if we measured height in metres and weight in grams. Changing the measuring units in the above example changes the metric, a matter of very practical importance in real life. There are much more complicated cases than this which occur in practice, and we shall meet some in later sections, when we go over these ideas in detail. Remember that this is only the mickey-mouse, simple and easy discussion on the core ideas and that the technicalities will come a little later.
+
+Next: Neural Net Methods (Old Up: Decisions, decisions.. Previous: Decisions, decisions.. Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node8.html (3 of 3) [12/12/2000 4:03:20 AM]
+
+Neural Net Methods (Old Style)
+
+Next: Statistical Methods Up: Decisions, decisions.. Previous: Metric Methods
+
+Neural Net Methods (Old Style)
+Artificial Neural Nets have become very popular with engineers and computer scientists in recent times. Now that there are packages around which you can use without the faintest idea of what they are doing or how they are doing it, it is possible to be seduced by the name neural nets, into thinking that they must work in something like the way brains do. People who actually know the first thing about real brains and find out about the theory of the classical neural nets are a little incredulous that anyone should play with them. It is true that the connection with real neurons is tenuous in the extreme, and more attention should be given to the term artificial, but there are some connections with models of how brains work, and we shall return to this in a later chapter. Recall that in this chapter we are doing this once over briefly, so as to focus on the underlying ideas, and that at present we are concerned with working out how to think about the subject. I shall discuss other forms of neural net later, here I focus on a particular type of net, the Multilayer Perceptron or MLP, in its simplest avatar. We start with the single unit perceptron , otherwise a three layer neural net with one unit in the hidden layer. In order to keep the dimensions nice and low for the purposes of visualising what is going on, I shall recycle Fig.1.2. and use x and y for the height and weight values of a human being. I shall also assume that, initially, I have only two people in my data set, Fred who has a height of 200 cm and weighs in at 100 kg, and Gladys who has a height of 150 cm and a weight of 60 kg. We can picture them graphically as in Fig.1.5., or algebraically as
+
+Figure 1.5: Gladys and Fred, abstracted to points in
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node9.html (1 of 6) [12/12/2000 4:03:42 AM]
+
+Neural Net Methods (Old Style)
+
+The neural net we shall use to classify Fred and Gladys has a diagram as shown in Fig.1.6. The input to the net consists of two numbers, the height and weight, which we call x and y. There is a notional `fixed' input which is always 1, and which exists to represent a so called `threshold'. The square boxes represent the input to the net and are known in some of the Artificial Neural Net (ANN) literature as the first layer. The second layer in this example contains only one unit (believed in some quarters to represent a neuron) and is represented by a circle. The lines joining the first layer to the second layer have numbers attached. These are the weights, popularly supposed to represent the strength of synaptic connections to the neuron in the second layer from the input or sensory layer.
+
+Figure 1.6: A very simple neural net in two dimensions
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node9.html (2 of 6) [12/12/2000 4:03:42 AM]
+
+Neural Net Methods (Old Style)
+
+The node simply sums up the weighted inputs, and if the weights are a, b and c, as indicated, then the output is ax+by+c when the input vector is . The next thing that happens is that this is passed
+
+through a thresholding operation. This is indicated by the sigmoid shape. There are various forms of thresholder; the so called hard limiter just takes the sign of the output, if ax+by+c is positive, the unit outputs 1, if negative or zero it outputs -1. Some people prefer 0 to -1, but this makes no essential difference to the operation of the net. As described, the function applied to ax + by + c is called the sgn function, not to be confused with the sine function, although they sound the same. The network is, in some respects, easier to handle if the sigmoid function is smooth. A smooth approximation to the sgn function is easy to construct. The function tanh is sometimes favoured, defined by
+
+If you don't like outputs which are in the range from -1 to 1 and want outputs which are in the range from 0 to 1, all you have to do is to add 1 and divide by 2. In the case of tanh this gives the sigmoid
+
+These sigmoids are sometimes called `squashing functions' in the neural net literature, presumably because they squash the output into a bounded range. In other books they are called activation functions. We have, then, that the net of Fig.1.6. is a map from to given by
+
+In the case where sig is just sgn, this map sends half the plane to the number 1 and the other half to the
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node9.html (3 of 6) [12/12/2000 4:03:42 AM]
+
+Neural Net Methods (Old Style)
+
+number -1. The changeover occurs along the line ax + by +c = 0. It is common to think of the unit representing a neuron which `fires' if the weighted input ax + by exceeds the threshold -c. This is picturesque, harmless and possibly inspirational. But it is more useful to say that the net divides up the by a line, and one side of the line has points which get assigned to +1 and the other side of the plane line has all its points sent to -1. So we can draw a line in the plane for any value of a, b and c, and attach a sign, + and -, to each side of the line. This is done in Fig.1.7, for two choices of the weights a,b and c. With the choice a = 1, b = -1 and c = 100, we get the line labelled A, while with the choice a = 1, b = 1, and c = -250 we get the line labelled B. This last has the satisfactory property that it allows us to distinguish between Fred and Gladys, since Fred is taken to +1 and Gladys to -1 by the net. If you like, the neuron fires when Fred is input, but not when Gladys is input. We have a neuron which is capable of discrimination on the basis of sex, just like you and me.
+
+Figure 1.7: Two possible states of the same neural net
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node9.html (4 of 6) [12/12/2000 4:03:42 AM]
+
+Neural Net Methods (Old Style)
+
+It should now be clear that a neural net of the simple structure of Fig.1.6. cuts the plane into two halves by a dividing line. If the data set is as simple as { Fred, Gladys } then the problem is to find out the right place to put the dividing line, that is, we have to find a choice of a,b,c that will put the points of one category on the positive side of the line and the points of the other category all on the other side. Our thinking about this simple case therefore leads us to three issues: 1. Can we find an algorithm for working out where to put the line in the plane? 2. Can we do the same sort of thing in higher dimensions? 3. What if the data set is like the male/female data of Fig.1.2? Can we put in more than one line so as to separate out the sets? It is obvious that a single line won't work. The answers are gratifyingly positive (or I should not have asked the questions). The algorithm for a single unit as in the case of Fig. 1.6. is the well known Perceptron Convergence Algorithm and goes back to Rosenblatt and Widrow, among others, and will be described in later chapters. The dimension is largely irrelevant: if we had inputs x, y and z instead of x and y, we would have an extra weight and be looking at a separating surface with equation ax + by + cz + d = 0 which is the equation of a plane. In general, if is a point in let denote the point in obtained by writing out the components and then putting a 1 in the last place. Then an element of the weight space for a single unit net with of n inputs, i.e. the list of n+1 weights attached to the arcs going from the inputs (and threshold 1) to the unit can be regarded as a vector in , and if we call it , then the space is divided into two
+
+halves by the hyperplane , where denotes the standard inner or `dot' product. This is standard linear algebra, and should not trouble the well informed reader. If it boggles your mind, mind, then the remedy is to proceed to the Linear Algebra book obtainable from HeavenForBooks.com . You should rejoin the rest of us at this point after mastering the subject to the level of being able to understand Nilsson's book, mentioned in the bibliography at the end of this chapter. The Perceptron Convergence Algorithm works for any dimension, as we shall see later. It takes some randomly chosen initial hyperplane and operates on it by selecting a data point, usually also at random, and then kicking the hyperplane around, then repeating for new, randomly selected points, until the hyperplane moves into the right position. This is called training the net. It isn't immediately obvious that there is such a rule for kicking hyperplanes around, but there is and it takes only some elementary linear algebra to find it. I shall explain all in a later chapter, but for now it suffices to get the general idea. For more complicated data sets, we may need more than one unit in the second layer. For practical applications, it is also a good idea to have more than one layer; again this will be discussed in a later chapter. Training these more complicated nets so that they put many hyperplanes in reasonable positions is a little harder. This is what the Back Propagation algorithm accomplishes. The purposes of this section will have been met if the reader understands that what an ANN does is to chop the space up into regions by means of hyperplanes, so that points of the same category are generally in the same regions. The decision as to where to put the dividing hyperplanes is taken by means of a training algorithm which usually means selecting data points and operating with them on a randomly
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node9.html (5 of 6) [12/12/2000 4:03:42 AM]
+
+Neural Net Methods (Old Style)
+
+chosen initial placing of the hyperplanes until convergence has occurred or the error measure is small enough. ANN's can take a long time to train, but they are often quite fast to use as pattern classifiers because we have to compute some number of inner products, a number usually much less than the amount of data. Chopping the space up into regions, each of which is, as we shall see later, convex, can be rationalised by observing that if a point is surrounded by points all of one category, with no points of another category in between, then it surely ought to be of the same category as its surrounding points in any reasonable universe. This is a weaker kind of assumption of reasonableness to make than the metric assumption, but whether the universe is prepared to go along with it has to be tested on particular data. It is easy to see that the hyperplane (line in dimension 2) B of Fig.1.7. which does an adequate job of telling Fred from Gladys is unlikely to keep on doing a good job of telling the guys from the gals as more data comes in. The hyperplane is a kind of theory. It has its opinions about the category of any new point that may be offered. A good theory has to be right when tested on new data, and the theory given by line B does not look promising. Another serious drawback of the ANN described by B is that an object weighing in at 50 Kg. and having a height of three metres is unequivocally theorised to be a man. Modifying the ANN so that it admits that it has never seen anything like it before and consequently doesn't have the foggiest idea what class a new point belongs to, is not particularly easy.
+
+Next: Statistical Methods Up: Decisions, decisions.. Previous: Metric Methods Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node9.html (6 of 6) [12/12/2000 4:03:42 AM]
+
+Statistical Methods
+
+Next: Parametric Up: Decisions, decisions.. Previous: Neural Net Methods (Old
+
+Statistical Methods
+These fall into two broad types.
+
+q q
+
+Parametric Non-parametric
+
+Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node10.html [12/12/2000 4:03:45 AM]
+
+Parametric
+
+Next: Non-parametric Up: Statistical Methods Previous: Statistical Methods
+
+Parametric
+Returning to the data set of the guys and the gals, you will, if you have had any amount of statistical education (and if you haven't, read up on Information Theory to acquire some), have immediately thought that the cluster of men looked very like what would be described by a bivariate normal or gaussian distribution, and that the cluster of women looked very like another. In elementary books introducing the one dimensional normal distribution, it is quite common to picture the distribution by getting people to stand with their backs to a wall, with people of the same height standing in front of each other. Then the curve passing through the people furthest from the wall is the familiar bell shaped one of Fig.1.8., with its largest value at the average height of the sample.
+
+Figure 1.8: One dimensional (univariate) normal or gaussian function
+
+The function family for the one dimensional (univariate) gaussian distribution has two parameters, the centre, and the standard deviation, . Once these are assigned values, then the function is specified
+
+(so long as
+
+is positive!) and of course we all know well the expression
+
+which describes the function algebraically.
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node11.html (1 of 6) [12/12/2000 4:04:14 AM]
+
+Parametric
+
+The distribution of heights of a sample of men may be modelled approximately by the gaussian function in dimension 1 for suitably chosen values of . The modelling process means that if you want an estimate of the proportion of the sample between, say, 170 and 190 cm. tall, it can be found by integrating the function between those values. The gaussian takes only positive values, and the integral from to is 1, so we are simply measuring the area under the curve between two
+
+vertical lines, one at 170 and the other at 190. It also follows that there is some fraction of the sample having heights between -50 and -12 cm. This should convince you of the risk of using models without due thought. In low dimensions, the thought is easy, in higher dimensions it may not be. To the philosopher, using a model known to be `wrong' is a kind of sin, but in statistics and probability modelling, we do not have the luxury of being given models which are `true', except possibly in very simple cases. To visualise the data of men's heights and weights as modelled by a gaussian function in two dimensions, we need to imagine a `gaussian hill' sitting over the data, as sketched rather amateurishly in Fig.1 .9. Don't shoot the author, he's doing his best.
+
+Figure 1.9: Two dimensional (bivariate) normal or gaussian distribution
+
+This time the gaussian function is of two variables, say x and y, and its parameters now are more complicated. The centre, is now a point in the space , while the has become changed rather
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node11.html (2 of 6) [12/12/2000 4:04:14 AM]
+
+Parametric
+
+more radically. Casting your mind back to your elementary linear algebra education, you will recall that quadratic functions of two variables may be conveniently represented by symmetric matrices, for example the function
+
+given by
+
+may be represented by the matrix
+
+and in general for quadratic functions of two variables we can write
+
+for the function usually written ax2 + 2bxy + cy2. Multiplying out the matrices gives the correct result. Since in one dimension the gaussian function exponentiates a quadratic form, it is no surprise that it does the same in two or more dimensions. The n-dimensional gaussian family is parametrised by a centre, which is a point in and which is an n by n invertible positive definite symmetric matrix
+
+representing the quadratic map which takes to . The symbol denotes the transpose of the column matrix to a row matrix. The formula for a gaussian function is therefore
+
+and we shall refer to
+
+as the centre of the gaussian and and covariance matrix
+
+as its covariance matrix. The normal or is often written N( ) for short. All
+
+gaussian function with centre
+
+this may be found explained and justified, to some extent, in the undergraduate textbooks on statistics. See Feller, An Introduction to Probability Theory and Applications volume 2, John Wiley 1971, for a rather old fashioned treatment. Go to Information Theory for a more modern explanation. The parameters and when given actual numerical values determine just one gaussian hill, but we
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node11.html (3 of 6) [12/12/2000 4:04:14 AM]
+
+Parametric
+
+have the problem of working out which of the numerical values to select. The parameter space of possible values allows an infinite family of possible gaussian hills. If we believe that there is some and which will give, of all possible choices, the best fit gaussian hill to the suitable choice of data of Fig.1.9., then we can rely on the statisticians to have found a way of calculating it from the data. We shall go into this matter in more depth later, but indeed the statisticians have been diligent and and . These will, in effect, give a function the graph of algorithms exist for computing a suitable which is a gaussian hill sitting over the points. And the same algorithms applied to the female data points of Fig.1.2. will give a second gaussian hill sitting over the female points. The two hills will intersect in some curve, but we shall imagine each of them sitting in place over their respective data points- and also over each others. Let us call them gm and gf for the male and female gaussian functions respectively. If a new data point is provided, we can calculate the height of the two hills at that point, and
+
+respectively. It is intuitively appealing to argue that if the male hill is higher than the female hill at the new point, then it is more likely that the new point is male than female. Indeed, we can say how much more likely by looking at the ratio of the two numbers, the so called likelihood ratio
+
+Moreover, we can fairly easily tell if a point is a long way from any data we have seen before because both the likelihoods and will be small. What `small' means is going to depend on
+
+the dimension, but not on the data. It is somewhat easier to visualise this in the one dimensional case: Fig.1.10. shows a new point, and the two gaussian functions sitting over it; the argument that says it is more likely to belong to the function giving the greater height may be quantified and made more respectable, but is intuitively appealing. The (relatively) respectable version of this is called Bayesian Decision Theory, and will be described properly later.
+
+Figure 1.10: Two gaussian distributions over a point of unknown type.
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node11.html (4 of 6) [12/12/2000 4:04:14 AM]
+
+Parametric
+
+The advantage of the parametric statistical approach is that we have an explicit (statistical) model of a process by which the data was generated. In this case, we imagine that the data points were generated by a process which can keep producing new points. In Fig.1.10. one can imagine that two darts players of different degrees of inebriation are throwing darts at a line. One is aiming at the centre a and the other, somewhat drunker, at the centre b. The two distributions tell you something about the way the players are likely to place the darts; then we ask, for the new point, x, what is the probability that it was thrown by each of the two players? If the b curve is twice the height of the a curve over x, then if all other things were equal, we should be inclined to think it twice as likely that it was aimed by the b player than the a. We do not usually believe in the existence of inebriated darts players as the source of the data, but we do suppose that the data is generated in much the same way; there is an ideal centre which is, so to speak, aimed at, and in various directions, different amounts of scatter can be expected. In the case of height and weight, we imagine that when mother nature, god, allah or the blind forces of evolution designed human beings, there is some height and weight and shape for each sex which is most likely to occur, and lots of factors of a genetic and environmental sort which militate in one direction or another for a particular individual. Seeing mother nature as throwing a drunken dart instead of casting some genetic dice is, after all, merely a more geometric metaphor. Whenever we make a stab at guessing which is the more likely source of a given data point coding an object, or alternatively making a decision as to which category an object belongs, we have some kind of tacit model of the production process or at least some of its properties. In the metric method, we postulate that the metric on the space is a measure of similarity of the objects, in the neural net method we postulate that at least some sort of convexity property holds for the generating process. Note that in the case of the statistical model, something like the relevant metric to use is generated automatically, so the problem of Fig.1.4. is solved by the calculation of the two gaussians (and the X-axis gets shrunk, in effect). The rationale is rather dependent on the choice of gaussians to model the data. In the case discussed, of heights and weights of human beings, it looks fairly plausible, up to a point, but it may be rather difficult to tell if it is reasonable in higher dimensions. Also, it is not altogether clear what to do when the data does not look as if a gaussian model is appropriate. Parametric models have been used, subject to these reservations, for some centuries, and undoubtedly have their uses. There are techniques in existence for coping with the problems of non-gaussian distributions of
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node11.html (5 of 6) [12/12/2000 4:04:14 AM]
+
+Parametric
+
+data, and some will be discussed later. The (Bayesian) use of the likelihood ratio to select the best bet has its own rationale, which can extend to the case where we have some prior expectations about which category is most likely. Again, we shall return to this in more detail later.
+
+Next: Non-parametric Up: Statistical Methods Previous: Statistical Methods Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node11.html (6 of 6) [12/12/2000 4:04:14 AM]
+
+Non-parametric
+
+Next: CART et al Up: Statistical Methods Previous: Parametric
+
+Non-parametric
+Suppose we assume that there is some probability density function (pdf for short) for the men and another for the women, but we are unwilling to give a commitment to gaussians or any other family of functions to represent them. About the weakest condition we might apply is that the two pdf's are continuous. We could try to estimate them locally, or at least the likelihood ratio, in a neighbourhood of the new datum. One way of doing this is to take a ball in the space centred on the new point. Now count the number of points in each category that are within the ball. The ratio of these two numbers is our estimate of the likelihood ratio. These are called Parzen estimates. Of course, one number or the other might easily be zero if the ball is too small, but if the ball is too big it might measure only the total number of points in each category. Oh well, life wasn't meant to be easy. An alternative is to take, for some positive integer k, the k nearest neighbours of the new point, and count those in each category. Again, the bigger number is the best guess. This is called the k nearest neighbours algorithm. It looks rather like the metric method with which we started the quest to get sensible answers to the pattern recognition problem, but is making different assumptions about the nature of the process producing the data. Again, there is a problem of how to measure the distances. In either alternative, it is possible to weight the count of points inversely by distance from the place of interest, so that remote points count less than close ones. This brings us back, yet again, to the question of what the right metric is. Some people have argued that Artificial Neural Nets are just a non-parametric statistical method of making decisions: this is debatable but not profitably.
+
+Next: CART et al Up: Statistical Methods Previous: Parametric Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node12.html [12/12/2000 4:04:18 AM]
+
+CART et al
+
+Next: Clustering: supervised v unsupervised Up: Decisions, decisions.. Previous: Non-parametric
+
+CART et al
+There is an approach to the problem of which I shall have little to say, although it has its proponents and its merits. It is typified by CART, and it works roughly as follows. Suppose we want to tell the gals from the guys again. We take the two dimensional weight and height representation for illustration. We first see how to cut the space up into two sections by working out the best place to put a hyperplane (line) in the space so as to get the largest fraction of points correctly discriminated. This is just like the MLP with a single unit so far. Then we look at the points that are wrong, and try to fix them up by further subdivision of the space. We repeat until we have everything right, or satisfy some other, less exacting, criterion. We wind up, typically, with a tree structure to decide what the category of a point is, going through a sequence of binary decisions. This approximates what a Multi-Layer Perceptron with two hidden layers accomplishes, although the algorithms are generally faster and more intelligent. The scope for generalising is obvious; for example we do not need the data points to be all in the same space, since we can classify on, for example, the dimension. We may have a mix of geometric and symbolic representations, and so on. My reason for not expanding on this area is because I am not happy with either the range of possible representation systems, or the segmentation process. I think there are better ways to do it, and I shall indicate them later in this book.
+
+Next: Clustering: supervised v unsupervised Up: Decisions, decisions.. Previous: Non-parametric Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node13.html [12/12/2000 4:04:22 AM]
+
+Clustering: supervised v unsupervised learning
+
+Next: Dynamic Patterns Up: Basic Concepts Previous: CART et al
+
+Clustering: supervised v unsupervised learning
+The reflective reader will, perhaps, have been turning to the not so silly question of how he or she tells men from women. Or to put it another way, looking at the clusters of points in Fig.1.2., if instead of having labelled one set as X points for males and O points for females, suppose we had just drawn unlabelled points as little black dots: could a program have looked at the data and seen that there are two populations? It seems reasonable to suppose that the reader, with somewhat different sensory apparatus, has some internal way of representing human beings via neurons, or in wetware as we say in the trade, the capacity for coding resemblance or similarity in terms of proximity. and that this shares with Then the dimension may be a little higher for you, dear reader, but most of the problem survives. There is, undeniably, a certain amount of overlap between the two clusters when we measure the weight and height, and indeed there would be some overlap on any system of measurement. It is still the case however (despite the lobbying of those who for various reasons prefer not to be assigned an unambiguous sex) that it is possible to find measurement processes which do lead to fairly well defined clusters. A count of X and Y chromosomes for example. Given two such clusters, the existence of the categories more or less follows. One of the reasons for being unhappy with the neural net model we have described is that it is crucially dependent on the classification being given by some external agent. It would be nice if we had a system which could actually learn the fact that women and men are distinguishable categories by simply noticing that the data form two clusters. It has to be assumed that at some point human beings learn to classify without any immediate feedback from an external agent. Of course, kicking a neuron when it is wrong about a classification, and kicking a dog when it digs up the roses have much the same effect; the devastation is classified as `bad' in the mind of the dog, or at least, the owner of the rose bush hopes so. It is not too far fetched to imagine that there are some pain receptors which act on neurons responsible for classifying experiences as `good' and `bad' in a manner essentially similar to what happens in neural nets. But most learning is a more subtle matter than this; a sea anemone `learns' when the tide is coming in without getting a kick in the metaphorical pants. Mistaking a man for a woman or vice versa might be embarrassing, but it is hard to believe you learnt the difference between men and women by making many errors and then reducing the average embarrassment, which is how an artificial neuron of the classical type would do it. Learning a value, a +1 or -1 for each point in some set of points, and then being asked to produce a rule or algorithm for guessing the value at some new point, is most usefully thought of as fitting a function to a space when we know its value on a finite data set. The function in this case can take only binary values,
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node14.html (1 of 2) [12/12/2000 4:04:31 AM]
+
+Clustering: supervised v unsupervised learning
+
+, but this is not in principle different from drawing a smooth curve (or surface) through a set of points. The diagram Fig.1.11. makes it clear, in one dimension, that we are just fitting a function to data.
+
+Figure 1.11: A one dimensional pattern recognition problem solved by a neural net.
+
+This perspective can be applied to the use of nets in control theory applications, where they are used to learn functions which are not just binary valued. So Supervised Learning is function fitting, while Unsupervised Learning is cluster finding. Both are important things to be able to do, and we shall be investigating them throughout this book.
+
+Next: Dynamic Patterns Up: Basic Concepts Previous: CART et al Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node14.html (2 of 2) [12/12/2000 4:04:31 AM]
+
+Dynamic Patterns
+
+Next: Structured Patterns Up: Basic Concepts Previous: Clustering: supervised v unsupervised
+
+Dynamic Patterns
+The above classification of learning systems into supervised and unsupervised , function fitting and clustering, although lacking in formal precision, is of some intuitive value. We are, of course, conducting a leisurely survey of the basic concepts at present, rather than getting down to the nitty-gritty and the computational, because it is much easier to get the sums right when you can see what they are trying to accomplish. The framework discussed so far, however, has concentrated on recognising things which just sit there and wait to be recognised; but many things change in time in distinctive ways. As an example, if we record the position and possibly the pressure of a stylus on a pad, we can try to work out what characters are being written when the user writes a memo to himself. This gives us a trajectory in dimension two to classify. Or we might have an image of a butterfly and a bird captured on videotape, and wish to identify them, or, more pressingly, two kinds of aeroplane or missile to distinguish. In these cases, we have or possibly as the objects to be recognised. A similar situation occurs when we trajectories in recognise speech, or try to: the first thing that is done is to take the time sequence which gives the microphone output as a function of time and to perform some kind of analysis of its component frequencies, either by a hardware filter bank, an FFT (Fast Fourier Transform) followed by some binning so as to give a software simulation of the hardware filterbank, or relatively exotic methods such as Cepstral Coefficients or Linear Predictive Coding coefficients. All of these transform the utterance into a for n anywhere between 2 and 256. Distinguishing the word `yes' from the trajectory in some space word `no', is then essentially similar to telling butterflies from birds, or boeings from baseballs, on the basis of their trajectory characteristics. An even more primitive problem occurs when one is given a string of ascii characters and has to assign provenance. For example, if I give you a large sample of Shakespearean text and a sample of Marlowe's writing, and then ask you to tell me what category does a piece written by Bacon come under, either or neither, then I am asking for a classification of sequences of symbols. One of the standard methods of doing Speech Recognition consists of chopping up the space of speech sounds into lumps (A process called vector quantisation in the official documents) and labelling each lump with a symbol. Then an utterance gets turned first into a trajectory through the space, and then into a sequence of symbols, as we trace to see what lump the trajectory is in at different times. Then we try to classify the symbol strings. This might seem, to the naive, a bizarre approach, but it might sound more impressive if we spoke of vector quantisation and Hidden Markov Models. In this form, it is more or less a staple of speech recognition, and is coming into favour in other forms of trajectory analysis. The classification of trajectories, either in or in some discrete alphabet space, will also therefore preoccupy us at later stages. Much work has been done on these in various areas: engineers wanting to
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node15.html (1 of 2) [12/12/2000 4:06:08 AM]
+
+Dynamic Patterns
+
+clean up signals have developed adaptive filters which have to learn properties of the signal as the signal is transmitted, and statisticians and physicists have studied ways to clean up dirty pictures. Bayesian methods of updating models as data is acquired, look very like skeletal models for learning, and we shall be interested in the extent to which we can use these ideas, because learning and adaption are very much things that brains do, and are a part of getting to be better at recognising and classifying and, in the case of trajectories, predicting.
+
+Next: Structured Patterns Up: Basic Concepts Previous: Clustering: supervised v unsupervised Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node15.html (2 of 2) [12/12/2000 4:06:08 AM]
+
+Structured Patterns
+
+Next: Alternative Representations Up: Basic Concepts Previous: Dynamic Patterns
+
+Structured Patterns
+The possibility that instead of having a single point in to classify we shall have a trajectory is only the tip of an iceberg. The temporal order is about the simplest that can be imposed on a set of points in , but it is far from being the only one.
+
+Figure 1.12: Structured objects in an image
+
+To see another possibility, contemplate the problem of recognising an image of a line drawing of a cube and distinguishing it from an image of a line drawing of a pyramid. The approach suggested so far would be to find some measurement operation on the image which would do the job. This is obviously possible. If we were to count edges in some way, that would solve the problem without even having to worry about which edges joined to which. The trouble is, it requires the pattern recognising human to choose, for each geometrical object, some measurement process specific to the objects to be recognised. This is currently how things are done; when somebody writes a program to recognise chinese characters, he sits and thinks for a while about how to make some measurements on them so as to give some resulting point in or if not a point in for each character,
+
+, some other kind of representation. Having done this for the kinds of objects he is
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node16.html (1 of 2) [12/12/2000 4:06:16 AM]
+
+Structured Patterns
+
+interested in classifying, he then tries to automate the process of producing the point or other symbolic representation describing the original object, and then he sets about writing a program to classify the representations. The process which chooses the representation is in the head of the programmer, the program does not make the decision for him. This makes a lot of pattern recognition rather slow; it provides employment for any number of hackers, of course, which is something hackers all think is a good thing, but it plainly isn't particularly satisfactory to the thinkers among us. It looks to be something which can be and ought to be automated; the approach would have to be concerned with extracting some information about how parts of the object are built up out of sub-parts, and suitably coding this information. A related issue is the scene analysis problem, when one image contains several subimages each of which is required to be recognised. In Optical Character Recognition (OCR) for instance, one is usually given a page with rather a lot of characters on it, and the first task is usually to segment the image into bits. This can be very difficult when the objects touch. A photograph of your dear old Grandmother in front of the house does not usually stop you recognising both granny and the house. One might hope that it is possible to say how some pixels aggregate to form lines or edges, some edges aggregate to form corners, some corners aggregate to form faces, and some faces aggregate to form a cube, or possibly a pyramid. Similarly, an image of an aeroplane is made up out of subimages of tail, wings and fuselage; an image of a face is made up out of a nose, eyes and a mouth. The arrangement of the bits is crucial, and is easily learnt by quite small children. Counting the number of people grinning out at from a photograph is easy for the small child. The hacker confronted with a problem like this usually counts eyes and divides by two, getting the wrong answer if there are grapes in the picture, or if Aunty Eth is hidden behind Uncle Bert except for the hat. His program can be thrown off by the shine on someone's spectacles. When it works, it has been developed until it contains quite a lot of information about what the programmer thinks faces are like. This can take a long time to get into the machine, and it can be wrong. It would be necessary to start all over again if you wanted to count lumps of gravel or blood cells. It is clear that human beings don't have to learn by being told everything in this way; they can figure out things for themselves. It would be nice if our programs could do the same, if only in a small way. This can in fact be done, by methods which may perhaps mimic, abstractly, the central nervous system, and I shall describe them in later chapters under the heading of Syntactic Pattern Recognition.
+
+Next: Alternative Representations Up: Basic Concepts Previous: Dynamic Patterns Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node16.html (2 of 2) [12/12/2000 4:06:16 AM]
+
+Alternative Representations
+
+Next: Strings, propositions, predicates and Up: Basic Concepts Previous: Structured Patterns
+
+Alternative Representations
+In this slow and gentle walk through the basic ideas of Pattern Recognition, I have concentrated on representing objects by some kind of measuring process which translates them into points in a vector space. There are a few other methods of representation which must be mentioned. The vector space method of coding a description of the state of affairs runs right through science and is deeply embedded in the psyche of anyone who has survived an undergraduate course in Physics or Engineering. On the other hand, it seems bizarre and unnatural to, say, psychologists or computer scientists. The power of the system of representation may be judged by what has been accomplished by it: virtually all of modern technology. The biological scientists might think otherwise, but almost all their measuring devices have been supplied by engineers working along lines worked out by physicists and chemists. Without such devices as x-ray diffraction systems and centrifuges, and an understanding of electrophoresis and isotopes, genetics would still be horse and flower breeding. This may sound a strong statement, and indeed it is, but some extended reflection is likely to convince the informed reader of its truth. The spectrum of ideas upon which contemporary science and technology depend, from statistics to electromagnetism, quantum mechanics to fluid mechanics, geology to developmental morphology, very much depends upon describing a system by means of a real or complex vector, sometimes an infinite dimensional one otherwise known as a function. There is a natural prejudice in favour of this representation language in almost all the practioners who come at the subject from a conventional science or engineering background, to the point where it may not occur to them that there is any sane alternative. The success of the language affords sufficient justification for using it, but the reasonable man will want to satisfy himself that the alternatives are not inherently superior.
+
+q q q
+
+Strings, propositions, predicates and logic Fuzzy Thinking Robots
+
+Next: Strings, propositions, predicates and Up: Basic Concepts Previous: Structured Patterns Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node17.html [12/12/2000 4:06:21 AM]
+
+Strings, propositions, predicates and logic
+
+Next: Fuzzy Thinking Up: Alternative Representations Previous: Alternative Representations
+
+Strings, propositions, predicates and logic
+Philosophers have been known to get quite indignant about coding information as vectors of real numbers. They point out, correctly, that there is much, much more to the physical system than turns up in the description. This, they asseverate, is even more true for any attempt to describe something as subtle and difficult as human thought processes. They usually stop at this point, waiting for an attempt at rebuttal. Computer scientists committed to Artificial Intelligence (AI) tend to use symbol strings to describe objects. Well, a vector is a symbol string too, of course, but the AI worker tends to prefer alphabetic strings of varying length. A natural language such as English is an example of such a system. This system, the only one most philosophers know how to use, also abstracts a pathetically small amount of information concerning the system described. The definitive poem about love which says all there is to say, has not yet been written and is unlikely to be short. Since poets and other literary men have not illuminated the rest of us very effectively on the details of how to build any complex system, we may conclude that natural language has its strengths in other areas. It works well for asking people to pass the salt or telling them you love them, the latter being more an expression of an internal state than a proposition having verifiable content, but in the main it simply codes our ignorance in ways we don't understand, while a mathematical theory codes our ignorance in ways which we do, to some extent, understand. The computer language LISP, much favoured by the soi disant Artificial Intelligentsia, is another language which allows easy coding of information about objects in terms of symbol strings. LISP is about half way between natural language and Mathematics in terms of precision and scope, so the results of coding information in LISP strings usually results in the worst of both worlds. To give an example of what we might accomplish with string representations of data, imagine that we have got a coding of each individual in the data set of the guys and the gals from Fig.1.2., so that instead of having him or her represented by two numbers we have a list associated with him or her. One such individual might have the list:
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node18.html (1 of 3) [12/12/2000 4:06:33 AM]
+
+Strings, propositions, predicates and logic
+
+Similar lists, let us suppose, comprise the rest of the data, all of which describe either men or women. Now the job of working out the category is simply a matter of finding the seventh item on the list and scanning the string until finding the colon,`:'. The next symbol should be either an `m' or an `f'. This solves the problem. But does it? What if the data were obtained by asking people to fill in questionnaires about themselves, and someone put `yes please' in answer to question 7? Or the respondent was firmly of the opinion that it was none of the interviewers business and said so? Well, we could go to the name in item 1 and look up the first name in a dictionary of names, sorted by sex. Unless the person is Chinese in which case it is the last name. Or we could argue that men seldom wear dresses, hate lipstick and have bigger feet than women. In general, some application of quasi-logical rules to the strings is required in order to come out with a conclusion. We may have to bear in mind that the respondents can (a) tell lies, (b) decline to answer some questions or (c) have idiosyncratic views about the right answers to the questions. Even if the lists have been compiled by some other person, the items may contain unexpected anomalies, like Jay Spondulix who likes coral lipstick and has preferred apparel `none'. Is Jay a man who likes his women with coral lipstick but otherwise nude, a woman who has no particular preference for what clothes she wears, or some combination? The fact that the procedure by which we obtain the list in the first place is so unreliable and that the meanings are ambiguous and vague, means that algorithms applied may easily produce nonsense. Physical systems, by contrast, have the measuring processes much more tightly specified. It is true that the process of obtaining weights and heights may also have been carried out badly, but there are methods for determining weights and heights which are fairly well defined, widely known and reliable. Doing them again on a different day usually gives results which agree fairly well, and when they don't, we normally feel justified in saying that the system has changed between measurements. The question of how one obtains the description is of particular importance in automation tasks. There are programs which decide if something is a bridge made of blocks by examining the _is_next_to_ and _is_on_top_of_ relations between the blocks, but the question of how one gets such data in the first place is not addressed. And all artificial sensors such as cameras, microphones and strain-gauges produce output which can be coded as a vector of real numbers, and there is a relatively simple relation between the equipment, the world, and the values.
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node18.html (2 of 3) [12/12/2000 4:06:33 AM]
+
+Strings, propositions, predicates and logic
+
+To be fair, well, fairer, to the Artificial Intelligentsia (their term, not mine), it has to be conceded that they have become aware of the importance of choosing powerful representations of data. The trouble is, they don't seem to know any. (This is just one more of the provocative statements I warned you about in the introduction!) Imagine two people sitting in large cardboard boxes and unable to see outside, but able to hear a person reading a book to them. Person A in box number 1 is equipped with a long, thin roll of paper and a pencil. Person B in box 2 has a few pounds of modelling clay in different colours, a bottle of little flags on cocktail sticks, a few marker pens and some blocks of wood. Person C reading the book has a loud clear voice and a chair to sit on. Person C reads out a description of the environs of, say, Mansfield Park, complete with lake, river, hills and houses. While this is done, A is scribbling the results down in sentences, while B is building a model out of clay and blocks and flags. Now suppose that there is an inconsistency in C's story. At one point, one statement is made about the geography and at another point a logically incompatible statement is made, such as asserting that a lake both is and is not in a given location. For A to detect this, assuming he has not recalled it all in his head, he must continually go through the entire set of sentences obtained at each time and do inferences from them. Deducing the inconsistency may take a long time. For B, the detection is immediate; the inference is done by the modelling clay. And if sentences are given which are not logically inconsistent but are physically impossible, say that a stream runs uphill somewhere, in order for A to detect this, the sentences have to be augmented by lots of other sentences of naive physics, and the logic of the whole lot checked. It is barely possible that this could be done. While B, with his modelling clay, can detect such physical anomalies the instant they are asserted by C. We conclude from this that one man's inference engine is another man's modelling clay, or more generally that what is done by logical processes under a sentential representation of data can be accomplished by other means very much more efficiently given a more powerful representation system. The most powerful general symbolic representation schemes have been developed for the physical sciences and involve measurements and hence representations of systems by vectors. They code for similarity or proximity. The language of functions can allow us to describe densities of data, and to measure the amount of surprise we get when something unexpected happens. By contrast, logic and computer languages are barbarous, uncouth and primitive. Only someone ignorant of better linguistic tools would tolerate them. Compared with the sophistication of mathematical systems which have been devised over the last few thousand years, logic is a low level language, unsuited for dealing with the complexities of the real world. To be constrained to using logic is analogous to having to program in machine code. And logic, or variants of it with little more power, are all that the string representation enthusiasts have.
+
+Next: Fuzzy Thinking Up: Alternative Representations Previous: Alternative Representations Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node18.html (3 of 3) [12/12/2000 4:06:33 AM]
+
+Fuzzy Thinking
+
+Next: Robots Up: Alternative Representations Previous: Strings, propositions, predicates and
+
+Fuzzy Thinking
+Finally, in recent times some claims have been made for Fuzzy sets. Zadeh originally proposed Fuzzy Logic and Fuzzy sets as a model for imprecision in natural language . The idea was that whereas using classical logic we have that `Fred is a man', is interpreted as ` Fred is a member of the set of all men', the similar sounding proposition `Fred is a tall man' has a rather dubious interpretation as `Fred is a member of the set of tall men'. When is a man tall? Fuzzy set theory attempts to overcome the essential vagueness about how tall a tall man is by assigning a number between 0 and 1 to the proposition `Fred is a tall man', and hence assigns a number to the extent to which Fred is a member of the `Fuzzy set' of tall men. How this number is arrived at is never made clear. The vector space representation would simply measure his height. Modelling objects by Fuzzy predicates certainly seems more useful than modelling them by the quasi-logical predicates of AI, and the area has grown in recent times. It is liable, however, to a serious criticism which has never been convincingly rebutted: everything fuzzy sets can do, statistics and probability theory can do, too. And statistics and probability theory have relatively well argued rationales, a huge body of successful applications and fairly solid foundations. In contrast, the so-called applications of Fuzzy Logic and Fuzzy Set theory are often just examples of fuzzy thinking. Giving a rather badly drawn oval shape as an example of something which has fuzzy membership in the set of ellipses, for example, suggests a misunderstanding of how descriptions in Science and Engineering work. They aren't there to give you a warm inner glow, they are there to be used. The question is, what can you do with such a statement? On all the evidence, not much. To see that these are issues in linguistics rather than science, consider the response of a Trobriand Islander to the same badly drawn oval shape. He might, just possibly, see it as a `fuzzy' coconut or a `fuzzy' necklace, but he wouldn't feel inclined to assign it as having some (hard to measure) degree of elementhood in the set of ellipses, if only because he hasn't met the set before. If you feel an urge to put a metric on the set of simple closed curves in the plane so as to measure the extent to which such things are ellipses, it is not too difficult to do, but it would be a mistake to imagine there is anything unique about your choice of how to do it, or that your urge requires expression just because you have it. I frequently have the urge to beat Fuzzy Set theorists over the head with a bottle, but I curb this impulse. Early applications of these ideas to control have been unconvincing. An early but typical one consisted of replacing a thermostat system which monitored the temperature and fed power to a furnace so as to heat the place up if the temperature went low, and cool it down when it went high. The original controller measured the temperature continuously with a thermocouple, the `fuzzy' controller divided the temperatures into three intervals, `too hot', `too cold', and `OK'. Describing a controller which treats temperatures which fall into intervals as fuzzy is sharp practice. If the controller sometimes acted as though `too hot' started at 80o and sometimes at 70o, or if the thermocouple was subject to large random variations, there might be a case, but the world isn't fuzzy except possibly at the quantum level. What is fuzzy is language, and we are more interested in the world. So far as I am aware, the sudden surge of so
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node19.html (1 of 4) [12/12/2000 4:06:45 AM]
+
+Fuzzy Thinking
+
+called AI applications of fuzzy logic in Japanese refrigerators is composed of ideas as banal as the fuzzy controller, and is intended to sell more refrigerators to the unwashed. Science and Engineering are rather more difficult than that. Later applications of `Fuzzy Control' appear to be more interesting. The fuzzy control of the inverted pendulum, and more impressively the double inverted pendulum (balancing two billiard cues, one on top of the other) are claimed to work, whereas classical control theory finds these problems difficult. There is some reason to believe that the fuzzy control people have a good idea in there somewhere, but it seems doubtful if it is coherently worked out. Engineers and Physicists have a tradition of coming up with working systems using a rationale that is full of holes and logical nonsense. This has often led to mathematical advances when the mathematicians woke up to the fact that there had to be something there, and that the fact that it couldn't be expressed in conventional ways meant that mathematicians had to do some work. This may be the case with `fuzzy control'; they may have some good ideas mixed up with some awful philosophy and scrofulous mathematics that would be well worth sorting out properly. Multi-valued logics have been around since Post in the 1930's, and John Maynard Keynes wrote around the same time on Probability interpretations in a way similar to Zadeh's model. More recently Ed Jaynes has given some good reasons for believing that the assignment of numbers to statements to measure their believability must be done in accordance with Bayesian statistics. This is discussed in the Information Theory literature. What it comes down to is that when we have uncertainty in the real world, the semantics of our models involve counting things that happen in different outcomes when we cannot distinguish between the inputs, as when we throw dice. This is what probability theory was invented for, and it seems to do a reasonable job. When we wish to treat of such notions as closeness or proximity, we have all the machinery of topological and metric spaces already to hand. It is pointless to reinvent it rather amateurishly when it has been done well once already. Reinventing wheels is sometimes justifiable, but reinventing statistics and topology, badly, is time and energy wasted. Fuzzy set theory seems to have been based upon and be driven by a desire to translate vague sentences of natural language into a mathematical formalism. This seems like a great idea to those many people who cannot distinguish clearly between properties of the world and properties of the language we use to talk about it. Such people may genuinely believe that the world is fuzzy around the edges. Possibly for them it is; a consequence, perhaps, of having smoked or sniffed illegal substances as undergraduates. They should have stuck to brandy, cigars and sex, like the rest of us. Getting clear descriptions of what is going on in a nuclear power plant is not much helped by going and asking the man in the street what he thinks. His description will certainly be describable as `fuzzy'. But most engineers would swap it for some measurements any day of the week. The same holds for just about any complicated system, not just nuclear power plants. It has been said that if Statistics, Probability and Metric Space concepts had been better taught to engineers, as ideas instead of recipes, the fact that Fuzzy set theory and Fuzzy logic are unnecessary would have been apparent, and the subject would never have been invented. It is imprudent to buy further into this fight, so I'll stop there, but the reader should know that there is a fight. And I daresay by this time the reflective reader will have worked out whose side I am on, allowing me to eschew the hypocrisy of pretending to be neutral.
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node19.html (2 of 4) [12/12/2000 4:06:45 AM]
+
+Fuzzy Thinking
+
+Since writing the above, I have had some discussions with Jim Bezdek, who has a commitment to Fuzziness. Now Jim is an intelligent and thoughtful man, and his views merit serious consideration. Nor is he wholly alone in this. Bezdek claims that the semantics of Fuzzy Sets and the semantics of Probability theory are quite different. He gives as an example the case where you stagger through the desert, on the point of dying from dehydration, and meet Jim who offers you a choice of two bottles. He describes the one bottle by a `potability' value of 0.95, and the other as a probability of being pure water of 0.95. The latter, he says, represents a gamble: 100 bottles were taken, 95 filled with pure water, five with salt solution in toxic concentration, and a choice made at random. The question is, would you rather take the 0.95 potability bottle, or the other? Were it me staggering out of the desert, my first response would be to sample the probability bottle, and if water, drink it. My second response would be to threaten to beat Jim over the head until he told me what `potability' means. I know it means `drinkable', but what does the 0.95 mean? Jim might argue that the term is inherently vague and has no answer, but I am bigger than he is and would insist. Does it mean that he took 95 parts of pure water and 5 parts salt, mixed them up and filled the bottle from the mixture? Or maybe it was 95 parts water and 5 parts potassium cyanide. I need to know. More crucially, the sort of data I want is something along the lines of `if you do this sort of thing often, what fraction of people who took the 0.95 potable bottle survived to talk about it? That is, we reduce to counts of possible outcomes that I care about. The important thing I care about is, will drinking the contents of the bottle shorten my life expectancy or increase it? To be told that it is 0.95 potable is to be told that I have a whacko on my hands who proposes to tease me with meaningless jargon, and I don't take kindly to this even when not dying of thirst. To be told that of the people who drank the same mixture in the past, all complained of mild indigestion but went on walking to the next delicatessen, is to be given some idea of what it means. To be told that 95 percent lived but the other five percent died is again to be given some sort of useful information. But to be confronted with the label and no idea of how to interpret it is merely frustrating. If I found the bottles with their inscrutable labels but no Jim to interrogate, I should sniff the contents carefully and sample them to get some idea of what to do. But I'd do that anyway, since who would believe a label in such a case? What I would do with the (sampled) contents would depend on just how thirsty I was. This is what most people would do, I daresay, and the fact that none of us would bother about the label much tells us something about labels. This might be thought to miss the point. In making decisions we often take into account things we have been told, and we are often told them with a fair degree of vagueness. We do not know the particular usage of terms employed by the teller, and if a short man tells you to look out for a big bloke at the airport, and he turns out to be of only average height, then one would not perhaps be too surprised that the word `tall' means something different to a short man than it does to a tall one. But we might reasonably suppose that the teller has some reasonably precise definition in his head, even if he doesn't know what it is. We could parade a collection of people of varying heights before our source, and ask him to classify them, and we could conclude that `tall' means, to him, approximately `over five foot nine inches in height'. We don't have the luxury of conducting the experiment, so we have to guess what he means. This is plainly a problem with our ignorance of how someone else uses a term. Probability theory can handle this quite well. We use as data the way we have heard the word `tall' used in the past. This is how we handle much of the vagueness of natural language.
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node19.html (3 of 4) [12/12/2000 4:06:45 AM]
+
+Fuzzy Thinking
+
+Sometimes vagueness is used to connote indifference, sometimes ignorance, sometimes because only crude approximations are necessary and vague is quick. Few people know their weight to three places of decimals in kilograms or pounds, and few care to. But there seems to be no necessity for asserting that there is some numerical degree of membership in the class of overweight people, and no obvious intepretation of such a number when given. For these reasons, I cannot take seriously the philosophical foundations of fuzzy sets and fuzzy logic, although the latter makes a harmless exercise in mathematics. Early in the Nineteenth century, Napoleon, who thought Mathematics important and rather fancied himself as being, spiritually, a Mathematician who had just somehow lapsed into being an Emperor, was talking to Laplace. Napoleon twitted Laplace about the latter's book, Mecanique Celeste, which dealt with the origins of the solar system. ``I see that you have made in your work no mention of le bon Dieu, monsieur de Laplace''. ``Sire'', replied Laplace, ``I have no need of that hypothesis''. This is roughly my position on fuzzy logic, fuzzy sets and fuzzy thinking. I can get along better without them.
+
+Next: Robots Up: Alternative Representations Previous: Strings, propositions, predicates and Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node19.html (4 of 4) [12/12/2000 4:06:45 AM]
+
+Robots
+
+Next: Summary of this chapter Up: Alternative Representations Previous: Fuzzy Thinking
+
+Robots
+In the rest of this book, we shall rely rather heavily on the vector space representations of data, because these arise naturally from measurement processes implemented in hardware and usable by robots. They also arise naturally as descriptions of animal nervous systems at the sensory level, where the incident energy or its logarithm tends to get coded in terms of neuronal spike frequencies. We shall expand further on the details of the methods, metric, neural net and statistical, which have been outlined in the present chapter. We shall be concerned with issues in syntactic pattern recognition arising out of these methods and logically anterior to them, and we shall treat of the dynamical case of trajectories in the representation spaces and their recognition problems. But we shall not, for the reasons given, treat of the AI or fuzzy types of representation.
+
+Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node20.html [12/12/2000 4:06:48 AM]
+
+Summary of this chapter
+
+Next: Exercises Up: Basic Concepts Previous: Robots
+
+Summary of this chapter
+This first chapter has been intended to stimulate some reflective thought on the nature of the problems faced in Pattern Recognition as a prelude to getting into the technicalities. You were invited to put your feet up (except for a short spell in the kitchen), and I hope you did. The problem of telling men from women by wholly inappropriate measurements of the wrong things is a depressingly accurate paradigm of much pattern classification, and the methods somewhat sketchily outlined are, in the main, those currently in use. This chapter has surveyed the general ideas used in pattern recognition by looking at very simple examples of the general methodologies. The basic issue of what you measure and how you represent it was discussed in a rather unsatisfactory way, but it was argued that coding objects to be discriminated as points in has more power than alternatives.
+
+Given this choice of coding, pattern classification devolves into the choice of what to measure, which is currently something of a black or at best grey art, and then finding algorithms which can assign a category to a new point. These fall into three major classes, metric, neural net and statistical. Examples of each were sketched, and some rationales for each were discussed. It was pointed out that unsupervised learning was a matter of finding clusters in a space and supervised learning was a matter of fitting a function from a family of functions to a set of data points on which the function values are known. The problem of dynamic patterns, that is to say patterns with a temporal ordering on them was mentioned in two cases, the case of trajectories in , as in speech and on-line character recognition, and the case of trajectories in a space of discrete symbols to which the former problems might be reduced. The problem of more general relationships between points or symbols was mentioned, and disparaging things were said about philosophers, AI practitioners and the Fuzzy Folk. Many promises were made that the ideas outlined rather sketchily would be explained more fully in subsequent chapters. Various provocative remarks were made, not intended to irritate you, but to get you to state your position.
+
+Next: Exercises Up: Basic Concepts Previous: Robots Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node21.html [12/12/2000 4:06:53 AM]
+
+Exercises
+
+Next: Bibliography Up: Basic Concepts Previous: Summary of this chapter
+
+Exercises
+These are intended to provoke thought. Nothing that makes people think can be all bad. 1. Suppose you are given 1000 digitised images of trees and another 100 images of pin-up pictures of underclad women. It is known that these come from a source of such pictures which has them in that ratio. The images are stored in a computer in some format, and a supply of new images is about to be offered to the computer, each either an underclad woman or a tree, obtained from the same source. You have been consulted by the local Wimmynz Kollektiv to write a program that will delete the image file if and only if it is a picture of an underclad woman. Each image is 512 pixels square and is in full colour. Can you suggest plausible ways of representing the images as points in a suitable vector space so as to make the automatic discrimination of the two classes of image feasible? Which methods of classification would you consider most reasonable and why? (Hint: Counting the number of pink or brown pixels might be a reasonable start. More complicated procedures could be necessary for pictures of trees taken in Autumn.) 2.
+
+The points
+
+are the good guys. The points
+
+are the bad guys. Is there a perceptron neural net such as Fig.1.6 which can discriminate the two kinds of guys? 3. On a 3 by 3 array of pixels, we can draw horizontal bars consisting of white pixels (1) against a black (0) background by writing out the result of a raster scan of bits: thus the image of Fig.1.12 is coded as (0 0 0 1 1 1 0 0 0 ) and a vertical bar likewise might be represented as (0 1 0 0 1 0 0 1 0 ). . Each of the three horizontal bars and the three vertical bars thus gets coded into a point in First convince yourself that a single unit neural net cannot distinguish vertical from horizontal bars. Now take three units with weights given by: (1 1 1 0 0 0 0 0 0 0), (0 0 0 1 1 1 0 0 0 0) and (0
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node22.html (1 of 3) [12/12/2000 4:07:07 AM]
+
+Exercises
+
+0 0 0 0 0 1 1 1 0). Let the output of these units go into a `third layer' unit. What weights on the last unit will ensure that its output correctly tells horizontal from vertical bars? (Confirm that it cannot be done by any choice of weights.) If you are allowed two more units in the second layer, what choice of weights on these units and the third layer unit will ensure that horizontal can be told from vertical? Can any choice of weights on three units in the second layer guarantee a choice of weights on a single third layer unit which will do the job? Any suggestions?
+
+Figure 1.13: 3 x 3 array of pixels with horizontal bar in middle.
+
+4. Someone gives you a set of about two hundred 11 by 9 pixel arrays on which have been drawn digits from 0 to 9, as in Fig1.14. There are several different examples of, say , a `1', in different , if you simply locations in the grid, and so there are ten clusters each of twenty points in code the pixel arrays by doing a raster scan. There has to be a way of coding the points in a lower dimensional space. Find one. Find another. Analyse the advantages and disadvantages of these methods. 5. Use a scanner on Fig.1.14 to get the image stored as a TIF file, then use a TIF reader program supplied to enrolled students to display it as an image on a PC or UNIX workstation. It is now stored as an array in the program. Write your own C program which includes the TIF reader as a procedure to obtain the image and use it to test your solutions to the last problem. If you cannot get access to a scanner, email your tutor for an ftp site with the data already scanned for you.
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node22.html (2 of 3) [12/12/2000 4:07:07 AM]
+
+Exercises
+
+Figure 1.14: Digitised 11 by 9 images of digits
+
+Next: Bibliography Up: Basic Concepts Previous: Summary of this chapter Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node22.html (3 of 3) [12/12/2000 4:07:07 AM]
+
+Bibliography
+
+Next: Image Measurements Up: Basic Concepts Previous: Exercises
+
+Bibliography
+The following works may be helpful or entertaining. They are selected with the intention of being accessible rather than comprehensive. Duda and Hart's book is one of the original and still one of the best books, although showing some signs of its age. 1. Richard Duda & Peter Hart Pattern classification and scene analysis New York: Wiley 1973. 2. Mike James Pattern Recognition, BSP Professional Books, Oxford. 1987 3. Frank Rosenblatt, Principles of neurodynamics : perceptrons and the theory of brain mechanisms. Washington : Spartan Books, 1962. 4. Nils J. Nilsson Learning machines : Foundations of trainable pattern-classifying systems New York : McGraw-Hill, 1965 5. F.N. Stein Brain Machines ANALOG, May 1975. 6. Don Hush & Bill Horne Progress in Supervised Neural Networks IEEE Signal Processing Magazine Vol 10 No.1 Jan 1993 pp 8-39. 7. R.P.Lippmann An Introduction to Computing with Neural Nets IEEE Acoustics,Speech and Signal Processing Magazine, 4(2):4-22, April 1987. 8. Jane Austen Mansfield Park London: The Zodiac Press, 1957 For alternative views on Fuzzy Sets, see 1. Walter J.M. Kickert Fuzzy theories on decision-making : a critical review Leiden : M. Nijhoff Social Sciences Division, 1978 (Frontiers in systems research ; v.3) 2. James C. Bezdek, Pattern recognition with fuzzy objective function algorithms New York : Plenum Press, 1981. (Advanced applications in pattern recognition) 3.
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node23.html (1 of 2) [12/12/2000 4:07:12 AM]
+
+Bibliography
+
+Bart Kosko Neural networks and fuzzy systems : a dynamical systems approach to machine intelligence Englewood Cliffs, N.J.: Prentice-Hall, 1991, c1992 The book by Bezdek is unlikely to diappoint, and may be recommended to those who do not accept the views of the present writer or at least wish to scrutinise them critically. Note that the last book cited contains in its title almost every power word that has been trendy in the last decade. It needed only genetic algorithms, chaos and feminist thought to be guaranteed a place on every bookshelf. And for the standard opinions of the Artificial Intelligentsia, the first somewhat out of date but well worth reading (partly because of that) see: 1. Herbert A. Simon Sciences of the Artificial, MIT Press, Cambridge, Mass. 1982 2. Patrick Henry Winston, Artificial Intelligence Artificial intelligence 3rd ed. Reading, Mass : Addison-Wesley, 1989 For a somewhat less standard approach to AI with a good deal of charm, see: 1. Douglas R Hofstadter Gödel, Escher, Bach, An Eternal Golden Braid, Basic Books, 1979 2. Douglas R. Hofstadter Metamagical Themas: Questing for the Essence of Mind and Pattern Bantam New Age Books 1986. The exponents of AI can frequently write well, as in the above cases, and have sometimes put in a great deal of thought. The objection of a Mathematician is that the thought is, in general, amiably amateurish. This sour remark may reflect disenchantment or hindsight or both. Doug collected a Pulitzer prize for GEB, which is a certain kind of warning. Still, anybody who likes the Alice books can't be all bad. These are delightful books to read while slightly drunk on a good champagne.
+
+Next: Image Measurements Up: Basic Concepts Previous: Exercises Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node23.html (2 of 2) [12/12/2000 4:07:12 AM]
+
+Image Measurements
+
+Next: Preliminaries Up: An Introduction to Pattern Previous: Bibliography
+
+Image Measurements
+The chapter you have just read was a general survey of the ideas and issues in Pattern Recognition, and may have left you feeling a little insecure. After all, this is a Mathematics course in those parts of mathematics useful for Information Technology, and there was hardly any mathematics in the first chapter. Well, actually there was some mathematics, but it was said in English instead of algebra, and you may not have recognised it. From now on we shall be dealing with more concrete objects and for the present we shall concentrate on image recognition. This is part of the plan to say something about how robots can be made to see the world. In this chapter we shall consider various kinds of images such as might be produced by a camera or so as to accomplish scanner, and the methods which may be employed to code them as points in recognition of the objects in the images. The underlying assumption is that a robot is looking at some collection of objects and needs to make decisions based on a pre-defined human classification of the types. The robot has to analyse a set of pixels in order to make a classification. In the next chapters I shall discuss statistical and ANN methods of recognition of the resulting vectors, but for now I attend to the matter of how to extract vectors from static images. Some of the algorithms will be described algebraically, reassuring you if you feel that the medium is the message, but some will be given in English. Simple algorithms can be taken from English into C without passing through algebra on the way, and it is often easier to understand why they work. Concntrating on images obtained from a video-camera or scanner may strike you as a bit limited, since there are other sources of information than cameras. On the other hand, the general problems are best approached through concrete instances, and much of the conceptual apparatus required for thinking about measuring images is capable of extension to thinking about measuring other things. The process of performing an operation on an image to obtain a vector of numbers is often referred to as feature extraction. Each number in the vector is sometimes said to describe a `feature'; this somewhat mystical terminology might leave you wondering what a `feature' actually is, and the answer would appear to be that anything you can do to an image to get a number out is detecting a `feature'. In various parts of the literature, a `feature' may mean a dark pixel, a bright pixel, a lot of bright (or dark) pixels, an edge, or some combination of the above, as well as other quite different things. Some of this confusion will be resolved in the chapter on syntactic pattern recognition. Because I don't know what a feature is and therefore feel shy about using the term, I shall simply talk about making measurements on an image (or indeed any other objects), and a suite of measurements on such an object produces a sequence of numbers. A measurement of an object is any operation performed on the object which yields a real number.
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node24.html (1 of 4) [12/12/2000 4:07:24 AM]
+
+Image Measurements
+
+An integer or boolean value is treated as a particular case of a real number for these purposes, but we shall have a preference for real real numbers, expressed, of course, to some finite number of decimal places. For most of this chapter, I shall deal with binary images, that is to say images where the pixel is either black (0) or white (1) because the recognition problems are sharpest here. Colour images or monochrome greyscale images are, of course, more common, but the recognition problems become overshadowed by the image processing problems- which belong in a different book. In the later sections I shall discuss the complexities introduced by having greyscale and colour images to recognise. Since there are an awful lot of different things which can be found in an image, even a binary image, we approach the subject by stages, dealing with the complications progressively. I shall focus on a particular problem so as to concentrate the mind; I shall investigate the problem of Optical Character Recognition, so as to sharpen the issues to concrete cases. Virtually everything that applies to recognising characters applies to other types of binary image object, except that the other objects are usually harder to deal with. It might be useful to contemplate Chinese or Arabic characters occasionally, or a handful of nuts and bolts in silhouette, so as to avoid parochialism. Quite a lot of what I shall describe here is treated in books on Image Processing, and parts of what is done on books on Machine Vision or Computer Vision, and there is some intersection with the material in books on Computer Vision. This is not a book on Image Processing, but it will be necessary to outline the ideas and relevance of Image Processing material. My treatment will therefore be sketchy, and the bibliography should be used to fill out the details. Since many books have been devoted to what is covered in this chapter, you may take it that the treatment will be lacking in that depth which the intelligent reader quite properly craves; in exchange you have here the opportunity to get an overview of what the stuff can be used for. An honest attempt to do the Exercises at the end of the chapter, if necessary with the aid of some of the books referred to in the bibliography, will provide a crash introductory course in Image Processing. This is not a substitute for a Computer Vision course, but a complement to it. The first chapter gave an overview from such an exalted height that the reader may have been left feeling a touch of vertigo. It is now necessary to take one's feet down, pour the drink into the cat's bowl, lace up one's running shoes and sober up. A certain amount of the nitty-gritty is waiting further down the alley with a sand-filled sock.
+
+q
+
+Preliminaries
+r
+
+Image File Formats
+
+q q
+
+Generalities Image segmentation: finding the objects
+r r
+
+Mathematical Morphology Little Boxes
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node24.html (2 of 4) [12/12/2000 4:07:24 AM]
+
+Image Measurements
+
+r r q
+
+Border Tracing Conclusions on Segmentation Issues and methods Invariance in practice Quick and Dumb Scanline intersections and weights Moments Zernike moments and the FFT
+s
+
+Measurement Principles
+r r
+
+q
+
+Measurement practice
+r r r r
+
+Historical Note
+
+r r r q q q q
+
+Masks and templates Invariants Simplifications and Complications
+
+Syntactic Methods Summary of OCR Measurement Methods Other Kinds of Binary Image Greyscale images of characters
+r
+
+Segmentation: Edge Detection Segmentation Measuring Greyscale Images Quantisation Textures Generalities Quantisation Edge detection Markov Random Fields Measurements
+
+q
+
+Greyscale Images in general
+r r r r
+
+q
+
+Colour Images
+r r r r r
+
+q q q
+
+Spot counting IR and acoustic Images Quasi-Images
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node24.html (3 of 4) [12/12/2000 4:07:24 AM]
+
+Image Measurements
+
+q q q q
+
+Dynamic Images Summary of Chapter Two Exercises Bibliography
+
+Next: Preliminaries Up: An Introduction to Pattern Previous: Bibliography Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node24.html (4 of 4) [12/12/2000 4:07:24 AM]
+
+Preliminaries
+
+Next: Image File Formats Up: Image Measurements Previous: Image Measurements
+
+Preliminaries
+This section discusses the low level technicaities of getting images stored in a computer and in particular the competing formats.
+q
+
+Image File Formats
+
+Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node25.html [12/12/2000 4:07:27 AM]
+
+Image File Formats
+
+Next: Generalities Up: Preliminaries Previous: Preliminaries
+
+Image File Formats
+There are currently many different ways in which images are regularly stored inside a computer, and for each of them there has to be a way of reading the image into some sort of viewing program to actually look at it, and the pixels have to be stored in an array in memory in order to process the image or subimage. If we wish to restrict ourselves to binary images, then a single bit can be used to store the value of a pixel at a particular location. A binary file can therefore be stored as a long list of bits, but it also needs some information to say how many there are and what the dimensions of the array are. The graphics systems of different computers also vary a lot. This presents the writer of a text book on image processing or pattern recognition with certain problems. What machine does one suppose the reader has access to? What programming languages does one assume he can use, and what make of scanner or camera is he going to be able to get his hands on? These problems are similar to the problems faced by a web based system too. In designing this course we had to make choices about what kind of hardware you would have, and what kind of operating system it would be running. The decision was to go with the most common systems used in industry as far as the hardware was concerned, and to discuss the software that could run on these systems. So we are going with the Intel Pentium based machines despite the many virtues of the alternatives. It is possible to get around these matters by writing at a level of abstraction so high that the reader will not actually connect up what he reads with actual images or patterns, but I find this unappealing. I have agonised over these issues and concluded that there is not much use tackling serious pattern recognition without a UNIX workstation, and that X-Windows is currently the de facto standard for graphics. At the same time, PC's are widely available and many graphics acquisition cards are available for these machines at low price. Rather than choose between these competing alternatives, I have opted for both of them . I shall start off by supposing that the scanner is attached to a PC and that images can be stored in the common .tif files. TIFF, short for Tag Image File Format, is a convention for storing a variety of images, and since it is a common one and most scanners can read and write such files, I shall refer only to such files. Other standards such as GIF, JPG, MPG and the page description languages can generally be converted, for a particular image, and I do not want to have to write programs for them all. One of the many programs available with this splendid book, at no extra cost to enrolled students, is a TIF reader, which will take a small binary TIF file and display it on the screen of a PC. It stores the image internally in an array, which means that the enthusiast can monkey about with it to his hearts content. At a later stage in the book, the reader will be introduced to a somewhat beefier X-Windows variant of this program for reading larger images in many colours into a workstation. The reader should certainly acquire the art of scanning documents; it is easy and gives a satisfying sense of power for very low expenditure of effort.
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node26.html (1 of 2) [12/12/2000 4:07:32 AM]
+
+Image File Formats
+
+Unless you live far from the madding crowd, there are almost certainly print shops near you which will do scanning, writing the tif file onto a floppy disk. If you do live far from the madding crowd, and don't already own one, scanners may be purchased at reasonable cost
+
+I shall suppose then that the images that follow can be obtained as .tif files output from a scanner, and that the transformation to an array of pixels is accomplished.
+
+Next: Generalities Up: Preliminaries Previous: Preliminaries Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node26.html (2 of 2) [12/12/2000 4:07:32 AM]
+
+Generalities
+
+Next: Image segmentation: finding the Up: Image Measurements Previous: Image File Formats
+
+Generalities
+Let us start then by supposing the simplest sort of image, a binary array of pixels, say 256 by 256. Each pixel is either black (0) or white (1). Hardly any modern equipment actually produces such images unless you count photocopiers, and I have doubts about them. Video cameras and scanners usually produce larger arrays in many colours or grey levels. Monochrome (grey scale) cameras are getting hard to find, and scanners will be following this progression soon. So the images I shall start with are rather simple. The image in Fig.1.14 , reproduced here for your convenience, is an example of the kind of thing we might hope to meet.
+
+Getting an image to this simple, binary state may take a lot of work. In some forms of image recognition, particularly in Optical Character Recognition (OCR) the first operation performed upon the image is called thresholding and what it does is to take a monochrome image and rewrite all the light grey (above threshold) pixels to white, and all the dark grey (below threshold) pixels to black. How to make a judicious choice of threshold is dealt with in image processing courses, and will not be considered here. Although a little unphysical, because real life comes with grey levels binary image is not without practical importance. , the
+
+Figure 2.1: A handwritten word.
+
+The result of digitising and thresholding a piece of handwriting is not unlike Fig.2.1., where the word /the/ was hand drawn by mouse using the unix bitmap utility. It is reasonable to want to be able to read the characters, /t/, /h/, /e/ by machine. For handwriting of the quality shown, this is not too difficult. It is, however, far more difficult than reading
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node27.html (1 of 3) [12/12/2000 4:07:45 AM]
+
+Generalities
+
+printed script, and so we shall treat the printed case first. In order to make the problem moderately realistic, we look at the output of a scanner, or at least a bit of such output, when applied to two pages of text taken from a book. (Fig.2.2.). The quality of the image is not, we regret to say, up to the quality of the book. Such images are, however, not uncommon, and it is worth noting a number of features.
+
+Figure 2.2: A sample of scanned text from a book.
+
+q
+
+q
+
+q
+
+q q
+
+q
+
+The most manifest oddity is the black band down the centre between the pages, where the scanner had trouble with the curvature of the book. The result is that (1) the leftmost characters of several words are unreadable even by human beings and (2) there is some distortion of those characters which are readable. There is noise consisting of black pixels scattered around the boundary of the central black band and intruding onto the characters. The quantisation at 72 dots per inch is sufficient to ensure that no two characters are actually identical. A comparison of the letters /h/ or /o/ for example in their several occurrences shows significant differences in the actual array of pixels. Italicisation of part of the text means that we are not, as might be hoped, dealing with a single font. The lines of text are not horizontal, the left page and the right present different angles for what, in an ideal world, would be horizontal lines of text. Our first problem, before trying to recognise a character, is isolating it from the other characters and the noise, and since we want to preserve the order of the characters when we translate from pixels into ASCII, we need to find lines and order them top down, then we need to scan a line from left to right and isolate the characters, including the white spaces between the `objects', since a translationthatlookedlikethis would be, rightly, thought objectionable.
+
+The problem of reading such text is therefore far from trivial, even if we stipulate somewhat higher quality
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node27.html (2 of 3) [12/12/2000 4:07:45 AM]
+
+Generalities
+
+reproduction than is present in Fig.2.2. In doing some serious reading of a document such as a newspaper, large and uncomfortable problems of working out which bits of text belong together, which bits of an image are text and which bits are the pin-up girl, and similar high level segmentation issues arise. Any illusion that the problem of reading text automatically is easy should be abandoned now.
+
+Next: Image segmentation: finding the Up: Image Measurements Previous: Image File Formats Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node27.html (3 of 3) [12/12/2000 4:07:45 AM]
+
+Image segmentation: finding the objects
+
+Next: Mathematical Morphology Up: Image Measurements Previous: Generalities
+
+Image segmentation: finding the objects
+How can we tackle the problem of writing a program which will read the text of Fig.2.2.? When I say `read the text', I mean of course that the input will be an image file, such as that from which Fig.2.2. was extracted, and the output will be a sequence of ASCII characters, possibly with some additional formatting information to say where the characters are on the page. This is the inverse function to a printer, which takes an ascii file and turns it into black marks on white paper; together with a scanner, a text reading system inverts that. This is a clear case of a Pattern Recognition problem of an eminently practical type. Typically image files are very big, and text files which contain the data from which an image of text was obtained by printing are very much smaller. Also the latter can be read into your favourite word processor and the spelling checked, something which cannot be done with an array of pixels. There are clearly pre-processing problems which must be gone through in order to identify lines of text in the image, and to work out where the characters actually are. These are not negligible and something must be said about them.
+
+Figure 2.3: Postcode digits 6512
+
+The general problem of image segmentation, chopping an array of pixels up into different bits, is fraught with difficulty: It is easy to run two letters together in an image so that they overlap, and for the eye to still be able to read them as two separate things. A program which kindly lumped the two together as one, would not make automatic recognition any easier. The proposition that the objects are going to come neatly separated by white spaces around them is simply not true. The postcode in Fig.2.3 is handwritten, it is easy to read, but segmenting it automatically is best done in hindsight once you have worked out what the characters are! By choosing to deal with printed text of sufficiently high quality we can make our lives much simpler, but there has to be something intrinsically unsatisfactory about a method which cannot generalise to cases which human beings find easy. With the cautionary note out of the way, and bearing in mind for later chapters that there has to be a better method, let us proceed to examine the standard means of proceeding with the image of Fig.2.4, which is a
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node28.html (1 of 2) [12/12/2000 4:07:57 AM]
+
+Image segmentation: finding the objects
+
+somewhat cleaner and larger version of Fig.2.2. Anyone who can identify the source of the text is entitled to a prize, but already has it.
+
+Figure 2.4: A bigger and better sample from the same book.
+
+First we find the lines of text. Moving a long way from Fig.2.4 and squinting at it with eyes half closed, one sees more or less horizontal bands where the words blur together; these are our lines of text. One way of finding them is to `fuzz' the image by what are known as Mathematical Morphology techniques. The ideas of Mathematical Morphology are very simple (and usually made difficult by being expressed in formalism, a favourite method by which esoterrorists try to impress the innocent). We proceed to elucidate the easiest case; references to more comprehensive accounts may be found in the bibliography at the chapter's end.
+
+q q q q
+
+Mathematical Morphology Little Boxes Border Tracing Conclusions on Segmentation
+
+Next: Mathematical Morphology Up: Image Measurements Previous: Generalities Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node28.html (2 of 2) [12/12/2000 4:07:57 AM]
+
+Mathematical Morphology
+
+Next: Little Boxes Up: Image segmentation: finding the Previous: Image segmentation: finding the
+
+Mathematical Morphology
+Let A and B be subsets of . Then the dilation of A by B is the set C defined by
+
+where the addition is, of course, the vector addition in that well known vector space In applications, A and B will be finite sets of pixels. We obviously have that
+
+. but
+
+we shall tend to choose a particular B and think of it as operating on a lot of different A's. In this case, B is referred to as the structuring element. Example: If A and B are the sets shown in Fig.2.5, where the origin and axes are as marked, we see that is the `thickened' version shown as C. By making B bigger and approximately disk shaped, we can fatten A quite out of recognition. In this example, each black square is a pixel, and if we think of the corners of the square which is B being at the points , every
+
+point x of A is expanded to a copy of the unit square stuck onto x at its lower left corner. So A is `blobbified' by B; equally, B has been blobbified by A.
+
+Figure 2.5:
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node29.html (1 of 3) [12/12/2000 4:08:09 AM]
+
+Mathematical Morphology
+
+For digital images, the dilation procedure is somewhat simpler; we have the zero which is usually a part of the structuring element, and some points at integer co-ordinates. We simply move the structuring element B and place the zero at a pixel of A, and then fill in all the other pixels of B. Then we repeat for each of the pixels of the original A. Similarly, it is possible to have an erosion operation, where the pixels are. Then to get which treats B as a mask with holes in it
+
+, place the origin of B at a pixel of A, and look to see which
+
+of the pixels of A can be seen through the holes in B. If there are any holes in B without points of A visible through them, mark the pixel of A visible through the origin of B for deletion. Repeat for each pixel of A, and finally remove all the pixels marked for deletion. Formally:
+
+Note that I have assumed in my explanation of how erosion is carried out that the origin is in B. Exercise: What difference does it make if it isn't? Repeated application of erosion by a suitable structuring element B can be useful for thinning sets. Carried too far, sets can easily be eliminated altogether. Exercise: Draw a grid of lines, label a horizontal line in the middle somewhere as the X-axis, a suitable vertical line as the Y-axis, and draw pixel dots on the intersections at enough points to pick out a big fat character like the blobbified /2/ of Fig.2.5. This is A. Now take B to be the origin and its 8 nearest neighbours, on a separate grid drawn on transparent film. Do the dilation operation, then the erosion operation on the result. Start again and do it in the opposite order. Do the two operations commute? If the
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node29.html (2 of 3) [12/12/2000 4:08:09 AM]
+
+Mathematical Morphology
+
+origin is omitted from B, and we use the formal definition, what effect does this have? Remark There are hardware implementations of many such operations which are extremely fast. See Wojciech Kuczborski's Ph.D. thesis, coming real soon to a store near you, and referenced in the bibliography at this chapter's end. Well, you can write to Wojciech care of The Centre for Intelligent Information Processing Systems (CIIPS) at the University of Western Australia and ask nicely for a copy. If we blobbify (or dilate) the set of pixels in the image Fig.2.4 by a horizontal bar of pixels, we `stretch' pixels horizontally. This will join up adjacent letters and blur them in a horizontal direction without having any effect vertically. It is childishly simple to write a program which goes over an array of pixels and dilates them horizontally: every time a black pixel is found, the new image has, say, black pixels inserted to the left and right of the location of the given pixel, as well as copying the original pixel. I assume, of course, that we are dealing with black images on a white ground. Doing this to Fig.2.4, if necessary several times on the result of doing it previously, gives something close to horizontal bands. The page has its text at an angle, so the bands are not very horizontal, but it is now easy to find the spaces between the lines and also to determine the height of the bands that used to be characters. The lines of text can be numbered consecutively from the top and their direction specified. Of course, there are ways of finding the lines of text which do not require us to apply morphology methods, but the methods will have other uses, and this seemed like a good place to introduce them. I said it was easy to find the lines, and it is, if you don't mind doing the sort of ghastly hack that occurs naturally to the more depraved kind of programmer. If your aesthetic sensibilities are revolted by this sort of thing, good. There are better ways and we shall come to them in due course.
+
+Next: Little Boxes Up: Image segmentation: finding the Previous: Image segmentation: finding the Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node29.html (3 of 3) [12/12/2000 4:08:09 AM]
+
+Little Boxes
+
+Next: Border Tracing Up: Image segmentation: finding the Previous: Mathematical Morphology
+
+Little Boxes
+Next we can start at the left hand end of each line (of the original image, not the dilated one!) and locate the first black pixel. This may be the bottom half of a character of text in the line above, the page number of the page, some noise from the book spine via an out of focus scanner, or a bit of a thumb-print or soup stain or worse. Since we have estimates of the character height obtained from the thickening, we can make an estimate of where the bottom of the character should be if we actually have the top left hand pixel of a character, and also have some ideas about where the rest of it should be. These will be very crude, because we might have an /o/, or a /b/ or a /p/ or a /q/, not to mention capitals or punctuation. If we have confidence in our knowledge of the font, we can look for vertical (relative to the direction of the line as horizontal) and horizontal separating lines between which our character may be found. It is common practice in the case of the Roman alphabet to fit slightly slanted lines from South-South-West to North-North East because, as a careful examination of the italic text shows, there is not in general a vertical separating line between well spaced characters in italic fonts. This can also happen with well spaced non-italic fonts as when TEX places the characters in a word such as
+
+WAVE
+
+and it should be noted that there may be no line slanted like: `/' separating characters, either. It should be plain that separating out characters from each other and putting boxes around them is not usually the simple procedure one might have hoped for.
+
+Next: Border Tracing Up: Image segmentation: finding the Previous: Mathematical Morphology Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node30.html [12/12/2000 4:08:13 AM]
+
+Border Tracing
+
+Next: Conclusions on Segmentation Up: Image segmentation: finding the Previous: Little Boxes
+
+Border Tracing
+A more cautious approach than trying to find a box around each character, is to trace the exterior boundary of the black pixels. Then we can work out from the length of the boundary something about the size and shape of the object we have found. This should distinguish noise from characters, given reasonable luck and a good quality image. It also puts a box around the object, although rather an irregularly shaped one. Still, better a weird shaped box than no box at all. At least, we can segment the image into objects. As we have noted, in the case of handwritten characters it could be a mistake to imagine that the segments we get this way are going to be characters. They could be bits of characters, or more often several characters joined together. For good quality printed text however, border tracing stands a reasonable chance of isolating characters. We therefore discuss the problem of finding the border pixels of a connected block of pixels. We then regard the character as the set of pixels lying inside this rather irregular `box'.
+
+Figure 2.6: Border Tracing
+
+The algorithm described briefly here (and which may be found, with some additional nuances, in some of the references below, particularly Haig, Attikiouzel and Alder) is one which the most innocent would devise unaided.
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node31.html (1 of 3) [12/12/2000 4:08:22 AM]
+
+Border Tracing
+
+First we assume that the image has a white border around it, and we have to find the bounding pixels of clumps of black pixels. We therefore start at the top left of the image at a white pixel, and scan horizontally until we encounter the end of the row or a black pixel. In the former case we do a line feed carriage return to start at the left side of the next row down. If we are at the bottom row already and there is no next row, we have scanned the page and stop. If we have found a black pixel, we draw an imaginary line from the pixel just to the left of it to the black pixel. We note the direction of this line, and the co-ordinates of the black pixel. Then we rotate the line, about the black pixel, in the positive direction (anticlockwise), until it meets another black pixel adjacent to the first black pixel, or returns to its original position. In the latter case the black pixel is isolated; we mark its location, delete it and start again. If we find another black pixel then it is in one of the eight positions adjacent to the first black pixel. Call the black pixel we are currently standing on pixel n. When n= 1 we are at the first black pixel, but this works for all of them. We now move to pixel n+1, note its location, note the direction from pixel n to pixel n+1, and take the line joining pixels n to n+1 and rotate it, about pixel n+1, in the positive direction, until it finds an adjacent black pixel which becomes pixel n+2. This process is repeated until pixel n+1 is a previously listed pixel and the line from pixel n to pixel n+1 is the same previously listed direction. This last condition is very necessary, as it is easy to re-enter a pixel from different directions without circumnavigating the set. The reader should examine carefully the border tracing program and try it out on some sets to see if it locates borders in a sensible way. Once a black object has been found, the pixel set of its border is determined by this algorithm, and this set of pixels together with every pixel which is inside this border is stored as an object and then deleted from the page, and the scan starts again. Only when the page has been blanked does the procedure terminate. Deleting the pixels inside the border sounds easy but may not be if the border is not convex. To see if a pixel is inside the border, draw a half ray starting at the pixel and extend to the boundary. Count the number of times this intersects the border. If the number is even, the starting pixel is outside, otherwise it is inside or on the border. This works except in some `bad luck' cases where the half ray hits an extremal point of the boundary. So wobble the line and the starting pixel a little bit and try again. If a pixel is inside the border and not on it, every adjacent pixel is either inside or on the border. A `floodfill' operation stopping at the border and starting inside it can be used to label the points to be removed. Of course, a border may have no interior points. There are more efficient ways, but it is relatively easy to prove rigorously that this method will work. Well, sort of. If the image has a black border, or a black box around a character, as in border is broken, then the algorithm will fail to find the desired set. , and if the
+
+Similarly, it will separate out the components of colons, semi-colons and characters such as i and j which are disconnected. Noise, black lines down the middle where the centre of the book got miscopied, smudges and the like will be picked out and will have anomalous shapes: the single pixel dots can be eliminated at this stage. Knowing the approximate size of a character can help remove the odd spots, although it is easy to get rid of the punctuation as well. If the input text comes in a wide variety of fonts, as for example the page of a newspaper or magazine, or is mixed with graphic images, then the complications of segmentation can be formidable and go beyond
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node31.html (2 of 3) [12/12/2000 4:08:22 AM]
+
+Border Tracing
+
+the scope of this book, and, indeed, most others.
+
+Next: Conclusions on Segmentation Up: Image segmentation: finding the Previous: Little Boxes Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node31.html (3 of 3) [12/12/2000 4:08:22 AM]
+
+Conclusions on Segmentation
+
+Next: Measurement Principles Up: Image segmentation: finding the Previous: Border Tracing
+
+Conclusions on Segmentation
+The exercises at the end of the chapter will give you some practice at doing some of this pre-processing. Later we shall discuss less flagrantly ad hoc methods of tackling the problem. Separating out characters by putting little boxes on them, little rectangular boxes or little parallelogram boxes, little rhomboid boxes, or even little irregular boxes obtained by border following, allows us to start thinking about how to code each character as a point in for some n.
+
+Contemplating a page of medium bad handwriting or Fig. 2.3 will suggest that this is not the way people do it. We can handle the case of touching characters or broken characters with no trouble at all, and touching or broken characters are far from uncommon, even with reasonable quality printing. So there is something more fundamental to be sorted out here.
+
+Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node32.html [12/12/2000 4:08:25 AM]
+
+Measurement Principles
+
+Next: Issues and methods Up: Image Measurements Previous: Conclusions on Segmentation
+
+Measurement Principles
+q q
+
+Issues and methods Invariance in practice
+
+Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node33.html [12/12/2000 4:08:27 AM]
+
+Issues and methods
+
+Next: Invariance in practice Up: Measurement Principles Previous: Measurement Principles
+
+Issues and methods
+Let us now suppose that we have isolated a character by some acceptable process, possibly only tentatively, and that we now wish to proceed to the recognition/classification stage. The intervening step is to measure some properties or characteristics or features of the character, so we will be able to compare and contrast the results of doing the same measurements on other characters. There are several well established methods which will shortly be described, but there are a few issues to be contemplated before going into a list of them. If I suggest a suite of measurement operations, certain properties may or may not hold for my selection. For example, it is conceivable that my measurements would be quite unaffected by simply shifting the character by one pixel to the right. More generally, I might choose to make measurements that would be the same no matter where the character is on the page. In this case we say that the measurement process is invariant under shifts. Similarly, if a measurement process were invariant under scaling, it would yield a set of numbers which would be the same for any two characters which had one simply a scaled up version of the other, and if it were invariant under rotations, it would not matter how much you rotated a character, the measuring process would give the same output. These ideas derive from the continuous case, and have to be modified a bit for the case of pixel arrays, but clearly there is some vague and approximate notion of invariance in the discrete case. Even if the measuring process were not shift invariant, it would certainly simplify recognition if the resulting vector of numbers did not change beyond recognition if the character were moved one pixel to the left. Since we may very well want to know where the character is, complete shift invariance is undesirable, but it would be useful to have the measurement process partitioned into a part which tells you where the character is, another part which tells you how big it is, another part where the numbers tell you if it has been rotated, another part perhaps telling you if it has been transformed in some other standard way, such as a change of font, and finally a component which would be the same no matter how much the character had been scaled or rotated or where it was. It is not too much to hope that some of these properties would be found to hold for a well chosen suite of measurements. Conversely, a suite of measurements which had every number changed completely by shifting the character one pixel sideways is going to be less appealing. So it is possible to think a little bit about what constitutes a sensible sort of system of measurements rather than to jump on the first such system that occurs to you. This can save a good deal of time in the longer run.
+
+Next: Invariance in practice Up: Measurement Principles Previous: Measurement Principles Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node34.html [12/12/2000 4:08:32 AM]
+
+Invariance in practice
+
+Next: Measurement practice Up: Measurement Principles Previous: Issues and methods
+
+Invariance in practice
+Suppose we have put a box around a putative character. Suppose that the box is of a reasonable size to contain some character, and that the top and bottom edges are parallel and can confidently be declared as horizontal. This is a somewhat courageous commitment because, as inspection of many a photocopy will show, text lines are often curved near the spine of the book, but we proceed in a spirit of optimism. The first prudent thing to do is to contract the resulting box by making sure the black pixels inside it are touching the edges. A big box with a lot of white space against the right hand edge has more pixels in it than necessary. The next prudent thing to do is to scale it to a standard size and shape. It is prudent because the characters may be deformed and this will normalise them, and also because it is easier to compare like with like. The effect of this on an /o/ will be very different from its effect on an /i/ of course. What constitutes a good size for the standard box will depend to some extent on the font. If the box was a parallelogram which fitted an italicised character, the transformation back may de-italicise it. And it may have rather an odd effect on some characters, making /V/ much to much like /U/ if taken to excess. Some opportunity to experiment with various transformations is given the reader in the exercises.
+
+Next: Measurement practice Up: Measurement Principles Previous: Issues and methods Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node35.html [12/12/2000 4:08:35 AM]
+
+Measurement practice
+
+Next: Quick and Dumb Up: Image Measurements Previous: Invariance in practice
+
+Measurement practice
+q q q q
+
+Quick and Dumb Scanline intersections and weights Moments Zernike moments and the FFT
+r
+
+Historical Note
+
+q q q
+
+Masks and templates Invariants Simplifications and Complications
+
+Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node36.html [12/12/2000 4:08:38 AM]
+
+Quick and Dumb
+
+Next: Scanline intersections and weights Up: Measurement practice Previous: Measurement practice
+
+Quick and Dumb
+If we normalise into, say, an 11 by 9 array, we can rewrite the characters into standard form. Then we could, if desperate for ideas, take each character as a point in . This is not a good idea, although it has been done. The main reason it is not a good idea is because one extra pixel in the wrong place can give vectors which are totally unrelated: a single pixel can shift a vertical line one pixel to the right with no trouble at all. It would be nice if a horizontal shift of a character by one pixel column were to have . Another reason it is a bad idea, is that the dimension minimal effect on the placing of the point in of the space should be kept as small as possible. The reasons for this are subtle; basically we want to use our data to estimate model parameters, and the bigger the ratio of the size of the data set to the number of parameters we have to estimate, the more we can feel we have genuinely modelled something. When, as with some neural net enthusiasts, there are more parameters than data, we can only groan and shake our heads. It is a sign that someone's education has been sadly neglected. How much faith would you have in the neural net B of Fig.1.7 being able to do a decent job of predicting new points, based as it is on only two data points? How would you expect it to perform as more points are obtained? How much faith would you have in the rightness of something like B if the dimension were 99 instead of 2, more faith or less? In the first chapter I remarked that the image on my computer screen could be regarded as a point in a space of dimension nearly four million, and that I didn't assert that this was a good idea. Suppose you wanted to write a program which could distinguish automatically between television commercials and monster movies. Doing this by trying to classify ten second slices of images using a neural net is something which might be contemplated by a certain sort of depraved mind. It would have to be pretty depraved, though. I shall return to this issue later when discussing model complexity.
+
+Next: Scanline intersections and weights Up: Measurement practice Previous: Measurement practice Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node37.html [12/12/2000 4:08:42 AM]
+
+Scanline intersections and weights
+
+Next: Moments Up: Measurement practice Previous: Quick and Dumb
+
+Scanline intersections and weights
+
+Figure 2.7: A coding of two characters by measuring scan line intersections
+
+Some thought on how to represent the characters in a way which will not be too badly affected by such things as translations, the deck transforms that are produced by italicisation and small angle rotations, may lead to taking horizontal and vertical scan lines across the rectangle, and measuring the number of distinct intersections. Or we can take the quantity of black pixels along a scan line, and list the resulting numbers in some fixed order. For example, the characters in Fig.2.7 have been coded by listing the number of intersections along two horizontal and two vertical scan lines, as indicated, making it easy to distinguish them as vectors in The method is not likely to be satisfactory with only two horizontal and two vertical scanlines, but increasing the number can give more information. A little ingenuity can readily suggest variants of the method which may even give some degree of font invariance. .
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node38.html (1 of 2) [12/12/2000 4:08:49 AM]
+
+Scanline intersections and weights
+
+Mike Alder 9/19/1997
+
+http://ciips.ee.uwa.edu.au/~mike/PatRec/node38.html (2 of 2) [12/12/2000 4:08:49 AM]
+

@@ -1,0 +1,150 @@
+Colour displays for categorical images
+C.A. Glasbey∗ Biomathematics and Statistics Scotland King’s Buildings, Edinburgh, EH9 3JZ, Scotland G.W.A.M. van der Heijden Biometris P.O. Box 16, 6700 AA Wageningen, The Netherlands V. Toh and A.J. Gray Department of Statistics and Modelling Science University of Strathclyde, Glasgow, G1 1XH, Scotland October 26, 2006
+
+Abstract We propose a method for identifying a set of colours for displaying 2-D and 3-D categorical images when the categories are unordered labels. The principle is to ﬁnd maximally distinct sets of colours. We either generate colours sequentially, to maximise the dissimilarity or distance between a new colour and the set of colours already chosen, or use a simulated annealing algorithm to ﬁnd a set of colours of speciﬁed size. In both cases, we use a Euclidean metric on the perceptual colour space, CIE-LAB, to specify distances. Keywords: pseudo-colour; look-up table; perceptually uniform colour space; RGB; LAB; colour quantization.
+
+1
+
+Introduction
+
+Suppose we have a categorical image in 2-D or 3-D with several unordered labels. These arise in many contexts in image processing, including the labelling of connected components produced
+Corresponding author: Professor C.A. Glasbey, Biomathematics and Statistics Scotland, King’s Buildings, Edinburgh, EH9 3JZ, Scotland. Email: chris@bioss.ac.uk. Tel: +(44) 131 650 4899. Fax: +(44) 131 650 4901.
+∗
+
+1
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+Figure 1: Electron scanning micrographs of a soil aggregate embedded in acrylic resin: (a) original image, (b) result of segmentation with larger pores displayed as black, (c) connected pore components, each displayed as a diﬀerent shade of grey, (d) connected pore components displayed using the colour labels given in Table 2.
+
+by segmentation algorithms. To produce a clear display of such an image we need to use a look-up table in which the categories are displayed as distinctly as possible. For example, Fig 1(a) shows an electron micrograph of a section through a soil aggregate [1]. The lighter areas are the inorganic and organic soil matrix and the black areas are soil pores. Fig 1(b) shows the result of a segmentation to identify larger pores in the section and Fig 1(c) shows a labelled image of the 24 connected pore components, using diﬀerent shades of grey, although it is not straightforward to identify all the connected components. Colour vision provides a richer space in which to present variation, as can be seen in Fig 1(d), which will be discussed later. The human eye is capable of distinguishing many more colour diﬀerences than grey diﬀerences because shades of grey are merely one of at least three dimensions of colour discrimination, so pseudo-colour displays are useful for human viewing of categorical images, both in 2-D and even more in 3-D. Our aim is to ﬁnd a distinct set of colours, for use as pseudo-colours for the category levels, 2
+
+or labels, in a categorical image. We propose to do this by designing an optimal colour map that maximizes the minimum dissimilarity or distance between neighbouring colours. In earlier work, Kelly [2] identiﬁed twenty two colours of maximum contrast and Boynton [3] identiﬁed a set of eleven colours that were almost never confused. Smallman and Boynton [4] subsequently showed that it was their separation in colour space that made them distinctive, not their having distinct names. Carter and Carter [5] proposed an algorithm for identifying high-contrast sets of colours whereas de Valk et al [6] made subjective choices. For subsequent algorithmic developments, see Campadelli et al [7] and references therein. The problem has similarities with, but is distinct from, that of colour quantization, which is concerned with selecting a set of colours, or colour palette, to display a colour image without noticeable perceived diﬀerences. For work on universal colour palettes, see, for example, Kolpatzik and Bouman [8], and on adaptive, or image-speciﬁc, colour palettes, see Gentile et al [9], Tremeau et al [10] and Ozdemir and Akarun [11]. Our paper updates Carter and Carter [5] using modern computing power and a broader consideration of colour metrics, while minimising the mathematical technicalities in more recent papers such as [7]. In §2 we formulate the method as an optimisation problem to be solved either using either a sequential search, to produce nested sets of colours of increasing size, or simulated annealing, to ﬁnd a set of colours of a speciﬁed size. Then, in §3 we apply the method to modify Boynton’s eleven colours, and generate sets of other sizes. Finally, in §4 we discuss extensions to the method.
+
+2
+2.1
+
+Method
+Problem Formalisation
+
+We formalise the problem as: ﬁnd a set of colours, c1 , . . . , cn such that the minimum distance between any pair of them is made as large as possible, as did Carter and Carter [5]. Therefore {c1 , . . . , cn } = arg max
+{c1 ,...,cn }
+
+min D(ci , cj ) ,
+i=j
+
+(1)
+
+where c ≡ (R, G, B) denotes a point in the RGB colour cube (R, G, B = 0, . . . , 255) and D is a dissimilarity or distance metric. The minimum distance is a simple criterion to use and can be justiﬁed because beyond a certain distance colours cease to increase in distinctiveness. Hence, if any D in the set is important to increase then the smallest is important to increase, and if any Ds in the set are not worth increasing, nor are the largest Ds worth increasing. The distance measured in RGB space between two colours does not necessarily reﬂect the perceived dissimilarity to the human eye (see, for example, Sangwine and Horne [12]). In perceptually uniform colour spaces the distance between two colours is proportional to the perceived distance. Therefore, to compute D, we transform RGB colours displayed on a monitor to a perceptually uniform space, and use a Euclidean metric in this space. Approximations to perceptually uniform spaces include LAB, LUV, and approximations to Munsell colour space [13, 14, 15]. 3
+
+We have chosen to use the LAB colour space with illuminant D50 for measuring colour distances, because this is the default colour space in Adobe Photoshop and many other software packages. Since an image is normally stored and also displayed in RGB-space, we start with an RGBimage which has to be converted to LAB. The standard colour space for an RGB image for most non-calibrated monitors is the sRGB colour space, which is deﬁned for illuminant D65 (daylight). Since the sRGB and Lab spaces use a diﬀerent illuminant, it is necessary to apply chromatic adaptation correction as described by Lindbloom [16] and as implemented by Adobe Photoshop. The conversion algorithm is described in detail in Annex 1. The distance between colours c and c , with representations in LAB colour space of (L, a, b) and (L , a , b ), respectively, is given by D(c, c ) = (L − L )2 + (a − a )2 + (b − b )2 . (2)
+
+2.2
+
+Solutions
+
+There are 2563 possible choices of c in the RGB colour cube, so an exhaustive search to solve (1) for n colours would involve [2563 × (2563 − 1) × . . . × (2563 − n + 1)]/[2 × 3 × . . . × n] possible solutions, and so rapidly becomes computationally infeasible as n increases. We therefore adopted two alternative approaches: a sequential search algorithm and simulated annealing. For the sequential method, given an initial colour, in order to create a set with two colours, we add to it the colour which is most distant from this one, as measured by D (2). Then to create a set with three colours, we add a third colour which is most distant from the existing two. In general, given a set of n colours, we choose as the (n + 1)st colour the one which is most distant from the existing set. The advantages of this approach are that it is comparatively fast, as we only consider 2563 possibilities at each iteration, and the sets of colours are nested for diﬀerent value of n, which simpliﬁes their use. We have used white, i.e. c1 = (255, 255, 255), as our initial colour, though alternatives are possible. In increasing the set from n to (n + 1) colours, we ﬁnd the new colour that maximises the minimum distance between it and all existing colours. Therefore (3) cn+1 = arg max min D(ci , c) , c
+i=1,...,n
+
+which can be solved by exhaustive search. A disadvantage of the sequential method is that the results are not guaranteed to be optimal: another set of n colours may have a larger minimum distance and solve (1). Because iterative optimization methods can become trapped in local optima, we have used a stochastic method to reduce this risk, using the well established method of simulated annealing [17]. To solve (1) using a simulated annealing algorithm, we start with an initial set of n random colours. At each iteration we consider replacing one of the two colours which currently minimizes D, cOLD , with a new, randomly chosen colour, cN EW . We accept this replacement with probability p = min 1 , exp DN EW − DOLD T ,
+
+where, DOLD and DN EW denote the current and new minimum distances, and T (> 0) is a ’temperature’ setting that decreases slowly as the iterations proceed. So, if DN EW ≥ DOLD , 4
+
+n 1 2 3 4 5 6 7 8 9 10 11
+
+n 1 1 1 1 4 2 3 1 8 3
+
+D(cn , cn ) cn = (R, G, B) = (L, 255 255 255 100 149 0 0 255 30 116 255 0 0 54 114 0 255 0 88 100 0 0 0 0 65 255 255 0 98 65 255 0 255 60 58 255 128 128 69 46 128 128 128 54 45 128 0 0 26 38 255 128 0 68
+
+a, 0 68 81 –79 0 –16 94 49 0 48 45
+
+b) description 0 white –112 blue 70 red 81 green 0 black 93 yellow –61 magenta 24 pink 0 grey 39 brown 75 orange
+
+Table 1: Boynton’s colours, in optimised order using criterion (3): n denotes the index to the nearest colour to cn in the existing set.
+
+p = 1 and cN EW will be chosen. Otherwise, cN EW is chosen with a probability p < 1, which guards us against becoming trapped in a local optimum of (1). Further details are given in Annex 2.
+
+3
+
+Results
+
+To explore the sequential search approach, we initially used it to order the eleven non-confusing colours of Boynton [3]. We do not use his precise set of colours in Ljg-space, but for simplicity we deﬁne the eleven colours as the 8 colours at the corners of the RGB colour cube, the grey in the middle of the cube and 2 mid-points on the edges of the cube for orange and pink. So, we solve (3), but restricting c to this set of eleven colours. The result is shown in Table 1, together with the minimum value of D between any pair of colours in each of the sets and the nearest colour (cn ) to the new colour. We see that the minimum value of D decreases as the set size, n, increases, and that the colours at the corners of the RGB colour cube are chosen ﬁrst. By comparing adjacent colours n and n , it is apparent that all eleven colours can be distinguished from their nearest neighbours. So, if a set of n ≤ 11 were required for an application, we would recommend using the ﬁrst n colours in Table 1. However, these are not necessary the best possible sets of n < 11 colours, nor do they oﬀer a solution for displaying categorical images with more than eleven categories, such as Figure 1(c). So, we also found colour sets using (3), but searching over the whole RGB colour cube. Table 2 shows the ﬁrst 32 colours we obtained with the sequential algorithm. The ﬁrst 5 colours are very similar to those in Table 1, but thereafter the lists diverge. We also see that minimum values of D are higher in Table 2, so these colours are more distinct than those in Table 1. Even for eleven colours, D is higher at 67 than the value of 38 for Boynton’s colours. As n increases it becomes increasingly diﬃcult to distinguish between some pairs cn and cn , particularly for n = 16, 19, 32. 5
+
+Fig 1(d) illustrates the results of using this look-up table on the soil image, with n = 24. The eﬀectiveness of using this set of colours is clearly demonstrated. It is far easier to distinguish between connected pores than with the shades of grey shown in Figure 1(c). Finally, for illustration, we used the simulated annealing algorithm to choose a set of eleven colours for comparison with Boynton’s colours. We found many sets of colours with a minimised value of D = 74, which is a slight improvement on D = 67 for the ﬁrst eleven colours in Table 2. Note, that in this table the colours are in no particular order.
+
+4
+
+Discussion
+
+We have identiﬁed several sets of colours for displaying categorical images on a colour monitor when the categories are unordered labels, either limiting the choice to eleven colours (related to Boynton’s colours that are almost never confused), or considering all possible colours in the RGB colour cube. We restricted attention to a computer monitor as the display device (sRGB(D65)), and the transformation to an approximately perceptually uniform space as used in Photoshop, LAB(D50). The two proposed algorithms are simple to use. In particular, the sequential approach is appealing as it is hardly worse than the simulated annealing approach, is much faster, and keeps a stable set of colours when increasing set size. Our approach is open to several extensions and generalisations. For other display devices, such as colour printers and data projectors, other transformations may be needed [18, 16]. Since the gamut for printers is generally considerable smaller than that for monitors, it might be better to restrict the search to colours which are not outside the printable gamut. Out-of-gamut colours for a printer can easily be found using Adobe Photoshop. By using an image containing all 16 millions colours, and the option colour-range, we can select all out-of-gamut colours for a certain printing proﬁle, e.g. Euroscale coated paper. By setting these to zero, we can later use this image for sampling from the restricted set of RGB-colours. One could also consider other colour spaces, using ones own speciﬁed ICC-proﬁles for reproduction. Also, there is the option to use a colour other than white as the ﬁrst colour (c1 ) in method (3). One drawback of using (1) as a criterion is that it ignores the distances between all pairs of colours that are greater than the minimum distance, even though changing the colours so that these distances are increased may appear to improve the set. It is possible to apply our methods with other criteria, which take account of all distances, such as maximising the sum of distances max
+i=j
+
+D(ci , cj ).
+
+However, with this criterion, there may be particular pairs of colours with very small distances between them. Finally, it would be possible to take account of forms of visual impairment, such as dichromacy colour blindness. In this case, we could ﬁrst map the RGB-value to the LMS-colour space, then project it on the colourblind subspace as described by Brettel et al [19], convert it back to RGB and start with those values. Since the subspace is considerably smaller, it might be worthwhile 6
+
+n 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32
+
+n 1 1 1 2 3 5 3 5 3 1 9 11 12 8 3 10 12 5 10 9 4 8 15 1 15 3 11 21 14 1 2
+
+D(cn , cn ) cn = (R, 255 149 0 116 255 114 0 103 0 94 255 86 0 84 255 70 0 69 154 67 0 58 120 53 31 52 255 51 177 47 241 47 254 46 221 46 32 46 114 44 118 43 2 43 200 42 136 39 255 38 133 38 161 37 20 37 0 36 220 36 147 35 0
+
+G, 255 0 0 255 0 0 83 211 159 77 255 63 150 172 204 8 143 0 26 0 108 173 255 108 183 133 3 249 71 94 212 76
+
+B) = (L, a, b) 255 100 0 0 255 30 68 –112 0 54 81 70 0 88 –79 81 51 2 11 –30 182 57 87 –24 0 30 –35 36 0 86 5 86 255 62 –8 –58 66 43 32 22 190 89 –64 16 193 40 45 –60 152 56 –32 –11 253 81 40 –28 113 79 –20 42 92 52 79 23 66 71 39 58 255 54 88 –70 1 10 0 14 85 25 49 –17 149 48 11 –21 36 62 –58 54 0 94 –37 88 0 47 5 53 159 81 25 23 103 55 –4 16 0 34 57 49 255 89 –48 –17 158 31 10 –54 147 58 54 –3 255 82 –13 –28 255 40 40 –95
+
+Table 2: The ﬁrst 32 colours found by sequential search to solve (3): n denotes the index to the nearest colour to cn in the existing set.
+
+7
+
+n cn = (R, G, B) = (L, 1 91 0 13 17 2 0 255 223 90 3 23 169 255 66 4 255 232 0 92 5 8 0 91 6 6 255 208 198 87 7 4 255 4 88 8 0 0 255 30 9 0 79 0 28 10 255 21 205 58 11 255 0 0 54
+
+a, 38 –57 –13 –5 32 16 –79 68 –34 88 81
+
+b) description 22 brown 0 cyan –53 light blue 89 yellow –52 dark blue 12 light pink 81 light green –112 blue 35 dark green –35 dark pink 70 red
+
+Table 3: The optimal set of eleven colours, found by solving (1) using simulated annealing.
+
+to construct a lookup table for the colours, so the conversion has to be done only once. Colour perception can also depend on region size, such as in small-ﬁeld tritanopia [20], which would require optimising the allocation of colours to regions.
+
+Acknowledgements
+CAG’s work was supported by funds from the Scottish Executive Environment and Rural Aﬀairs Department.
+
+References
+[1] C. A. Glasbey and G. W. Horgan. Image Analysis for the Biological Sciences. Wiley, Chichester, 1995. [2] K. L. Kelly. Twenty two colors of maximum contrast. Color Engineering, 3:26–27, 1965. [3] R. M. Boynton. Eleven colors that are almost never confused. In B. E. Rogowitz, editor, Proceedings of the SPIE Symposium: Human Vision, Visual Processing, and Digital Display, volume 1077, pages 322–332, Bellingham, WA, 1989. SPIE Int. Soc. Optical Engineering. [4] H. S Smallman and R. M. Boynton. Segregation of basic colors in an information display. Journal of the Optical Society of America A: Optics, Image Science, and Vision, 7:1985– 1994, 1990. [5] R. C. Carter and E. C. Carter. High-contrast sets of colors. Applied Optics, 21:2936–2939, 1982. 8
+
+[6] J. P. J. de Valk, W. J. M. Epping, and A. Heringa. Colour representation of biomedical data. Medical & Biological Engineering & Computing, 23:343–351, 1985. [7] P. Campadelli, R. Posenato, and R. Schettini. An algorithm for the selection of highcontrast color sets. Color Research and Application, 24:132–138, 1999. [8] B. W. Kolpatzik and C. A. Bouman. Optimized universal color palette design for error diﬀusion. Journal of Electronic Imaging, 4:131–143, 1995. [9] R. S. Gentile, J. P. Allebach, and E. Walawit. Quantization of color images based on uniform color spaces. Journal of Imaging Technology, 16:11–21, 1990. [10] A. Tremeau, M. Calonnier, and B. Laget. Color quantization error in terms of perceived image quality. In ICASSP-94 - Proceedings, Vol 5 - I - Image and Multidimensional Signal Processing, pages 93–96, New York, 1994. IEEE. [11] D. Ozdemir and L. Akarun. A fuzzy algorithm for color quantization of images. Pattern Recognition, 35:1785–1791, 2002. [12] S. J. Sangwine and R. E. N. Horne, editors. The Colour Image Processing Handbook. Chapman and Hall, London, 1998. [13] G. Wyszecki and W. S. Stiles. Colour Science: Concepts and Methods, Quantitative Data and Formulae. Wiley, New York, second edition, 1982. [14] M. Miyahara and Y. Yoshida. Mathematical transform of (R,G,B) color data to Munsell (H,V,C) color data. In T. R. Hsing, editor, Proceedings Visual Communications and Image Processing Conference, volume 1001, pages 650–657, Cambridge, MA, 1988. Society of Photo-Optical Instrumentation Engineers. [15] A. K. Jain. Fundamentals of Digital Image Processing. Prentice-Hall International, New Jersey, 1989. [16] B. Lindbloom. Web page (http://www.brucelindbloom.com/), 2003. of colour space information.
+
+[17] S. Geman and D. Geman. Stochastic relaxation, Gibbs distributions and the Bayesian restoration of images. IEEE Transactions on Pattern Analysis and Machine Intelligence, 6:721–735, 1984. [18] G. Sharma and H. J. Trussell. Digital color imaging. IEEE Transactions on Image Processing, 6:901–932, 1997. [19] H. Brettel, F. Vienot, and J. D. Mollon. Computerized simulation of color appearance for dichromats. Journal of the Optical Society of America, A, 14:2647–2655, 1997. [20] S. M. Highnote, G. Flint, and D. I. A. MacLeod. Color discrimination of small ﬁelds on self-luminous displays. Society for Information Display, 96:727–730, 1996. [21] W. H. Press, editor. Numerical Recipes in Fortran: The Art of Scientiﬁc Computing. Cambridge University Press, Cambridge, 2nd edition, 1994.
+
+9
+
+Annex 1
+The sRGB(D65) and Lab(D50) are the default working spaces used by Adobe Photoshop. Therefore, we have restricted our algorithm to these colour spaces. The Lab colour is a perceptual uniform colour space and conversion from sRGB involves some non-linear transformations. The Lab values can be calculated as L = 116f (Y /Y0 ) − 16, a = 500[f (X/X0 ) − f (Y /Y0 )], b = 200[f (Y /Y0 ) − f (Z/Z0 )], where
+     
+
+X 1.047835, 0.022897, −0.050147 0.412424, 0.357579, 0.180464 g(R/255)        Y  =  0.029556, 0.990481, −0.017056   0.212656, 0.715158, 0.072186   g(G/255)  , Z −0.009238, 0.015050, 0.752034 0.019332, 0.119193, 0.950444 g(B/255) using matrix notation. Here, the ﬁrst matrix accounts for the Bradford chromatic adaptation, and has to be applied to solve for the diﬀerences in white point (due to diﬀerences in illuminants) between the two colour spaces. The second matrix is the standard matrix to convert sRGB values to XYZ. (X0 , Y0 , Z0 )T = (0.964221, 1, 0.825213)T is the white point of D50 illuminant. Furthermore, 1 z3 if z > 0.008856 f (z) = 16 7.787z + 116 otherwise, and g(z) = 
+ 
+z+0.055 1.055 z 12.92 2.4
+
+if z > 0.04045 otherwise,
+
+which represents the gamma correction of the image display. For further details on conversions of colour spaces, see Lindbloom [16].
+
+Annex 2
+The simulated annealing algorithm is based on methods described in Numerical Recipes [21]. We start with an initial set of n random colours. At each of 100 iterations we consider a maximum of 25600 replacements of the two colours which currently minimizes D, cOLD , with a new colour, cN EW . Two rules are available for selecting cN EW : 1. cN EW is a random point from the 2563 space; 2. cN EW is a point close to cOLD , selected at random within a 5×5×5 cube in the RGB-space, centred on cOLD .
+
+10
+
+Early in the search process, preference is given to rule 1 (P (rule 1) = 0.99) and this probability is linearly decreased at each iteration by 0.01, until iteration 100. We accept a replacement with probability p = min 1 , exp DN EW − DOLD T ,
+
+where DOLD and DN EW denote the current and new minimum distances, and T (> 0) is a ‘temperature’ setting that decreases slowly as the iterations proceed. So, if DN EW ≥ DOLD , p = 1 and cN EW will be chosen. Otherwise, cN EW is chosen with a probability p < 1, which guards us against becoming trapped in a local optimum of (1). The initial temperature T is set at 10 and an annealing factor of 0.9 is used at each iteration, so Ti+1 = Ti × 0.9. We terminate an iteration and decrease the temperature when either the maximum of 25600 replacements have been considered, or more than 10% of the replacements considered have been accepted. The algorithm terminates when the maximum number of 100 iterations is reached, or no replacements are accepted during an iteration.
+
+11
+

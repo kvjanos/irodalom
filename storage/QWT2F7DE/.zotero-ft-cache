@@ -1,0 +1,290 @@
+Chapter 11
+High-Content Screening: Flow Cytometry Analysis
+Bruce S. Edwards, Susan M. Young, Irena Ivnitsky-Steele, Richard D. Ye, Eric R. Prossnitz, and Larry A. Sklar
+Summary
+The HyperCyt® high-throughput (HT) flow cytometry sampling platform uses a peristaltic pump, in combination with an autosampler, and a novel approach to data collection, to circumvent time-delay bottlenecks of conventional flow cytometry. This approach also dramatically reduces the amount of sample aspirated for each analysis, typically requiring ~2 μL per sample while making quantitative fluorescence measurements of 40 or more samples per minute with thousands to tens of thousands of cells in each sample. Here, we describe a simple robust screening assay that exploits the high-content measurement capabilities of the flow cytometer to simultaneously probe the binding of test compounds to two different receptors in a common assay volume, a duplex assay format. The ability of the flow cytometer to distinguish cell-bound from free fluorophore is also exploited to eliminate wash steps during assay setup. HT flow cytometry with this assay has allowed efficient screening of tens of thousands of small molecules from the NIH Small-Molecule Repository to identify selective ligands for two related G-protein-coupled receptors, the formylpeptide receptor and formylpeptide receptor-like 1. Key words: Flow cytometry, Fluorescence, Formylpeptide receptor, Formylpeptide receptor-like 1, High-content screening, High-throughput screening, NIH Molecular Libraries Screening Center Network.
+
+1. Introduction
+Because of its facility for making high-content measurements, flow cytometry has played an accessory role in many phases of drug discovery in pharmaceutical and many biotechnology companies. Historically, it has been severely limited in throughput rates for the serial analysis of multiple discrete cell suspensions, with maximum speeds approaching only six samples per minute in the most advanced commercial system available at this writing. One feature
+P.A. Clemons et al. (eds.), Cell-Based Assays for High-Throughput Screening, Methods in Molecular Biology, Vol. 486 © Humana Press, a part of Springer Science + Business Media, LLC 2009 DOI: 10.1007/978-1-60327-545-3_1
+
+151
+
+152
+
+Edwards et al.
+
+of conventional flow cytometry that hampers throughput is the one-sample-one-file paradigm – the practice of creating a separate data file for each cell suspension analyzed. Repetitive time delays are incurred for each sample that include one at the onset, while hardware and software are initialized for data collection, and another at the end, while data are saved to a file on a hard disk or other storage destination. A second rate-limiting feature is a consequence of the traditional cell sample-processing loop. The entire sample uptake/transport pathway is first rinsed with fluid to flush away the previous sample, and then the new sample suspension must be transported all the way from the source well to the point of analysis before the next data-acquisition sequence can be started. A recently developed high-throughput (HT) flow cytometry sampling platform, designated HyperCyt® (1), addresses these limitations. In contrast to the traditional sample-handling paradigm, the HyperCyt® HT flow cytometry approach is to fill the sample uptake/ transport line with a stream of discrete sample particle suspensions, each typically ~2 μL aspirated from one of the source wells and separated from each other by air bubbles. The entire sample stream is continuously delivered to the flow cytometer, so that data from all the samples in a plate are acquired and stored in a single data file. A high-resolution time parameter is also recorded during data acquisition. Temporal gaps in particle detection are created in the data stream by the passage of the air bubbles, allowing the individual particle suspensions to be easily distinguished and separately evaluated when plotted in conjunction with the time parameter. This approach not only eliminates time lags associated with multiple rounds of initialization, data storage, and sample line filling, but also dramatically reduces the amount of sample aspirated for each analysis. Sampling rates in excess of one sample per second have successfully been demonstrated for endpoint assays, but a rate of ~40 samples/min is more routinely used as the most practical setting for producing robust assay analysis results. It is possible to make quantitative fluorescence measurements of thousands to tens of thousands of cells in each sample under such conditions of serial sample throughput (2–5). Described herein is a simple robust assay that detects active compounds on the basis of their ability to block the binding of a high-affinity fluorescent ligand to cellular receptors (3–5). In negative-control wells, or in wells containing inactive compounds, cells exhibit bright green fluorescence due to the bound fluorescent ligand. Compounds with receptor-binding activity promote displacement of fluorescent ligand from the receptor, causing a decrease in green cell fluorescence intensity. Since ligand binding is measured directly, the assay detects active compounds independently of potential complexities in the patterns of the physiological responses of cells. For example, it should detect molecules regardless of whether they act as agonists or antagonists or mediate full, partial, or selective (e.g., signaling pathway-specific) activity. This is an advantage over
+
+High-Content Screening: Flow Cytometry Analysis
+
+153
+
+HT functional-response assays (e.g., intracellular Ca2+ flux), which are typically designed to detect exclusively agonists or antagonists, and are less sensitive for detecting compounds with selective or partial response activity. The assay is homogeneous, in that cells, compounds, and fluorescent peptide are added in sequence, and the wells subsequently analyzed without intervening wash steps. Elimination of wash steps is feasible because of the ability of the flow cytometer to distinguish cell-bound and free fluorophore at free fluorophore concentrations of up to several hundred nM. The specific assay described here exploits the high-content measurement capabilities of the flow cytometer to probe simultaneously two different receptors in a common assay volume – a duplex assay format. Cells expressing different receptors are color-coded to allow their distinction in a red-fluorescence detection channel during the analysis. The ligand-binding response is recorded in a separate green-fluorescence detection channel. An important advantage of the duplex approach, and of higher levels of assay multiplexing compatible with flow cytometry, is the ability to obtain both activity and selectivity information as an integral part of a primary screen. This assay is performed in 384-well plates, facilitated by the unique capability of HT flow cytometry with the HyperCyt® platform. In addition, this assay detects ligands to two related G-protein-coupled receptors (GPCR): the formylpeptide receptor (FPR) and formylpeptide receptor-like 1 (FPRL1) (6). The FPR, a prototypic GPCR in the chemoattractant receptor superfamily, has been implicated in mediating inflammatory responses of clinical significance (7, 8). FPRL1 is a related GPCR that shares 69% identity at the amino-acid level with FPR (9, 10). Although even micromolar levels of potent FPR agonists such as the N-formylpeptide fMLF only weakly activate FPRL1 (11), a number of host-derived FPRL1 peptide agonists have been identified in chronic inflammationassociated diseases such as systemic amyloidosis (12), Alzheimer’s disease (13, 14), and prion diseases (15, 16). This assay has been used at the New Mexico Molecular Libraries Screening Center to screen more than 25,000 compounds from the NIH Small Molecule Repository to identify selective ligands for each of the receptors (see NMMLSC assays at http:/ /pubchem.ncbi.nlm.nih.gov/).
+
+2. Materials
+1. Tissue culture medium (TCM): RPMI-1640 medium (Mediatech, Herndon, VA) supplemented with 10% fetal bovine serum (heat-inactivated; US Biotechnologies, Parker Ford, PA), 2 mM l-glutamine, 10 U/mL penicillin, 10 μg/mL streptomycin (Mediatech), 10 mM HEPES (Mediatech), and
+
+154
+
+Edwards et al.
+
+4 μg/mL CIPRO (Bayer Pharmaceuticals, Pittsburgh, PA). This medium may be stored at 4°C for up to 3 weeks. TCM is supplemented with 2.5 μg/mL amphotericin B (Mediatech) for culture of transfected RBL-2H3 cells. 2. A solution of 0.25% Trypsin-1 mM EDTA (Invitrogen, Carlsbad, CA) is used for passaging and preparation of RBL-2H3 cells. 3. N-formyl-methionine-leucine-phenylalanine-phenylalanine peptide (fMLFF) (Sigma, St. Louis, MO) is a peptide that selectively binds FPR. 4. Tryptophan-lysine-tyrosine-methionine-valine-D-methionine (Wpep) is a hexapeptide reported to bind with high affinity to both FPRL1 and FPR, but with a Kd < 1 nM for FPRL1 (17, 18) as compared with 95 nM for FPR (17). 5. Fluorescein isothiocyanate-labeled Wpep (Wpep-FITC) (custom synthesis; Bachem, Torrance, CA) is used to quantify free FPR and FPRL1 receptors (see Note 1). 6. Peptide dilution buffer (PDB): 110 mM NaCl, 30 mM HEPES, 10 mM KCl, 1 mM MgCl2, 10 mM glucose, and 0.1% bovine serum albumin. This solution is prepared fresh weekly and stored at 4°C. 7. Peptide solutions: peptides are stored as 1 mM or 100 μM aliquots in 100% DMSO (Omnisolv, EMD Chemicals, San Diego, CA) at −20°C. On each day of assay, aliquots are freshly thawed, diluted in PDB, and used immediately. The following solutions are adequate for preparation of four assay plates: a. Wpep-FITC: 4.5 μL of 100 μM Wpep-FITC in 15-mL cold PDB (15 nM Wpep-FITC). b. Blocking control solution: 20 μL of 100 μM Wpep, 3.6 μL of 1 mM fMLFF, 176-μL DMSO in 10-mL PDB (360 nM fMLFF, 200 nM Wpep, 2% v/v DMSO). 8. FuraRed staining solution: Add 46-μL DMSO to each of 2× 50-μg Fura RedTM, AM (Invitrogen) for a 1 mM stock solution. 9. Cell strainer: a receptacle with a 70-μm nylon mesh filter (BD Biosciences, San Jose, CA) that is used to remove clumped cells from cell suspensions. 10. Compound dilution plate: a polypropylene 384-well plate with conical-bottom wells (Greiner, Monroe, NC) used for diluting compounds prior to addition to the assay sample. 11. Assay plate: a polystyrene 384-well plate with flat-bottom, small-volume wells (Greiner) in which ligand-binding assays are performed. 12. ThermalSeal sealing film adhesive plate-well covers (Excel Scientific, Wrightwood, CA) are used to cover assay plate wells during incubations.
+
+High-Content Screening: Flow Cytometry Analysis
+
+155
+
+13. Contrad70 (Fisher Scientific, Pittsburgh, PA) is diluted with water to 2.5% (v/v) for cleaning of microfluidics tubing. 14. Test compounds are obtained from a variety of sources and stored at −25°C in DMSO. Source 384-well plates for use in assays contain 1 mM compound and are sealed with Seal and Sample aluminum foil adhesive plate well covers (Beckman Coulter, Fullerton, CA).
+
+3. Methods
+3.1. Preparation of Cells
+
+1. Cells are passaged twice weekly in 175-cm2 plastic tissue culture flasks. Cell density should be no less than 6 × 105 cells/ mL after the split. Cells expressing 100,000–250,000 receptors per cell are used in assays (see Note 2). 2. RBL/FPRL1, RBL-2H3 cells expressing human FPRL1, are grown as adherent cell cultures in TCM supplemented with 2.5 μg/mL amphotericin B. Cells may be grown beyond confluence prior to harvesting, as long as fresh TCM is added to maintain neutral pH. Use three flasks per four assay plates of RBL/FPRL1. 3. Rinse each flask with 25 mL of sterile PBS, add 10 mL 0.25% trypsin–EDTA, and incubate at 37°C until cells are detached. 4. Pool cells in 40-mL TCM, centrifuge 10 min at 450 × g, resuspend at 4 × 106/mL in PDB, and store on ice. 5. U937/FPR, U937 cells expressing human FPR, are grown as 100-mL suspensions in TCM and color-coded with FuraRed for use in assays. Use one flask of U937/FPR cells per four assay plates. Cell density should not exceed 1 × 106/mL at the time of harvest. 6. Centrifuge cells 10 min at 450 × g. Resuspend cells in PDB at 8 × 106 cells per 15 mL of TCM. 7. Add 90-μL FuraRed-AM solution per 15-mL cells and incubate 15 min at 37°C. 8. Wash loaded cells twice by centrifugation in PDB (15 mL per wash). 9. Resuspend the cell pellet in the RBL/FPRL1 cell suspension so that U937/FPR cells are also brought to a concentration of 4 × 106/mL. Store the cell mixture on ice. 10. Just prior to dispensing into the assay plate, the cell mixture is passed through a cell strainer to remove cell clumps.
+
+156
+
+Edwards et al.
+
+3.2. Setup of 384-Well Dilution and Assay Plates
+
+These instructions assume the use of automated pipetting robots and a liquid-dispensing instrument. A Biomek NX Multichannel pipetting robot (Beckman Coulter) equipped with a 384-P20 pod is used for plate-to-plate liquid transfers (steps 3 and 4). A Biomek NX Span-8 pipetting robot (Beckman Coulter) is used for addition of control reagents to plates (steps 5 and 6). A MAPC2 liquid-dispensing instrument (TiterTek) is used for dispensing cells and reagents into microplate wells (steps 2, 7, and 9). Other comparable instruments capable of accurately pipetting 1to 5-μL fluid volumes and dispensing 5-μL fluid volumes should also be suitable. Manual pipetting with multichannel pipettors is also feasible. However, it is not recommended for this assay configuration due to time constraints on some of the assay steps that will be difficult to satisfy. 1. Remove the 384-well plates containing test compounds from the freezer and allow them to warm to room temperature before removing the adhesive aluminum foil lid (see Note 3). 2. Dispense 49-μL ice-cold PDB to wells in columns 3–22 of a 384-well compound dilution plate. 3. Pipet 1 μL of test compounds from a compound storage plate to the matching, PDB-containing wells in columns 3–22 of the dilution plate. 4. Pipet 5 μL of test compounds from the dilution plate into the corresponding wells of a separate 384-well assay plate (columns 3–22). Use three aspirate/dispense pipetting cycles to mix the test compounds in the dilution plate wells before transfer. 5. Pipet 5-μL peptide blocking control solution into positive control wells (columns 2 and 23). 6. Pipet 5-μL PDB/2% DMSO (v/v) into negative-control wells (columns 1 and 24). 7. Into each well, dispense 5 μL of a cell mixture containing 50,000 of each cell type. The cell mixture contains U937/ FPR (prelabeled with FuraRed) and RBL/FPRL1 cells, each at 4 × 106 cells/mL, and is chilled on ice prior to addition (see Note 4). 8. Seal the plate wells with ThermalSeal Film and incubate the assay plate at 4°C for 30 min, periodically inverting the plate to maintain cells in suspension (see Note 5). 9. Remove the sealing film and dispense 5-μL Wpep-FITC solution into each well (see Note 4). 10. Reseal the plate wells with ThermalSeal Film and incubate the plate at 4°C for 30 min or more while rotating. 11. Move the plates one at a time from the rotator to the deck of the HyperCyt® autosampler. Wait until sampling of one plate is completed before moving the next to the deck.
+
+High-Content Screening: Flow Cytometry Analysis
+
+157
+
+3.3. Setup of the HyperCyt® Platform and Flow Cytometer
+
+These instructions assume the use of a HyperCyt® platform with a Dako CyAn flow cytometer. The HyperCyt® platform has been successfully used with several other flow cytometers, but as of this writing only the CyAn has been validated for uninterrupted analysis of 384-well plate assays. A critical flow cytometer feature is the availability of a high-resolution time parameter (data binning at intervals of 100 ms or less) that can be collected continuously for 10 or more min during data acquisition (see Note 6). The HyperCyt® platform must be properly configured and calibrated on a daily basis before use. 1. Align the HyperCyt® sampling probe to the four corner wells of a 384-well assay plate. The autosampler controlling software, HyperSip, has a programmed function to assist the user in this operation. First the probe is moved to Well A1 at which is defined the X–Y axis location corresponding to the center of the well and two Z-axis height locations corresponding to the bottom of the well and the height above the plate at which the probe will travel between wells. The probe is then moved to the other corner wells (A24, P24, and P1) in sequence to define their X–Y axis locations. Alignment once a day is typically sufficient and requires ~5 min. 2. If necessary, connect the HyperCyt® fluidics tubing to the sample uptake pathway of the flow cytometer (see Note 6). This requires <1 min. 3. Clamp the fluidics tubing in the peristaltic pump. 4. Move the sampling probe to the rinse station and turn on the peristaltic pump (15 rpm). 5. The sampling probe is repeatedly moved up and down, in and out of the rinse station solution (PDB), to generate a moving stream of discrete fluid volumes (~1 in in length) separated by air bubbles. 6. Adjust the peristaltic pump clamping pressure. When adjusted properly, there should be uniform air bubbles on both sides of the pump. If the bubbles are broken up on the flow cytometer side of the pump, the clamp has probably been tightened too much. Finding just the right tension will sometimes take a bit of time and patience (~5–10 min or less for the experienced operator). Once set, clamping pressure typically remains stable over the course of several days without requiring operator intervention. 7. Prior to the first sampling run, and between subsequent runs, the sampling probe is moved to the rinse station while the peristaltic pump continues to run. The 0.1% BSA in the PDB is an important surfactant that helps flush particles from the sample line. The presence of at least 0.1% BSA (or some other equivalent protein) in all solutions helps minimize particle carryover. It is also good practice to run detergent [2.5% Contrad-70 (v/v)] followed by distilled water through the fluidics tubing at the beginning and end of each day.
+
+158
+
+Edwards et al.
+
+8. Use the Plate Setup feature of HyperSip software to create a worklist that controls the pattern with which wells will be sampled. Sample identifying information for each well may also be included in the worklist for postanalysis annotation of flow cytometry data. Worklists may be created in advance and automatically loaded just prior to assay plate sampling. 9. A preconfigured flow cytometry software protocol is loaded into the flow cytometer that defines the lasers and optical detectors to be used, the sensitivity settings for each detector, and graphical plots to be displayed during data acquisition. Quantitative analysis of the present assay requires acquisition of green and red fluorescence emission wavelength bands (FL1, 530 ± 20 and FL4, 630 ± 15 nm, respectively), two light-scatter signals (FS forward scatter and SS side scatter), and a high-resolution time parameter (data binned at intervals of 100 ms or less). All optical signals are excited by a single laser line of 488-nm wavelength.
+3.4. Sampling and Data Acquisition
+
+1. Position an assay plate on the HyperCyt® autosampler deck. 2. Initiate HyperCyt® sampling and flow cytometer data acquisition. 3. The sampling probe moves from well to well, sampling from each and moving to the next without an intervening probe wash step. The probe is programmed to remain in each well aspirating sample for 900 ms and in the air between wells aspirating air bubbles for 400 ms. The peristaltic pump that mediates liquid transfer runs continuously during sampling of the entire plate (see Note 7). 4. The flow cytometer continuously acquires data during sampling of the entire plate and for about 40 s thereafter. This allows time for the last sample to transit the length of the sampling tube from the plate to the point of analysis. During this interval, the sampling probe is at the rinse station moving up and down while the peristaltic pump continues to run (see Note 8). 5. At the end of data acquisition, the single data file is saved in flow cytometry standard (FCS) 3.0 file format. The total time required for sampling, data acquisition and data-file storage is typically 11–12 min.
+
+4. Analysis of Flow Cytometry Data
+1. The flow cytometry data file is loaded into IDLeQuery analysis software. 2. Four graphical plots of the data are created: (a) FL1 vs. FL4, (b) FS vs. SS, (c) FS vs. FL4, and (d) time vs. number of events.
+
+High-Content Screening: Flow Cytometry Analysis
+
+159
+
+3. The fluorescence compensation control is used to correct the green fluorescence signal of Wpep-FITC for the small fraction of cell-associated Fura Red fluorescence that is picked up by the FL1 detector. The FL1 vs. FL4 plot is used to evaluate compensation. Compensation is correct when the two cell populations are aligned one atop the other and the leftmost tail of the U937/FPR population distribution is extended to a similar extent as in the RBL/FPRL1 population (Fig. 1) (see Note 9).
+
+10000
+
+A
+Fura Red Fluorescence Intensity
+
+Uncompensated
+
+1000
+
+U937/FPR
+FL 4 Log 100
+
+10
+
+RBL/FPRL 1
+1 1 10 100 FL 1 Log 1000 10000
+
+Wpep-FITC Fluorescence Intensity
+10000
+
+B
+Fura Red Fluorescence Intensity
+
+Compensated
+
+1000
+
+FL 4 Log
+
+100
+
+10
+
+1
+
+1
+
+10
+
+100 FL 1 Log
+
+1000
+
+10000
+
+Wpep-FITC Fluorescence Intensity
+
+Fig. 1. Fluorescence compensation to correct for red fluorescence spillover into the green fluorescence detection channel. (A) Uncompensated fluorescence data. (B) Fluorescence profile after compensation. Approximately 3% of the signal detected in the red FL4 channel for each event was subtracted from the corresponding signal detected in the green FL1 channel. The plots represent combined data from all 384 wells.
+
+160
+
+Edwards et al.
+
+4. In the FS vs. SS plot, an electronic gate (gate 1) is constructed to exclude dead cells and debris from the analysis (Fig. 2a). 5. In the FS vs. FL4 plot, two electronic gates are constructed, one about the bright red fluorescent U937/FPR cell population (gate 2) and the other about the dim red fluorescent RBL/FPRL1 cell population (gate 3) (Fig. 2b). 6. The time vs. number of events plot is displayed in the specialized Time Bins Analysis window (Fig. 3). Each peak in the
+10000
+
+A
+
+1000
+
+1
+
+Side Scatter
+
+SS Log
+
+100
+
+10
+
+1 0 1x104 2x104 3x104 FS Lin 4x104 5x104 6x104
+
+Forward Scatter
+10000
+
+B
+2
+
+Fura Red Fluorescence Intensity
+
+1000
+
+U937/FPR
+FL 4 Log 100
+
+3
+10
+
+RBL /FPRL 1
+
+1 0 1x104 2x104 3x104 FS Lin 4x104 5x104 6x104
+
+Forward Scatter
+
+Fig. 2. Electronic gates required for analysis. (A) A light scatter gate (gate 1) is constructed to exclude debris and nonviable cells from the analysis. (B) Two additional gates are constructed based on the color-coding signals in the red fluorescence channel. One encloses red fluorescent U937/FPR cells (gate 2) and the other encloses unstained RBL/FPRL1 cells (gate 3). The plots represent combined data from all 384 wells.
+
+A
+Number of Events
+1500
+
+1000
+
+500
+
+0
+
+0
+
+200
+
+400 Time (s)
+
+600
+
+B
+M12 M13 M14 M15 M16 M17 M18 M19 M20 M21 M22 M23 M24 N10 N11
+
+Number of Events
+
+600 Time (s)
+
+Wpep-FITC Fluorescence Intensity
+
+10000
+
+C
+1000 FL 1 Log
+
+Hit (Well M20) 76% Inhibition
+
+100
+
+10
+
+RBL/FPRL 1
+1
+
+PNNP
+Time (s)
+
+Wpep-FITC Fluorescence Intensity
+
+10000
+
+D
+1000 FL 1 Log
+
+Hit (Well M21) 66% Inhibition
+
+100
+
+10
+
+1
+
+U937/FPR
+Time (s)
+
+Fig. 3. Resolution and analysis of cells sampled from individual wells. (A) Display of data from all 384 wells in the Time Bins Analysis window in which the numbers of events detected at 100-ms time intervals are plotted as a function of time. (B) A magnified view of data from 25 wells measured in the vicinity of the 600-s time point [boundaries indicated below the time axis in panel (A)]. A software peak-detection algorithm identified 384 sets of data and enclosed each in a separate rectangular analysis region or Time Bin. Data sets were segregated on the basis of time gaps in the data stream produced by the passage of air bubbles. The first set is from well M12, and the last from well N12. (C) Greenfluorescence data from RBL/FPRL1 cells (gate 3) in wells M12 to N12. The test compound in well M20 (arrow) caused a 75% inhibition of Wpep-FITC binding relative to fluorescence intensities measured in control wells. It did not detectably affect Wpep-FITC binding to U937/FPR cells in the same well [see panel (D)]. Data from two positive-control wells (P) and two negative-control wells (N) are also indicated. (D) Green-fluorescence data from U937/FPR cells (gate 2) in wells M12 to N12. Well M21 contained a test compound that caused 66% inhibition of Wpep-FITC binding and no detectable effect on Wpep-FITC binding to RBL/FPRL1 cells in the same well [see panel (C)]
+
+N12
+
+N1
+
+N2
+
+N3
+
+N4
+
+N5
+
+N6
+
+N7
+
+N8
+
+N9
+
+162
+
+Edwards et al.
+
+plot corresponds to cells sampled from a separate well. The AutoBins software function is invoked to enclose each of the 384 peaks in separate analysis rectangles or bins. The worklist created earlier with the HyperSip Plate Setup function is imported using the IDLeQuery Import Well ID function to provide appropriate labels for each bin and to annotate the contents of the corresponding wells (see Note 10). 7. The Stats Control Window is used to display the number of cells and the median green fluorescence intensities calculated for each of the two cell populations in each well, along with the imported well identification and annotation data. 8. Export the fluorescence intensity data to a Microsoft Excel spreadsheet template that automatically performs the calculations required to quantify test compound effects on WpepFITC ligand binding to the two receptors. 9. Calculate the assay response as the inhibition of fluorescent ligand-binding mediated by the test compound: % Inhibition = 100 ´ {1 – [(MfiTest – MfiPCAVG)/ (MfiNCAVG – MfiPCAVG)]}, in which MfiTest, MfiPCAVG, and MfiNCAVG represent the median fluorescence intensities (MFI) in individual wells containing test compounds, average MFI in positive control wells, and average MFI in negative control wells, respectively. 10. Calculate the Z′ factor, a measure of screening assay quality that reflects both assay signal dynamic range and data variation associated with the signal measurements (19): Z′ = 1 – {[(3 ´ MfiPCSD) + (3 ´ MfiNCSD)]/ (MfiNCAVG – MfiPCAVG)}, in which MfiNCSD and MfiPCSD represent the standard deviation of MFI in negative and positive control wells, respectively. Z ′ factor values typically average ~0.65 for this assay and values of 0.4 or more are considered to indicate acceptable assay quality.
+
+5. Notes
+1. Addition of the fluorescein label to the lysine residue of Wpep alters the affinity to a Kd of 1.8 nM for FPRL1 and 1.2 nM for FPR, as determined in equilibrium-binding assays at 4°C (data not shown).
+
+High-Content Screening: Flow Cytometry Analysis
+
+163
+
+2. Receptor expression is determined by incubating cells with 10 nM Wpep-FITC for 30 min at 4°C in the presence and absence of 1 μM fMLFF + 1μM Wpep. Specific peptide binding is computed as the difference in cell-median fluorescence intensity (MFI) between unblocked and blocked (fMLFF/ Wpep present) conditions and this is transformed to the estimated number of receptors (ligand-binding sites) per cell by comparison to an MFI standard curve generated with Quantum FITC MESF calibration beads (Bangs Labs, Inc., Fishers, IN). If receptor expression decreases or becomes heterogeneous, cells are stained with Wpep-FITC as above and sorted in the flow cytometer to purify and expand cells with high receptor expression (typically 1–5% of cells with brightest fluorescence). 3. The time required for the thawing of compound solutions will depend upon the volume in each well and well geometry. Remove plate covers only after any condensation has evaporated, and minimize any subsequent exposure of compounds dissolved in DMSO to humidity. This is especially important if the compounds will be subjected to multiple freeze–thaw cycles. DMSO rapidly absorbs water and compounds will be increasingly prone to becoming insoluble during a freeze–thaw cycle as DMSO water content increases. Once thawed, the plates are centrifuged at 500 × g for 2 min at room temperature. This positions compound solutions uniformly in the bottom of the wells to facilitate accurate automated pipetting. 4. Cell- or reagent-dispensing must be done quickly in this step (<3 min) to minimize warming and cell settling. 5. Plates are placed on a custom-built system that rotates at 4 rpm to periodically invert the plates. The assay plate well geometry favors fluid retention in wells of an inverted plate due to surface tension. Alternatively, incubation can be performed under static conditions without continuous rotation of the plate. A pipet-mixing step to resuspend cells should be added at the end of the incubation if this option is selected. 6. At this writing, the HyperCyt® platform is available for purchase under a beta-testing agreement at IntelliCyt (http:/ / www.intellicyt.com). A simple modification of the sample uptake fluidics pathway of the CyAn flow cytometer is required to allow it to interface with the HyperCyt® platform. One end of the OEM silicone sample transport tubing is detached from the bottom of flow cytometer sample interrogation cuvette. An 8-inch length of PVC tubing is attached there instead. A 1-inch length of 25G stainless steel tubing is used to join the free end of this PVC tubing to either i) the free end of the OEM silicone tubing to enable manual sample introduction, or ii) the free end of the PVC sample-transport tubing of
+
+164
+
+Edwards et al.
+
+the HyperCyt® platform to enable HT sample introduction. Switching between the two modes of operation requires less than 1 min. 7. The peristaltic pump is rotated at 15 rpm to result in a sample flow rate of ~2 μL/s. Faster or slower rates are typically suboptimal, and can also result in increased particle carryover. 8. This generates a trailing train of bubble-separated liquid volumes to ensure that the last samples are pushed through the data-analysis point under the same conditions as the others. Air bubbles are compressible, water is not. A trailing train of PDB would cause the last of the sample-separating air bubbles to compress more than the preceding, pushing the last samples through more rapidly. 9. The leftmost tail represents cells with low green fluorescence intensity from wells containing compounds that block Wpep-FITC binding. This includes the 32 positive-control wells and wells containing active test compounds. 10. Several redundant sources of information are used to ensure accurate indexing of time-resolved flow cytometry data to source samples. Current practice is to index microplate wells at fixed intervals using the green FL1 fluorescence-intensity profiles of the control wells. A pattern is generated by the positive-control wells that distinguish the boundaries of each 24-well span (Fig. 4). Temporal gaps in the data caused by air bubbles provide additional reference signals for indexing data from individual wells. This combined indexing approach has proven to be quite reliable, but not without occasional ambiguities of automated data analysis, requiring human intervention to resolve. Additional overlapping and redundant indexing signals will likely extend system-performance capabilities for full automation.
+
+Fig. 4. Repetitive fluorescence intensity pattern provides supplementary sample indexing information. Illustrated are green fluorescence data from the first 96 wells of a 384-well plate. Wells are sampled from left to right (columns 1–24) one row at a time, starting with the top row (row A) and proceeding downward. This results in a repetitive pattern of low median fluorescence intensity (MFI) signals marking the 2nd and 23rd wells of each row, the locations of the positive control samples. This information facilitates identification of a row in which an indexing error has occurred.
+
+High-Content Screening: Flow Cytometry Analysis
+
+165
+
+Acknowledgments
+This work was supported by NIH R03 MH076381-01, U54 MH074425-01, the New Mexico Molecular Libraries Screening Center, the University of New Mexico Shared Flow Cytometry Resource, and Cancer Research and Treatment Center.
+References
+1. Kuckuck, F. W., Edwards, B. S., and Sklar, L. A. (2001) High throughput flow cytometry. Cytometry 44, 83–90. 2. Ramirez, S., Aiken, C. T., Andrzejewski, B., Sklar, L. A., and Edwards, B. S. (2003) High-throughput flow cytometry: validation in microvolume bioassays. Cytometry A 53, 55–65. 3. Young, S. M., Bologa, C., Prossnitz, E., Oprea, T. I., Sklar, L. A., and Edwards, B. S. (2005) High-throughput screening with HyperCyt flow cytometry to detect small molecule formylpeptide receptor ligands. J. Biomol. Screen. 10, 374–382. 4. Edwards, B. S., Bologa, C., Young, S. M., Balakin, K. V., Prossnitz, E., Savchuck, N. P., Sklar, L. A., and Oprea, T. I. (2005) Integration of virtual screening with high-throughput flow cytometry to identify novel small molecule formylpeptide receptor antagonists. Mol. Pharmacol. 68, 1301–1310. 5. Edwards, B. S., Young, S. M., Oprea, T. I., Bologa, C., Prossnitz, E., and Sklar, L. A. (2006) Biomolecular screening of formylpeptide receptor ligands with a sensitive, quantitative, high-throughput flow cytometry platform. Nat. Protocols 1, 59–66. 6. Migeotte, I., Communi, D., and Parmentier, M. (2006) Formyl peptide receptors: a promiscuous subfamily of G protein-coupled receptors controlling immune responses. Cytokine Growth Factor Rev. 17, 501–519. 7. Le, Y., Murphy, P. M., and Wang, J. M. (2002) Formyl-peptide receptors revisited. Trends Immunol. 23, 541–548. 8. Oppenheim, J. J., Zachariae, C. O., Mukaida, N., and Matsushima, K. (1991) Properties of the novel proinflammatory supergene “intercrine” cytokine family. Annu. Rev. Immunol. 9, 617–648. 9. Murphy, P. M. (1996), in Chemoattractant Ligands and Their Receptors (Horuk, R., ed.), CRC Press, Boca Raton, FL, pp. 269–299. 10. Prossnitz, E. R., and Ye, R. D. (1997) The N-formyl peptide receptor: a model for the study of chemoattractant receptor structure and function. Pharmacol. Ther. 74, 73–102. 11. Ye, R. D., Cavanagh, S. L., Quehenberger, O., Prossnitz, E. R., and Cochrane, C. G. (1992) Isolation of a cDNA that encodes a novel granulocyte N-formyl peptide receptor. Biochem. Biophys. Res. Commun. 184, 582–589. 12. Snipe, J. D. (1990), in Immunophysiology: The Role of Cells and Cytokines in Immunity and Inflammation (Oppenheim, J. J. and Shevac, E. M., eds.), Oxford University Press, New York, pp. 259–273. 13. Lambert, M. P., Barlow, A. K., Chromy, B. A., Edwards, C., Freed, R., Liosatos, M., Morgan, T. E., Rozovsky, I., Trommer, B., Viola, K. L., Wals, P., Zhang, C., Finch, C. E., Krafft, G. A., and Klein, W. L. (1998) Diffusible, nonfibrillar ligands derived from Abeta1-42 are potent central nervous system neurotoxins. Proc. Natl. Acad. Sci. USA 95, 6448–6453. 14. Kalaria, R. N. (1999) Microglia and Alzheimer’s disease. Curr. Opin. Hematol. 6, 15–24. 15. Brown, D. R., Schmidt, B., and Kretzschmar, H. A. (1996) Role of microglia and host prion protein in neurotoxicity of a prion protein fragment. Nature 380, 345–347. 16. Le, Y., Yazawa, H., Gong, W., Yu, Z., Ferrans, V. J., Murphy, P. M., and Wang, J. M. (2001) The neurotoxic prion peptide fragment PrP(106-126) is a chemotactic agonist for the G protein-coupled receptor formyl peptide receptor-like 1. J. Immunol. 166, 1448–1451. 17. Bae, Y. S., Song, J. Y., Kim, Y., He, R., Ye, R. D., Kwak, J. Y., Suh, P. G., and Ryu, S. H. (2003) Differential activation of formyl peptide receptor signaling by peptide ligands. Mol. Pharmacol. 64, 841–847. 18. Bae, Y. S., Yi, H. J., Lee, H. Y., Jo, E. J., Kim, J. I., Lee, T. G., Ye, R. D., Kwak, J. Y., and Ryu, S. H. (2003) Differential activation of formyl peptide receptor-like 1 by peptide ligands. J. Immunol. 171, 6807–6813. 19. Zhang, J. H., Chung, T. D., and Oldenburg, K. R. (1999) A simple statistical parameter for use in evaluation and validation of high throughput screening assays. J. Biomol. Screen. 4, 67–73.
+

@@ -1,0 +1,343 @@
+Submitted to CVPR 2003
+
+Learning Afﬁnity Functions for Image Segmentation: Combining Patch-based and Gradient-based Approaches
+Charless Fowlkes, David Martin, Jitendra Malik Department of Electrical Engineering and Computer Science University of California, Berkeley, CA 94720
+fowlkes,dmartin,malik @eecs.berkeley.edu
+
+Abstract
+This paper studies the problem of combining region and boundary cues for natural image segmentation. We employ a large database of manually segmented images in order to learn an optimal afﬁnity function between pairs of pixels. These pairwise afﬁnities can then be used to cluster the pixels into visually coherent groups. Region cues are computed as the similarity in brightness, color, and texture between image patches. Boundary cues are incorporated by looking for the presence of an “intervening contour”, a large gradient along a straight line connecting two pixels. We ﬁrst use the dataset of human segmentations to individually optimize parameters of the patch and gradient features for brightness, color, and texture cues. We then quantitatively measure the power of different feature combinations by computing the precision and recall of classiﬁers trained using those features. The mutual information between the output of the classiﬁers and the same-segment indicator function provides an alternative evaluation technique that yields identical conclusions. As expected, the best classiﬁer makes use of brightness, color, and texture features, in both patch and gradient forms. We ﬁnd that for brightness, the gradient cue outperforms the patch similarity. In contrast, using color patch similarity yields better results than using color gradients. Texture is the most powerful of the three channels, with both patches and gradients carrying signiﬁcant independent information. Interestingly, the proximity of the two pixels does not add any information beyond that provided by the similarity cues. We also ﬁnd that the convexity assumptions made by the intervening contour approach are supported by the ecological statistics of the dataset.
+
+1. Introduction
+Boundaries and regions are closely intertwined. A closed boundary generates a region while every image region has a boundary. Psychophysics experiments suggest that humans use both boundary and region cues to perform segmentation [43]. In order to build a vision system capable of parsing natural images into coherent units corresponding to surfaces 1
+
+and objects, it is clearly desirable to make global use of both boundary and region information. Historically, researchers have focused separately on the sub-problems of boundary and region grouping. Region based approaches are motivated by the Gestalt notion of grouping by similarity. They typically involve integrating features such as color or texture over local patches of the image [8,12,32] and then comparing different patches [26,31]. However, smooth changes in texture or brightness caused by shading and perspective within regions pose a problem for this approach since two distant patches can be quite dissimilar despite belonging to the same image segment. To overcome these difﬁculties, gradient based approaches detect local edge fragments marked by sharp, localized changes in some image feature [4, 24, 18, 30, 20]. The fragments can then be linked together in order to identify extended contours [28, 42, 6]. Less work has dealt directly with the problem of ﬁnding an appropriate intermediate representation in order to incorporate non-closed boundary fragments into segmentation. Mathematical formulations outlined by [11, 25, 23] along with algorithms such as [19, 13] have attempted to unify boundary and region information. More recently, [17, 40] have demonstrated the practical utility of integrating both in order to segment images of natural scenes. There are widely held “folk-beliefs” regarding the various cues used for image segmentation: brightness gradients (caused by shading) and texture gradients (caused by perspective) necessitate a boundary-based approach; edge detectors are confused by texture, so one must use patch-based similarity for texture segmentation; color integrated over local patches is a robust and powerful cue. However, these contradictory statements have not been empirically challenged. By using a dataset of human segmentations [21, 5] as groundtruth, we are able to provide quantitative results regarding the ecological statistics 1 of patch- and gradientbased cues and gauge their relative effectiveness. We treat the problem of integrating both gradient and patch information for segmentation within the framework of
+1 Our approach follows the lines of Egon Brunswik’s suggestion nearly 50 years ago that the Gestalt factors made sense because they reﬂected the statistics of natural scenes [3].
+
+Figure 1: Pixel afﬁnity images. The ﬁrst row shows an image with one pixel selected. The remaining rows show the similarity between that pixel and all other pixels in the image, where white is most similar. Rows 2-4 show our patch-only, contour-only, and patch+contour afﬁnity models. Rows 5 and 6 show the pixel similarity as given by the groundtruth data, where white corresponds to more agreement between humans. Row 6 shows simply the same-segment indicator function, while row 5 is computed using intervening contour on the human boundary maps. pairwise clustering [38,44,37,39,7,29,10,41]. In contrast to central clustering techniques such as k-means or mixturesof-Gaussians which compare each pixel (or other image element) to some small set of prototypes, pairwise techniques rely on the evaluation of an afﬁnity function between each pair of image pixels. While pairwise techniques tend to be more computationally expensive, they have the advantage of removing the constraint that pixels be explicitly embedded in some normed vector space where Euclidean or Mahalanobis distances “make sense”. Instead, pixels are implicitly described by their similarity to every other pixel in the image. The pairwise framework allows patch and gradient information equal footing in the following way. Associate a descriptor to each pixel that captures color, brightness and texture in a neighborhood of the pixel. The patch based similarity between two pixels is a function of the difference in their descriptors. A gradient is computed as the change in these local descriptors between nearby pixels. For each pair of pixels, record the magnitude of the gradient encountered along a straight path connecting the two pixels in the image plane. Large gradients indicate the presence of an “intervening contour” [15] and suggests the pixels do not belong to the same segment. The pairwise afﬁnity between the -th 2
+
+and -th pixel is given by a function whose arguments are the similarity between the -th and -th local descriptors and the gradients along the path from and . Most applications of pairwise clustering to segmentation have made use of heuristically derived afﬁnity functions (e.g. [17]). It is a natural proposal [22] to learn optimal pairwise afﬁnities from training data. In the results presented here, nearly all free parameters (i.e. ﬁlter scales, histogram binning and quantization, descriptor windowing, combination of gradient features, etc.) have been carefully optimized with respect to training data. Our goal is to explicitly model the posterior probability of two pixels belonging to the same image segment conditioned on photometric properties of the image. Figure 1 shows examples of both groundtruth afﬁnity functions and afﬁnity models learned from data. We provide two general schemes for evaluating the effectiveness of different combinations of features. The ﬁrst is to train a classiﬁer which declares two pixels as lying in the same or different segments given some set of features. Classiﬁer performance is then evaluated by considering the trade-off between precision and recall. The second approach is to compute the mutual information between the classiﬁer output and the same-segment indicator provided by the human segmentations. These two schemes are in strong agreement which lends force to our ﬁndings:
+
+Human SS Human IC Patch+IC
+
+IC-Only
+
+Patch-Only
+
+Image
+
+¯
+
+¯ ¯ ¯ ¯
+
+Segmentations of the same image by different humans are quite consistent with each other. “Fine” segmentations tend to be “coarse” segmentations with regions that have been reﬁned by breaking them into roughly convex parts. The ecological statistics of the dataset show that regions are mostly convex, validating the assumptions made by the intervening contour approach. Intervening contour and patch comparisons both provide signiﬁcant, independent information about whether two pixels belong in the same segment. The color cue is best captured using patches, while for brightness one should use gradients. For texture, both gradients and patches are valuable. The proximity between two pixels does not provide any information not given by the patch-based or gradient-based similarity. It is simply a result of grouping, not a cue.
+
+2. Methodology
+We formulate the problem of learning the pixel afﬁnity function as a classiﬁcation problem of discriminating samesegment pixel pairs from different-segment pairs. Let Ë be the true same-segment indicator so that Ë ½ when pixels and are in the same segment, and Ë ¼ when pixels and are in different segments.
+
+1 0.9 0.8 0.7
+
+Precision
+
+0.6 0.5 0.4 0.3 0.2 0.1 0 F=0.60 MI=0.16 Patch F=0.61 MI=0.14 IC F=0.65 MI=0.19 Patch+IC F=0.77 MI=0.25 Humans Iso F=0.77 0 0.2 0.4 0.6 0.8 1
+
+Recall
+
+Figure 2: Performance of humans compared to our best pixel afﬁnity models. The dots show the precision and recall of each of 1366 human segmentations in the 250-image test set when compared to the other humans’ segmentation of the same image. The large dot marks the median recall (99%) and precision (63%) of the humans. The iso-F-measure curve at F=77% is extended from this point to represent the frontier of human performance for this task. The three remaining curves represent our patch-only model, contour-only model, and patch+contour model. Neither patches nor contours are sufﬁcient, as there is signiﬁcant independent information in the patch and contour cues. The model used throughout the paper is a logistic function with quadratic terms which performs the best among classiﬁers tried on this dataset. The Berkeley Segmentation Dataset [21, 5] provides the groundtruth segmentation data. This dataset contains 12,000 manual segmentations of 1,000 images by 30 human subjects. Half of the images were presented to subjects in grayscale, and half in color. We use the color segmentations for 500 images, divided into test and training sets of 250 images each. Each image has been segmented by at least 5 subjects, so the groundtruth Ë is deﬁned by a set of human segmentations. We declare two pixels to lie in the same segment only if all subjects declare them to lie in the same segment. Given a classiﬁer output Ë , we can evaluate the classiﬁer’s performance in two ways. Our ﬁrst evaluation technique uses the precision-recall (PR) framework, which is a standard method in the information retrieval community [33]. This framework was used by Abdou and Pratt [1] to evaluate edge detectors, and is similar to the ROC curve framework used by Bowyer et al. [2] for the same purpose. The approach produces a curve parameterized by detector threshold which shows the trade-off between noise and accuracy as the threshold varies. For example see Figure 2. Precision measures the probability that two pixels declared by the classiﬁer to be in the same segment are in the same segment, i.e. È ´Ë ½ Ë ½µ. Recall measures the probability that a same segment pair is detected, i.e. È ´Ë ½ Ë ½µ. The PR approach is particularly appropriate when the two classes are unbalanced. By focusing on the scarcer class—same-segment pairs in our case— 3
+
+performance is not inﬂated by the ease of detecting the dominant class. Precision and recall can be combined with the FMeasure, which is simply a weighted harmonic mean: ÔÖ ´«Ô · ´½ «µÖµ. The weight « represents the relative importance of precision and recall for a particular application. We use « ¼ in our experiments. The F-measure can be evaluated along the precision-recall curve, and the maximum value used to characterize the curve with a single number. When two precision-recall curves do not intersect, the F-measure is a useful summary statistic. The second approach to evaluating a classiﬁer measures the mutual information Á between the classiﬁer output Ë and the groundtruth data Ë . Given the joint disÈ ´Ë Ü Ë Ýµ, the mutual informatribution Ô´Ü Ý µ tion is deﬁned as the Kullback-Liebler divergence between the joint and the product of the marginals, so Á ´Ë Ë µ ´ µ Ô´Ü Ýµ ÐÓ ÔÔÜÜÔÝÝµ . We compute the joint distribution ´ µ ´ Ü Ý by binning the soft classiﬁer output.
+
+Ê
+
+3. Features
+We will model the afﬁnity between two pixels as a function of both patch-based and gradient-based features. In each case, we can use brightness, color, or texture, producing a total of six features. We also consider the distance between the pixels as a seventh feature.
+
+3.1. Patch-Based Features
+Given a pair of pixels, we wish to measure the brightness, color, and texture similarity between circular neighborhoods of some radius centered at each pixel. Distributions of color in perceptual color spaces have been successfully used as region descriptors in image retrieval systems such as QBIC [26], as well as many color segmentation algorithms. We employ the 1976 CIE L*a*b* color space separated into luminance and chrominance channels. We model brightness and color distributions with histograms constructed by binning kernel density estimates. Histograms are compared with the ¾ histogram difference operator [32]. For the brightness cue, we use the L* histogram for each pixel. In the case of color, it is not necessary to compute the joint a*b* histogram. Instead, it sufﬁces to compute separate a* and b* histograms, and simply sum their ¾ contributions. This is motivated by the fact that a* and b* correspond to the green-red and yellow-blue color opponent channels in the visual cortex, as well as the perceptual orthogonality of the two channels (see Palmer [27]). The ¾ histogram difference does not make use of the perceptual distance between the bin centers. Therefore, without smoothing, perceptually similar colors can have large ¾ differences. Because the distance between points in CIELAB space is perceptually meaningful in a local neighborhood, binning a kernel density estimate whose ker-
+
+nel bandwidth matches the scale of this neighborhood means that perceptually similar colors will have similar histogram contributions. Beyond this scale, where colors are incommensurate, ¾ will regard them as equally different. The combination of a kernel density estimate in CIELAB with the ¾ histogram difference is a good match to the structure of human color perception. For the patch-based texture feature, we compare the distributions of ﬁlter responses in the two discs. There is an emerging consensus that for texture analysis, an image should ﬁrst be convolved with a bank of ﬁlters tuned to various orientations and spatial frequencies [8, 18]. Our ﬁlter bank contains elongated quadrature pair ﬁlters—Gaussian second derivatives and their Hilbert transforms—at six orientations, along with one center-surround ﬁlter. The empirical distribution of ﬁlter responses has been shown to be a powerful feature for both texture synthesis [12] and texture discrimination [31]. There are many options for comparing the distributions (see Puzicha et al. [31]), but we use the approach developed in [17] which is based on the idea of textons. The texton approach estimates the joint distribution of ﬁlter responses using adaptive bins, which are computed with -means. The texture descriptor for a pixel is therefore a -bin histogram over the pixels in a disc of radius Ö centered on the pixel. As in [17], we compare descriptors with the ¾ difference. All of the patch-based features have parameters that require tuning, such as the radius of the discs, the binning parameters for brightness and color, and the texton parameters for texture. Section 4.3 covers the experiments that tune these parameters with respect to the training data.
+
+Same Image
+1
+
+0.025
+
+Different Images
+1 0.02
+
+0.8
+
+0.02
+
+0.8 0.015
+
+Precision
+
+0.6
+
+Precision
+
+0.015
+
+0.6
+
+0.4 0.01 0.2 0.005 0 0 0.2 0.4 0.6 0.8 1 0
+
+0.4
+
+0.01
+
+0.2 0.005 0 0 0.2 0.4 0.6 0.8 1 0
+
+Recall
+
+Recall
+
+Figure 3: Agreement between human segmentations. The left panel shows the distribution of precision and recall for the 5555 human segmentations of all 1020 images in the dataset. The precision and recall are measured with respect to the class of samesegment pixel pairs, and each human is compared to the union of all other humans. High recall and lower precision supports the hypothesis that the different subjects perceive the same segmentation hierarchy, but segment at different levels of detail. The right panel shows the distribution of precision and recall when the leftout human and union-of-humans come from different images. This comparison provides a lower-bound for the similarity between segmentations without changing the statistics of the data. ner to our patch features. Instead of comparing histograms between two whole discs, the gradient is based on the histogram difference between the two halves of a single disc, similar to [36, 35]. The orientation of the dividing diagonal sets the orientation of the gradient, and the radius of the disc sets the scale. All of the parameters of the gradients have been tuned by [20] on the same dataset to optimally detect the boundaries marked by the human subjects. We compute the intervening contour cue for two pixels and from the Pb values that occur along the straight line path  ´Øµ connecting the two pixels. We consider ´ Ø Pb´ ´ØµµÔ µ½ Ô for the family of measures Ä Ô ´ µ Ô ¼ ½ ¾ ½ , as well as the mean of Pb´ ´Øµµ. The next section will cover the choice of the intervening contour function, as well as the best way to combine the contour information from the brightness, color, and texture channels.
+
+3.2. Gradient-Based Features
+Given a pair of pixels, consider the straight-line path connecting them in the image plane. If the pixels lie in different segments, then we expect to ﬁnd, somewhere along the line, a photometric discontinuity or intervening contour [15]. If no such discontinuity is encountered, then the afﬁnity between the pixels should be large. In order to compute the intervening contour cue, we require a boundary detector that works robustly on natural images. For this we employ the gradient-based boundary detector of [20]. The output of the detector is a Pb image that provides the posterior probability of a boundary at each pixel. We consider the three Pb images computed using brightness, color, and texture gradients individually, as well as the Pb image that combines the three cues into a single boundary map. The combined model uses a logistic function trained on the dataset, which is well motivated by evidence in psychophysics that humans make use of multiple cues in localizing contours [34] perhaps using a linear combination [14]. Other classiﬁers besides the logistic function performed equally well. The gradients are computed in a nearly identical man4
+
+È
+
+4. Findings
+4.1. Validating the Groundtruth Dataset
+Before applying the human segmentation data to the problem of learning and evaluating afﬁnity functions, we must determine that the dataset is self-consistent. To this end, we validate the dataset by comparing each segmentation to the remaining segmentations of the same image. Treating the left-out segmentation as the signal and the remaining segmentations as ground-truth, we apply our two evaluation methods. The left panel of Figure 3 shows the distribution of precision and recall for the entire dataset of 1020 images. Since the “signal” in this case is binary-valued, we have a single point for each segmentation. The distribution is characterized by high recall, with a median value of 99%. This
+
+0.18 0.16 0.14 0.12
+
+0.76 Same Image Different Images BR = 0.027
+
+0.5
+
+0.25 Same Image Different Images
+
+p(1hop SL) Small Scale
+
+p(1hop SL)
+1 0.8
+0.32
+
+0.4
+
+BR = 0.022
+
+Density
+
+0.1 0.08 0.06 0.04 0.02 0 0 0.2 0.4 0.6 0.8 1
+
+Density
+
+0.3
+
+0.6 0.4 0.2 0
+
+0.2
+
+0.1
+
+0 0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+F−Measure
+
+Mutual Information
+
+Large Scale
+
+1 0.8
+0.14
+
+Figure 4: The left panel shows the same two distributions as Figure 3, with precision and recall combined using the F-measure. The right panel shows the distribution of mutual information for the same-image and different-image cases. The low overlap in each panel (2.7% and 2.2%) attests to the self-consistency of the data. As expected, signiﬁcant information is shared between segmentations of the same image. The median F-measure of 0.76 and mutual information of 0.25 represents the target performance for our afﬁnity models.
+
+0.6 0.4 0.2 0
+
+indicates that 99% of the same-segment pairs in the groundtruth are contained in a left-out human segmentation. The median precision is 66%, indicating that 66% of the samesegment pairs in a left-out human segmentation are contained in the ground-truth. These values are consistent with the interpretation that the different subjects provide consistent segmentations varying simply in their degree of detail. For comparison, the right panel of the ﬁgure shows the distribution when the left-out human segmentation and the groundtruth segmentations are of different images. The left panel of Figure 4 shows the distribution of the F-measure for the same-image and different-image cases. Similarly, the right panel shows the distributions for mutual information. The clear separation between same-image and different-image comparisons attests to the consistency of segmentations of the same image. The median F-measure of 0.76 and mutual information of 0.25 represent the maximum achievable performance for pairwise afﬁnity functions.
+
+Figure 5: Each panel shows two pixels, marked with squares, that all humans declared to be in the same segment. The intensity at each point represents the empirical probability that a one-hop path through that point does not intersect a boundary contour. The left column is conditioned on there being an unobstructed straight-line (SL) path between the pixels, while the right column shows the probabilities when the SL path is obstructed. The top row shows data gathered from pixel pairs with small separation; the bottom row for pairs with large separation. See Section 4.2 for further discussion. curve would be ﬁxed at one. Straight-line intervening contour is a good approximation to the same-segment indicator for small distances: 49% of pairs are in the 75% range. When straight-line intervening contour fails for a samesegment pair, there exist more complex paths connecting the pixels. Consider the set of paths that consist of two straightline segments, which we call one-hop paths. The situations where one-hop paths succeed but straight-line paths fail can give us intuition about how much can be gained by examining paths more complex than straight line paths. Figure 5 shows the empirical spatial distribution of onehop paths between same-segment pixel pairs, using the union of human segmentations. The probability of a onehop path existing is conditioned on (left) there being a straight-line path with no intervening contour and (right) on there being no straight-line path. If the human subjects’ regions were completely convex, then the right column images would be zero. Instead, we see that when straightline intervening contour fails, there is a small but signiﬁcant probability that a more complex one-hop path will succeed, and the probability of such a path is larger for smaller scales. There is clearly some beneﬁt from the more complex paths due to concavities in the regions. However, the degree to which an algorithm could take advantage of the more powerful one-hop version of intervening contour depends on the frequency with which the one-hop paths ﬁnd holes in the estimated boundary map. In any case, the ﬁgure makes clear that the simple straight-line path is a good ﬁrst-order approximation to the connectivity of same-segment pairs. Since the straight-line version of intervening contour will underestimate connectivity in concave regions, it may have a tendency toward over-segmentation. Figure 6 shows 5
+
+4.2. Validating Intervening Contour
+Although the ecological statistics of natural images indicate that regions tend to be convex [9], the presence of an intervening contour does not necessarily indicate that two pixels belong in different segments. Concavities introduce intervening contours between same-segment pixel pairs. In this section, we analyze the frequency with which this happens. Given the union of boundary maps for all human segmentations of an image, we measure the probability that same-segment pairs have no intervening boundary contour. The ﬁgure at left shows this probability as a function of pixel separation, along with the number of same-segment pairs at each distance. If the regions were convex, then the
+Loss from Straight−Line Intervening Contour 1 Prob. no IC Frequency 0.8 0.6 0.4 0.2 0 0 50 100 150 Distance (pixels) 200 250
+
+Same Image w/IC
+1
+
+x 10 4.5 4 3.5
+
+−3
+
+0.18 0.16 Original With IC
+
+0.8 3
+
+Precision
+
+0.14 0.12
+
+0.6
+
+2.5
+
+0.4
+
+2 1.5
+
+0.1 0.08 0.06 0.04 0.02
+
+0.2 1 0 0 0.2 0.4 0.6 0.8 1 0 0.5
+
+Recall
+
+0 0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+Precision
+
+Figure 6: The potential over-segmentation caused by the intervening contour approach agrees with the reﬁnement of objects by human observers. The distribution of precision and recall at left is generated in an identical manner as the left panel of Figure 3. However, we add the constraint that the same-segment pairs from the left-out human must not have an intervening boundary contour. The recall naturally decreases from adding a constraint to the “signal”. However from the marginal distributions shown at right, we see that precision increases with the added constraint. Because the union segmentation is, on average, a reﬁnement of the left-out segmentation, intervening contour tends to break non-convex regions in a manner similar to the human subjects. the effect on precision and recall for the human data when we add the constraint that same-segment pairs have no intervening boundary contour. As in Figure 3, we are comparing a left-out human to the union of the remaining humans. On average, the union segmentation will be more detailed than the left-out human. The ﬁgure shows a increase in median precision from 66% to 75%, indicating that intervening contour tends to break up non-convex segments in a manner similar to the human subjects. This lends conﬁdence to an approach to perceptual organization of ﬁrst ﬁnding convex object pieces through low-level processes, and then grouping the object pieces with into whole objects using higherlevel cues.
+
+additional parameters related to the texton computation. The top right table in Figure 7 shows the optimization over the number of textons, with 512 being optimal. In general, we found that the number of textons should be approximately half the number of pixels in the disc. In addition, we ﬁnd agreement Patch Features with [20, 16] that the ﬁlter bank should contain a single scale, and that the scale should be as small as possible. The graph at right shows the performance of classiﬁers trained on each patch feature individually, along with a classiﬁer that uses all three. It is clear that each patch feature contains independent information, and that texture is the most powerful cue. The performance of a classiﬁer that uses distance as its only cue is shown for comparison.
+1 0.75 Precision 0.5 0.25 Distance F=0.404 @(0.504,0.338) MI=0.0399 Brightness F=0.462 @(0.598,0.377) MI=0.0728 Color F=0.499 @(0.606,0.423) MI=0.0978 Texture F=0.549 @(0.593,0.512) MI=0.119 B+C+T F=0.602 @(0.649,0.562) MI=0.157 0.25 0.5 0 0 0.75 Recall
+
+Density
+
+1
+
+4.4. Performance of Gradients
+The gradient cues are based on Pb images, which give the posterior probability of a boundary at each image location. The Pb function can incorporate any or all of the brightness, color, and texture cues, though consider for the moment the version that uses all three. IC Functions Which intervening contour function should we use? The upper ﬁgure at left shows the performance of various functions including the mean, and the range of Ä Ô ´ µ functions from sum to max. The Ä½ version is clearly the best approach. Both the mean and the sum perform signiﬁcantly worse. The reCombining Gradient Cues sults are the same no matter which cues the Pb function uses. Note that the max does not include any encoding of distance. The lower ﬁgure at left compares the two ways in which we can combine the contour cues. We can either compute the intervening contour feature for brightness (ICb), color (ICc), and texture (ICt) separately and then combine with a classiﬁer (ICb+ICc+ICt), or we can use the Pb function that combines the three channels into a single boundary map for the intervening contour feature (ICbct). We achieve better performance by computing separate contour cues.
+1 0.75 0.5 0.25 Distance F=0.409 @(0.488,0.351) MI=0.041 Mean F=0.508 @(0.484,0.534) MI=0.0882 L1 F=0.527 @(0.522,0.532) MI=0.097 L2 F=0.592 @(0.563,0.625) MI=0.126 L4 F=0.600 @(0.568,0.636) MI=0.132 Max F=0.598 @(0.563,0.637) MI=0.133 0.25 0.5 0 0 0.75 1 Recall 1 0.75 0.5 0.25 Distance F=0.404 @(0.504,0.338) MI=0.0399 ICb F=0.556 @(0.530,0.585) MI=0.116 ICc F=0.529 @(0.553,0.506) MI=0.103 ICt F=0.565 @(0.535,0.598) MI=0.116 ICb+ICc+ICt F=0.609 @(0.580,0.641) MI=0.142 ICbct F=0.595 @(0.553,0.644) MI=0.132 0.25 0.5 Recall 0 0 0.75 1
+
+4.3. Performance of Patches
+Each of the brightness, color, and texture patch features has several parameters that require tuning. We optimized each patch feature independently via coordinate ascent to maximize performance on the training data. Figure 7 shows the result of the coordinate ascent experiments, where no change in any single parameter further improves performance. For brightness and color, a radius of 5.76 pixels was optimal, though performance is similar for larger and smaller discs. In contrast, the texture disc radius has greater impact on performance, and the optimal radius is much larger at 16.1 pixels. The brightness and color patches also have parameters related to the binned kernel density estimates. The binning parameters for brightness are important for performance, while the color binning parameters are less critical. A larger indicates that small differences in the cue are less perceptually signiﬁcant—or at least less useful for this task. Apart from the disc radius, the texture patch cue has 6
+
+Precision
+
+Precision
+
+Patch Radius Brightness Color Radius F MI F MI 0.010 0.46 .069 0.49 .093 0.014 0.46 .071 0.50 .096 0.020 0.46 .074 0.50 .097 0.028 0.46 .073 0.50 .097 0.040 0.46 .071 0.49 .095 0.056 0.45 .067 0.48 .091 0.080 0.112
+
+1
+
+1
+
+Texture F MI 0.50 .097 0.53 0.11 0.55 0.12 0.53 0.11 0.50 .089
+
+Number of Textons MI Num F 32 0.48 .081 64 0.50 .093 128 0.52 0.10 256 0.53 0.11 512 0.55 0.12 1024 0.52 0.10 2048 0.52 0.10 Texton Filter Bank Scale F MI 0.007 0.55 0.12 0.010 0.55 0.11 0.53 0.11 0.014 0.020 0.51 .092 0.47 .072 0.028 0.007-0.014 0.55 0.12 0.010-0.020 0.53 0.11 0.014-0.028 0.51 .091
+
+0.75
+
+0.75
+
+Precision
+
+0.5
+
+Precision Distance F=0.404 @(0.504,0.338) MI=0.0399 Patch F=0.602 @(0.649,0.562) MI=0.157 IC F=0.609 @(0.580,0.641) MI=0.142 Patch+IC F=0.652 @(0.652,0.652) MI=0.19 Patch+Dist F=0.609 @(0.654,0.569) MI=0.16 IC+Dist F=0.612 @(0.579,0.648) MI=0.143 Patch+IC+Dist F=0.652 @(0.666,0.638) MI=0.191
+
+0.5
+
+0.25
+
+0.25 Distance F=0.404 @(0.499,0.340) MI=0.0356 Patch F=0.613 @(0.638,0.591) MI=0.158 IC F=0.613 @(0.600,0.627) MI=0.145 Patch+IC F=0.657 @(0.681,0.635) MI=0.191 Patch+Dist F=0.617 @(0.660,0.579) MI=0.16 IC+Dist F=0.614 @(0.608,0.620) MI=0.145 Patch+IC+Dist F=0.658 @(0.683,0.634) MI=0.192 0 0 0.25 0.5 Recall 0.75 1 0 0.25 0.5 Recall 0.75 1
+
+0
+
+Kernel Density Estimate Brightness Color Sigma Bins F MI F MI 0.025 100 0.40 .041 0.48 .085 0.05 50 0.41 .047 0.50 .094 0.1 25 0.44 .059 0.50 .097 12 0.46 .070 0.491 .094 0.2 0.4 6 0.46 .073 0.49 .087 3 0.45 .062 0.48 .083 0.8
+
+Figure 8: In this ﬁgure, we investigate the utility of the distance between two pixels as a cue for grouping. The Gestalt school identiﬁed proximity as a grouping cue, however, in all cases the classiﬁer performance is the same whether or not distance is used. The right panel shows the same experiment with the test and training sets swapped. We performed all our experiments with swapped sets. Results were always consistent, with the F-measure and mutual information accurate to within two decimal places.
+Brightness 1 1 Color 1 Texture
+
+Figure 7: The parameters of the patches were optimized on the
+250-image training set so that no change in any single parameter improves performance. The optimal patch sizes and ﬁlter scales are in units of the image diagonal, which is 288 pixels for our 240x160 images. The accessible ranges of the L*a*b* color axes were scaled to ¼ ½ , which is the scale for the parameter. The Gaussian kernel was sampled at 21 points from ¾ ¾ . We must reduce the number of bins as increases to keep the number of samples per bin constant. In the lower right table, the multiscale texton ﬁlter bank contains three half-octave scales covering the range shown. See Section 4.3.
+0.75
+
+0.75
+
+0.75
+
+Precision
+
+Precision
+
+Precision
+
+0.5
+
+0.5
+
+0.5
+
+ 
+
+0.25
+
+0.25
+
+0.25
+
+Patch F=0.462 @(0.598,0.377) MI=0.0728 IC F=0.556 @(0.530,0.585) MI=0.116 Patch+IC F=0.574 @(0.563,0.584) MI=0.136 0 0 0.25 0.5 Recall 0.75 1 0 0
+
+Patch F=0.499 @(0.606,0.423) MI=0.0978 IC F=0.529 @(0.553,0.506) MI=0.103 Patch+IC F=0.544 @(0.614,0.489) MI=0.128 0 0.25 0.5 Recall 0.75 1 0
+
+Patch F=0.549 @(0.593,0.512) MI=0.119 IC F=0.565 @(0.535,0.598) MI=0.116 Patch+IC F=0.605 @(0.610,0.600) MI=0.152 0.25 0.5 Recall 0.75 1
+
+4.5. Cue Combination
+We now have 7 prospective cues for our model of the pixel afﬁnity, though we expect some to be redundant. The cues are brightness, color, and texture patches, intervening contour from the same three channels, and the distance between the two pixels in the image plane. We ﬁrst evaluate the power of the distance cue in Figure 8. Whether we use a patch-only model, a contour-only model, or a patch+contour model, the result is always the same. Distance does not add any information not already provided by similarity cues. We expect that the superiority of patch versus contour cues to differ depending on the feature channel. Smooth shading and foreshortening effects may favor brightness and texture gradients, while it is well known that color patches are a stable cue. Figure 9 shows the patch-only, contouronly, and patch+contour models for each of the brightness, color, and texture channels. As expected, the brightness patch proves to be far weaker than the brightness contour cue, with only marginal beneﬁt from combining the two. Neither patches nor contours seem to dominate the color or texture channels. However, both texture cues appear quite powerful with independent information. In order to determine the most fruitful combination of cues, we executed both top-down and bottom-up feature pruning experiments. Figure 10 shows the result. In both 7
+
+Figure 9: The three plots show classiﬁers that use either brightness (left), color (middle), or texture (right). Each plot shows the performance of a classiﬁer using the patch cue, the gradient cue, and both together. The brightness patch appears an especially weak cue, which can be expected from the frequency of shading gradients in images. Both texture patches and texture gradients are powerful cues, and their combination is everywhere superior to using one alone. cases, the model that maximizes performance using the fewest cues is the 4-cue model containing the brightness contour cue, the color patch cue, and both texture cues. All three feature channels are represented, with particular emphasis on texture. From the bottom-up pruning, it is clear that the texture cues are the most powerful along with color patches. It is interesting to see that at all stages in the pruning experiments, the model contains a balance between patch and contour cues, as well as a balance between the three channels.
+
+4.6. Choice of Classiﬁer
+We ﬁnd agreement with [20] that the choice of classiﬁer is not important. Performance was always nearly identical whether we used a non-parametric density estimation method, or parametric models based on logistic regression, including simple logistic regression, logistic regression with quadratic features, or hierarchical mixtures of experts. To a ﬁrst order approximation, a linear combination of features is sufﬁcient. We favor the logistic with quadratic terms since it yields a slight improvement over the linear logistic function
+
+Bottom-Up 1 1
+
+Top-Down
+
+0.75
+
+0.75
+
+0.5
+
+0.5
+
+0.25 P{bct}IC{bct} F=0.652 @(0.666,0.638) MI=0.190 P{bct}IC{bt} F=0.651 @(0.668,0.635) MI=0.189 P{ct}IC{bt} F=0.648 @(0.667,0.630) MI=0.187 P{ct}IC{t} F=0.634 @(0.650,0.619) MI=0.178 P{c}IC{t} F=0.605 @(0.605,0.605) MI=0.160 P{}IC{t} F=0.564 @(0.535,0.598) MI=0.116 0 0 0.25 0.5 Recall 0.75 1
+
+0.25 P{bct}IC{bct} F=0.652 @(0.666,0.638) MI=0.190 P{bct}IC{bt} F=0.651 @(0.670,0.632) MI=0.189 P{ct}IC{bt} F=0.647 @(0.666,0.629) MI=0.186 P{ct}IC{b} F=0.644 @(0.664,0.624) MI=0.183 P{t}IC{b} F=0.615 @(0.613,0.616) MI=0.159 P{}IC{b} F=0.556 @(0.528,0.587) MI=0.116 0 0 0.25 0.5 Recall 0.75 1
+
+Figure 10: Feature pruning. In the left panel, we start with no
+features and add one feature at a time to the model in order to maximize performance in a greedy manner. In the right panel, we start with all six features, and greedily remove the worst feature, one feature at a time. In both cases, the model of choice uses the brightness contour, color patch, and both texture cues. The brightness patch and color contour are weak cues, while the color patch and both texture cues are powerful.
+
+with little added computational cost.
+
+5. Summary and Conclusions
+We have shown how to combine patch and contour information into a model of pixel afﬁnity for the purpose of image segmentation. For both patches and contours, we formulate brightness, color, and texture cues based on histogram differences. Contour cues are constructed in the intervening contour framework, which is justiﬁed by the ecological statistics of human segmentations. The six cues are carefully optimized with respect to a large dataset of manually segmented natural images, and then combined with a classiﬁer trained on the groundtruth data. The modeled pixel afﬁnity compares favorably to the human data using both precision/recall and mutual information measures.
+
+References
+[1] I. Abdou and W. Pratt. Quantitative design and evaluation of enhancement/thresholding edge detectors. Proc. of the IEEE, 67(5):753–763, May 1979. [2] K. Bowyer, C. Kranenburg, and S. Dougherty. Edge detector evaluation using empirical ROC curves. 1999. [3] E. Brunswik and J. Kamiya. Ecological validity of proximity and other Gestalt factors. Am. J. Psych., pages 20–32, 1953. [4] J. Canny. A computational approach to edge detection. IEEE PAMI, 8:679–698, 1986. [5] Berkeley Segmentation Dataset, 2002. http://www.cs.berkeley.edu/projects/vision/bsds. [6] J. Elder and S. Zucker. Computing contour closures. In ECCV, 1996. [7] P. Felzenszwalb and D. Huttenlocher. Image segmentation using local variation. 1998. [8] I. Fogel and D. Sagi. Gabor ﬁlters as texture discriminator. Bio. Cybernetics, 61:103–113, 1989. [9] C. Fowlkes, D. Martin, and J. Malik. Understanding Gestalt cues and ecological statistics using a database of human segmented images. POCV Workshop, ICCV, 2001. [10] Y. Gdalyahu, D. Weinshall, and M. Werman. Stochastic image segmentation by typical cuts. In CVPR, 1999. [11] S. Geman and D. Geman. Stochastic relaxation, Gibbs distribution, and the Bayesian retoration of images. IEEE PAMI, 6:721–41, Nov. 1984.
+
+[12] D. Heeger and J. Bergen. Pyramid-based texture analysis/synthesis. In SIGGRAPH, 1995. [13] I. Jermyn and H. Ishikawa. Globally optimal regions and boundaries as minimum ratio weight cycles. IEEE PAMI, 23(10):1075–1088, 2001. [14] M. Landy and H. Kojima. Ideal cue combination for localizing texture-deﬁned edges. J. Opt. Soc. Am. A, 18(9):2307–2320, 2001. [15] T. Leung and J. Malik. Contour continuity in region-based image segmentation. In ECCV, 1998. [16] E. Levina. Statistical Issues in Texture Analysis. PhD thesis, University of California, Berkeley, 2002. [17] J. Malik, S. Belongie, T. Leung, and J. Shi. Contour and texture analysis for image segmentation. IJCV, 43(1):7–27, June 2001. [18] J. Malik and P. Perona. Preattentive texture discrimination with early vision mechanisms. J. Opt. Soc. Am., 7(2):923–932, May 1990. [19] R. Malladi, J. Sethian, and B. Vemuri. Shape modelling with front propogation: A level set approach. IEEE PAMI, 17(2):158–175, 1995. [20] D. Martin, C. Fowlkes, and J. Malik. Learning to detect natural image boundaries using brightness and texture. 2002. [21] D. Martin, C. Fowlkes, D. Tal, and J. Malik. A database of human segmented natural images and its application to evaluating segmentation algorithms and measuring ecological statistics. In ICCV, 2001. [22] M. Meil˘ and J. Shi. Learning segmentation by random walks. In a NIPS, 2001. [23] Jean-Michel Morel and Sergio Solimini. Variational Methods in Image Segmentation. Birkh¨ user, 1995. a [24] M. Morrone and D. Burr. Feature detection in human vision: a phase dependent energy model. Proc. R. Soc. Lond. B, 235:221–2245, 1988. [25] D. Mumford and J. Shah. Optimal approximations by piecewise smooth functions, and associated variational problems. Comm. in Pure and Applied Math., pages 577–684, 1989. [26] W. Niblack et al. The QBIC project: Querying image by content using color, texture, and shape. SPIE v. 1908, 1993. [27] S. Palmer. Vision Science. MIT Press, 1999. [28] P. Parent and S. Zucker. Trace inference, curvature consistency, and curve detection. IEEE PAMI, 11(8):823–839, Aug. 1989. [29] P. Perona and W. Freeman. A factorization approach to grouping. In ECCV, 1998. [30] P. Perona and J. Malik. Detecting and localizing edges composed of steps, peaks and roofs. In ICCV, 1990. [31] J. Puzicha, T. Hofmann, and J. Buhmann. Non-parametric similarity measures for unsupervised texture segmentation and image retrieval. 1997. [32] J. Puzicha, Y. Rubner, C. Tomasi, and J. Buhmann. Empirical evaluation of dissimilarity measures for color and texture. In ICCV, 1999. [33] C. Van Rijsbergen. Information Retrieval, 2nd ed. Dept. of Comp. Sci., Univ. of Glasgow, 1979. [34] J. Rivest and P. Cavanagh. Localizing contours deﬁned by more than one attribute. Vision Research, 36(1):53–66, 1996. [35] Y. Rubner and C. Tomasi. Coalescing texture descriptors. ARPA Image Understanding Workshop, 1996. [36] M. Ruzon and C. Tomasi. Color edge detection with the compass operator. In CVPR, 1999. [37] S. Sarkar and K. Boyer. Quantitative measures of change based on feature organization: Eigenvalues and eigenvectors. In CVPR, 1996. [38] G. Scott and H. Longuet-Higgins. Feature grouping by ’relocalisation’ of eigenvectors of the proximity matrix. In BMVC, 1990. [39] J. Shi and J. Malik. Normalized cuts and image segmentation. In CVPR, 1997. [40] Z. Tu and S. Zhu. Image segmentation by data-driven markov chain monte carlo. IEEE PAMI, 24(5):657–673, May 2002. [41] Y. Weiss. Segmentation using eigenvectors: a unifying view. ICCV, 1999. [42] L. Williams and D. Jacobs. Stochastic completion ﬁelds: a neural model of illusory contour shape and salience. In ICCV, 1995. [43] S. Wolfson and M. Landy. Examining edge- and region-based texture analysis mechanisms. Vision Research, 38(3):439–446, 1998. [44] Z. Wu and R. Leahy. An optimal graph theoretic approach to data clustering: theory and its application to image segmentation. IEEE PAMI, 11:1101–13, Nov. 1993.
+
+Precision
+
+Precision
+
+8
+

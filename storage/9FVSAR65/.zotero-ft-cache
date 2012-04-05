@@ -1,0 +1,308 @@
+Towards Perceptually Driven Segmentation Evaluation Metrics
+Elisa Drelie Gelasca, Touradj Ebrahimi Myl`ne C. Q. Farias, Marco Carli e Sanjit K. Mitra Department of Electrical Engineering University of California Santa Barbara Santa Barbara, CA 93106, USA {mylene,marco,mitra}@ece.ucsb.edu
+tion techniques, automatic methods have been proposed [2], [3], [4]. The goal of an automatic segmentation evaluation method is to avoid subjective tests that constitute a time-consuming and expensive process. These objective methods evaluate segmentation algorithms through the quality of their results. A segmentation result can be judged according to general criteria of good segmentation or by comparison with a reference segmentation result representing the ideal segmentation [5]. To validate an objective evaluation, subjective experiments need to be performed. For this purpose, in this paper an analysis of artifacts produced by segmentation algorithms has been performed. The most common artifacts have been taken into account and subjective tests have been carried out. A protocol for subjective evaluation of segmented video sequences has been proposed. This protocol is an eﬀort to make subjective evaluations in this ﬁeld more reliable, comparable and standardized. Little has been done towards deﬁning a procedure to evaluate the performance of objective metrics for segmentation [6]. The task of deﬁning a formal protocol for subjective tests for video object segmentation quality assessment is very useful, since to the best of our knowledge, only informal tests have been performed [3], [4]. In evaluating edge detection algorithms [7] and still image segmentation [8] some experimental methods for subjective tests have been published. The paper is organized as follows. The analysis of segmentation errors is discussed in Section 2. Section 3 describes the generated test video sequences for the subjective experiments. The experimental method is presented in Section 4. Subjective versus objective data are analyzed in Section 5. Finally, in Section 6 we draw the conclusions and discuss future directions.
+
+Signal Processing Institute Swiss Federal Institute of Technology EPFL CH 1015 Lausanne, Switzerland {elisa.drelie,touradj.ebrahimi}@epﬂ.ch Abstract
+To be reliable, an automatic segmentation evaluation metric has to be validated by subjective tests. In this paper, a formal protocol for subjective tests for segmentation quality assessment is presented. The most common artifacts produced by segmentation algorithms are identiﬁed and an extensive analysis of their eﬀects on the perceived quality is performed. A psychophysical experiment was performed to assess the quality of video with segmentation errors. The results show how an objective segmentation evaluation metric can be deﬁned as a function of various error types.
+
+1. Introduction
+The unsupervised segmentation of digital images is a diﬃcult and challenging task [1] with several keyapplications in many ﬁelds: remote sensing, medical diagnosis, vision-driven robotics, interactive entertainment, movie production and so on. The performance of algorithms for subsequent image or video processing, compression, indexing, often depends on a prior eﬃcient image segmentation. Basically, by segmenting an image, several “homogeneous” partitions are created. The number of homogeneity criteria depends on the particular application and on the a priori knowledge of the problem. As an example, in a surveillance application every moving object is considered as an object of interest and, therefore, this information is used in the segmentation process. In literature, many and diﬀerent video object segmentation algorithms have been proposed. However, no single segmentation technique is universally useful for all applications and diﬀerent techniques are not equally suited for a particular task. To properly evaluate the performance of segmenta-
+
+Proceedings of the 2004 IEEE Computer Society Conference on Computer Vision and Pattern Recognition Workshops (CVPRW’04) 1063-6919/04 $ 20.00 IEEE
+
+111 000 1111111111111111111111 0000000000000000000000 111 000 1111 0000 11111111 00000000 111 000 1111 0000 1111111111111111111111 0000000000000000000000 1111 0000 11111111 00000000 1 0 1111 0000 1111111111111111111111 0000000000000000000000 1 0 1111 0000 R (k) 1111 0000 R 00 0000000000000000000000 (k) 1111111111111111111111 1111 0000 11 1111 0000 11111 00000 111111 000000 1111 0000 11 00 1111111111 0000000000 A (k) 11111 00000 000000 111111 111 000 111 000 1111111111 0000000000 111 000 111 000 111 000 1111111111 0000000000 111 000 111 000 111 000 111111 000000 A (k) 111 000 1111111111 0000000000 111 000 111 000 111 000 111111 000000 1 0 1 0 1111111111 0000000000 1 0 1 0 1 0 1 0 1111111111 0000000000 1 0 C (k) C (k)
+
+C0 (k)
+1
+
+R(k) C(k)
+
+0
+
+b
+
+O
+
+11111111111 111 00000000000 000 11111 00000 11111111111 000 00000000000 111 11111 00000 11111 00000 11111111111 000 00000000000 111 11 00 11111 00000 11 11 00 00 11111 1 00000 0 11111111111 00000000000 11 11 1 00 00 0 11 11 1 00 00 0 H (k) 11111111111 111111 00000000000 000000 11 00 11 00 11 00 11 00 11 00 111111 11 11 000000 H00 00R (k) 000000 11 00 111111 11 1111 00 0000 111111 0000 000000 (k) 11 00 11 1111 00 0000 1111 111 1111 1111 000 0000 0000 111111 0000 000000 1111 111 1111 1111 000 0000 0000 11 111 00 000 111 000 111 1111 1111 000 0000 0000 111111 000000 11 111 00 000 111 000 111 1111 1111 000 0000 0000 M(k) 11 111 00 000 111 000 111111 1111 000000 0000 11 111 00 000 1111 0000 111 000 11 00 1111 1 0000 0 1111 0000 111 000 111111 1111 000000 0000 11 00 1111 1 0000 0 1 0 111 000 11 00 1111 1 0000 0 1 0
+C (k)
+0 b 0 c
+
+R(k) C(k)
+
+1
+
+2
+
+R1 (k)
+
+1 C10 (k)
+
+1 R20 (k)
+
+Figure 1. Reference segmentation overlapped to the resulted segmentation, at frame k. In this example, the two kinds of subset of P(k) are indicated.
+
+Figure 2. Reference segmentation overlapped to the resulted segmentation, at frame k. In this example, the different kinds of subset of N (k) are indicated.
+
+2. Segmentation Errors
+It is well known that segmentation errors can affect the quality of a segmented video in two ways: statically (spatially) and dynamically (temporally) [9]. The spatial errors of the segmented video are deﬁned by the amount of mis-segmented pixels estimated by a direct comparison between reference and resulted segmentation mask, for a given frame k. An algorithm for object segmentation can in principle be evaluated by estimating only these pixel errors. Nevertheless, since a video is a sequence of images in which spatial errors take place, the temporal effect of segmentation errors must be considered. A given error may be perceived diﬀerently, depending on its temporal context. Observers are sensitive to temporal errors, i.e., changes in error characteristics along the time. Pixel errors can be divided into two sets [10]: undetected pixels (false negative) and incorrectly detected pixels (false positive). Let us deﬁne a region i, Oi (k), at frame k as a set of pixels with the following properties: 1) Oi (k) is connected; 2) Oi (k) ∪ Oj (k) is disconnected ∀ i = j. We also indicate R(k) as the set of all the j objects (meaningful regions) belonging to the reference segmentation, that can be expressed as: R(k) =
+j∈[0,J)
+
+C(k) =
+i∈[0,I)
+
+Ci (k)
+
+and
+i∈[0,I)
+
+Ci (k) = ∅
+
+(2)
+
+where I is the number of resulted segmentation regions/objects. In the case I is zero, no object has been segmented in the resulted segmentation. The set of false positive pixels, P(k), whose elements are the segmented pixels not belonging to the reference segmentation can be expressed as: P(k) = C(k) ∩ R (k) (3)
+
+where R (k) denotes the complement of R(k). Similarly, false negatives N (k) appearing in the reference segmentation R(k) and not in the resulted segmentation C(k), can be expressed as: N (k) = C (k) ∩ R(k) (4)
+
+A further investigation of the segmentation errors has been carried out. In the following equations, let us deﬁne the condition empty intersection γi,j (k) between the j − th object in the reference segmentation and the i − th in the resulted segmentation as: (5) γi,j (k) = Ci (k) ∩ Rj (k) = ∅ The diﬀerent errors will be mathematically expressed in Eqs. (6)-(12) and depicted in Figures 12. P(k) can be divided into two diﬀerent kinds of subsets: added background and added regions. The added region set, AO (k) is a set of regions in C(k) not present in R(k): AO (k) =
+i∈Q
+
+Rj (k)
+
+and
+j∈[0,J)
+
+Rj (k) = ∅ (1)
+
+where J is the number of reference segmentation objects. J can also take the value zero when no object is present in the reference segmentation. Similarly, the set of pixels segmented at frame k, C(k) is the union of the i regions/objects Ci (k):
+
+Ci (k)
+
+(6)
+
+where Q = {i | γi,j (k), ∀ j ∈ [0, J) }
+
+Proceedings of the 2004 IEEE Computer Society Conference on Computer Vision and Pattern Recognition Workshops (CVPRW’04) 1063-6919/04 $ 20.00 IEEE
+
+For the sake of simplicity, let us indicate with Ao (k) the number of regions contained in AO (k). Ao (k) therefore represents the number of added regions at frame k. Added background Ab (k) does not constitute a region itself in C(k) but is a set of false positive pixels erroneously segmented along the boundary of an object which is an object both in C(k) and R(k). Ab (k) therefore is composed of those pixels that do not satisfy condition in Eq.(5) and are subsets of P(k): Ab (k) = P(k) \ AO (k) (7) where \ denotes a set diﬀerence. Let us express with |Ab (k)| the cardinality of Ab (k) that is the total amount of added pixels. For the entire video we ¯ could calculate the average |Ab | over all the frames. Diﬀerent kinds of sets depending on the properties of their elements, can also be distinguished inside N (k). Missing objects M(k) are objects in R(k) not present in C(k): M(k) =
+j∈S
+
+Table 1. Tested segmentation error and values. Tested Error Added Back. (103 ), |Ab | Added Region number, Ao Closed Hole number, Hc Boundary Hole dist., dH (k) Flickering Period, fT Values 0.6,1.6,2.2,2.7,4.4 3,4,7,12 2,3,6,9 5,10,15,20 1, 3, 5, 12, 30
+
+3. Generation of Synthetic Segmentation Errors and Test Sequences
+To generate the test video sequences, we modiﬁed the ideally segmented reference mask of a 300 frame MPEG-4 test sequence: Hall monitor. Diﬀerent kinds and amounts of artifacts were added to the reference, as described in the next sections and the results were analyzed in Sec. 5. Since evaluation of the same sequence with diﬀerent artifacts could cause fatigue in subjects, two other segmented video sequences were used in the test. The European IST project Art.live 1 sequence Group, as well as the MPEG-7 test sequence Highway were segmented by an automatic method of segmentation with diﬀerent parameter sets [12] (as no reference segmentations for these two video sequences were available).
+
+Rj (k)
+
+(8)
+
+where S = {j | γi,j (k), ∀ i ∈ [0, I) } Holes H(k) are sets of N (k) that intersect the reference segmentation and do not satisfy condition in Eq.(5): H(k) = N (k) \ M(k) (9) In H(k) we can diﬀerentiate between closed holes Hc (k) and boundary holes Hb (k). Closed holes are sets of those false negative pixels completely inside the objects and satisfy the following condition: Hc (k) ⊂ cl R(k) (10)
+
+3.1. Synthetic Spatial Errors
+A combination of the errors described in Sec. 2 is typically introduced by an automatic method of segmentation. When the segmentation quality is objectively evaluated in comparison with a reference segmentation, some features related to the artifact are derived (such as the number of added regions, distance of boundary holes from the ideal contour and so on). Many objective segmentation quality metrics have been proposed, but no work has been done on studying and characterizing these errors from a perceptual signiﬁcance point of view. The segmented images or video sequences can be thought to be made of a combination of the reference segmentation and some errors. In this work, the idea consists in producing segmentation errors that are relatively pure and studying their perceptual contribution. Four diﬀerent kinds of spatial errors have been synthesized and combined to the reference segmentation: added background, added regions, closed holes and boundary holes. The added background test sequence was synthetically generated by adding
+1 http://www.tele.ucl.ac.be/PROJECTS/art.live/
+
+where cl(·) is the set inﬁnitesimal closure operator. In the following sections, with Hc (k) we mean the number of hole sets contained in Hc (k). Boundary holes are sets of false negative pixels that intersect the boundary of the reference object and modify the shape: Hb (k) ∩ ∂Rj (k) = ∅ (11)
+
+where ∂ is the boundary set operator. In the following let us indicate by dH (k) the Hausdorﬀ distance [11] between the set Hb (k) and the reference object j which intersects it: dH (k) = max
+p∈Hb (k) q∈∂Rj (k)
+
+min
+
+p−q
+
+j∈T
+
+(12)
+
+where T = {j | not γi,j (k), ∀ i ∈ [0, I) } where is the Euclidean norm, p is an element of Hb (k) and q of the boundary of Rj (k).
+
+Proceedings of the 2004 IEEE Computer Society Conference on Computer Vision and Pattern Recognition Workshops (CVPRW’04) 1063-6919/04 $ 20.00 IEEE
+
+Table 2. Viewing conditions during subjective test. Variable Values Peak luminance <= 0.04 Maximum observation angle 10 degrees Monitor resolution 1024 × 768 Viewing Distance 35 − 40 cm Monitor Size 19”
+
+the same shape and size. But their position changed each 1, 3, 5, 12 and 30 frames (ﬂickering period, fT ) by starting from a very fast and annoying ﬂickering, and by ending with a temporally smooth change of added region position. The spatial and temporal errors and their values are summarized in Table 3.
+
+4. Experimental Method
+A set of standards and grading techniques to evaluate quality of video and multimedia content have been deﬁned by ITU-R [13] and ITU-T [14]. However, there are no prescribed standards for the evaluation of segmented video sequences. In this paper, we also propose a protocol for subjective evaluation of segmented video sequences based on ITU recommendations [13] and [14]. This protocol is an eﬀort to make subjective evaluations in this ﬁeld more reliable, comparable and standardized. The usual approach to subjective quality assessment is to ask for a quality rating [14]. We used a Single Stimulus Continuous Quality Scale Method (SSCQS) [14]. In this method, only the video sequence under test is shown and subjects are asked to vote on a continuous scale after the video is shown. The display conﬁguration showed the portion of the original image corresponding to the area of the segmented objects under analysis over a uniform green background. The scale used was a continuous quality scale between 0 (bad) and 10 (excellent). The continuous scale gave the user the ability to diﬀerentiate more easily between the qualities of segmentation. The reference segmentation or the original video were not used in the main experiment trials, but only in the training part for two reasons. First, in real applications the reference is not always available. Second, in the pilot tests, we noticed that subjects do not pay attention to the reference after the training stage of the test. The viewing conditions of the experiments are given in Table 2. These conditions comply as much as possible with [13] and [14]. Each test session was composed of four stages: instructions, practice trials, experimental trials, and interview. In the ﬁrst stage, the subject was made familiar with the task of segmentation and then shown the reference segmentation. The second stage, practice trials, was used to familiarize the subject with the experiment and to allow the subjects’ responses to stabilize before the main experiment began. The experimental trials were performed with the complete set of test sequences presented in a random order. The 8 subjects were asked to rate the quality
+
+increasingly more background to the Rj objects. By dilating the reference mask, ﬁve levels of dilation were generated (1,3,4,5,8). Therefore, ﬁve values of added background |Ab | were investigated in the experiment. Other test sequences were generated by adding four diﬀerent amounts of added regions. The inserted added regions were constant in shape and size but varied in number Ao (3,4,7,12) in order to study the perception of an increasing number of added regions. Similarly, other four test sequences were generated by subtracting closed holes from the reference. The closed holes presented the same size and shape but varied in the number Hc (2,3,6,9). The last kind of spatial error investigated was the distance of Hb from the contour of the reference. Four test sequences with diﬀerent distances dH (k) were generated for the boundary hole artifact. The distance was kept constant for each frame k (dH ) along the same video sequence. The four values of dH (5,10,15,20) for the four generated video sequences investigated the perception of object shape modiﬁcation.
+
+3.2. Synthetic Temporal Errors
+In video segmentation, an error may vary its characteristics through time. A non smooth change of any spatial error deteriorates the perception of the error itself. The temporal artifact caused by a variation of the spatial error is called ﬂickering. By carrying out subjective tests on real segmentation, ﬂickering has been observed to be one of the most annoying artifacts introduced by segmentation algorithms. In fact, if an imprecise segmentation mask is stable along the time, it is perceived less annoying than a more precise segmentation presenting abrupt changes along the time. Diﬀerent variations of any spatial error could be implemented to test the ﬂickering perception. We chose to change the position of added regions along the test sequence. The test video sequences with the temporal errors presented the same number Ao by
+
+Proceedings of the 2004 IEEE Computer Society Conference on Computer Vision and Pattern Recognition Workshops (CVPRW’04) 1063-6919/04 $ 20.00 IEEE
+
+Fitting Curve − Added Background (Hall Monitor)
+10 added background added background fitting 9
+
+Fitting Curve − Added Region and Close Hole (Hall monitor)
+10 holes hole fitting added regions added region fitting
+
+9
+
+8
+
+8
+
+7
+
+7
+
+MOS Quality
+
+MOS Quality
+0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 (*103)
+
+6
+
+6
+
+5
+
+5
+
+4
+
+4
+
+3
+
+3
+
+2
+
+2
+
+1
+
+1
+
+0
+
+0
+
+|A | b
+
+0
+
+0.5
+
+1
+
+1.5
+
+2
+
+2.5
+
+3
+
+log(N)
+
+Figure 3. Mean quality curve corresponding to ¯ the added background error |Ab |.
+
+Figure 4. Mean quality curve corresponding to logarithm of the added region number Ao and closed hole number Hc .
+
+of the segmented video under test. 56 test sequences were rated (2 repetitions × (22 artifacts×1 video sequences + 3 parameter set×2 video sequences)). Finally, in the interview stage, we asked the test subjects for qualitative descriptions of the artifacts that were perceived.
+
+5. Data Analysis
+In many quality assessment problems, the Mean Opinion Score (MOS) provides a numerical measure of the subjective quality. To determine MOS, a number of subjects rate the quality of system under test. The MOS is the arithmetic mean over all individual scores that can range from bad to excellent. Standard methods [13] have been used to analyze the data provided by the test subjects and to screen the observers. In our case, the MOS values for Hall monitor test sequence have been ﬁtted with a nonsymmetrical function approximating the standard logistic function [13]: y = ymin + (ymax − ymin ) x 1 + ( xmean )β (13)
+
+where y is the predicted quality and x is the error measure. The parameters ymax and ymin establish the limits of the quality value range. The parameter xmean translates the curve in the x-direction and the parameter β controls the steepness of the curve. Figures 3-6 depict the perceived quality (MOS) for the artifacts caused by non ideal segmentations.
+
+Each ﬁgure contains both the experimental data and the ﬁtted curve for Hall monitor. Figure 3 shows the MOS versus the sum of added background over frames divided by the total number ¯ of frames, |Ab | . The artifact considered here is the presence of added background. It can be noticed that added background impact of perceived quality tends to reduce with the increase of the amount of such artifacts. Figure 4 reports the MOS versus the logarithm of the amount N of artifacts introduced. We used the logarithm of N because it provided a better ﬁt. This means that the diﬀerences in the amount of artifacts are not linearly perceived. The MOS curves corresponding to holes (dashed line) and added regions (continuous line) are plotted on the same graph for comparison purposes. By comparing the two curves, it is evident that the presence of holes in the segmented object aﬀects more importantly the perceived quality when compared to the presence of added regions. Figure 5 depicts the MOS versus the distance in pixels from the boundary of the reference. In this ﬁgure, the artifact is analyzed in terms of the distance dH . As can be noticed, the deeper the hole, the more annoying the artifact, as the artifact affects the shape of the object. The curve for such artifact does not exhibit an as good ﬁt, probably because, in this case also size and shape of the holes should be taken into account. The ﬁtting parame-
+
+Proceedings of the 2004 IEEE Computer Society Conference on Computer Vision and Pattern Recognition Workshops (CVPRW’04) 1063-6919/04 $ 20.00 IEEE
+
+Fitting curves − Boundary Hole (Hall Monitor)
+10 bounday holes boudary hole fitting 9 9 10
+
+Fitting curve− Flickering (Hall monitor)
+temporal error temporal error fitting
+
+8
+
+8
+
+7
+
+7
+
+MOS Quality
+
+MOS Quality
+0 5 10 15 20 25
+
+6
+
+6
+
+5
+
+5
+
+4
+
+4
+
+3
+
+3
+
+2
+
+2
+
+1
+
+1
+
+0
+
+0
+
+0
+
+5
+
+10
+
+15
+
+20
+
+25
+
+30
+
+35
+
+distance (dH)
+
+flickering period (fT)
+
+Figure 5. Mean quality curve corresponding to the dH of the boundary hole errors.
+
+Figure 6. Mean quality curve corresponding to the temporal ﬂickering period fT .
+
+Table 3. Fitting parameters for logistic function approximation curves of objective errors versus subjective MOS. The sum of the absolute values of residuals is r. Test Error xmean β r Added background 5.0557 1.4806 0.5779 Added regions 2.4220 0.4717 0.2146 Closed Holes 1.6225 1.0092 0.3290 Boundary holes 13.7185 1.8497 1.6190
+
+6. Conclusions and Future Work
+A perceptually driven segmentation evaluation is presented in this paper together with a method to carry out subjective tests on video object segmentation quality assessment. A psychophysical experiment was performed to assess the diﬀerent perceptual importance of errors. The analysis of the subjective data versus the objective measures of errors introduced in the segmentation has been done. The ﬁtted curves indicate how segmentation errors can be objectively described as a function of the error measures. Such a description can be used further in an objective segmentation evaluation metric. At the moment, we are performing other subjective tests on other video sequences to further conﬁrm the derived conclusions. To this end, we have reﬁned the subjective protocol in collaboration with psychophysics test experts as follows. The subjects are not asked anymore about the quality but about the annoyance caused by the artifact.
+
+ters are shown in columns 2, 3 and 4 of Table 3. In Figure 6 we show the MOS versus the temporal error expressed as the period of ﬂickering fT . The perceived ﬂickering follows a logarithmic behavior, as the period of the artifact fT increases. This can be explained by the fact that beyond a certain threshold such temporal artifacts are perceived similarly. In this case, the MOS data behavior suggests a logarithmic curve to ﬁt the data: y = a + b ∗ log(x) (14)
+
+Acknowledgments
+The authors would like to thank John M. Foley for his valuable input, particularly in the data collection and experiment design.
+
+The ﬁt returned the coeﬃcients a = 2.7814 and b = 1.122. The sum of absolute values of residuals for this ﬁt was 0.1193.
+
+Proceedings of the 2004 IEEE Computer Society Conference on Computer Vision and Pattern Recognition Workshops (CVPRW’04) 1063-6919/04 $ 20.00 IEEE
+
+References
+[1] Rafael C.Gonzalez and Richard E. Woods, Digital Image Processing, Addison Wesley Longman, 2000. [2] B. Sankur C. E. Erdem and A. M. Tekalp, “Met¸ rics for performance evaluation of video object segmentation and tracking without ground-truth,” in Proc. SPIE, Int. Conf. on Visual Communications and Image Processing, Lugano, Switzerland, 2003, vol. 5150, pp. 29–40. [3] P.Correia and F. Pereira, “Objective evaluation of video segmentation quality,” IEEE Transaction on Image Processing, vol. 12, pp. 186–200, 2003. [4] A. Cavallaro, E.Drelie, and T. Ebrahimi, “Objective evaluation of segmentation quality using spatio-temporal context,” in Proc. of IEEE International Conference on Image Processing,Rochester(New York),22-25 September 2002, 2002, pp. III 301–304. [5] Y. J. Zhang, “A survey on evaluation methods for image segmentation,” Pattern Recognition, vol. 29, pp. 1335–1346, 1996. [6] Call for AM Comparisons, “Compare your segmentation algorithm to the cost 211 quat analysis model http://www.iva.cs.tut.ﬁ/cost211/call/call.htm,” . [7] Sarkar S. Sanocki T. Bowyer K.W. Heath, M.D., “A robust visual method for assessing the relative performance of edge detection algorithms,” Transactions on Pattern Analyis and Machine Intelligence, vol. 19, pp. 1338–1359, 1997. [8] Doron Tal Jitendra Malik David Martin, Charless Fowlkes, “A database of human segmented natural images and its application to evaluating segmentation algorithms and measuring ecological statistics,” in Proceedings of the Eighth International Conference On Computer Vision (ICCV01), July 7-14, 2001, Vancouver, British Columbia, Canada, IEEE, Ed., 2001, vol. 2, pp. 416–425. [9] C.Erdem and B.Sankur, “Performance evaluation metrics for object-based video segmentation,” in Proc. X European Signal Processing Conference, Tampere, Finland, 2000, vol. 2, pp. 917–920. [10] X. Marichal and P. Villegas, “Objective evaluation of segmentation masks in video sequences,” in Proc. Of X European Signal Processing Conference, Tampere, Finland, 2000, pp. 2139–2196. [11] D. Huttenlocher, D. Klanderman, and A. Rucklige, “Comparing images using the Hausdorﬀ distance,” IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. 15, no. 9, pp. 850– 863, September 1993. [12] E. Drelie, E. Salvador, and T. Ebrahimi, “Intuitive strategy for parameter setting in video segmentation,” in Proc. of Visual Communication and Image Processing,Lugano,Switzerland.
+
+[13] Methodology for Subjective Assesment of the Quality of Television Pictures Recommendation BT.500-11, International Telecommunication Union, Geneva, Switzerland, 2002. [14] Subjective Video Quality Assesment Methods for Multimedia Applications Recommendation P.910, International Telecommunication Union, Geneva, Switzerland, 1996.
+
+Proceedings of the 2004 IEEE Computer Society Conference on Computer Vision and Pattern Recognition Workshops (CVPRW’04) 1063-6919/04 $ 20.00 IEEE
+

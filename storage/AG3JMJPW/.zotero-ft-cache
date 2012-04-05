@@ -1,0 +1,137 @@
+Feature Subset Selection: A Correlation Based Filter Approach
+Mark A. Hall, Lloyd A. Smith ([mhall, las]@cs.waikato.ac.nz)
+Department of Computer Science, University of Waikato, Hamilton, New Zealand.
+
+Abstract
+Recent work has shown that feature subset selection can have a positive affect on the performance of machine learning algorithms. Some algorithms can be slowed or their performance irrelevant or redundant to the learning task. Feature subset selection, then, is a method for enhancing the performance of learning algorithms, reducing the hypothesis search space, and, in some cases, reducing the storage requirement. This paper describes a feature subset selector that uses a correlation based evaluates its effectiveness with three common ML algorithms: a decision tree inducer (C4.5), a naive Bayes classifier, and an instance based learner (IB1). Experiments using a number of standard data sets drawn from real and artificial domains are presented. Feature subset selection gave significant improvement for all three algorithms; C4.5 generated smaller decision trees.
+
+features, and evaluates its effectiveness with three common ML algorithms.
+
+2. Feature Selection: Filters and Wrappers
+In ML, feature selectors can be characterised by their tie with the induction algorithm that ultimately learns from the reduced data. One paradigm, dubbed the Filter [Kohavi and John, 1996], operates independent of any induction before induction takes place. Some filter methods strive for combination of values for a feature subset is associated with a single class label [Almuallim and Deitterich, 1991]. Other filter methods rank features according to a relevancy score [Kira and Rendell, 1992; Holmes and Nevill-Manning,1995] Another school of thought argues that the bias of a particular induction algorithm should be taken into account when selecting features. This method, dubbed the Wrapper [Kohavi and John, 1996], uses the induction algorithm along with a statistical re-sampling technique such as crossvalidation (CV) to evaluate feature subsets. Often, the strengths of the wrapper approach advocated by its proponents are hailed as weaknesses by the filter camp and vice versa. For example, wrappers often achieve better results than filters due to fact that they are tuned to the specific interaction between an induction algorithm and its training data. However, they are much slower than filters as they must repeatedly call the induction algorithm and must be rerun when a different induction algorithm is used. The feature selector described in this paper is a filter. The author believes that filters will ultimately be feasible in cases may be a large number of features.
+Filter
+Training data
+
+1. Introduction
+easy and storing it is relatively inexpensive. Unfortunately, as the amount of machine readable information increases, the ability to understand and make use of it does not keep pace with this growth. Traditional statistical analysis is time consuming as each hypothesis must be formulated and tested individually. Moreover, it requires a background in mathematics in order to understand the results. Machine learning (ML) aims to automate the process of information discovery and be of use to people from a wide range of backgrounds. ML programs often make assumptions or apply heuristics that trade some accuracy of the resulting model for speed of execution, and comprehensibility of the result. While these assumptions and heuristics are reasonable and often yield redundant and irrelevant opposite of their intended effect: slowed execution, less understandable results, and much reduced accuracy. In the typical supervised machine learning task, data is represented as a table of examples or instances. Each instance is described by a fixed number of measurements or features along with a label that denotes the category (class) the instance belongs to. Feature selectors are algorithms that are applied to the data before it reaches an ML program. Their aim is to reduce the dimensionality of the data by removing the irrelevant and redundant information; thus allowing the ML program to operate more effectively. This paper describes a feature selector that uses a correlation based heuristic to determine the usefulness of
+
+Wrapper
+Training data
+
+FS Search feature set heuristic "goodness" Feature evaluation feature set
+
+FS Search estimated accuracy
+
+Feature evaluation cross val, hold out ML Algorithm
+
+Final feature set ML Algorithm
+
+Final feature set ML Algorithm
+
+Figure 1: Filter and wrapper feature selectors.
+
+2.1 Search
+Most feature selection algorithms perform a search through the space of feature subsets. Since the size of this space is exponential in the number of features, an exhaustive search is usually intractable. Greedy hill climbing search strategies such as forward selection and backward elimination [Kittler, 1978] are often applied to search the feature subset space in reasonable time. Although simple, these searches often yield sophisticated AI search strategies such as Best First search and Beam search [Rich and Knight, 1991]. Greedy hill climbing expands the current node and moves to the child with the highest evaluation. Nodes are expanded by applying search space operators to them (add or delete a single feature for forward selection and backward Elimination respectively). Table 1: Hill climbing search
+1. Let s start state. 2. Expand s by applying search operators. 3. Evaluate each child t of s. 4. Let s '
+'
+
+an indication of how predictive of the class a group of features are; the denominator of how much redundancy there is among them. The heuristic goodness measure should filter out irrelevant features as they will be poor predictors of the class. Redundant features should be ignored as they will be highly correlated with one or more of the other features.
+
+3.1 Feature Correlations
+By and large most classification tasks in ML involve learning to distinguish between nominal class values, but may involve features that are ordinal or continuous. A measure based on conditional entropy [Press et al., 1988] is used to measure correlations between features and the class, and between features. Continuous features are first converted to nominal by binning. If X and Y are discrete random variables with respective ranges Rx and Ry , Equations 2 and 3 give the entropy of Y before and after observing X. H (Y ) =
+y Ry
+
+p( y ) log( p( y )) p( x ) p( y x ) log p( y x )
+y Ry
+
+(2)
+
+H (Y X ) =
+x Rx
+
+(
+
+)
+
+(3)
+
+child t with highest evaluation e( t ). s ' , go to step 2.
+
+5. If e(s ) > e(s) then s 6. Return s.
+
+Y on X. This measure is sometimes called the coefficient of Y [Press et al., 1988]. C (Y X ) = H (Y ) H (Y X )
+
+uncertainty
+
+Forward selection starts with an empty set of features; Backward elimination starts with a full set of features. Forward selection will terminate when no child node is better than its parent, while backward elimination will continue to delete features as long as a child is not worse than its parent. Forward selection and backward elimination are the used in the experiments described in section 4.
+
+(4) H (Y ) This measure lies between 0 and 1. A value of 0 indicates that X and Y have no association; the value 1 indicates that knowledge of X completely predicts Y.
+
+4. Experimental Methodology
+In order to determine whether CFS is of use to common ML algorithms, a series of experiments was run using the following ML algorithms (with and without feature selection) on a number of standard data sets drawn from real and artificial domains.
+IB1: An instance based learner. Classifies a new instance by comparing it with a data base of instances seen during training. The class of the most similar training instance is assigned to the new instance. Naive Bayes: A bayesian classifier that assumes independence between features in order to simplify the calculation of conditional probabilities. C4.5: A decision tree inducer. Builds a decision tree for the training data in a greedy fashion by always testing features that provide the most gain in information. Leaves in the tree correspond to classifications.
+
+3. CFS: Correlation-based Feature Selection
+Like the majority of feature selection programs, CFS uses a search algorithm along with a function to evaluate the merit of feature subsets. The heuristic by which CFS measures the usefulness of individual features for predicting the class label along with the level of intercorrelation among them. The hypothesis on which the heuristic is based can be stated:
+Good feature subsets contain features highly correlated (predictive of) with the class, yet uncorrelated with (not predictive of) each other.
+
+Equation 1 formalises the heuristic. Gs = krci k + k(k 1)rii
+'
+
+(1)
+
+k is the number of features in the subset; rci is the mean feature correlation with the class, and rii is the average feature intercorrelation. Equation 1 is borrowed from test theory [Ghiselli, 1964], where it is used to measure the reliability of a test consisting of summed items from the reliability of the individual items.
+'
+
+4.1 Domains
+Data sets from seven natural domains and three artificial domains were drawn from the UCI repository of machine learning databases. These data sets were chosen because of the prevalence of nominal features and their predominance in the literature. Three additional artificial domains were borrowed from work by Langley and Sage [1994]. They each have 3
+
+been standardised. The numerator can be thought of as giving
+
+relevant features to which a further 27 irrelevant features have been added. These boolean domains exhibit an increasing level of feature interaction. It is expected that CFS will have difficulty dealing with domains with high levels of feature interaction. Under these conditions, the usefulness of individual features is difficult to distinguish. Table 2: Natural and artificial domains
+Domain Mushroom Vote Vote1 Credit Lymphography Primary tumor Breast Cancer Total # Features 22 16 15 15 18 17 9 30 (27 irrelevant) 30 (27 irrelevant) 30 (27 irrelevant) 6 (3 irrelevant) 6 6 (3 irrelevant) Train / Test 1000 / 7124 218 / 217 218 / 217 228 / 462 98 / 50 226 / 113 191 / 95 400 / 800 400 / 800 400 / 800 124 / 432 169 / 432 122 / 432
+
+improves the performance of IB1 on 3 of natural domains and 3 of the artificial domains. Performance is significantly degraded on 2 of the natural and 3 of the artificial domains. CFS has successfully removed the 27 irrelevant attributes from the first two boolean domains (B1 & B2). As expected, CFS is not effective on the third of the boolean domains (B3). Due to the high degree of feature interaction in this domain, none of the relevant features in isolation can be distinguished from the irrelevant ones. Similarly, on the Monks1 and Monks2 domains there are strong feature interactions. As can be seen from the last column of Table 1, CFS has drastically reduced the number of features in each data set. In the Vote domain, a major improvement can be had using only one of the original features. Table3: Accuracy of IB1 with (IB1-CFS) and without (IB1) the observed difference between the two is due to sampling (confidence is 1 minus this probability). Bolded values show where one is significantly better than the other at the 0.95 level. The last column shows the number of features selected (rounded to the nearest feature, minus std. deviations) versus the number features originally present.
+Domain Mush Vote Vote1 Credit Lymph Primary Breast B1 B2 B3 Monks1 Monks2 Monks3 IB1 99.96 92.16 88.48 80.13 78.56 36.66 70.68 86.52 72.45 79.55 86.40 72.22 91.67 0.06 1.41 1.99 1.67 6.27 3.54 3.90 0.87 1.34 1.36 1.88 1.78 1.46 IB1-CFS 98.52 0.07 95.64 0.87 88.83 2.27 84.65 1.91 75.32 5.52 37.58 3.22 70.17 3.66 100.0 0.0 100.0 0.0 74.09 3.73 74.58 1.74 63.72 2.89 96.85 0.89 p 0.0 0.0 0.262 0.0 0.005 0.028 0.376 0.0 0.0 0.0 0.0 0.0 0.0 #f/orig 1/22 1/16 5/15 1/15 6/18 11/17 3/9 3/30 3/30 7/30 1/6 1/6 2/6
+
+x1 x 2 x3 x1 x 2 x1 x3 x 2 x3 x1 x 2 x3 x1 x 2 x3
+Monks1 Monks2 Monks3
+
+4.3 Experiment 1: CFS vs No CFS
+50 runs were done with and without feature selection for each ML algorithm on each data set. For each run the following procedure was applied:
+1) 2) A data set was randomly split into a training and test set (sizes are given in Table 2) Each ML algorithm was applied to the training set; the resulting model was used to classify the test set. CFS was applied to the training data, reducing its dimensionality. The test set was reduced by the same factor. Each ML algorithm was applied to the reduced data as in step 2. Accuracies over 50 runs for each ML algorithm were averaged.
+
+3)
+
+4)
+
+Forward selection and backward elimination searches were used. Results for forward selection are given as there was (on average) little difference between the two search methods. In addition to accuracy, tree sizes for C4.5 were recorded. Smaller trees are generally preferred as they are easier to understand.
+
+Table 4: Accuracy of Naive Bayes with and without feature selection.
+Domain Mush Vote Vote1 Credit Lymph Primary Breast B1 B2 B3 Monks1 Monks2 Monks3 Naive Bayes 94.75 0.68 90.24 1.53 87.20 1.84 78.21 1.49 81.96 4.77 46.87 3.07 71.67 3.69 96.41 1.03 98.50 1.14 75.10 0.98 72.74 1.89 63.74 2.08 97.08 0.57 Naive-CFS 98.49 0.13 95.56 1.03 89.04 1.63 83.78 3.78 79.14 5.92 45.90 3.20 71.02 3.58 100 0 100 0 75.64 0.66 75.0 0.0 65.10 1.84 97.16 0.39 p 0.0 0.0 0.0 0.0 0.001 0.014 0.086 0.0 0.0 0.0 0.0 0.0 0.359 #f/orig 1/22 1/16 5/15 1/15 6/18 11/17 3/9 3/30 3/30 7/30 1/6 1/6 2/6
+
+4.4 Experiment 2: CFS vs Wrapper
+A second experiment was run in order to get a feel for how well CFS performs against the popular Wrapper feature selector. Using the same data sets as in experiment 1, feature selection by the Wrapper (10 fold CV on the train set) was compared with feature selection by CFS using C4.5 as the final induction algorithm. Due to the length of time taken by the Wrapper to perform its search, only two runs were done on each data set: one using a forward selection search, the other a backward elimination search.
+
+5. Results
+Tables 3 and 4 show the results for IB1 and Naive Bayes, respectively, for experiment 1. Feature selection significantly
+
+The results of feature selection for Naive Bayes are even more successful. Significant improvement is recorded on 9 of the 13 domains and significant degradation on only 2. Interestingly, small improvement is recorded on those artificial domains with feature interactions. It turns out that
+
+Naive Bayes is unable to learn these concepts and similar accuracy can be achieved through simply predicting the most frequent class value. Because CFS is a filter algorithm, the feature subsets chosen for Naive Bayes are the same as those chosen for IB1. The results for C4.5 (not shown) are less successful. There were 2 significant improvements and 3 degradations on the natural domains. On the domains where accuracy was degraded, it was by 1 or 2 percent. However, CFS was effective in significantly reducing the size of the trees induced by C4.5 (Table 5). Table 5: Tree sizes induced by C4.5 before and after feature selection
+Domain Mush Vote Vote1 Credit Lymph Primary Breast B1 B2 B3 Monks1 Monks2 Monks3 Size-C4.5 25.0 5.39 7.12 2.75 14.04 4.79 26.3 10.51 19.18 5.49 65.18 10.88 16.3 11.6 7 0 11 0 49.32 31.65 20.06 8.84 1.28 1.98 13.76 2.8 Size-CFS 10.0 0.0 3.0 0.0 6.88 2.95 4.12 4.37 14.38 6.26 51.02 11.13 14.74 11.05 7 0 11 0 6.12 10.9 5 0 1 0 12.16 1.38 p 0.0 0.0 0.0 0.0 0.0 0.0 0.38 1.0 1.0 0.0 0.0 0.322 0.0
+
+Table 7: CPU time taken by feature selectors (Sparc 1000).
+Domain Mush Vote Vote1 Credit Lymph Primary Breast B1 B2 B3 Monks1 Monks2 Monks3 C4.5CFS-fs 11 1 2 2 2 2 1 6 6 9 1 2 1 C4.5CV-fs 1115 258 632 260 708 1765 89 297 585 271 83 55 128 C4.5CFS-be 11 1 2 2 2 2 1 6 6 8 1 2 2 C4.5CV-be 13316 2611 1930 1284 1763 2479 361 19198 16097 18776 183 166 206
+
+6. Conclusion
+This paper presents a feature selection algorithm (CFS) that operates independently of any induction algorithm. Results show that its evaluation heuristic chooses feature subsets that are useful to common machine learning algorithms by improving their accuracy and making their results easier to understand. A comparison with the Wrapper approach to its application to domains with many features more feasible. Future work will attempt to better understand why CFS works more effectively on some natural domains than others. Comparing the learning curves produced by ML algorithms on natural domains to those produced on carefully controlled artificial domains may provide some insight. Extension of CFS to deal with feature interactions will also be explored. One approach might be to model higher order dependencies (correlation between pairs of features and the class).
+
+5.2 Experiment 2
+Table 6 compares CFS with the Wrapper. The best result (in terms of the number of improvements) is given by the Wrapper using a backward search. This was expected as the Wrapper is tuned to the specific bias of C4.5. Moreover, it has been shown that the Wrapper using a backward search can identify relevant features even when they interact [Kohavi and John, 1996]. The next best result is given by CFS using a forward search. Table 7 shows the CPU time (in seconds) taken by each feature selector. CFS is many times faster than the Wrapper. As can be seen from the table, the most costly approach is the Wrapper using a backward search. Table 6: Accuracy of C4.5, C4.5 with CFS forward (fs) and backward (be) search, and C4.5 with Wrapper (CV) forward and backward search.
+Domain Mush Vote Vote1 Credit Lymph Primary Breast B1 B2 B3 Monk1 Monk2 Monk3 C4.5 99.0 92.6 92.2 83.8 76.0 38.1 74.7 100.0 100.0 87.6 75.7 65.0 97.2 C4.5CFS-fs 98.5 94.9 91.2 85.9 74.0 40.7 73.7 100.0 100.0 75.8 75.0 67.1 97.2 C4.5CV-fs 98.8 94.9 89.9 85.9 78.0 38.1 73.7 87.0 74.0 75.4 75.0 67.1 97.2 C4.5CFS-be 98.5 94.9 91.2 81.4 74.0 40.7 73.7 100.0 100.0 75.8 75.0 67.1 97.2 C4.5CV-be 98.8 94.9 89.9 85.9 78.0 39.8 74.7 100.0 100.0 100.0 88.9 65.3 97.2
+
+REFERENCES
+[ Almuallim and Deitterich, 1991] H. Allmuallim and T.G.
+Deitterich, Learning with many irrelevant features, Proc. of the Ninth Nat. Conference on AI, [Ghiselli, 1964] E. E. Ghiselli, Theory of Psychological Measurement, McGraw-Hill, 1964. [Holmes and Nevill-Manning, 1995] G. Holmes and C.G. NevillManning, Feature selection via the discovery of simple classification rules, Proc. Int. Symp. on Intelligent Data Analysis (IDA-95) , 1995. [Kira and rendell, 1992] K. Kira and L. Rendell, A practical approach to feature selection, Proc. of the Ninth Int. Conference on ML, [Kittler, 1978] J. Kittler, Feature set search algorithms, in C.H Chen (ed) Pattern Regognition and Signal Processing , Sijhoff and Noordhoff, the Netherlands, 1978. [Kohavi and John, 1996] R. Kohavi and G.H. John, Wrappers for feature subset selection, AIJ special issue on relevance, (in press). [Langley and Sage, 1994] P. Langley and S. Sage, Scaling to domains with irrelevant features, in R. Greiner (ed) Computational Learning Theory and Natural Learning Systems, MIT Press, 1994. [Press et al., 1988] W.H. Press, Numerical Recipes in C, Cambridge, 1988. [Rich and Knight] E. Rich and K. Knight, Artificial Intelligence, McGraw-Hill, 1991.
+

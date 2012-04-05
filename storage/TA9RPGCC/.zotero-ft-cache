@@ -1,0 +1,147 @@
+Chapter 14
+Long-Term Imaging in Microﬂuidic Devices
+Gilles Charvin, Catherine Oikonomou, and Frederick Cross
+Abstract
+During the past 10 years, major developments in live-cell imaging methods have accompanied growing interest in the application of microﬂuidic techniques to biological imaging. The broad design possibilities of microfabrication and its relative ease of implementation have led to the development of a number of powerful imaging assays. Speciﬁcally, there has been great interest in the development of devices in which single cells can be followed in real-time over the course of several generations while the growth environment is changed. With standard perfusion chambers, the duration of a typical experiment is limited to one cell generation time. Using microﬂuidics, however, long-term imaging setups have been developed which can measure the effects of temporally controlled gene expression or pathway activation while tracking individual cells over the course of many generations. In this paper, we describe the details of fabricating such a microﬂuidic device for the purpose of long-term imaging of proliferating cells, the assembly of its individual components into a complete device, and then we give an example of how to use such a device to monitor real-time changes in gene expression in budding yeast. Our goal is to make this technique accessible to cell biology researchers without prior experience with microﬂuidic systems. Key words: Microﬂuidic devices, long-term imaging, live-cell imaging, time-lapse ﬂuorescence microscopy, PDMS microfabrication, temporally controlled gene expression.
+
+1. Introduction
+In the past 15 years, the ﬁrst use of the green ﬂuorescent protein (GFP) as a marker for gene expression (1) and the subsequent development of numerous GFP variants and detection schemes have greatly increased the potential and utility of live-cell imaging (2, 3). These discoveries have triggered the development of new imaging techniques to expand the applications of live-cell
+D.B. Papkovsky (ed.), Live Cell Imaging, Methods in Molecular Biology 591, DOI 10.1007/978-1-60761-404-3 14, © Humana Press, a part of Springer Science+Business Media, LLC 2010
+
+229
+
+230
+
+Charvin, Oikonomou, and Cross
+
+ﬂuorescence microscopy (4). Notably, confocal microscopy and other high-resolution techniques have considerably improved our capacity to precisely monitor, in real-time, various biological processes in single cells or in tissues (4). In parallel with these developments in ﬂuorescence imaging techniques, a growing number of microﬂuidics techniques have been developed and applied to biology, allowing greater ﬂexibility in experimental design (5–7). In particular, microﬂuidic devices have allowed researchers to apply time-dependent stimuli and monitor single cell responses to changing conditions (8–11). The ability to microfabricate versatile custom-designed ﬂow chambers using standard, and relatively inexpensive, photolithography techniques (12) and the increased throughput of microﬂuidic assays (compared to experiments involving standard perfusion chambers) have contributed to the success of microﬂuidics. However, the majority of such techniques, which are usually developed in bioengineering or biophysics departments, have not yet been widely adopted by cell biology laboratories. An inherent problem with standard perfusion chambers is the impossibility of tracking a large number of successive divisions of unicellular organisms such as bacteria or yeast under the microscope. In these setups, the majority of the progeny of a dividing cell tend to be washed away as medium is changed or an inducer is added. Consequently, imaging is usually limited to one or two cell divisions. Two main designs have been developed to overcome this issue so that cell proliferation can be monitored over several generations (typically 8–10), while controlling the environment. In the “ﬂow aside” design (see Fig. 14.1a), cells (budding yeast are shown) are loaded into a sub-compartment (cell trap) of the microﬂuidic device, which is located to the side of the main ﬂow channel (13, 14). The small height of the trap (typically 3–5 m) ensures that the cells proliferate in two dimensions, in the same focal plane. In the “ﬂow above” design (see Fig. 14.1b), a physical barrier – a diffusive cellulose membrane – separates the cells, which sit on a coverslip, from the main ﬂow passing through a microﬂuidic chamber placed on top of the membrane (8, 15). In this case, the membrane allows both media and inducers to diffuse freely in and out of the cell environment, ensuring good control of growth conditions. For both types of devices, the time required to change conditions is limited by diffusion. For small molecules (such as those in media, whose molecular weight is much smaller than the 14 kDa membrane cutoff), the cellulose mesh of the membrane does not affect molecules’ diffusivity. Therefore, for a typical distance of 30 m between the cells and the main channel, the diffusion time is no greater than 1 min for both the “ﬂow above” and the “ﬂow aside” designs.
+
+Long-Term Imaging in Microﬂuidic Devices
+
+231
+
+Fig. 14.1. Common designs of microﬂuidic devices for multigenerational imaging. (a) “Flow aside” geometry. Top panel shows side view of a PDMS chip with a glass coverslip. Bottom panel shows top view of cell trap compartment of the device, along with the small connecting channel used to load cells. (b) “Flow above” geometry, with cells physically separated from the main ﬂow by a diffusive membrane. Top panel shows side view and bottom panel shows top view.
+
+An advantage of the “ﬂow above” design is that it requires less skill to fabricate, as all the necessary parts can be made without the use of photolithography techniques and without the additional constraint of the height of the cell trap, which complicates alternative designs. Thus, it is easier to implement in cell biology labs, most of which have limited or no access to microfabrication facilities. This setup has been extensively used in experiments with Saccharomyces cerevisiae (and to a lesser extent with Escherichia coli), and it should be suitable for many other unicellular organisms such as S. pombe. The setup can also be used in many experimental paradigms. In the context of cell cycle studies, our main focus has been to induce temporally controlled expression of a gene placed under the control of a regulatable promoter, such as MET3pr or GAL1pr (15). Another current application of this device is to monitor the output of signal transduction pathways, such as the pheromone response pathway in budding yeast (9). In this paper, we provide a protocol which allows the user to build and use a “ﬂow above” microﬂuidic device. As an alternative to fabricating the components, a commercial version of this setup,
+
+232
+
+Charvin, Oikonomou, and Cross
+
+which includes all parts described in Section 3 (product reference YC-1, Warner Instruments Inc, Hamden, CT) may be used (this product is scheduled for release in mid-2009).
+
+2. Materials
+2.1. Cellulose Membranes
+
+1. Dialysis tubing Cellusep T3 (Fisher Scientiﬁc), a roll with ﬂat width 33 mm, thickness 23 m, and molecular weight cut-off 12–14 kDa (see Notes 1 and 2). 2. 200 mL 10 mM Tris–EDTA (TE) buffer, pH8. Store at room temperature. 3. 250 mL TE buffer supplemented with 2% w/v Na2 CO3 (TEC). Store at room temperature. 4. Several standard petri dishes. 5. Polydimethylsiloxane (PDMS) and curing agent Sylgard 184 (Dow Corning, Midland, MI). Store at room temperature.
+
+2.2. PDMS Coated Coverslips
+
+1. Coverslips, gauge 1.5, 24 × 50 mm (Fisher Scientiﬁc). 2. Clean, plain, circular silicon wafer, 100 mm diameter (Silicon Valley Microelectronics, Santa Clara, CA) or a ﬂat plastic surface (e.g., a transparency ﬁlm for laser printers). 3. Silanization agent such as trimethylchlorosilane (TMCS) (Sigma-Aldrich) – only needed if using a silicon wafer. Store at room temperature. 4. Large petri dish (diameter >100 mm) – only needed if using a silicon wafer.
+
+2.3. PDMS Flow Chamber
+
+1. Mould to cast PDMS ﬂow chambers. We recommend polyoxymethylene material, which is easy to machine, brand name Delrin (McMaster-Carr, Atlanta, GA). 2. PrecisionGlide needles, gauge 23 (Becton-Dickinson, Franklin Lakes, NJ).
+
+2.4. Assembly of the Microﬂuidic Device
+
+1. 5-mm-thick cover for the ﬂow cell (see Section 3.4), made of acrylic glass (see Section 3.3). 2. PrecisionGlide needles, gauge 21 (Becton-Dickinson, Franklin Lakes, NJ). 3. Formulation S-54-HL Tygon microbore tubing, 0.5 mm internal diameter (US Plastic Corp., Lima, OH). 4. 1 mL syringe.
+
+Long-Term Imaging in Microﬂuidic Devices
+
+233
+
+5. 5 mL growth medium for yeast, e.g., synthetic complete yeast medium (the carbon source used depends on desired experimental conditions). 6. 50 mL 20% w/v solution of Triton X-100 in water. 7. Desired strain of S. cerevisiae. 8. An epiﬂuorescence inverted microscope and dedicated time-lapse acquisition software. 9. Optional – peristaltic pump to drive ﬂow through the device, e.g., Ismatec IPC (Ismatec, Glattbrugg, Switzerland). 10. Optional – aquarium pump and bubblers to oxygenate media.
+
+3. Methods
+The ﬂow cell setup consists of the following parts (see Fig. 14.2): – diffusive cellulose membrane (Fig. 14.2-1) that ensures diffusion of media, inducers, and other molecules smaller than ∼14 kDa from the main ﬂow chamber to the cell environment. – coverslip coated with PDMS (Fig. 14.2-2). The PDMS coating acts as a soft cushion for the cells to prevent damage resulting from constraining the cells with the membrane. – main ﬂow chamber (Fig. 14.2-3) through which the exchange medium ﬂows. – metal coverslip holder (Fig. 14.2-4) and acrylic glass cover (Fig. 14.2-5), which sandwich and clamp the elements listed above in order to ensure the mechanical integrity of the setup and to prevent media leakages. Four screws (see holes on Fig. 14.2-6) are used for this purpose. – inlet and outlet formed with blunted needles (Fig. 14.2-7) connected to transparent Tygon tubing (Fig. 14.2-8). Preparation of these parts is described below.
+3.1. Preparation of Membranes
+
+1. Unroll the dialysis tubing on a glass rectangle or other clean hard surface. Using a scalpel, cut a piece of dialysis tubing of the desired size. For example, for use with a 50 × 24 mm coverslip, a size of 20 × 49 mm is optimal (see Note 3). 2. Fill two petri dishes with water. 3. Place the cut section of tubing into the ﬁrst petri dish (it may quickly curl up and then uncurl), then pick it up with
+
+234
+
+Charvin, Oikonomou, and Cross
+
+Fig. 14.2. Design of microﬂuidic ﬂow cell used in (15). 1 – cellulose membrane; 2 – PDMS-coated coverslip; 3 – PDMS ﬂow chamber; 4 – coverslip holder; 5 – acrylic glass cover; 6 – screw holes for clamping apparatus; 7 – blunt needle; 8 – connecting tubing.
+
+forceps, hold the short end between ﬁnger and thumb, and gently wrinkle this end until you can take the two pieces apart with forceps (see Note 4). Place the membranes in the second petri dish, trying not to fold them. 4. Fill a large beaker with 200 mL TEC buffer, transfer the membranes, and loosely cover the beaker with a plastic lid. Boil on a hot plate for 20 min. The solution should become yellowish (see Note 5). 5. Take out the membranes and put them in a petri dish with water. Rinse the beaker, ﬁll with 200 mL of TE buffer, transfer the membranes back to the beaker, and boil for 30 min. If the buffer is yellowish, discard it and repeat this step. 6. Let the beaker cool down on the bench, then place the membranes in a fresh petri dish with TE buffer, where the membranes can be stored for months at 4◦ C (see Note 6).
+3.2. Preparation of PDMS-Coated Coverslips
+
+1. Heat an oven to 80◦ C. 2. If you are using a plastic ﬁlm as your ﬂat surface, go to step 4. If you are using a silicon wafer, clean the surface of the wafer using a KimWipe soaked in acetone. Remove all dust and traces of PDMS from previous use. Rinse it with ethanol and dry under a stream of air. 3. Coat the silicon wafer with TMCS (caution: toxic and corrosive) in order to passivate the surface (see Note 7). Under
+
+Long-Term Imaging in Microﬂuidic Devices
+
+235
+
+the hood, place the wafer in a large petri dish, add 500 L TMCS to the center of the wafer, and put the lid on the dish. Tilt to spread the liquid evenly and let the wafer sit for 15 min until the TMCS has evaporated completely (see Note 8). 4. Prepare PDMS mixture using a small petri dish: add 30 g PDMS, then 3 g of curing agent (i.e., 10:1 ratio) (see Note 9). Vigorously stir the mixture with a P1000 pipette tip (bend at the end for best results) for several minutes until it resembles dense snow. Wait about 30 min for bubbles to disappear. (The process can be sped up by using a vacuum chamber.) This gives enough material to coat several coverslips. 5. Place the passivated wafer or plastic sheet on the bench. Using a P200 pipette and a tip with a cut end, dispense 70 L of PDMS mixture onto the wafer (or plastic sheet) as a thin line. Place a 24 × 50 mm coverslip on top of this line (see Notes 10 and 11). Repeat two more times in order to have three coverslips on the wafer or ﬁlm. Incubate for about 30 min until the PDMS has spread evenly across the coverslip (see Note 12), and then transfer the wafer (or plastic ﬁlm) to the oven and bake for 45 min. 6. Remove the wafer (or plastic ﬁlm) from the oven and peel off the coverslips carefully with a scalpel. Coated coverslips can be stored in clean dry petri dishes for further use.
+3.3. Preparation of Flow Chambers
+
+In this protocol, a mould is used to cast a PDMS ﬂow chamber. The mould for a simple microﬂuidic chip with one channel does not require advanced microfabrication techniques such as photolithography. For the design and dimensions of our mould (see Fig. 14.3a), the use of Delrin and a simple milling machine is sufﬁcient. Internal dimensions of the mould are approximately 48 × 20 mm. Small holes at both ends of the channel are used to insert blunt needles (gauge 23), thus producing the inlet and outlet of the chip. 1. Preheat oven to 80◦ C and prepare about 30 g of PDMS mixture as described in Section 3.2, step 4. 2. Insert needles into the mould as shown (see Fig. 14.3b). 3. Using a standard disposable plastic pipette, add approximately 5 mL of PDMS mixture to the mould. The total height of the PDMS chip should be approximately 5 mm, and the amount of PDMS material deposited should be adjusted accordingly (Fig. 14.3c ). 4. Allow the PDMS to settle for 30 min, then bake in the 80◦ C oven for 2 h. 5. Rotate the needles on the mould to free them and pull them up out of the chip. Flip the mould and lift up the bottom
+
+236
+
+Charvin, Oikonomou, and Cross
+
+Fig. 14.3. Preparation of PDMS ﬂow chamber. (a) Plastic mould used to cast PDMS. Precision machining generates an emboss 100 m high, 600 m wide, and 40 mm long. (b) Small holes are drilled for needles prior to PDMS addition (c). (d) After baking, PDMS chip is easily removed with scalpel.
+
+carefully with a scalpel, a little at a time on each edge. Once the bottom is removed, the ﬂow cells should come off easily (Fig. 14.3d). 6. Verify that the needle holes are connected to the channel (see Note 13). 7. Optional: if you have access to an air plasma cleaner, treat the ﬂow chamber for about 30 s. This makes the surface of the PDMS hydrophilic, therefore preventing unwanted air bubbles from appearing in the channel during use (see also Note 14).
+3.4. Assembling the Microﬂuidic Device
+
+1. Rinse the PDMS-coated coverslip with ethanol, then with water, and dry it under a stream of air. Identify the side which has the PDMS coating (see Note 11) and place the coverslip on a ﬂat surface with this side up. 2. Sonicate log-phase yeast cells of your desired strain and measure their optical density at 660 nm (OD660 ) using an absorption spectrometer. Dilute to OD660 = 0.02 in an eppendorf tube in approximately 100 L volume. 3. Pipette 20 L of cells onto the middle of the coverslip. 4. Using forceps, center and place a membrane (prepared in Section 3.3) on top of the coverslip (see Note 15). 5. Let the membrane dry for about 15 min until its entire surface acquires a mottled bluish-gray color (see Note 16).
+
+Long-Term Imaging in Microﬂuidic Devices
+
+237
+
+6. While the membrane is drying, prepare two connecting needles (gauge 21). Cut each needle to make it blunt on both ends (see Fig. 14.2-7), and attach a piece of tubing to one end (see Fig. 14.2-8). The tubing should be long enough to connect the chip to a syringe or pump. 7. When the membrane is ready, place the coverslip inside its holder (Fig. 14.2-4). 8. Place the ﬂow cell (Fig. 14.2-3) and its cover (Fig. 14.25), with the ﬂow channel facing down, on top of the coverslip. Applying pressure to the assembled unit with a ﬁnger, insert the four screws (Fig. 14.2-6) and tighten them each a little at a time until moderate resistance is felt. Do not overtighten. 9. Plug the needles of the connecting tubes (Fig. 14.2-7) into the inlet and outlet of the ﬂow chamber (Fig. 14.2-3). 10. Connect the inlet tubing to a syringe ﬁlled with medium. Very slowly (no more than 100 L/min) load approximately 100 L of medium into the chamber of the chip. Make sure that medium ﬂows smoothly and that all air bubbles are removed from the main channel (see Note 17). 11. Place the device on the stage of an inverted microscope (see Note 18) and connect it to a peristaltic pump, syringe pump, or gravitational ﬂow (see Note 19).
+3.5. Using the Microﬂuidic Device for Imaging
+
+1. With medium ﬂowing at a constant rate, ﬁnd cells underneath the channel using transmission (bright ﬁeld, phase contrast, or DIC) mode. If the cells are moving, the membrane was not dry enough and the apparatus should be reassembled (go back to Section 3.4, step 1). You may use the same ﬂow cell, coverslip, and membrane. If cells are static and medium ﬂows well, check that there is no excessive pressure in the chamber by analyzing dynamic changes in the focus (see Note 20) 2. Use time-lapse microscope software to record images over the course of your experiment. As an example, a sequence of phase contrast (top) and ﬂuorescent images (bottom) is provided (see Fig. 14.4), which was acquired in a typical long-term imaging experiment (see Notes 21 and 22). 3. Once the experiment is ﬁnished, wash the ﬂow chamber and tubing with a 50% ethanol solution in water for 30 min using a 100 L/min ﬂow rate. Do not use bleach as it affects PDMS transparency and takes a long time to remove. Rinse with DI water for a further 30 min. 4. Disconnect tubing and carefully disassemble the device. Discard the membrane. Rinse the coverslip with 95% ethanol to remove immersion oil, then with water, and place in a
+
+238 Charvin, Oikonomou, and Cross
+
+Fig. 14.4. Example of time-lapse experiment conducted with ﬂow cell: monitoring turn-on of the GAL1 promoter. Top series of images (phase contrast) shows exponential growth of GAL1pr-Venus-degron cells. Bottom series shows corresponding ﬂuorescent images. 1.5% galactose was added to SCR medium at t=360 min.
+
+Long-Term Imaging in Microﬂuidic Devices
+
+239
+
+petri dish containing 20% Triton solution. After a few minutes, rinse with water and examine the channel for visible cell clumps. If any are present, use a P200 pipette tip to clear the channel. Place the ﬂow cell in the same Triton-containing petri dish and perform the cleaning procedure as described for the coverslip. Store dry at room temperature for further use (see Note 23).
+
+4. Notes
+1. Dialysis membranes with lower molecular weight cutoffs (e.g., 6 or 8 kDa) can also be used. However, 14 kDa membranes allow for better diffusion of larger molecules such as yeast alpha-factor pheromone. 2. To ensure rapid diffusion of medium and inducers across the membrane, its thickness should not exceed 40 m. 3. It is easy to prepare several membranes at a time. To do this, fold the tubing end-over-end to produce a stack of tubing. Put a coverslip on top of the stack to guide you and use a scalpel to cut the membranes to the appropriate dimensions. 4. Once cut, dialysis tubing comprises two equal sides which must be separated to provide two membranes. 5. Cellulose membranes are conditioned in glycerol. This compound must be removed from the pores or diffusion through the membrane is greatly reduced. 6. Never allow the membranes to dry out. 7. Passivation of the wafer is necessary to be able to peel off the coated coverslips easily after baking. 8. The TMCS will leave colored traces on the surface of the wafer. 9. PDMS is a viscous silicon polymer which turns into a solid elastomer in the presence of curing agent and heat. 10. When applying the coverslip, small bubbles may appear in the middle of the PDMS material. Use a scalpel to shift the coverslip upward so that these bubbles are no longer in the middle and will not cause optical distortion during imaging. 11. It will be important to know which side of the coverslip has the PDMS coating. At this stage of fabrication, you may use a lab marker to mark the coverslip in an unambiguous way before placing it, marked side down,
+
+240
+
+Charvin, Oikonomou, and Cross
+
+onto the PDMS. This protects the ink from the ethanol used during the cleaning process. Alternatively, after the coverslip is prepared, tap both sides with a pair of forceps. PDMS has a duller, plasticky sound. 12. Some PDMS material may expand beyond the edges of coverslip. Measure the coverslip thickness after baking to ensure that it is compatible with the working distance of the microscope objective. If not, then reduce the amount of deposited PDMS material. 13. In standard microﬂuidic devices, connecting holes are usually generated after the curing procedure by punching the chip with a sharpened blunt needle. Our method was found to be easier and more reliable. 14. Microﬂuidic chips can be reused many times. After each experiment, they should be cleaned with detergent (20% Triton) and ethanol. Bioﬁlms tend to form in the channel over time, which make it less transparent and more difﬁcult to clean. Regular air plasma treatments ensure that the channel remains clean and hydrophilic for a longer period of time. 15. Dialysis membrane is a tube that has a polarity. The outer side has scratches which may compromise the quality of phase contrast images if they appear in the same focal plane as imaged cells. Use the slight curvature of the membrane along its length to determine the inside of the tube and place this concave side face-down on the coverslip. 16. Medium from the cells and water from the soaked membrane provide excess liquid which prevents good contact between the membrane and coverslip. This liquid must evaporate for cells to be properly constrained by the membrane. As the membrane dries, it begins to stick to the coverslip and becomes optically clear (it is opaque when wet). However, if the membrane becomes completely dry it will peel back from the coverslip. Drying is non-uniform, as edges tend to dry faster and must be rewetted by adding a drop of water and blotting the excess liquid with a KimWipe. 17. There should not be any leakage from the PDMS ﬂow chamber. If this occurs, it is usually due to clogging of either the inlet or outlet tubing. Overtightened screws can also block the channel and prevent ﬂow. If the ﬂow is not steady, adjust the screws and check again. 18. A standard inverted microscope with epiﬂuorescence capabilities can be used. Budding yeast cells are best imaged using a 63× or 100× magniﬁcation objective. High numerical aperture (NA = 1.4) is recommended for ﬂuorescence imaging.
+
+Long-Term Imaging in Microﬂuidic Devices
+
+241
+
+19. Peristaltic pumps and syringe pumps may be programmed for automated media switching. 20. To check how sensitive the focal plane is to changes in ﬂow conditions, defocus the image by a few microns while looking at cells and see whether the halos surrounding the cells are undulating. If so, tighten or loosen screws to improve ﬂow. This can be done without removing the ﬂow cell from the stage. Ideally, cells should stay in focus when the ﬂow is changed or stopped. 21. Yeast cells carrying a GAL1-Venus-degron construct (Venus is a variant of yellow ﬂuorescent protein and the degron is a small sequence that destabilizes the protein to which it is attached (15)) were introduced into the microﬂuidic device with synthetic complete + 3% rafﬁnose (SCR) medium and imaged every 3 min for 11 h. After 6 h, medium was switched from SCR to SCR + 1.5% galactose in order to activate transcription downstream of the GAL1pr (see the ﬂuorescence rise in the bottom series of images). Doubling time for yeast under both conditions is about 2 h. 22. We recommend maintaining a constant ﬂow rate, typically 50 L/min, throughout the experiment, even without media changes. Aquarium pumps and bubblers can be used to aerate media during the assay. In the absence of ﬂow or proper oxygenation, the level of ﬂuorescence of constitutive markers is seen to decrease dramatically over the course of a typical (12 h) experiment. This is likely due to a decrease in the concentration of oxygen, which is required for maturation of ﬂuorescent proteins (2). 23. Coverslips can be reused several times. The hydrophobicity of the PDMS surface promotes cell adhesion, so coverslips should be discarded when they become too hydrophilic.
+
+Acknowledgments
+G.C. is supported by the Human Frontier Science Program Organization. C.O. and F.R. are supported by the National Institutes of Health.
+References
+1. Chalﬁe M., Tu Y., Euskirchen G., Ward W.W. and Prasher D.C. (1994) Green ﬂuorescent protein as a marker for gene expression. Science 263:802–5. 2. Tsien R.Y. (1998) The green ﬂuorescent protein. Annu Rev Biochem 67:509–44. 3. Shaner N.C., Campbell R.E., Steinbach P.A., Giepmans B.N., Palmer A.E. and Tsien R.Y. (2004) Improved monomeric red, orange and yellow ﬂuorescent proteins derived from Discosoma sp. red ﬂuorescent protein. Nat Biotechnol 22:1567–72.
+
+242
+
+Charvin, Oikonomou, and Cross the HOG MAP kinase pathway. Proc Natl Acad Sci U S A 105(20):7165–70. Bennett M.R., Pang W.L., Ostroff N.A., Baumgartner B.L., Nayak S., Tsimring L.S., Hasty J. (2008). Metabolic gene regulation in a dynamically changing environment. Nature 454(7208):1119–22. McDonald J.C., Duffy D.C., Anderson J.R., Chiu J.T., Wu H., Schueller O.J.A., Whitesides G.M. (2000) Fabrication of microﬂuidic systems in poly(dimethylsiloxane). Electrophoresis 21:27–40. Cookson S., Ostroff N., Pang W.L., Volfson D. and Hasty J. (2005) Monitoring dynamics of single-cell gene expression over multiple cell cycles. Mol Syst Biol 1: 00024. Lee P.J., Helman N.C., Lim W.A., and Hung P.J. (2008) A microﬂuidic system for dynamic yeast cell imaging. BioTechniques 44(1): 91–5 Charvin G., Cross F.R., Siggia E.D. (2008) A microﬂuidic device for temporally controlled gene expression and long-term ﬂuorescent imaging in unperturbed dividing yeast cells. PLoS ONE 3:e1468.
+
+4. Goldman R.D. and Spector D.L. (2004) Live Cell Imaging. Cold Spring Harbour Laboratory Press, Woodbury, NY. 5. Voldman J., Gray M.L. and Schmidt M.A. (1999) Microfabrication in biology and medicine. Annu Rev Biomed Eng 1: 401–25. 6. Whitesides G.M, Ostuni E., Takayama S., Jiang X. and Ingber D. (2001) Soft lithography in biology and biochemistry. Annu Rev Biomed Eng 3:335–73. 7. Sia S.K., Whitesides G.M. (2003) Microﬂuidic devices fabricated in poly(dimethylsiloxane) for biological studies. Electrophoresis 24(21): 3563–76. 8. Balaban N.Q., Merrin J., Chait R., Kowalik L. and Leibler S. (2004) Bacterial persistence as a phenotypic switch. Science 300(5690): 1622–5. 9. Paliwal S., Iglesias P.A., Campbell K., Hilioti Z., Groisman A. and Levchenko A. (2007) MAPK-mediated bimodal gene expression and adaptive gradient sensing in yeast. Nature 446(7131): 46–51. 10. Hersen P., McClean M.N., Mahadevan L., Ramanathan S. (2008) Signal processing by
+
+11.
+
+12.
+
+13.
+
+14.
+
+15.
+

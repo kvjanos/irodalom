@@ -1,0 +1,206 @@
+QUANTITATIVE METHODS OF EVALUATING IMAGE SEGMENTATION
+Qian Huang
+Siemens Corporate Research, Inc. 755 College Road East Princeton, NJ 08540 huang Qscr.siemens.com
+Abstract
+T w o sets of measures are proposed in this paper
+for quantitatively evaluating segmentation results. The
+
+Byron Dom
+
+[BM Research Division, Almaden Research Center, 650 Harry Road San Jose, CA 95120-6099 dome almaden .i bm. com
+measures are important because of (1) the difficulty in obtaining ground truth in practice and (2) the demand from many applications for a reasonable assessment on segmentation results. We propose performance measures that evaluate a segmentation in terms of the contrast between the heterogeneity among different regions versus the homogeneity within individual regions. This principle of evaluating segmentation results can be applied to both boundary and region based schemes once the definitions of homogeneity and heterogeneity are well understood within the context of applications.
+
+first set is designed f o r the situation where ground truth is available; while the second f o r the situation where ground truth is not available. Based on a test bank of more than 50 images f o r which ground truth is available, we computed both sets of evaluation measures and then correlated the two sets. Experimental results show that the first set of measures proposed agree with hum a n (subjective) visual evaluation and the second set of measures correlates well with the first set, an indica6ion of the usefulness of this set of measures i n assessing the quality of image segmentation results even when ground truth is not available.
+1 Introduction While the field of computer vision is growing into a discipline of science and engineering, quantitative approaches for evaluating image segmentations are needed. In this paper, we propose several quantitative measures for cases when ground truth is and is not available. When ground truth is available, parameter-based, boundary- based, and regzon- based performance evaluation schemes are proposed. The first scheme is suitable only when the regions of interests can be modeled in a parametric form. The segmentation quality is evaluated in terms of the discrepancy between the model and ground truth parameters. Boundary-based approach evaluates segmentation in terms of both localization accuracy and the shape accuracy of extracted regions. Region-based approach assesses the segmentation quality in terms of both the size and location of the segmented regions. The measures of the last two schemes may fluctuate drastically in some extreme cases with the number of points involved in ground truth. Nevertheless, they serve what is intended in most situations. We also propose quantitative measures for the situation in which ground truth is not available. Such
+
+2 Performance Evaluation Against Ground Truth When ground truth is available, segmentation can be evaluated in terms of accuracy and robustness. ‘ The accuracy reflects the precision of segmentation with respect to ground truth. The robustness is related to the accuracy degradation with respect to the degradation of the quality of test data.
+2.1 Parameter-Based Evaluation Assume a ground truth image region, either a closed boundary or a connected component, can be represented by aset knownparameters, g p = { @ ‘ I , ..., G P k } . G p can be as simple as a constant intensity value or more complex such as the coefficients of a polynomial function approximating the intensity surface of the region or Fourier coefficients describing the shape of the closed boundary of the region. Let the corresponding region identified by a segmentation algorithm be represented by a parallel set of parameters P = { P I , ..., p s } . The dzscrepancy between Bp and P , defined as S ( G p , P ) = { S ( G P z , p z ) I 1 ~ z < ~ } , ~ ~ ~ ~ ~ ~ I, G ( specifies the quality of the segmentation. A smaller deviation indicates a better performance. The amount of increase in these deviations with respect to the degree of degradation of the input image reflects the sensitivity of the algorithm to noise. 2.2 Boundary-Based Evaluation This scheme is intended to assess segmentation qual-
+
+~ ~ , P ~ )
+
+0-~;186-7310-9/95 0 1995 IEEE $4.00
+
+53
+
+ity in terms of the accuracy of the extracted region boundaries. Let B be the boundary point set derived from the Segmentation. Assume the boundary ground truth, denoted by GB,is available. The goal is t o describe the discrepancy between GB and B . We propose two distance distrzbution signatures, one from ground truth to the estimated, denoted by V , and the other : from the estimated to ground truth, denoted by Dg. Several measures are further designed to characterize the discrepancy.
+
+(e;, w;), where weights are the average distances between misclassified points to the ground truth boundary. Such weighted errors are useful because merely a percentage indicates only how many points do not coincide but not how far apart they are to the right positions which is now captured by weights wg and
+U&.
+
+Distance Distribution Signatures A distance distribution signature from a set B1 to a set B2 of boundary points, denoted by V z ,is a discrete function whose distribution characterizes the discrepancy, measured in distance, from B1 to B2. Define the distance from an arbitrary point x in set B1 to B2 as the minimum absolute distance from x t o all V the points in B2, d(x,B2) = m i n { d ~ ( x , y ) } ,y E B2, where d ~ ( xy) denotes the Euclidean distance between , points x and y . Signature DB2 can be established from Bl the distance histogram from individual x E B1 to Ba, which may be estimated through a distance transformation with respect t o B2. The shape of signature Di; describes the discrepancy or ultimately the degree of match (or mismatch) 1 between B and B2. A number of statistics can be computed to reflect their shapes. The most common measures are its mean and standard deviation Since means are known t o be sensitive t o outliers, the median may serve the purpose better. In general, D : is : skewed. Therefore, skewness can also be used to characterize 3 ' A perfect match between B1 and B2 ;. should yield zero mean and zero standard deviation, signaling that B1 and B2 completely coincide with each B other. Generally, a DB: with a near-zero mean and a small standard deviation indicates high quality of the image segmentation. A large standard deviation may reveal the existence of outliers. In that case, median provides a better indication in terms of the accuracy of the segment ation. Weighted Boundary Segmentation Error Rates There are two types of errors in boundary segmentation: mzssing b o u n d a r y rate e g and f a l s e b o u n d a r y rate
+
+2.3 Region-Based Evaluation This approach evaluates the segmentation accuracy in the number of regions, the locations, and the sizes. Let the segmentation be S and the corresponding ground truth be G'. Both S and 6" are functions on the image plane with labels as their function values. The goal is t o quantitatively describe the degree of mismatch between S and G".
+
+Overall Performance Measure We first introduce the concept of dzrectional Hammzng dzstance [3] from one segmentation S1 = { Ri, R:, .. t o another segmentation S2 = { R i ,Ri, .., R;'}, denoted by D H ( S ~ ,572). In region-based evaluation, we first establish the correspondence between the labels of two given segmentations using the following scheme: a associate each region R from 5'2 with a region R{ from SI such that R;nRj, is maximal. Directional Hamming distance from S1 t o S2 is defined as:
+
+*
+
+where I. I denote the size of a set. Therefore, DH(SI =+ S2) is the total area under the intersections between all R E Sa and their non-maximal intersected regions i Rf's from SI. The reversed distance Dx(S2 ==+ S I ) can be similarly computed. Define a region-based performance measure based on normalized H a m m i n g diswhere I S I t a m e as p = 1 - D H ( s * B S ) + D H ( G S * s ) ,
+2x1'1
+
+is the image size and p E [0,1]. The smaller the degree of mismatch, the closer the p is to one.
+
+Region Segmentation Error Rates We define two types of errors in region se mentation: mzssing rate e 2 and false alarm rate eR. The
+
+9
+
+e i . The former specifies the percentage of the points on Q B that are mistakenly classified as non-boundary points; while the latter, e;, indicates the percentage of the points in B that are actually false alarms. Therefore, em and e; = where T 1 = {x I (x E
+
+GB)A (x @ B ) } , and T2 = {x I (x E B)A (x @ G B ) ) .
+Weighted boundary segmentation error rates are defined as weighted e g and e;, denoted by ( e g , wg)and
+
+B - l G
+
+I
+
+w,
+
+former indicates the percentage of the points in G s being mistakenly segmented into the regions in S that are non-maximal with respect t o the corresponding region in Q while the latter describes the percentage of ' ; the points in S falling into the regions of G s that are non-maximal intersected with the region under consideration. With previously defined directional Hamming distance, we therefore have
+
+54
+
+3 Performance Evaluation Without Ground Truth When ground truth is not available, evaluating segmentation results is similar t o evaluating cluster validky. A segmentation algorithm partitions an image plane F , yielding M non-overlap regions, { R I ,. ., R M } , such that U E E F R , = F , R, n Rj = @,Vi# j. A generic criterion of creating such a partition is that the homogeneity within segmented regions and the heterogeneity among different regions are simultaneously maximized. Let H , denote the total within-region heterogeneity and Hb denote the total between-region heterogeneity. The first generic measure we propose for evaluating a segmentation without ground truth is p = (Hb 1)/(Hb+Hw+1). This ratio reaches one as the internals of all regions are completely homogeneous ( H , = 0) and close to zero when there is simultaneously no discriiminability between regions (Hb = 0) and no internal homogeneity (large H,). Another generic measure we propose is a score from a statistical test that indicates how far the distribution of within-region heterogeneity aparts from the distribution of between-region heterogeneity. A good segmentation corresponds to two significantly far apart distributions. Various statistical test methods can be used. We currently use the Kolmogorov-Smirnov Test which is effective due t o the large sample set in the context of image processing. While these generic measures are flexible because conceptually they can be applied to all three evaluation schlemes discussed in section 2, they are computable only when the definition of heterogeneity is made explicit in application.
+
+the case of boundary-based evaluation (Figure 2(a)), heterogeneity is defined as edgeness measured in gradient magnitude and the correlation between the two curves is 0.953723. In the case of region-based evaluation (Figure 2(b)) where the heterogeneity is defined as the deviation of intensity values in color bands from a reconstructed background, the correlation is 0.790447. The significant correlations between two distributions in both plots indicates that the measures proposed in Section 3 are informative in assessing segmentation results when ground truth is not available. 5 Concluding Remarks In this paper, we proposed two groups of measures for evaluating image segmentation results, one for the situation where ground truth is available and the other for the situation where ground truth is not available. The first group of measures are useful because we can use them t o assess the performance and the robustness of the algorithm from which the segmentation is produced. The second group is useful because with the difficulty or expensive cost of obtaining ground truth, many applications need a reasonable estimate, without using ground truth, about the quality of the segmentation before it can be utilized. We applied the proposed measures to some segmented images and present some of the results in this paper to show that (1) the first group off measures agrees with human subjective visual evaluation and (2) the second group of measures correlates well with the first group, indicating that they can provide a reasonable assessment, without using ground truth, about the quality of the segmentation t o be evaluated.
+
++
+
+4 Experimental Results of Evaluating Image Segmentations Due to the space limit, we show only some applications of these measures to illustrate their usefulness. In More applications are described in[l], Figure 1gives the segmentations of two images derived at different stages of an incremental segmentation scheme[2] and their ground truth. Table 1 lists the boundary-based evaluation using their ground truth, where the left group of measures (columns 2-4) are from the initial segmentations (column 3 in Figure 1) and the second group (column 5-7) from the final segmentations (column 4 of Figure 1). As we can see, these measures agree with human visual evaluation because while the algorithm incrementally improves the segmentation (from initial to final), the weighted error rates drop and the confidence measure C (by combining different measures, see[l]) increases. The plots in Figure 2 correspond to boundary and region evaluation on 30 segmentations using Kolmogorov-Smirnov test scores. In each plot, the solid curve is the evaluation using ground truth and the dashed curve using segmentations only. In
+
+Rek lrences
+[l] Qian Huang. Haerarchical Token Grouping an Extracting Tubular Objects. State University, 1994. PhD thesis, Michigan
+
+[a] Qian Huang, Byron Dom, David Steele, Jon Ashley,
+and Wayne Niblack. Foreground/background segmentation of color images by integration of multiple cues. In Proceedings of 1995 I E E E Conference on Image Processang, Washington D.C., U.S.A., 1995.
+
+[3] Tapas Kanungo, Byron Dom, Wayne Niblack, and David Steele. A fast algorithm for mdl-based multiband image segmentation. Technical Report RJ 97614(84640), IBM Research Division, Almaden Research Center, San Jose, CA, 1994.
+
+55
+
+Figure 1: Two sets of segmentation results. Column 1: input images; column 2: ground truth; column 3: initial segmentations; column 4: final segmentations.
+
+Image Statue Birds
+
+( e g , wg)init
+(0.058, 4.268) (0.078, 3.227)
+
+(e;, wL)init (0.107, 15.489) (0.205, 9.864)
+
+Cinit
+
+0.9286 0.9202
+
+( e g ,w g ) f n l (0.072, 4.390) (0.069, 3.190)
+
+(ei,wi)fnl
+
+Cjnl
+
+(0.008, 3.444) (0.111, 6.153)
+
+0.9763 0.9563
+
+Test Score Dislributinn for 30 Test Images
+1.3 I
+I I I
+
+Test Score Distribution for 30 Test Images
+
+1
+
+1.3 I
+
+I
+
+I
+
+I
+
+I
+
+$
+$
+
+-I
+2
+1.2 1.1
+
+From Ground Truth From Segmetnation Results ----
+
+From Ground Truth From Segmetnation Results
+
+-----
+
+I
+
+1
+
+5
+
+0.9
+
+-
+
+0.8
+
+0.6
+
+'
+
+P
+
+0.6
+
+0.5 0.4 0.3
+
+I
+0
+5
+
+I
+
+I
+
+I
+
+I
+
+I
+30
+
+10 15 20 Test Image Number
+
+25
+
+' '
+0.4 0.3
+
+I
+
+1
+
+I
+
+I
+
+I
+10
+
+0
+
+5
+
+10
+
+15
+
+20
+
+25
+
+Test Image Number
+
+Figure 2: With and without ground truth evaluation based on (a) boundary segmentation, (b) region segmentation.
+
+56
+

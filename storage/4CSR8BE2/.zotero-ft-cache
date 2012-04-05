@@ -1,0 +1,75 @@
+Supplementary Proceedings of PRIB 2007
+
+1
+
+Clustered Nuclei Segmentation by MarkerControlled Watershed Algorithm
+Jierong Cheng and Jagath C. Rajapakse, Senior Member, IEEE
+
+Abstract—We present a method to segment clustered cell nuclei automatically from fluorescence microscopy images. The proposed method uses a marker-controlled watershed for the segmentation of nuclei. Shape markers and a new marking function are introduced to efficiently separate clustered nuclei. The experimental results show that the proposed method can obtain higher segmentation accuracy than existing methods. Index Terms—Cell segmentation, cluster watershed segmentation, fluorescence microscopy. separation,
+
+I. INTRODUCTION he primary step of quantitative analysis of cell shape and motion is usually the identification or segmentation of individual cells. Currently, this is mostly performed manually or using semi-automatic software tools available in microscopic image analysis software. The high throughput and 3D+time imaging techniques generate large data sets rapidly and make manual cell segmentation extremely laborintensive and even infeasible. Although commercial software tools often allow the user to interactively correct trajectories or segmentations through user-friendly interfaces, development of more reliable and automatic image analysis methods for cellular imaging remains an important goal in computational and systems biology. Our purpose is to develop a fully automatic method for segmentation of multiple cells from 2-D microscopy data. In this manuscript, we address the issue of segmentation of cells that tend to touch each other or in the phase of cell division. The method proposed is based on active contours without edges [1] and the marker-controlled watershed segmentation [2]. II. METHOD First of all, objects in microscopy images are segmented by the active contours (level set), and the result is refined by a series of morphological operations. Then, the touching nuclei are separated by a maker-controlled watershed algorithm.
+
+T
+
+A. Marker Extraction The main problem of the existing segmentation methods, such as adaptive thresholding and level set, is that they are not capable of handling touching objects. Original watershed directly uses region minimums or ultimate eroded points (UEPs) as starting points [3]. Although it can segment touching objects, over-segmentation would be likely to happen at the same time. Marker-controlled watershed floods from the markers instead of flooding from the regional minima or UEPs. The watershed grows the marker based on a flooding simulation process. Because one marker represents one object, it is important to extract the object marker correctly because improper operation on marker extraction will cause oversegmentation or under-segmentation. To extract correct object markers, we adopt the H-minima transform [4]. The Hminima transform suppresses all minima in an intensity image whose depth is less than a threshold, say h. Our adaptive H-minima transform for the extraction of shape markers is performed as follows 1) Apply H-minima transform on the inner distance map with h = h0. 2) For each object, find the number of regional minima N(h0) contained. N(h0) is the desired number of nuclei to be detected in this object. 3) If N(h0) > 1, the object contains multiple nuclei and needs separation • Apply H-minima transform with a gradually increasing h, until find a threshold ht where if h ≤ ht ⎧ N( h0 ) N( h ) = ⎨ ⎩ N( h0 ) − 1 or less otherwise. • Apply H-minima transform on the result obtained in step 1 with h = ht –c, where c > 0 is a constant. By using the above adaptive H-minima transform as illustrated in Fig. 1, undesired regional minima are removed by setting h0, and thus the number of nuclei contained in each object is found. ht is the threshold where minima start to merge or disappear and its value depends on the distribution and depth of the minima. Therefore, a proper value of h = ht – c is obtained for each object. The resulted markers (Fig. 1(d)) provide information of the nuclei's number, location, and shape and will be used as the set of minima to impose to the marking function.
+
+Jierong Cheng is with the BioInformatics Research Center, Nanyang Technological University, Singapore and Singapore-MIT Alliance, Singapore. (e-mail: jrcheng@ntu.edu.sg). Jagath C. Rajapakse is with the BioInformatics Research Center, Nanyang Technological University, Singapore and Singapore-MIT Alliance, Singapore. (e-mail: asjagath@ntu.edu.sg).
+
+Supplementary Proceedings of PRIB 2007
+
+2
+
+(a) (b) (c) (d) Fig. 1. Adaptive H-minima transform. (a) Inner distance map. (b) Regional minima of (a). (c) H-minima transformed minima of (a) with h = h0 = 1. (d) H-minima transformed minima after (c) with h = ht - c = 7 (ht = 12, c = 5).
+
+B . Marking Function The performance of the watershed method depends on not only the markers, but also the marking function f(x) which is the topographic surface flooded by water. The marking function provides both the markers and the contours. A good marking function should synthesize the physical characteristics of the objects to segment. For the separation of partially overlapping objects in binary images, the opposite of the distance function (the function which associates each pixel with its distance to the background) is often chosen as the marking function [3]. Nevertheless, the Euclidean inner distance transform generates undesired jaggedness in watershed lines as shown in Fig. 2(c) and Fig. 2(h). To remove the jaggedness, we construct a new marking function based on outer distance transform. Since the inner distance transform measures distances from background, the resulting edge map is solely related to the shape of image object. Oppositely, the outer distance transform measures distance from the center of the object and the resulting edge map is solely related to the shape of regional minima. To take into account the shape of object, we adopt shape markers obtained from H-minima transform. The proposed outer distance transform is performed as follows, generating fO as marking function. 1) Given a binary image, calculate the Euclidean distance transform of the reversed binary image. Reverse the distance map. 2) Extract shape markers M i . 3) Calculate the Euclidean distance transform
+s
+
+setting | ∇ f | = 1. It has been shown that if the relief function f is itself a distance function (i.e. | ∇ f | = 1), the topographical distance reduces to the geodesic distance and the watershed becomes identical with the geodesic skeleton by zone influence (SKIZ) [5]. In addition, the level of the different markers ( α i ) is accounted for by this method. From the results of watershed segmentation on synthetic images, it can be observed that the proposed outer distance map can generate straight lines separating the clusters as desired (Fig. 2(e) and Fig. 2(j)). III. RESULTS We carried out the proposed method on a dataset of 4 microscopy images taken from Drosophila cells and recorded at a spatial resolution of 450×450. To demonstrate the improvement of our method, we compared our method with simple watershed algorithm [3], and marker-controlled watershed by condition erosion [6]. An example of nuclei segmentation results is displayed in Fig. 3. The original watershed algorithm suffers a lot from oversegmentation (shown in Fig. 3(b)). The condition erosion algorithm occasionally under-segment (Fig. 3(c)) the clusters because of incorrect detection of markers. In contrast, the proposed method generates more precise segmentation while removing the jaggedness of watershed lines (shown in Fig. 3(d)). The comparison of segmentation results with the different methods is shown in Table I. The proposed method correctly segments 86.46% of the clustered nuclei. IV. CONCLUSION In this paper, an automatic method to segment clustered cell nuclei in fluorescence microscopy images is presented. The proposed method is based on marker-controlled watershed segmentation. H-minima transform is used to detect shape markers for watershed segmentation. A new marking function based on outer distance transform is introduced to segment clustered cells more precisely by removing jaggedness. The experimental results show that the proposed method can obtain high segmentation accuracy.
+
+Di ( x ) = D( x,M is ) = inf D( x, y )
+y∈M is
+
+(1)
+
+from the shape markers. 4) Obtain the marking function by
+1≤ x ≤ K
+
+gO ( x ) = min{ α i + Di ( x )},
+
+(2)
+
+where
+
+αi
+
+is the level of fI on
+
+M is . Set all background
+
+pixels to minus infinite. In (1) and (2), we replace the topographical distance L with the geodesic distance D (for connected convex shapes, the geodesic distance is equivalent to Euclidean distance) by
+
+Supplementary Proceedings of PRIB 2007
+
+3
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+(e)
+
+(f) (g) (h) (i) (j) Fig. 2. Cluster separation by watershed segmentation (h0 = 1, c = 2). First column: original synthetic image. Second column: inner distance map. Third column: watershed segmentation using inner distance map as marking function. Fourth column: outer distance map. Fifth column: watershed segmentation using outer distance map as marking function. TABLE I SEGMENTATION COMPARISON OF DIFFERENT METHODS. NUMBER OF CLUSTERED NUCLEI: 96. Methods Original watershed Condition erosion Proposed method Correctly segmented 65 (66.67%) 50 (50.08%) 83 (86.46%) Over-segmented 32 (33.33%) 5 (5.21%) 11 (11.16%) Under-segmented 0 41 (42.71%) 2 (2.08%)
+
+(a) (b) (c) (d) Fig. 3. Nuclei segmentation results of (a) manual outlining, (b) original watershed algorithm, (c) condition erosion watershed algorithm, and (d) the proposed method (h0 = 1, c = 5).
+[3] L. Vincent and P. Soille, “Watersheds in Digital Spaces: An Efficient Algorithm Based on Immersion Simulations,” IEEE Trans. Pattern Anal. Machine Intell., vol. 13, no. 6, pp. 583-598, 1991. P. Soille, Morphological Image Analysis: Principles and Applications. Springer-Verlag, 1999, pp. 170-171. F. Meyer, “Topographic distance and watershed lines,” Signal Processing, vol. 38, no. 1, pp. 113-125, 1994. X. Yang, H. Li, and X. Zhou, “Nuclei Segmentation Using MarkerControlled Watershed, Tracking Using Mean-Shift, and Kalman Filter in Time-Lapse Microscopy,” IEEE Trans. Circ. Sys. -I, vol. 53, no. 11, pp. 2405-2414, 2006.
+
+ACKNOWLEDGMENT This work was supported by the Singapore-MIT Alliance, Computation and Systems Biology programme.
+[4] [5] [6]
+
+REFERENCES
+[1] [2] T. F. Chan and L. A. Vese, “Active contours without edges,” IEEE Trans. Image Processing, vol. 10, no. 2, pp. 266-277, 2001. F. Meyer and S. Beucher, “Morphological segmentation,” J. Visual Comm. and Image Prepresentation, vol. 1, no. 1, pp. 21-46, 1990.
+

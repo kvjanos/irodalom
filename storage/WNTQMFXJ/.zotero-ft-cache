@@ -1,0 +1,206 @@
+Computerized Medical Imaging and Graphrcs, Vol. 17, No. 3, pp. IlS-182, Printed in the U.S.A. All rights reserved.
+
+1993 Copyright 0
+
+0895-61 I l/93 $6.00 + .@I 1993 Pergamon Press Ltd.
+
+SEGMENTATION AND MEASUREMENT BASED ON 3D VORONOI DIAGRAM: APPLICATION TO CONFOCAL MICROSCOPY
+
+E. Bertin*, F. Parazza, and J. M. Chassery
+Equipe de Reconnaissance des Forrnes et Microscopic Quantitative, Laboratoire TIM3-IMAG, USR CNRS 690B, Universitk Joseph Fourier, CERMO, BP 53X. 38041 Grenoble cedex, France (Received 21 October 1992) Abstract-Computational geometry provides many solutions to imaging problems, especially for three-dimensional (3D) image compression, segmentation, and measurement. We present here a new method to partition volume data by Voronoi polyhedra structured in a graph environment. A dynamic construction of the 3D Voronoi diagram is proposed, using image information interactively. The process has been applied to segment and quantitate 3D biological data acquired with a confocal laser scanning microscope (CUM). The discrete volume acquired represents a large mass of data and can be reduced with this particular method, before measurement (processing time) or archiving (memory space). Furthermore, the structure data is a powerful tool to rapidly compute parameters that are characteristic of the volume data. Key Words: Voronoi polyhedron, Delaunay tetrahedron, 3D compression, 3D segmentation, 3D Measurement, Confocal microscopy, Biological applications
+
+INTRODUCIION Three-dimensional (3D) imaging in cell biology requires structural description. Because biological specimen are 3D, morphological and topographical features must be extracted directly from a 3D representation of the specimen. The following stages are required: data acquisition, image enhancement, segmentation, and measurement. In addition, 3D visualization and animation may be used to verify the stages. The biological data are acquired by a confocal laser scanning microscope (CLSM). This microscope generates optical sections of fluorescent specimens (Fig. 1). The data are presented as a 3D array of voxels. Biological structures (i.e., nuclei or chromosomes) usually require 256 * 256 * 64 voxels. Data acquisition and image enhancement are not described here (1). This paper deals with the problem of volume representation related to 3D data compression, segmentation, and measurement. Our approach is based on geometrical models. The main idea is to mathematically partition the space into regions using convex polyhedra. For the decomposition, we associate each convex polyhedron with a point and conversely each point to a convex polyhedron. In addition, we need a proximity criterion and a relation-
+
+ship between seeds. Such relations make it possible to rapidly compute volumes and surfaces of cell nuclei or distances between labeled DNA sequences inside a chromosome. Such constraints are satisfied by the Voronoi and the Delaunay partitions. Furthermore, the Delaunay graph contains all the neighboring information, and the Voronoi tessellation is well adapted for modeling in many fields such as biology, physics, etc. For example, the cells of a tissue in the plane look like Voronoi polygons (2). In 3D we observe the same phenomenon with the soap bubble, the alveolus bee, and the quasi crystal arrangement (3). These properties are intrinsic Voronoi and Delaunay definitions which we give in the following section. CONSTRUCTION OF THE VORONOI DIAGRAM
+Dejnitions
+
+The Voronoi diagram is a partition or tessellation of space into Voronoi polyhedra. Consider a finite set of points S = {pl - - - p,} called “seeds” in the space. For every point p, E S, the Voronoi polyhedron associated with pi, Vor(p;), is the region of the space where every point in Vor(pJ is closer to pIithan to any other point of S. This can be written: Vor(p,) = {x E [R’ /d(.x, 5 d(x, p,) V j # i } p,) where d is the Euclidean distance. VOr(pi) is polyhedral and convex (Fig. 2).
+175
+
+* Correspondence should be addressed to E. Bertin, Equipe de Reconnaissance des formes et Microscopic Quantitative, Laboratoire TIM3-IMAG, USR CNRS 690B, Universitk Joseph Fourier, CERMO, BP 53X. 38041 Grenoble cedex. France.
+
+116
+
+Computerized Medical Imaging and Graphics
+
+May-June/l993,
+
+Volume 17, Number 3
+
+Fig. 1. 18 sections of a series of 4 1 sections (256 * 256) through a cell nucleus obtained with a confocal laser scanning microscope (CLSM) (LSMlO ZEISS). The voxel size is about 0, 14 rm*0.14 pm*0.29 pm.
+
+The dual diagram is called the Delaunay tessellation DEL(S). Two seeds, pi and p,, are neighbors in the Delaunay graph if and only if their Voronoi polyhedra, Vor(pi) and Vor(pj) are adjacent. That is, Vor(pi) and Vor(p,) have a common face in 3D space. More rigourously: DEL(S) = {(P, P,) E S2, Vor(~i) n VOtiPj) + 01. We assume here that four seeds on the same sphere do not occur to avoid problems in computational geometry. The Delaunay tessellation can be defined in another equivalent manner. It has been demonstrated that the Delaunay graph is the unique tetrahedrization with “empty balls.” That is: DEL(S) = {(Pi, P,,
+Pkt
+
+PI) Pj7 Pk, Pr) n S \ (Pi, Pj3 Pk, Pr) =
+
+E S4, &Pi,
+
+0},
+
+where B(pi, pj, pk, p,) is the ball circumscribed by the four seeds pi, p,, pk and pi. These four seeds create a Delaunay tetrahedron (Fig. 3). It follows from this property that there is a natural neighboring in the Delaunay graph, to proving that the Delaunay graph contains all the neighboring information. Thus, Voronoi tessellation appears to be a powerful tool representing the morphology of 3D objects, and the Delaunay graph is useful to describe their neighborhood. Computation of the Voronoi and Delaunay diagram The first step is to compute the 3D Voronoi diagram. Usually the two-dimensional (2D) algorithm
+
+takes into account the possibility of having a sorting of the edges of polygons, which is the standard representation of a polygon. In 3D space, there is not such an easy sorting of the polyhedra facets. Consequently, both the data structure and the algorithm must be independent of the order used for storage. This is the first problem to be solved. The second is segmentation and compression of 3D data. In these applications it is necessary to compute the 3D diagram in a dynamic manner. More precisely, it must be possible to add or to remove a polyhedron without computing the whole structure again. One method of computing Voronoi and Delaunay tessellation in 3D space is the incremental (also called bucketing) interactive approach. The incremental algorithms work by local modification of the diagram after insertion of a new point. Thus, this method is well adapted for the segmentation step described below. The well known algorithms are the Watson algorithm for Delaunay tessellation (4), and the Bowyer for the Voronoi diagram (5). Recently, we proposed a new algorithm based on the incremental method (6). In terms of data structure, a graph environment is used, so that to each seed we associate a Voronoi polyhedron (Voronoi graph) and pointers to a list of its neighbors (Delaunay graph). These two graphs are very useful for solving the problems raised by extraction and measurement. Results In practice, we obtain 10,000 polyhedra with about 70,000 tetrahedra in 16 s and 80,000 polyhedra with about 600,000 tetrahedra in 2 min 50 s on a Silicon
+
+3D Voronoi diagram ??E. BERTIN, PARAZZA,and J. M. CHASSERY F.
+* Pl
+??
+
+~6 * P7
+
+* P2
+
+??
+
+P9
+
+*p8
+
+??
+
+P3 * pll
+
+Fig. 2. A Voronoi polyhedron Vor(pi) and its neighbors in a set S of points. For a point pj E S, pj # pi, the locus of points closer to p, than to pj is the halfkqace containing pi that is defined by the mediator plane of [pi, p, 1,H( p, , pi). Thus VOr(pi)is the intersection of those half-spaces.
+
+IndigoTM workstation. The structure is not very complex (5, 7). We need about 3 Mb for 10,000 polyhedra. These results demonstrate the efficiency of the bucketing method. In fact we have demonstrated that the incremental method runs in O(N log N) if the seeds are uniformly distributed. The worst result is obtained if the final number of Delaunay tetrahedra is in o(N’ where N is the number of seeds. However, in ) general, the incremental method is optimal. In conclusion, we can say that the bucketing method has two advantages: a run time optimality and a dynamic management of the Voronoi structure. Graphics
+
+These two points are crucial for the performance and the conception of the segmentation and compression applications discussed below. SEGMENTATION AND COMPRESSION
+
+The discrete volume acquired by the CLSM represents a large mass of data that must be reduced before measurement (processing time) or archiving (memory space). In addition, the objects of interest must be segmented from the background before extraction and measurement. Thus, the second step is the compression and the segmentation of volume data.
+
+h
+* * *
+
+*
+
+B(Pi,Pj,Pk,PI)
+
+*
+
+Pi
+
+*
+
+Fig. 3. A Delaunay tetrahedron in an environment of a set S of points, and the property of the “empty balls.” Four points p,, p,, pk and pl in S create a Delaunay tetrahedron if and only if the ball B circumscribed by this four points is empty (there is no points of S in B).
+
+178
+
+Computerized Medical Imaging and Graphics
+
+May-June/ 1993, Volume 17, Number 3
+
+Fig. 4. Illustration of different stages of the compression and segmentation algorithm of a volume data. Initialization step with 5 polyhedra (a) and then split step with 85 polyhedra (b), 379 polyhedra (c), 1919 polyhedra (d), and 5454 polyhedra (e), until the convergence with about 7000polyhedra (f). A set of 6000 polyhedra remains after the merge step. In this case the rate of compression is around 28 using a threshold of 13 on the standard deviation.
+
+The method presented here is a generalization of principles already studied in 2D space (7, 8). A split and merge approach has been implemented on quadtree regular structures (9) extended to 3D Voronoi irregular structures (8a). For a given 3D image, the Voronoi diagram is constructed by successive decompositions of the volume into polyhedra in the following manner. The image guides the evolution and location of polyhedra. Essentially, there must be a high density of seeds in regions where there are many grey level variations in the 3D image and inversely a low density of seeds in regions where there is little grey level variation. This principle can be understood in terms of gradient, for example. Because the location of the seeds is not known in advance, a dynamic management of the Voronoi diagram (incremental algorithm) is needed.
+
+Algorithm This algorithm proceeds in two steps. The first is the split step: Polyhedra are added in the 3D image until the convergence. The second is the merge step: Some polyhedra are deleted. Polyhedra are added or deleted according to the algorithm described below (see Fig. 4). Algorithm 1. Split. Initialization. Compute the Voronoi diagram with a small number (about 5-50) of polyhedra having a Poisson distribution. Compute statistical and geometrical parameters associated to each polyhedron. For example, we compute the mean, variance, volume, and surface for each polyhedron. The mean grey-value associated with each polyhedron is the mean grey-value
+
+3D Voronoi diagram ??E. BERTIN, F. PARAZZA,and J. M. CHASSERY of the voxels in each polyhedron. Therefore, the voxels of the volume to be included in each Voronoi polyhedron must be known. This involves the labeling process described below. Propagation. When a polyhedron has a variance value less than a fixed threshold, it is kept, and the polyhedron is said to be homogeneous. Conversely, when the threshold is exceeded, the polyhedron is split by the addition of new seeds under geometrical criterion. More precisely, we add a seed on the barycenter of the face of two nonhomogeneous and neighboring polyhedra. If the common surface face is smaller than a prefixed percentage of the polyhedron total surface, seed is not added. Next, the statistical and geometrical parameters associated with each polyhedron are computed. Convergence. The algorithm converges when all the polyhedra are homogeneous. The choice of adapted parameters leads to a better convergence of our algorithm. It appears that robust analytic parameters, such as gradient or Laplacian, could be added to the variance criteria. Here, the morphological gradient has been studied. For each polyhedron, the difference between the maximum and the minimum mean grey-value is computed for polyhedra in the neighborhood of the given polyhedron. Moreover, we can weigh the difference between two adjacent polyhedra. The weight should be proportional to the surface of the common face of the two polyhedra considered. Mergcj. When all neighbors of a given polyhedron, P, are homogeneous with almost equal grey level means, we delete the corresponding seed, P. This step is not trivial, and we have developed a program to delete a polyhedron in the structure (6). All the parameters for each polyhedron are computed again.
+
+179
+
+quired to find the seed pk is a constant (not depending on the number, N, of seeds). Consider v(i, j, k) as processed. Affect v(i j, k) to Vor(pk). End For End For The average time required for this step is about 10 s.
+
+Results
+Some results are obtained on biological specimen acquired by CLSM. The first example is a metaphasic human chromosome. The acquired volume data is composed of 3 1 adjacent optical sections of 128 * 128 pixels. The segmentation algorithm converges when about 7,000 polyhedra have been generated. A set of about 6,000 polyhedra remains after the merge step. In this case, the rate of compression is about 28 using a threshold of 13 on the standard deviation. The time required to obtain this result is 1 min 30 s. The second example is a mammalian cell nuclei. The acquired volume data is composed of 4 1 adjacent optical sections of 256 *256 pixels. After the merge step, we obtained 12,000 polyhedra and the rate of compression is about 75 using a threshold of 7 on the standard deviation. In this case, the total process takes 3 min. EXTRACTION AND MEASUREMENT
+
+Labeling
+A new tool has been implemented to obtain the labeling of the polyhedra partitioning. This step consists of assigning to each polyhedron all the interior voxel images. This is a crucial step and a difficult problem in computational geometry. The novelty of this technique is the use of the Delaunay graph to label an existing polyhedron in the structure.
+
+A third step is the exploitation of the Voronoi and Delaunay graph to quantitate intra-object distance, volume, and surface. It is based on the polyhedra information and their relationship. In this paper, attention has been restricted to the extraction of 3D objects from these two graphs and the measurement of parameters in these 3D objects. Furthermore, the Voronoi and the Delaunay graphs can be used to optimally solve spatial closest point problems (10). Some tools are based on mathematical morphology on graphs ( 11).
+
+Extraction qf an object in the Voronoi and Delauna), graphs
+The principal tool here is the search of connected components in a graph under constraints. This tool is useful to extract a 3D object, a nucleus, for example (Fig. 5), or a chromosome. This step is necessary if object features are to be measured (see below).
+
+Algorithm 2.
+For each seed pi do Find the minimal box B including the polyhedron already pro-
+
+Vor(pi). For every voxels v(i, j, k) of B not cessed do Find the seed pk nearest to v(i, j, This search can be done using a walk in graph. We initialized this walk with pi.
+
+k). the Delaunay The time re-
+
+Algorithm 3. Search in the Delaunay
+abiding by constraints.
+
+graph a first polyhedron
+
+P
+
+Process P
+
+180
+
+Computerized Medical Imaging and Graphics
+
+May-June/ 1993, Volume 17, Number 3
+
+putation. A regular function can reduce this bias such as a B-spline function, which can be used to smooth the shortest path. Figure 7 is a flow diagram to illustrate the processing steps for compression, segmentation, and measurement. DISCUSSION AND CONCLUSION
+
+Fig. 5. Algorithm of the search of a connected component in the Delaunay and Voronoi graphs abiding by constraints. In this illustration we have an extraction of a nucleus and its representation by Voronoi polyhedra. The constraint here is a mean grey level threshold around 77.
+
+Push P in a list L of polyhedra to process. While (L # fz/) do Pop Pfthe first element of L. for all neighbors V of Pf not processed do if (constraints = TRUE) do Process V. Push V in the list L.
+end if end for end while
+
+The constraints are multiple. There are statistical constraints (mean grey-value or variance of the voxels of each polyhedron), geometrical constraints (volume, surface), and constraints arising from cellular sociology ( 12). Distance measurement In cell biology, particularly in studies on the mode of organization as the human genome, biologists need to measure distance between (revealed by fluorescence) DNA sequence and characteristic land mark (centromer) along a chromosome. This calculation is not straightforward when the object is not in all cases convex as a chromosome. To solve this problem, the Dijkstra’ algorithm s (13) has been used on the resulting graph of the extraction process (described above) to compute this distance. With this algorithm, the skeleton of an object or intra-object distance can be computed in a short time (under 1 s for the chromosome volume). Figure 6 is an illustration of the measurement of an intra-chromosomal distance in 3D. The shortest path is composed of Delaunay edges. Unfortunately, this constraint introduced bias in the distance com-
+
+Computational geometry provides satisfying solutions for 3D imaging. Our method is based on Voronoi and Delaunay tessellation. We have shown that it is possible to compress and segment discrete volumes acquired by CLSM. Furthermore, extraction and measurement of objects are realized from the Voronoi polyhedra representation. The problem with this method is the processing time for the construction of the Voronoi Diagram (about l-4 min). Fortunately, the Voronoi polyhedra are structured in a graph environment, thus it is easy to compute spatial closest relationship and consequently to rapidly compute some parameters (i.e., skeleton). This method may be used to measure distances between genes on human chromosomes (after revelation by fluorescent in situ hybridization), in order to generate a physical map of the human genome. The method can also be used in other applications that require 3D featuring (e.g., positron emission tomography, magnetic resonance imaging, etc.). In such applications, the data volume may be so large that a transfer of our algorithm into a parallel computer may be necessary.
+
+Fig. 6. Computation of an intra-chromosomal distance with the Dijkstra’ algorithm after the extraction of connected s component. The path is composed of a set of Delaunay edges.
+
+3D Voronoi diagram
+
+??
+
+E. BERTIN,F. PARAZZA,and J. M. CHASSERY
+
+181
+
+NO
+
+Fig. 7. Illustration
+
+of the processing
+
+steps for compression,
+
+segmentation,
+
+and measurement.
+
+The algorithm of compression and segmentation described above can be extended to other geometrical models. For example, we have developed the octree
+
+model (Fig. 8) and the Delaunay model (Fig. 9), which are more accurate and flexible. The number of faces of polyhedra can change from 5 to 24 for a uniform distribution. This number is rigid for the octree (6 faces) model and the Delaunay tessellation (4 faces). Thus, we have a better relation between seeds. The polyhedra location is not rigid as compared to the octree approach. Thus, the polyhedra distribution is more easily adapted. For example, a 3D nucleus (256 * 256 * 41) needs about 20,000 cubes with the octree model and about 12,000 polyhedra with the Voronoi model. Thus, we have a better compression rate. However, the merge step using the octree model is not feasible and, furthermore, this step is complicated using the Delaunay model. Thus, the Voronoi diagram is better adapted to this problem than the Delaunay and octree models.
+SUMMARY
+
+Fig. 8. Octree representation
+
+using 11500 cubes.
+
+We have presented here a new method to partition a volume data with the Voronoi polyhedra structured in two graphs environment: the Voronoi and the De-
+
+Computerized Medical Imaging and Graphics
+
+May-June/1993, Volume 17, Number 3 to thank also D. Milhet for his cooperation in the visualization. We are grateful to R. Marcelpoil and Y. Usson for helpful discussions during this work. We are grateful to Dr. Victoria von Hagen for her advice in editing of the manuscript and to Pr. Robert-Nicoud for his helpful comments on manuscript. This work was supported by the European Economic Community (GENO-CT9 l-0029).
+
+REFERENCES
+1. Pawley, J.B. Handbook of biological confocal microscopy. New York: Plenum Press; 1990. 2. Honda, H. Description of cellular patterns by Dirichlet domains: The two dimensional case. J. Theor. Biol. 72:523-543: 1978. 3. Stevens, P.S. Patterns in nature. Boston, MA: Little, Brown: 1978. 4. Watson, D.F. Computing the n-dimensional Delaunay tessellation with application to Voronoi polytopes. Comput. J. 24(2): 167-172; 1981. 5. Bowyer, A. Computing Dirichlet tessellation: Comput. J. 24: 162-166; 1981. 6. Bertin, E.; Chassery, J.M. Diagramme de Vorono! 3D: Construction et applications en imagerie 3D. AFCET, 8’“”CongrCs Reconnaissance des formes et intelligence artificielle, Lyon-Villeurbanne. 2:803-808; 1991. 7. Rom, H.; Peleg, S. Image representation using Voronoi tessellation: Adaptive and secure. Proceedings of Computer Vision and Pattern Recognition Ann Arbon (MI). IEEE Computer Society Press; 282-285; 1988. 8. Chassery, J.M.; Melkemi, M. Diagramme de Voronoi’ applique a la segmentation d’ images et a Ia detection d’ ivtnements en imagerie multi-source. Traitement du signal. 8: 155-164; 199 1. Ba.Bertin, E.; Chassery, J.M. 3D Voronoi diagram: Application to segmentation. IEEE, I lth International Conference on Pattern recognition, The Hague (in press). 9. Samet, H. Region representation: Quadtrees from binary arrays. CGIP. 13:88-93; 1980. 10. Preparata J.P.; Shamos, M.I. Computational geometry, an introduction. New York: Springer-Verlag; 1988. 11. Vincent, L. Graphs and mathematical morphology. Signal Processing. 16(4):365-388; 1989. 12. Marcelpoil, R.; Usson, Y. Methods for the study of cellular sociology: Voronoi diagrams and parametrization of the spatial relationships. J. Theor. BioI. 154:359-369; 1992. 13. Sakarovitch, M. Optimisation combinatoire, mtthode math6 matiques et algorithmiques. Hermann, Enseignement des sciences. 1984.
+
+Fig. 9. Delaunay
+
+representation
+
+using 6500 tetrahedra.
+
+launay of
+
+graphs.
+
+The first one represent
+
+the morphology
+
+3D objects, and the second one is useful to describe the neighboring between element. The choice of the algorithm to compute the Voronoi and the Delaunay tessellation is developed on the basis of the principle of the 3D segmentation and compression algorithm. During this first step, the image guides the evolution and location of polyhedra. Such a constraint implies a dynamic management of the Voronoi diagram and involves an incremental technique to compute the Voronoi and the Delaunay tessellation. In a second step, an exploitation of the results is obtained with the 3D segmentation and compression algorithm. The structure data is a powerful tool to perform some manipulation. Such a representation allows an extraction of objects of the background with an algorithm of a search of a connected component under constraints. Furthermore, it allows some measurement of these objects. This process is of interest if the study object is nonconvex. The developed process has been applied in CLSM. It allows the study of biological objects (chromosome and nucleus for example).
+Acknowledgments-We want to thank here P. Moreau for his cooperation in our program and his enlightening discussions. We want
+
+Ahout the Author-ETIENNE BERTINis currently a Ph.D. student in the RFMQ-TIM3-IMAG laboratory. He received the Master Degree in mathematics from Universite Joseph Fourier in 1990. About the Author-FRANCK PARAZZA currently a Ph.D. student is in the RFMQ-TIM3-IMAG laboratory. He received the Master Degree in medical and biological engineering from Universite Joseph Fourier in 1990. About the Author-JEAN-MARC CHASSERY Director of Research is at C.N.R.S. He is managing the Image Analysis Group of RFMQTIM3-IMAG Laboratory.
+

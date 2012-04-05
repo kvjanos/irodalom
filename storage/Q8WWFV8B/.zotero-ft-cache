@@ -1,0 +1,307 @@
+Three-dimensional quantitative analysis of cell nuclei for grading renal cell carcinoma
+H. J. Choi,’ T. Y. Kim,‘ N. H. Cho,’ G. B. J e ~ n g Y. Huh4, and H.K. Choi ,~
+‘School of Computer Engineering, lnje University, Gimhae, Korea 2Department of Pathology, Yonsei University, Seoul, Korea 3Department of Anatomy, Chungbuk Univiersity, Cheonglu, Korea 4Korea Electrotechnology Research Institute, Ansan, Korea
+
+’
+.
+
+’
+
+Abstrucr - I n this paper, we have proposed a method for renal cell carcinoma (RCC) grading, using a three-dimensional (3D) quantitative analysis of cell nuclei based on digital image cytometry. We acquired volumetric R C C d a t a for each grade using confocal laser scanning .microscopy (CLSM) and developed a method for grading RCC using 3D visualization and quantitative analysis of cell nuclei. First, we used a method of segmenting cell nuclei based on Pun’s method. Second, to determine quantitative features, we used a 3D labeling method based on slice information. After applying the labeling algorithm, we determined the measurements of cell nuclei using 3D quantitative analysis. To evaluate which of t h e quantitative features provided by 3D analysis could contribute to diagnostic information and could increase accuracy in nuclear grading, we analyzed statistical differences in 3D features among the grades. We compared features measured in two dimensions (diameter, area, perimeter, and circularity) with features measured in three dimensions (volume, surface area, and spherical shape factor) between identical cell nuclei by using regression analysis. For 3D visualization, we used a contour-based method for surface rendering. We found a statistically significant correlation between the nuclear grade and the 3D morphological features. Comparing o u r results t o an ideal RCC grading system, we found that our nuclear grading system based on the 3D features of a cell nucleus provides distinct dividing points between grades and also provides d a t a t h a t can be easily interpreted for diagnoses. 3D visualization of cell nuclei offers a realistic display and additional valuable medical information that can lead to an objective diagnosis. This method could overcome the limitations inherent in ZD analysis and could improve the accuracy and reproducibility of quantification of cell nuclei. O u r study showed that a nuclear grading system based on the 3D features or a cell nucleus might be an idea1 grading system.
+Index Terms3D feature extraction, 3D labeling, 3D visualization, histopathological grading system, renal cell carcinoma tissue section image, segmentation, confocal laser scanning microscopy
+
+1. INTRODUCTION
+
+Renal cell Carcinoma (RCC) grading begin in the United States in 1932. Hand and Broders [ I ] discovered that RCC grade was associated with patient survival; more patients with higher-grade carcinoma died than did patients with lowergrade carcinoma. Since then, numerous studies have examined these relationships, and different grading systems have emerged [2]-[4]. Conventional visual .analysis for grading has low reproducibility as it i s based on subjective evaluation, which is prone to inter- and intra-observer variation, regardless of the use of any grading systems. To overcome. this problem, researchers have qualitatively evaluated the criteria of the grading system using computer-assisted microscopic analysis of Feulgen stained nuclei . [ 5 ] . Several studies introduced objective measures for nuclear grading, because most grading systems determine a grade using nuclear and nucleolar characteristics [ 6 ] ,[7]. Most of these studies used 2D images of thin tissue sections that contained only partial cell nuclei, owing to the truncation of nuclei during the sectioning process; this makes highly accurate quantification difficult. Cutting can lead to inaccurate quantification, as determining the size or diameter of a nucleus depends on the angle of physical sectioning relative to the position of the nucleus. For example, if a nucleus with an ellipsoidal shape is positioned horizontally in the section, the surface area observed for t h e nucleus may be quite large, whereas if it is positioned vertically, the area viewed In the section may be relatively small. Thus, a feature analysis based on 2D images cannot give accurate results. Such complications can be overcome by using confocal laser scanning microscopy (CLSM) to obtain a series of consecutive 2D optical slices without physical sectioning. From the volumetric data obtained from CLSM, w can e construct a 3D visualization, and quantify 3D features. A main concem of this study is to compare the Fuhrman grading system [4], used by most pathologists, with our proposed nuclear grading system based on the 3D features of
+
+0~7803-8940-9/05/$20.00 02005 IEEE.
+
+-
+
+179 -
+
+a cell nucleus, and to analyze extracted 3D nuclear features to create a standard’for RCC grading.
+
+individual intensities and the cluster means. The optimal threshold is the one that maximizes the between-class variance.
+
+A . Specimen Preparation and Image Acquisirion
+i d
+
+,=T*I
+
+Eight cases of RCC were obtained from the Department of Pathology, Yonsei University, South Korea. They had been fixed in 10% neutral-buffered formalin and embedded in paraffin before receipt. The tissues were cut into 20-pm sections, stained with propridium iodide (PI) containing RNase A (final concentration, 0.5 mg/mL), and mounted in a fluorescent mounting medium (DAKO, USA). The RCC tissues were imaged with a TCS SP2 AO3S confocal imaging system (Leica Microsystems Ltd., Mannheim, Germany) equipped for Leica Dmire2 (Leica Microsystems Ltd., Mannheim, Germany), a 630x, 2x zoom, 1.4 NA HEX PLApochromat objective lens (Leica), and a HeNe laser. The fluorescently labeled antibody and PI were imaged simultaneously by using the 468-nm and 568-nm laser lines and collecting the light emitted between 595 and 685 nm (fluorescein signal) with one photo multiplier tube (PMT) and the light of wavelengths 595- 685 nm (PI signal) with another PMT. We acquired a series of 2D optical sections, 0.4 pm apart, starting above the top surface of the section and extending down to the bottom surface. There were a total of 50 slices for each volume data, and each slice was a 24-biVpixel image with a resolution of 5 12 x 5 I 2 pixels.
+B. Segmentation of Cell Nitcler
+
+mean of the pixels in the background,po((T) is the mean of the pixels in the foreground. Pun’s method is based on the relationships of entropies. We can define the entropy of each class as follows:
+
+The optimal threshold is the value of T that maximizes H = H , + H,, . To find this value, a researcher tries all thresholds between 0 and 255, and chooses the one that gives the largest value of H , We tested the two methods on the images; Fig. 1 shows the thresholding images when we used the two methods. Afmost all the gray level values fall in the first quarter of the histogram. There is a slight difference in the results when using Otsu’s and Fun’s methods. Both of them successfully separate objects and background. However, as the thresholding values in Pun‘s method are lower than those in Otsu’s method in all the tested images, Pun’s method can process large objects, whereas Otsu’s method is restricted to relatively small objects. By using visual inspection, we used Pun’s method to segment cell nuclei.
+
+Thresholding is a simple and frequently used method of image segmentation, based on histogram characteristics of the image’s pixel intensities. Generally, to threshold is to set a gray level T s o that all pixels with a gray level greater than T are mapped into the object label, while all other pixels are mapped into the background label [8], [9]. Thresholding cannot work well if a histogram valley is narrow or wide, or if a histogram is not bimodal. It is difficult and tedious to determine different thresholds manually to segment volumetric data with a series of consecutive 2D images. To obtain the optimal threshold for each image automatically, we used Otsu’s method [ 101 and Pun’s method [ I I], 121 for automatic threshold selection. Otsu’s method is based on a relationship of variances derived from probability theory. This depends only on the of the two ,.lusters, thus difference between the avoiding having to calculate the difference between
+~~
+
+.
+
+(hl
+
+Irl
+
+Fig. 1 . (a) Fluorcsccncc-staincd ccll nuclcl. (b) Imagc histogram of (a); the (Icfi) linc concsponds to a thrcshold takcn by Pun’s method, and rcd vcrt~cal thc bluc vcntcal (right] linc corrcspondr to a thrcshold taken by OtSu’s mcthod. ( c ) Thc scgmcntcd rcsult using Otsu’s mcthod. (d) Thc scgmcntcd
+ICSult using
+
+Pun,s method,
+
+- 180 -
+
+After initial segmentation, we need a post-processing step to correct and remove any incorrectly segmented nuclei. We must consider two problems at this stage: fragmentation of a cell nucleus makes it difficult to recognize it as one cell nucleus; and touching cell nuclei might be processed as one cell nucleus, even if there are two or more cell nuclei involved. These problems can lead to inaccurate quantitative analysis. To connect a discontinuous cell nucleus, we first reduced the cell nucleus to lines a single pixel wide, using a thinning operation. After the thinning operation, we used a hit-or-miss transform to find endpoints, which we defined as object pixels with, at most, one object pixel among the neighboring pixels [ 131. Then, we made a matrix containing information about the position and label o f each endpoint. Based on this matrix, we computed the Euclidean distance between the endpoints. If the distance was less than a fixed threshold value, we drew a line between the two endpoints. Finally, we obtained a connected cell nucleus. Fig. 2 shows the results of the connection step.
+
+distance to the image background. We applied a watershed segmentation using the results of the distance transform. We built a dam based on Vincent and Soille's immersion principle and drew the watershed line corresponding to the dam [ 141; Fig. 3 shows the results of the separation step,
+
+Fig. 3. The proccdurc uscd tu scparalc touching cell nuclei.
+
+However, when we applied watershed segmentation to an entire image, it led to over-segmentation. Fig. 4(c) shows how some objects in the image were divided into several parts. This over-segmentation could be reduced by merging small objects with neighboring objects [IS], but it is difficult and complicated to make a rule for selecting which objects to merge. Therefore, watershed lines consisting of objects less than 5 pixels long or more than 30 pixels long were deleted from the watershed image. An AND operation was applied to the resulting image and the segmented cell nuclei image. The result, after removing many other spurious watershed lines, can be seen in Fig. 4(d).
+Fig. 2. Thc proccdu~c uscd IO conncct disconrinuuus cc11 nuclci
+
+We used the Watershed algorithm to separate touching cell nuclei. This method is very useful in many problem areas of image segmentation. The watershed algorithm simulates a flooding process; an image is identified with a topographical surface, in which the altitude of every point is equal to the gray level of the corresponding pixel. Holes are then pierced in all regional minima of the relief. As the whole surface slowly sinks into a 'lake', water rushes through the holes and progressively immerses the adjacent walls. To prevent streams of water from different holes from intermingling, an obstacle is set up at the meeting location. Once the relief is completely covered by water, the set of obstacles depicts the watershed image. We applied the watershed algorithm in the following way: after the initial segmentation, we performed several morphological operations. We did a distance transform on the objects. A distance transform assigns a value representing
+
+(El
+
+Fig. 4. tmagc scgmcntation by thc watcrshcd algorithm. (a) Fluorcsccnccstraincd ccll nuclci. (6) Thc resulting iinagc after initial scgmcntation (E) Ovcr-segmcntcd objccts. (d) Thc rcsiilt aftcr rcmoving spurious watcrshcd
+lines.
+
+- 181 -
+
+C. Suface Rendering
+
+We used a contour-based surface rendering method consisting of three steps: contour data extraction, smoothing of the extracted contours, and surface approximation. First, to extract contours from a slice, a Laplacian of Gaussian (LOG) operator was used to detect the overall boundary. This operator combines Gaussian filtering with a discrete Laplacian, which eliminates much of the noise before edge enhancement. Second, the smoothing algorithms proposed by Ryu et al. [ 161 were used to refine the contour data because of the irregularity of chord length within a contour and the topological inconsistency between contours. As smoothing in the horizontal direction requires resampling the new contour data-with the unit chord length from the initial contour, we defined the unit chord length and performed the resampling process until all chord lengths converged on the unit chord length. T smooth in the vertical o direction, we removed wiggles that could be estimated by the degree of change in the discrete curvature using the Laplacian smoothing algorithm [ 171. Third, the Lofting algorithm was used to skin surfaces.
+
+Most RCC grading systems are based on morphonuclear criteria, such as nuclear size and shape. Variations in nuclear size and shape can be important diagnostic factors, which can be expressed and quantified by morphometric features. The following parameters define the characteristics of a cell nucleus in three dimensions [20], 1211: Volume: This is determined by the total number of voxels in the nucleus. The number of voxels multiplied by the size of a voxel gives the size of a cell nucleus in standard units. Surface area: The area of a 3D cell nucleus can be approximated by the number of voxels belonging to the nucleus that have at least one neighboring background voxel. However, to find all the surface voxels, the relationships between voxels must be recomputed using the connectivity operation. We used Heron’s formula as an alternate way to measure surface area, calculating the area of a triangle directly in terms of the lengths of the three sides, since the rendered surfaces consist of triangles. After calculating each o f the triangle areas, we obtained the total surface area using the sum of all triangle areas.
+S = ,/s(s-a)(s-b)(s-c)
+
+(3)
+
+where o,b,c are the lengths of the sides of a triangle and
+
+D. 3 0 Labeling
+Connected-component labeling is a preprocessing step and is typically performed before the quantitative analysis. In this study, we used a new 3D labeling method based on slice information [ 181. After applying a 2D connected-component labeling algorithm to each slice by using a contour-tracing technique [19], we used the labeled information to detect objects in the next slice that might belong to the same object, For example, if there was an object common to the k-th and k+l-th image slices, we compared the center pixels of each object to’ determine if the objects were connected. If they were connected, we assigned the same label to both. If a common object existed in consecutive slices but the center pixels were unconnected ‘owing to holes in each object, we compared the remaining regions of the object, omitting the center pixels, to determine whether they were connected. If the two objects were connected, we assigned the same label; if the two objects were not connected, we assigned a different label to the objects in the k+l-th image.
+
+s = ( a b 4-c ) / 2 .
+
++
+
+Spherical shape factor: This represents how similar the shape of the cell nucleus is to a sphere. If A is the surface area of the nucleus and V is the volume of the nucleus, then the spherical shape factor is defined as:
+
+111. EXPERIMENTAL RESULTS
+
+E. 3 0 Feature Measuremenls
+Feature extraction is a crucial step in most cytometry studies; it defines what is to be measured and how the measurements will take place. Features selected for measurement should agree with a pathologist’s view of what an important feature is.
+,
+
+We implemented the proposed methods using Microsoft Visual C++ and Open GL and tested them with human RCC tissue stack images. The total tested image data included 70 volume data obtained from eight RCC tissue slides. The number of volume data for each grade was 8, 26, 20, and 16 respectively. A pathologist classified all volume data using a 2 0 analysis. For each volume of data, the total number of slices was 50, and each slice was a 24-bit/pixel image with a resolution of 512 x 5 12 pixels. The scanning interval between slices was 0.4 pm.
+A. Results o j 3 0 Yisiralization
+
+Fig. 5 shows the results of the surface rendering. Grade I, shown in Fig. 5(a), is characterized by an ordered pattem of nuclei with a slight variation. In Grade 2, shown in Fig. 5(b),
+
+- 182 -
+
+the enlargement of the nuclei is more easily recognizable. In Grade 3, shown in Fig. 5(c), a general impression of disorder () dominates. Grade 4, shown in Fig. 5 d , is a case with a more pronounced impression o f disorder, often with extreme variations in each of the features described in 3D feature
+
+R,
+
+..". .
+
+^^
+
+..
+
+._ ""
+
+Fig. 5. Results of thc thrccdimensional visualization. (a) Surface-rendering image for cell nuclei of Grade 1. (b) Grade 2 , (c) Grade 3. and (d) Grade 4.
+
+B. Results o Dafa Analysis f
+We performed a data analysis to analyze extracted 3D nucfear features and evaluate the significance. The total tested data set consisted of 238 cell nuclei. The number of cell nuclei for each grade was 52, 54, 61, and 71, respectively. A pathologist selected the tested data as representative samples of cell nuclei for each grade.
+
+To evaluate what quantitative features of 3D analysis could contribute to diagnostic information and how it could increase the accuracy of nuclear grading, we analyzed the statistical difference of 3D features among the grades. We used an analysis of variance (ANOVA) to determine the levels of statistical significance in the differences in distribution across the grades. For each test, we found the Fvalue as a result of the ANOVA. The F-value is the ratio of a between-group sum of squares (between-group variability) to a within-group sum of squares (within-group variability). Optimal features will have a high between-group variability compared to within-group variability. This means that the best feature will have the largest F-value. We found that volume is the best feature in grading (F-value of Volume: 356.54, Surface area: 250.63, Spherical shape factor: 68.13). W e compared the 3D features of cell nuclei for each grade; Tables I present the volume, surface area, and spherical shape factor in each case. The mean volume and mean surface area of cell nuclei of the highest grade were greater than those of the lowest grade cell nuclei. The coeffcients of variation (CVs) of nuclear volume and surface area were also greater for the highestgrade cell nuclei. A CV measures variability in relation to a mean, and is used to compare relative dispersion in one type of data with relative dispersion in another type. In this case, it reflects the nuclear polymorphism. The mean spherical shape factor of the lowest grade cetl nuclei is greater than that of the highest-grade cell nuclei, indicating that lower-grade cell nuclei are closer to a spherical shape than are higher-grade cell nuclei, as the spherical shape factor becomes 1 for a perfect sphere.
+
+TABLE I
+M E A S U R E M E N T DATA FOR NUCLEAR VOLUM. SURFACE AREA. AND SPHERICAL SHAPE
+
+FACTOR
+Cocfficicnt
+Variation
+
+I
+
+Fcaturc
+
+Grade
+
+I
+
+Number of
+
+Nuclci
+
+I
+
+Mcan i SD
+(
+
+d)
+
+Minilwin
+
+Maximin
+valuc
+
+valuc
+
+I
+
+- 183 -
+
+Fig. 6 show bivariate plots of features of cell nuclei measured in two-dimensions (diameter, area, perimeter, and circularity), and features of cell nuclei measured in threedimensions (volume, surface area, and spherical shape factor) for identical cell nuclei. We determine these by using a regression analysis. As a regression analysis enables us to quantify a relationship between two variables by fitting a line and predicting the values of a dependent variable from a collection of independent variable values, in this case we were able to assess the effects of 2D features on 3D features. Our comparison revealed that diameter and area were highly correlated with volume (see Fig. 6(a) and 6(b)). Pearson's correlation coefficient for each case was 0.85701 and 0.84242. The linear regression function for each case was 9 = -450.454 + 1 L5.706x,R2= 0.7345 and j = 47.112 + 11.998x, R2 = 0.7098, respectively. We found that perimeter was also highly correlated with surface area (see Fig. 6(c)). The highest correlation coefficient was 0.89042, and the linear regression function was j = -367.619 + 33.496x, R2 = 0.7930, but there was not a significant correlation between circularity and spherical shape factor (see Fig. 6(d)). Pearson's correlation coefficient was 0.2771 3 and the linear regression function was 9 = -0.0057 + 0.397r, R2 = 0.0768. The coefficient of determination R2, the proportion of variation that can be explained by a regression equation, was the smallest.
+
+1V. DlSCUSSlON AND CONCLUSION
+
+Many studies report that a nucleus' size and variation are important features of RCC grading systems [22]-[24]. Pathologists usually estimate nuclear size from the 2D area of a nuclear profile. However, since cells and nuclei are 3D structures, an estimate of nuclear enlargement and its variation should use 3D nuclear morphometry. Yorukoglu et al. [25j investigated mean nuclear volume (MNV) in RCC to define a cutoff value that could determine the prognosis. Their results indicate that MNV is slightly greater in a high grade, but the difference was not significant. In contrast, Fujikawa et al. [26] reported that MNV correlates with prognosis, grade, and metastases. We also found a statistically significant correlation between the nuclear grade and the 3D features of volume, surface area, and spherical shape factor. This disagreement may be owing to differences in histologic area selection or image acquisition. Furthermore, fluorescently labeled samples have low signal levels, so microscopy images typically have a lot of noise. Since excitation of fluorescence destroys fluorophores, the signalto-noise ratio decreases with the collection of each focal plane of an image volume. Structures in the microscopic scale typically show greater complexity, so microscopy image volumes are usually very sensitive to a small change in rendering
+
+-={.
+i
+
+".
+
+........
+
+^.*.I..".^ l_.".l."
+
+..
+
+..
+
+".I_
+
+I
+
+"L.
+
+I
+
+.
+
+= ,
+
+..................................................................
+. . . . . . I 1 1 I . 1 I 1 . X
+. r . . j _
+
+...
+
+L...,. .........................................................
+l
+
+.._.-..
+
+4
+
+i
+
+.
+
+.
+
+I
+
+.
+
+_
+
+.
+
+.
+
+_
+
+*
+
+.
+
+.
+
+* . I U L I I I
+
+./-.+
+
+i
+
+!b)
+
+.
+:<'
+.-a '
+
+.
+
+. . . .
+.
+
+.
+
+; . . ......-... . .
+:
+.j,..~
+
+.
+
+..c ............... .......
+
+. .. ......".. .
+( rl)
+
+........
+
+. . .l_I_._....! .- ..
+
+Fig. 6. (a) Thc result of a rcgression analysis bctwcen diameter and volume. P = -450,454 + I15.706x, R = 0.7345 , (b) The result of a regression analysis . ' between area and volumc. .P = 47.1 I2 + 1 I.Y98.r, R = 0.7098 . (c) Thc rcsult of a rcgresaion analysis bctwccn pcrrmctcr and surface arca.j = -367.619 + 33.496~. ' R' = 0.7930. (d) Thc rcsult of a regrcssion analysis bctwccn clirularily and spherical shapc factor.? = -0.0057 t 0.397~. = 0.0768 R'
+
+- 184
+
+-
+
+We observed an increase in volume and surface area according to the grade progression; we could easily identify extreme grades because of the marked difference. However, cell nuclei with intermediate grades exhibited only a slight difference between two grades. On the whole, as we expected from the definition of the Fuhrman nuclear grading system, a comparison of the sizes of 3D cell nuclei between grades revealed a statistical difference. We saw these results in the 3D visualization of cell nuclei for each grade. When we ‘investigated the relation of the 2D features of cell nuclei (diameter, area, perimeter, and circularity) and the 3D features of cell nuclei (volume, surface area, and spherical shape factor) for identical cell nuclei using regression analysis, we fuund that diameter and area highly correlated with volume, and perimeter highly correlated with surface area. There was not a significant correlation between circularity and spherical shape factor. This indicates that diameter, area, and perimeter are good indicators when estimating 3D features, whereas it is difficult to estimate the sphericity of cell nuclei using circularity. Our connecting step in the post processing o f an initial segmentation can overcome the problem caused by fragmentation of a cell nucleus. In addition, pathologists can avoid the problem of cell nuckei that are touching, using our modified watershed segmentation method, by removing spurious watershed lines. However, some problems remain. Our method requires human intervention for interactive correction. In particular, a study should be designed to separate the touching cell nuclei in the z-direction. Compared with the conventional 3D labeling algorithm, our method has advantages; memory use is efficxent, and it is possible to combine a variety of 2D labeling algorithms to find appropriate labeling. Also, a labeling algorithm based on contour tracking does not require re-labeling throughout the entire process, as is required by other algorithms. We found a statistically significant correlation between nuclear grade and 3D morphological features. However, morphometric characteristics of cell nuclei are not the only way to describe nuclear appearance. Chromatin pattem can also play a significant part in RCC grading [27]. Researchers can quantify a chromatic pattem by texture analysis, using co-occurrence matrix or run length matrix calculations [28], [29J Therefore, it is necessary to develop a method for 3D texture analysis of cell nuclei. As Goldstein [30] states, an idea1 grading system for RCC can be easily and reproducibly applied by pathologists, accounting for the grade heterogeneity of RCC. Our nuclear grading system. based on the 3D features of a cell nucleus, provides distinct dividing points between grades and provides data that are easily interpreted for diagnoses. A 3D visualization of cell nuclei offers a realistic display and provides additional valuable medical information that can lead to an objective diagnosis; this could improve the accuracy of diagnosis. However, we will need to apply
+
+additional research to a great number of cell nuclei in order to validate our results. The main focus of this study was the development of a method for RCC grading, using a 3D quantitative analysis of cell nuclei, based on digital image cytometry. Our proposed method can overcome the limitations inherent in 2D analysis and could become a way to improve the accuracy and reproducibility of quantification of cell nuclei. . We found that it is possible to estimate 3D features of corresponding cell nuclei from 2D features of cell nuclei, and we confirmed that the Fuhrman grading system is significant. In conclusion, our study showed that a nuclear grading system based on the 3D features of a cell nucleus might be an ideal grading system.
+
+ACKNOWLEDGMENT
+
+This study was supported by a grant from the Korean Health 21 R&D Project, Ministry of Health & Welfare and The Republic of Korea (02-PJ I -PG10-2060~-0001)
+
+REFERENCES
+J.R. Hand. and A . Brodcrs. ”Carcinoma o f kidney: the degree of malignancy in rclation to factors bearing on prognosis.” J. U r d . vol. 28 , pp. 199-2 16, 1932. D.G. Skinner. R.B. Colvin. C.D. Vcrmillion. R.C. Pfiscr. and W.F. Lcadbencr, “Diagnosis and inanagcmcnr of m a l cell carcinoma: a
+clinical and pathological study o f 309 cases.” Cum?,: vol. 28. pp 1165-1177, 1971. P.Hcrinanek. A. Sigcl. and S. Chlcpas. “Histohgical piading of renal ccll carcinoina.”Eirr. Urul.. vol. 2.pp. 189-191.1976. S A . Fuhrman. L.C. Lasky. and C. Lunas, “Prognosis stgnificancc of morphologic paramcwrs in rcnal cell carcinoma,” Am. J. Surg. Puihul.. vol. 6. pp. 655-663.1982. C. Francois, C. Dccacstcckcr, and M. Pctein et al.. “Classification stratcgtcs for thc grading o f rcnal ccll carcinoma, based on nuclcar morphoinctry and dcnsitomclry,“ 1 Pu/hol., vol. 183, pp. 141-150, 1997 H.K. Choi. T.Jarkrans, E. Bcnplsson et al.. “Image analysis bascd grading o f bladdcr carcinoma; comparison of object. texture and graph bawd mcthods and thcir reproducibility.” And. Cell. PurhoL. vol. 15. pp, 1-18. 1997. C. Francois. C. Dccacstcckcr. and O.D. Lathouwcr ct al., “Improving ihc prognostic valuc of histopathological grading and clinical staging in rcnal ccll carcinomas by means of computer assrstcd microscopy,” J P ~ t h d ~01.187.pp 313-320. 1999. . J. Wcszko. “A survcy o f ihrcshold sclcction tcchniqucs.” Compul Gruph. lntugc. P ~ o .Y.. vo1.7. pp.259-265, 1978. w P.K. Sahao. S. Sollani. K.C. Wong. and Y.C.Chcn. “A survey of thrcsholding tcchniqucs.” Comp. VIA. Gruph. lmoge Proccss., ~01.41. pp.233-260. IY88. N Otsu. “A threshold sclcctim inclhod from griy lcvcl histograms.” lEEE Tiwu,. .Ti:vr M m .C‘ihw.. vo1.9. no. I , pp.62-69. IY79. T. Pun. “A ncw incthod for gray lcvcl pictrirc thrcsholding using thc cntropy of thc hibtugrain.” Signal Proccss. v01.2. pp.223-237, 1980. T. Pun. ‘ L E ~ i t r ~ Ihrcsholding: a new apploach.” Compvr. Grdph. pt~ I m u g e P w c w . . vo1.16. pp.210-239. 1981. P. Soillc. Morphologitol i m q y uiu/vsis. Ncw York: Springcr, 1999. L.Vinccnt. and P. Soillc. “Watcrshcds in digital spaces: an efficient algorithm bascd on irnincrsion simulations.“ IEEE Truns. A n d Muchinu. l m / / . , vol. 13. no.6. pp.583-597.1991
+
+-
+
+185 -
+
+[IS] C. Wahlby. J. Lindblad. E. Bcngtsson, and L. Bjorkesten. ”Algorithms
+[16]
+
+[I71
+
+[I81
+[ 191
+
+[20]
+
+for cytoplasm segmentation of fluorcsccnce labeled cclls.” A n d Cell. furhol.. vo1.24. pp.lOl-111. 2002. J.H. Ryu. H.S. Kim. and K.H. Lce, “Contour-based algorithms for gcncraling 3D CAD models fonn medical imagcs.” Inferndonu/ Journul of Advunced Munufuctwrrrg Technology. ~01.24. pp. 112-1 19, 2004. W. Schroedcr. H Martin. and B. Lorcnscn. Visuuliiu/ioir /001kit Atr . object-oriented upprouch to 3D gruphics. 2“ cdn. Ncw Jcrscy: Prcnticc Hall, IW8. I.H.Choi. H.I. C h i . B.I. Lec, H.K.Choi. “A slice information bascd labeling algorithm for 3D volume data,” Joumul o j Koreun Informution Science Socieiy. ~ 0 1 . 3 1 pp.922-928,2004, . F. Chang. C.J. Chm. and C.J. “A linear time componcnt labeling Lu. algorithm using amtour mcing tcchnique.” Comp. VIS.Imuge. Und.. ~01.93. pp.206-220. 2004. P.S.U. Adrga. “An intcgratcd systcm for fcaturc cvaharion of 3D iinagcs of a tlssuc spcciincn,“ 4r:ul. Cell. Pu/hol.. vo1.24. pp.47-58.
+2002.
+
+[23] M A Carducci. S . Piantadosi. C.R. Pound et al., “Nuclear morphometry adds significant prognostic information to stage and gradc for rcnal ccll carcinom.” Urohw, ~01.53.no.1, pp.44-49, 1999. [24] F. Erdogan. A. Dcmircl. and 0. Polat. “Prognostic significance of morphologic paramctcrs in rcnal ccll carcinoma,” In!. J. Clin. Prucr. ~01.58,110.4. pp.333-336.2004. [ 2 5 ) K. Yorukoglu. S. Aktaa. C. Gulcr, M. Sadc. and 2.Kirkali. “Volumcwcightcd mcan nuclcar voluinc in rcnal cell carcinoma.” Urology. ~01.51.no.1. pp.44-47. 1998. [26] K. Fugikawa. M . Sasaki. and T. Aoyama. “Rolc of volume weightcd mcan nuclcar volumc for predicting diseasc outcomc in paticnts with pp.1237-1241,1997.. renal ccll carcinoma.*’J U r d . ~01.157. [27] C. Franoois, C . Morcno, and J. Tcitclbaum ct al.. “Improving accuracy in thc grading of rcnal ccll carcinoma by combining the quantitativc dcscription of chromatin pattcrn with thc quantitative determination of cell kinetic paramctcrs.” Cytomcrr:v.~01.42. 18-26, 2000. pp. [28] R.M.Haralick. T. Shanmugan. and 1. Dinatcin. “Tcxrurc fcatures for imagc classification,“ IEEE Truris. xvsr. Marl. Cvherrr:. vo1.3. pp.610621. 1973. [29] K. Yogcsan. Tcxtuic analysis as a prognostic and diagnostic IwI in iumor pathology. Ph. D Thcsis. Oslo Univcnity, 0$10. Norway. 1995. [30] N.S. Goldstein. “Thc currcnt statt: of renal cell carcinoma grading,” Curlcer. vo1.80. pp.477-9x0. I9Y7.
+
+[21] K. Rodcnackcr. and E. Bcngtsson. “A feature sct for cyiomctiy on digitizcd microscopic imagcs.” A n d . Cell.. PutboL, vo1.25. pp. 1-36.
+
+2003.
+[22J J.L. Gutierrcz. 1.F. Val-Bcmal, M.F.Garijo, L. Buclta,and J.A. Porlillo. “Nuclear morphamtry in prognosis of renal adenocarcinoma.” Urolog), ~01.39, 130- 134, 1992. pp.
+
+- 186 -
+

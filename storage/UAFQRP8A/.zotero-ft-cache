@@ -1,0 +1,538 @@
+The Conditionalizing Identity Management Bayesian Filter (CIMBal)
+Qirong Ho Christopher Geyer 10/28/2008 CMU-RI-TR-08-47
+
+April 2009
+
+Robotics Institute Carnegie Mellon University Pittsburgh, Pennsylvania 15213
+
+c Carnegie Mellon University
+
+Abstract
+We present a large-scale data association tracker that can handle variable numbers of world objects and measurements. Large-scale data association problems arise in surveillance, wildlife monitoring, and applications of sensor networks. Several approaches have recently been proposed that represent the uncertainty in data association using a parameterized family of distributions on the set of permutations. Whereas these approaches were restricted to a ﬁxed and known number of objects (and sometimes measurements), we generalize these approaches to varying numbers of objects and measurements. We also present a modiﬁcation that allows one to focus on a set of objects of interest, while maintaining data association with all other objects that may be confused with these objects of interest. We justify the approach with an analysis and show experiments on a large-scale simulated tracking sequence.
+
+I
+
+Contents
+1 Introduction 1.1 Related Work . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1.2 Our Contribution . . . . . . . . . . . . . . . . . . . . . . . . . . . . Problem Formulation and Notation Parameterizing Data Association PMFs 3.1 Representing Data Associations . . . . . . . . . . . . . . . . . . . . 3.2 Data Association PMFs and Information-Form Matrices . . . . . . . The Identity Management Kalman Filter (IMKF) The Conditioning Identity Management Bayesian Filter (CIMBal) 5.1 Motivation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5.2 (Potential) Identities of Interest and Relevant Measurements . . . . 5.3 PMFs over Partial Data Associations . . . . . . . . . . . . . . . . . 5.4 Relationship between Partial Data Association PMFs and Full PMFs 5.5 Continuous state tracking . . . . . . . . . . . . . . . . . . . . . . . The CIMBal Algorithm 6.1 CIMBal Initialization . . . . . . . . . . . . . . . . . . . . 6.2 Diffusion Step . . . . . . . . . . . . . . . . . . . . . . . . 6.3 Update Step . . . . . . . . . . . . . . . . . . . . . . . . . 6.3.1 Constructing ωt . . . . . . . . . . . . . . . . . . . 6.3.2 Caveats . . . . . . . . . . . . . . . . . . . . . . . 6.4 Pruning Step . . . . . . . . . . . . . . . . . . . . . . . . . 6.4.1 Identifying Pruning Candidates . . . . . . . . . . 6.4.2 First Step: Fast Approximation . . . . . . . . . . . 6.4.3 Second Step: Metropolis-Hastings Approximation 6.5 Association Step . . . . . . . . . . . . . . . . . . . . . . 1 1 2 2 5 5 6 6 7 7 7 9 9 11 11 11 11 13 14 14 15 15 15 16 18 18 18 18 19 19 21 26
+
+2 3
+
+4 5
+
+. . . . .
+
+6
+
+. . . . . . . . . .
+
+. . . . . . . . . .
+
+. . . . . . . . . .
+
+. . . . . . . . . .
+
+. . . . . . . . . .
+
+. . . . . . . . . .
+
+7
+
+Experiments 7.1 IMKF Data Set . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7.1.1 Test Setup . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7.1.2 Results and Discussion . . . . . . . . . . . . . . . . . . . . . Conclusion Further Research
+
+8 9
+
+10 Acknowledgements
+
+III
+
+1
+
+Introduction
+
+The problem of tracking and identifying multiple objects features prominently in a number of real-world applications, such as surveillance (Pasula, Russell, Ostland, and Ritov 1999), air trafﬁc control (Kondor, Howard, and Jebara 2007), or counting animals in the wildlife (Betke, Hirsh, Bagchi, Hristov, Makris, and Kunz 2007). For example, consider that extremely high-resolution cameras—approaching 1 gigapixel—that could surveil every single vehicle in the Washington D.C. metropolitan area (Page 2007) could soon be deployed at high altitudes in military scenarios. Such sensors could eventually track tens of thousands of vehicles. Identity information is likely to be sparse and uncertain, such as “Vehicle X left address A,” implying something about X’s identity. Trackers that greedily estimate data association, or that defer it by maintaining multiple hypotheses, are infeasible with this number of objects and with this level of association ambiguity. In this paper we improve upon recent statistics-based trackers, which have the advantage of non-combinatorially deferring data association decisions. We allow for a variable number of objects as well as a variable number of state measurements of these objects, and we consider a sub-problem where the user may be interested in focusing on a small set of objects within scenes that have a large number of confusing objects. First, we describe some related work.
+
+1.1
+
+Related Work
+
+The data association problem in multi-object tracking is the task of maintaining the unique identity of an object while it is being tracked by one or more sensors. Eventually each measurement should be associated with or assigned to some object, and in some scenarios where clutter is prominent, measurements may not correspond to any object at all. We focus on non-batch methods to solve this problem, and we group methods into four categories: (1) greedy trackers: methods that greedily assign measurements to objects and maintain a single data association (DA) hypothesis immediately after a measurement is received, such as the joint probabilistic data association (JPDA) (Fortmann, Bar-Shalom, and Scheffe 1980) tracker; (2) ﬁnite horizon or ﬁnite hypothesis trackers: multi-hypothesis trackers that maintain a bounded number of possible hypotheses, which are constructed by branching at object crossings, e.g. the multi-hypothesis tracker (MHT) (Reid 1979); (3) sampling-based trackers: trackers based on Monte Carlo sampling methods that sample and weigh particles on the set of possible data associations, which typically also have a ﬁnite horizon, e.g. Dellaert et al. (2007) and Oh et al. (2005); and, (4) statistics-based trackers: methods that maintain a statistic that parameterizes a distribution on the set of all possible data associations. We focus primarily on the last case, statistics-based trackers, which were the ﬁrst to address large-scale data association problems, where objects number in the thousands. Statistics-based trackers provide a non-combinatorial way to recursively ﬁlter in the combinatorial state-space. Like the Kalman ﬁlter, statistics-based methods maintain a statistic that parameterizes distributions on the space of data associations. In the case of the Kalman ﬁlter, the covariance and mean parameterize Gaussians. Thus, instead 1
+
+of maintaining some number of hypotheses, statistics-based approaches update a data association statistic that encodes past identity readings; however, the statistic is not claimed to be sufﬁcient. Shin et al. (2003) maintain an “identity belief matrix” that roughly constitutes a “sufﬁcient” statistic of past measurements of data associations. Unlike the MHT, computations and data structures are independent of the measurements; and, unlike JDPA, the data associations can be deferred or recomputed using a statistic that “remembers” old measurements. Schmutisch et al.’s (2006) IMKF approximately performs a Bayesian update, and also diffuses the statistic according to a process model. Kondor et al. (2007) consider the connection between these approaches and the Fourier transform of the PMF on the set of data associations, which they assume to be the group of permutations. Huang et al. (2007) consider implementing Bayesian updates in the Fourier domain, as well as the effects of bandlimiting.
+
+1.2
+
+Our Contribution
+
+Despite the improvements made by the IMKF, using it for real-time tracking is still made difﬁcult by the fact that an O(n3 ) algorithm — the Hungarian algorithm — needs to be used per time step. The IMKF was also restricted to a constant number of objects N and measurements M , where N = M . Our contribution is an improved algorithm called the Conditioning Identity Management Bayesian Filter (CIMBal), which builds upon the IMKF in the following ways: • We generalize the IMKF model to allow for varying numbers of objects and measurements. • We show that eliminating a row and a column from the identity belief matrix (the maintained ”sufﬁcient” statistic in the IMKF) is equivalent to conditioning upon the hypothesis that the measurement associated with the column belongs to the object associated with the row, thus providing a rigorous justiﬁcation for pruning the matrix. • We permit situations in which only a small subset of the objects are really of interest, and use this assumption to minimize the size of the identity belief matrix. These improvements not only allow the CIMBal to be applied to a wider range of scenarios than the IMKF can handle, but also reduce the runtime per time step to O(z 3 ) where typically z N , provided that the subset of objects of interest is small.
+
+2
+
+Problem Formulation and Notation
+
+We suppose that there are n objects in the world whose continuous state are of interest. We use Sn to denote the group of permutations on a set of size n, which we represent using permutation matrices. N (0, Σ) denotes a Gaussian distribution with mean µ and covariance Σ. We make the following assumptions about objects, identities and targets/measurements: 2
+
+1. Data association model at time t: Let W be a set of trackable world objects. We assume that there are N identities, and an injective mapping id : [N ] → W. We shall use the term labeled object to denote any object with an identity associated to it by id. We make the following assumptions: (a) At each time step t, a tracker provides Mt state measurements. Measurements represent readings of the state of world objects, and we say that a measurement ”corresponds” to a world object if and only if the measurement was taken from that world object. We allow situations in which some measurements do not correspond to any labeled object, or even to any world object at all (”ghost” measurements). (b) There exists a true correspondence from measurements to world objects, given by a mapping mt : [Mt ] → W ∪ Ø. mt (j) = Ø denotes that measurement j does not correspond to any labeled world object. We also assume that both Mt and mt are time-dependent, as denoted by the subscripted t. Furthermore, we require that mt be injective for all t, i.e. our model does not permit two or more measurements to correspond to the same world object. Even if there is good reason to suppose that multiple measurements correspond to a single world object, e.g. the tracker produces duplicate measurements, we will nevertheless assume that only one measurement can be truly associated with that world object. To illustrate our model with an example, W might be the set of cars in the world, id the mapping from license plate numbers to cars, and Mt the number of cars the tracker ”sees” — this might include false positives, or cases where the same car is mistakenly detected twice or more. The goal is to estimate id−1 ◦ mt , so as to track the continuous state of the world objects by using their corresponding measurements. 2. World object and measurement model: Let xi ∈ Rd represent the state of (lat beled) world object id(i). We assume that the change of state of all world objects is object-independent and obeys a linear model:
+i xi = A xi + wt t+1 t
+
+(1)
+
+i where A is the state transition matrix and wt ∼ N (0, Σw ) for some covariance j f matrix Σw . If id(i) = mt (j), then zt ∈ R is the measurement corresponding to world object id(i), and follows the linear model: j j zt = Hxi + vt t
+
+(2)
+
+j where H is the observation matrix, and vt ∼ N (0, Σv ) for some covariance matrix Σv .
+
+3. Data association transition in the tracker: Consider the measurement mappings mt and mt+1 . We make no prior assumptions about the relationship between mt (j) and mt+1 (k) for any j, k. For example, the tracker might assign different indices to measurements taken at different times but corresponding to the 3
+
+same labeled world object, i.e. mt (j) = id(i) = mt (k) for some j, k. Or, perhaps the tracker might begin taking measurements for some labeled world object that hitherto lacked corresponding measurements, i.e. ∃i( j(mt (j) = id(i)) ∧ ∃k(mt+1 (k) = id(i))). It might also be the case that the tracker stops taking measurements of a labeled world object, i.e. ∃i(∃j(mt (j) = id(i)) ∧ k(mt+1 (k) = id(i))). In order to characterize the transition from mt to mt+1 , we deﬁne an Mt+1 ×Mt association transition matrix Q: Qt = j,i 1 0 mt+1 (j) = mt (i) = Ø otherwise
+
+There are some speciﬁcs about Q worth mentioning:
+j • Row j of Q being zero implies that either measurement zt+1 corresponds to a labeled world object lacking a corresponding measurement at time t, j or zt+1 does not correspond to a labeled world object at all. i • Column i of Q being zero either implies that measurement zt ’s correspondi ing labeled world object is no longer being measured at time t + 1, or zt did not correspond to a labeled world object to start with.
+
+• The injectivity of mt for all t restricts each row and column to contain no more than one ’1’. We assume that the tracker also provides a distribution ψt over possible transition association matrices Qt . ψt is conditioned on the state of the tracker, represented by Tt . ψt (Q) is the probability that Q represents the true association transition between mt and mt+1 . In other words, we are assuming that the tracker can give us probabilistic information ψt about how it thinks measurements relate to each other between timesteps. Notice that ψt does not encode the world object identities corresponding to each measurement; the mechanism used to communicate such identity information will be described shortly. 4. Conditional independence of transitions: We make the assumption that the true association transition (given by some matrix Qt ) is conditionally independent of {xi } for all i and s ≤ t, given Tt . That is to say the trajectories and dynamics of s all world objects, if not encoded in Tt , are assumed to not reveal extra information about the evolution of the data association. The IMKF operates under this assumption, whereas the JPDA and MHT do not. Should one wish to make use of such extra information, there is always the option to process ψt before it is passed to the CIMBal. 5. Identity readings: We assume the tracker obtains intermittent world object identity information about its measurements, which we shall term identity readings. These identity readings are represented by an Nt × Mt matrix ωt that encodes j j log-identity information of the form ln pr(xi → zt |Tt ), where xi → zt repret t sents the event that idt (i) = mt (j). This will be further elaborated under the CIMBal’s ”Update Step”. 4
+
+Now that we have laid the deﬁnitions, we can state the problem goal: To estimate the true data association from measurements to identities i at each time step, using the tracker-provided data zt , ψt , and ωt . This enables us to estimate the continuous state of the world objects corresponding to the identities being tracked.
+
+3
+
+Parameterizing Data Association PMFs
+
+For each time step t, the IMKF and CIMBal maintain a point mass function (PMF) α over the set of possible data associations from measurements at time t to identities (the set of which does not change with time). We will ﬁrst describe these data associations, and then proceed to deﬁne α.
+
+3.1
+
+Representing Data Associations
+
+Data associations are represented by the set of m × n matrices Am,n deﬁned by: Am,n ≡ {P ∈ {0, 1}m×n : ∀i, {P ∈ {0, 1}
+m×n j j
+
+pi,j = 1} pj,i = 1}
+
+m≤n m>n (3)
+
+: ∀i,
+
+where m is the number of measurements, and n is the number of identities. There are several points to note about such matrices: • |Am,n | =
+max(m,n)! |m−n|! .
+
+• No column or row contains more than one 1, but there are a total of min(m, n) 1’s in the matrix. • In the special case where m = n, then An,n is the set of permutation matrices, thus representing Sn . • For a given time step t, the matrices P ∈ AMt ,N are interpreted to represent the possible data associations between measurements and identities. In any such j matrix P , row j represents measurement zt , while column i represents identity i (and thus world object id(i)). P is deﬁned to associate measurement j with identity i if and only if Pj,i = 1. It should be noted that the Mt+1 ×Mt association transition matrices Q mentioned earlier differ from these data association matrices P ∈ Am,n , in that the former are permitted to contain fewer than min(m, n) 1’s. More importantly, the matrices Q represent transitions between successive measurements, whereas the matrices P ∈ Am,n represent associations from measurements to identities. 5
+
+3.2
+
+Data Association PMFs and Information-Form Matrices
+
+The PMF α represents our beliefs about the true association between measurements and identities. Initially, any uncertainty given by α is due to our lack of prior knowledge about the identities of observed measurements. Mass in α is consolidated when we are given identity readings. Mass in α is diffused when confusion in the tracker occurs (e.g., two tracks of measurements cross), and this confusion is modeled as a distribution over association transitions (i.e. ψt ). Analogous to the Gaussian parametrization for continuous random variables, we deﬁne a family of PMFs1 on Am,n using n × m real matrices Ω, as follows: α(P ; Ω) ≡ exp tr P Ω , R∈Am,n exp tr R Ω (4)
+
+where the denominator normalizes α so that it sums to 1 over Am,n . In the special case of m = n, Schumitsch et al. termed any such matrix Ω an information-form matrix; our deﬁnition thus extends their original formulation to general association matrices Am,n . If a random variable matrix P is distributed according to α(·; Ω), we write P ∼ A(Ω). The IMKF and CIMBal force the approximation P ∼ A(Ω), where P is a random variable representing the true data association. All Bayesian ﬁltering operations—namely prediction and update—are performed directly on Ω. ˆ The most likely data association P of α is given by ˆ P = arg max α(P )
+P ∈Am,n
+
+(5)
+
+This can be solved using the Hungarian algorithm on Ω (Papadimitriou and Steiglitz 1998), which chooses the list of min(n, m) elements of the matrix, at most one from each column and each row, such that their sum is maximized. The Hungarian algorithm has runtime O(max(n, m)3 ). For temporally coherent matrices, Mills-Tettey et al. (2007) give a dynamic Hungarian algorithm, though with the same worst-case runtime. In both the IMKF and CIMBal, the information-form matrix Ω is time-dependent; hence the PMF α(P ; Ω) is also time-dependent. We will thus use the shorthand αt (P ) ≡ α(P ; Ωt ), where Ωt refers to Ω at time t.
+
+4
+
+The Identity Management Kalman Filter (IMKF)
+
+The identity management Kalman ﬁlter (IMKF) described in (Schumitsch, Thrun, Guibas, and Olukotun 2006) is essentially an approximate Bayesian ﬁlter on the set of possible data associations. The IMKF assumes a ﬁxed and equal number of measurements and identities, i.e., Nt = Mt = n; moreover a one-to-one correspondence between measurements and identities is also assumed (i.e. no ”ghost” or duplicate measurements).
+1 When Ω is square, it can be shown that Ω is a linear transformation of a matrix of coefﬁcients; these coefﬁcients come from the Fourier transform of ln α at the ﬁrst two representations of the group Sn , where α indicates any distribution over Sn (not just those parameterized by Ω). This curious property lends the IMKF and CIMBal some connection to the Fourier transform-based tracker of Kondor et al. (2007).
+
+6
+
+Hence, the true data association Pt is simply the product of Qt ’s (association transition matrices): Pt = Qt · Qt−1 · · · Q1 The goal, then, is to estimate Pt for each time step. The IMKF estimates Pt using the most likely data association at time t. A naive ﬁrst step towards determining the latter would be to maintain a distribution over every element of Sn . This, of course, becomes infeasible beyond a small number of targets, since the storage alone is O(n!). Instead, Schumitsch et al. assume that Pt ∼ A(Ωt ), where Ωt is an n × n informationform matrix. Therefore, the most likely data association, and thus the estimate of Pt , ˆ is simply Pt = arg maxP ∈An,n αt (P ) as given in the previous section. The IMKF directly modiﬁes the information-form matrix Ωt by employing certain operations that approximate diffusion and measurement updates. The CIMBal uses variants of these same operations when performing the corresponding updates, the details of which will be given later. With regards to the continuous state, Schumitsch et al. assume that Pt and the xi ’s t are conditionally independent given Tt , thus decoupling the problem of tracking the ˆ xi ’s from estimating Pt . Once the estimate Pt has been obtained, the IMKF reduces t the continuous tracking problem to that of tracking the state of world objects/identities ˆ whose corresponding measurements have been re-ordered according to Pt . Both the IMKF and the CIMBal employ Kalman ﬁlters to perform state tracking of objects, ˆ using Pt to determine the objects’ corresponding measurements.
+
+5
+5.1
+
+The Conditioning Identity Management Bayesian Filter (CIMBal)
+Motivation
+
+Our goal is to improve the IMKF to handle varying numbers of measurements with time, and to reduce computation when only a few identities are of interest to the user. The result is the Conditioning Identity Management Bayesian Filter or CIMBal, whose purpose is otherwise the same as the IMKF’s: to estimate the most likely data association matrix, so as to track the continuous states of some set of world objects using Kalman ﬁlters. An overview of the CIMBal is given in Algorithm 1. In this section, we introduce the key ideas of the CIMBal. The details of the CIMBal’s operations will be given in the following section.
+
+5.2
+
+(Potential) Identities of Interest and Relevant Measurements
+
+The biggest difference between the CIMBal and the IMKF is that the CIMBal maintains its data association PMF αt only over a subset of identities and a subset of measurements, both of which may change with time. This feature allows the CIMBal to reduce computation when only a subset of identities are of interest to the user. Let Id0 ⊂ [N ] denote the identities of interest whose continuous states the user wishes to track (recall 7
+
+Algorithm 1 Outline of CIMBal ﬁlter 1: procedure CIMBal 2: Initialize the ﬁlter 3: for t = 1, 2, . . . do 4: Ω− ← Diﬀuse(Ω+ , ψt ) t t−1 5: Ω+ ← Update(Ω− , ωt ) t t 6: Ω+ ← Prune(Ω+ ) t t ˆ 7: P ← Associate(Ω+ ) t ˆ 8: Reorder measurements using P . 9: Use reordered Zt to update the Kalman ﬁlters K. 10: end for 11: end procedure
+
+(see Initialization) (see Diffusion Step) (see Update Step) (see Pruning Step) (see Association Step)
+
+that N is the total number of identities). The states of all other identities are assumed to be of no interest to the user, and are therefore not tracked. Initially, the CIMBal maintains its data association PMF αt over Id0 and the |Id0 | measurements they correspond to. As time passes however, the CIMBal expands αt to associate increasingly larger sets of identities with increasingly larger sets of measurements. This is because measurements initially associated with identities in Id0 may over time cross paths or otherwise become confused with other measurements. This leads to data association ambiguity, in particular ambiguity over which measurements should be used to update the states of Id0 . In order to incorporate this ambiguity into αt , the CIMBal must ”expand” it to include the confounding identities and measurements. Let us now introduce nomenclature to refer to the identities and measurements maintained by the CIMBal. For a given time t, • Call the set of identities maintained in αt the potential identities of interest at time t or Idt ⊂ [N ]. • Call the set of measurements maintained in αt the relevant measurements at time t or Mt ⊂ [Mt ] (recall that Mt is the total number of measurements the tracker provides at time t). There are two restrictions on Idt and Mt : 1. Id0 ⊂ Idt , i.e. the CIMBal always keeps track of the original identities of interest. 2. |Mt | ≥ |Idt |, i.e. there must be at least as many relevant measurements as potential identities of interest. These deﬁnitions allow us to restate the CIMBal’s data association PMF αt as a partial data association PMF between potential identities of interest Idt and relevant measurements Mt . 8
+
+5.3
+
+PMFs over Partial Data Associations
+
+Give that the CIMBal is a tracker over partial data associations, how should its PMF αt be deﬁned? Recall that αt is parameterized by an information-form matrix Ωt . Rather than deﬁning Ωt as a full N × Mt matrix — full in the sense that it encodes association information about each of the N targets and Mt measurements — the CIMBal deﬁnes Ωt as a |Idt | × |Mt | matrix that encodes information only about potential identities of interest and relevant measurements. To make the relationship between Ωt and these identities and measurements explicit, we deﬁne the bijections R2It : [|Idt |] → Idt and C2Mt : [|Mt |] → Mt that give the correspondences from row indices to potential identities of interest and column indices to relevant measurements, respectively. For example, row i of Ωt corresponds to potential identity of interest R2It (i), while column j corresponds to relevant measurement C2Mt (j). According to these deﬁnitions, αt is a PMF on A|Mt |,|Idt | given by: αt (P ) ≡ α(P ; Ωt ) ≡ exp tr P Ωt , R∈A|M |,|Id | exp tr R Ωt
+t t
+
+(6)
+
+where data association matrix P associates relevant measurement C2Mt (j) with potential identity of interest R2It (i) when Pj,i = 1. Thus, αt (P ) gives the probability that P is the true partial data association at time t. For the sake of convenience, we shall write Nt for |Idt | and Mt for |Mt | from now on.
+
+5.4
+
+Relationship between Partial Data Association PMFs and Full PMFs
+
+A partial data association PMF αt (P ; Ωt ) maintained by the CIMBal can be viewed as the result of conditioning some full data association PMF (i.e. over N identities and Mt measurements), where the conditioning is on the event E ≡ {P ∈ AMt ,N | ∀i ∈ Idt ∀j ∈ Mt (Pj,i = 0) ∧ ∀i ∈ Idt ∀j ∈ Mt (Pj,i = 0)} . / / In other words, the CIMBal’s PMF αt (P ; Ωt ) is the result of conditioning upon the event2 that non-potential identities of interest are only associated with nonrelevant measurements. To see why this is true, we start by considering the following conditioning proposition:
+j Conditioning data associations P on xi → zt is equivalent to deleting t Ωt ’s i-th row and j-th column.
+2 For certain combinations of N, M , |Id | and |M |, this event E will be empty since no legal data t t t association matrices ﬁt the conditions. As an example, consider N = 5, Mt = 5, |Idt | = 2 and |Mt | = 3. This issue can be effectively avoided, by assuming the existence of ”fake” identities and measurements that are not in Idt and Mt respectively. For instance, in the previous example, expanding Mt = 6 by assuming 3! one fake measurement causes |E| to grow from 0 to 3! · (3−2)! = 36.
+
+9
+
+For suppose that P ∼ A(Ωt ) and P ∼ A(Ωt ), where Ωt is N × Mt , and Ωt equals Ωt with its i-th row and j-th column removed. Supposing that Di is such that ADi T removes A’s i-th column, then we can write Ωt = Di ΩDj . Then,
+j pr(P |xi → zt ) = t T pr(P = Dj P Di ) if Pj,i = 1 . 0 otherwise
+
+j This implies that the conditional distribution of P |xi → zt can be exactly represented t by a distribution on AMt −1,N −1 , because the values of the former’s support are exactly given by the distribution generated by A(Ωt ).
+
+Proof Outline of Conditioning Proposition: • Let Ωt be Ωt with row i and column j deleted. The resultant PMF over associations in AMt −1,N −1 is αt (P ) ≡ exp tr P Ωt . R ∈AM −1,N −1 exp tr R Ωt
+t
+
+Comparing this with the deﬁnition of αt (P ), it becomes a simple exercise to show that αt and αt are related via
+T αt (Dj P Di )
+
+=
+
+1 αt (P ) τ
+
+T T where Di A is the linear operator removing A’s i-th row, so that Dj P Di is equal to P but with row j and column i deleted, and where τ is the marginal probability j τ ≡ pr(xi → zt ) = t P ∈AMt ,N :Pj,i =1
+
+αt (P ) .
+
+In other words, deleting row i and column j in Ωt corresponds to normalizing j αt over all associations that make up the event xi → zt . t
+T • Corollary: when τ is close to 1, αt (Dj P Di ) ≈ αt (P ).
+
+The conditioning proposition can be extended to the more general case where an event of the form E is conditioned upon. This validates the original claim that the CIMBal’s PMF αt is the result of conditioning upon non-potential identities of interest associating only with non-relevant measurements. Apart from elucidating the connection between partial and full data association PMFs, the conditioning proposition also enables the CIMBal to prune associations j xi → zt when their marginal probabilities become close to 1. This will be discussed t further under the ”Pruning Step”. 10
+
+5.5
+
+Continuous state tracking
+
+Like the IMKF, the CIMBal uses Kalman ﬁlters to track the continuous states of world objects corresponding to identities of interest Id0 ; we denote this set of Kalman ﬁlters by K. Since the measurements’ association transitions between timesteps are assumed to be conditionally independent of the world objects’ motions (given the tracker state Tt ), each identity of interest/world object is dedicated its own Kalman ﬁlter, for a total ˆ of |K| = N0 ≡ |Id0 | ﬁlters. At every time step, the most likely data association Pt is j used to determine each identity’s corresponding measurement zt for the Kalman ﬁlter update.
+
+6
+
+The CIMBal Algorithm
+
+In this section we cover the details of the CIMBal’s operations, as listed in Algorithm 1.
+
+6.1 CIMBal Initialization
+As input, the CIMBal requires Id0 as well as the M0 = N0 true corresponding initial measurements M0 . There are many ways to initialize Ω0 , R2I0 and C2M0 , but for concreteness we shall deﬁne them as such: • R2I0 is a monotonically increasing function, i.e. increasing row numbers correspond to higher-numbered identities in id. • C2M0 is such that identity R2I0 (i) truly corresponds to measurement C2M0 (i) for all 1 ≤ i ≤ N0 . • The above deﬁnitions require the true data association at time 0 to be the N0 ×N0 identity matrix IN0 ×N0 . This in turn requires that we initialize Ω0 to be: Ω0 = c · IN0 ×N0 (7)
+
+where c is a parameter controlling the degree of certainty that IN0 ×N0 is the true ˆ data association. Increasing c will increase the probability α0 (P0 = IN0 ×N0 ), ˆ recalling that Pt is the most likely data association matrix at time t.
+
+6.2
+
+Diffusion Step
+
+The purpose of the diffusion step is to model uncertainty introduced by the tracker’s potential confusion of measurements. We have assumed that the tracker provides a distribution ψt , that encodes whatever ambiguities the tracker is aware of. The exact diffusion is given by the convolution of αt with ψt ; however this is computationally intractable for large Ωt . Rather than perform the convolution, the IMKF approximates 11
+
+it via the following equation:  Ω− t+1 = ln  exp Ω+ t
+Q∈ψt
+
+ ψt (Q)QT  , (8)
+
+where exp and ln are computed element-wise, and where the notation Q ∈ ψt denotes the set of association transition matrices3 in the support of ψt . The notations Ω− and t+1 Ω+ denote the prior and posterior values of Ωt+1 and Ωt respectively; the distinction t will be explained under the Update Step. The CIMBal also uses (8) to perform diffusion. This poses some problems because the PMF αt maintained by the CIMBal is already conditioned on a certain set of data associations; furthermore the column indices of Ωt only indirectly correspond4 to measurements through C2Mt . We resolve these issues via the following guidelines: 1. After distributing exp Ω+ over the summation, we see that the QT in each term t of the summation acts to reorder or discard measurement identity information (represented by columns) in (exp Ω+ )QT . This is because the Mt × Mt+1 int verse transition association matrices QT have either one or zero 1’s per row. 2. More speciﬁcally, QT = 1 means that QT moves column C2M−1 (i) of exp Ω+ t t i,j to column C2M−1 (j) of (exp Ω+ )QT . On the other hand, row i of QT being t t+1 zero means that column C2M−1 (i) does not appear in (exp Ω+ )QT . t t 3. In cases where QT = 1 but C2M−1 (i) is undeﬁned — i.e. measurement i is not t i,j represented by any column in Ωt — we assume that measurement i is implicitly represented by a zero column, representing our lack of identity information. Because zero columns contribute nothing to the ﬁnal summation regardless of how they are reordered, we can simply ignore references to such columns, which in turn speeds up computations. 4. If any column of the summation exp Ω− turns out to be zero, we simply delete t+1 it from exp Ω− . The justiﬁcation for this is twofold: First, the corresponding t+1 measurement is highly unlikely to be truly associated with any of the potential identities of interest, so its removal does not change the PMF αt signiﬁcantly. Second, its removal helps to keep Ω− compact, which in turn improves runt+1 time. Together, these guidelines suggest that we compute (8) sparsely by summing over individual contributions to each column of exp Ω− , as opposed to naively performing t+1 the summation over matrix products (exp Ω+ )QT . The only remaining issues are how t to determine the number of columns Mt+1 in exp Ω+ , as well as their mappings t+1 C2Mt+1 to corresponding measurements. Notice that Mt+1 = | j | ∃i∃Q ∈ ψt (QT = 1 ∧ i ∈ RangeOf(C2Mt )) | . i,j
+3 The
+
+(9)
+
+IMKF only allows association transition matrices Q ∈ Sn , i.e. each measurement at time t must be associated with some measurement at time t + 1. This is in contrast to the CIMBal, which allows its Mt+1 × Mt matrices Q to lose track of old measurements or introduce new measurements. 4 It should be noted that (8) does not change the number of rows in Ω , nor their correspondence R2I t t with identities.
+
+12
+
+In words, Mt+1 is equal to the number of measurement indices j at time t + 1 that are associated with a measurement in Ωt through some Q ∈ ψt . Once Mt+1 has been determined, the exact mapping from columns to measurements C2Mt+1 is left up to implementation — for example, one might require C2Mt+1 to be monotonically increasing, giving only one possible column ordering of Ω− . t+1 With these details in mind, (8) can be implemented with runtime O(pMt Nt ), where p = |Q ∈ ψt |. If we assume that p = O(z) where z = max(Mt , Nt ), then the Diffusion Step runs in O(z 3 ). We believe this assumption to be reasonable because for most real-world tracking scenarios, the proportion of measurements that confuse with each other in a given time step is expected to be small.
+
+6.3
+
+Update Step
+
+In the update step, the CIMBal (and IMKF) uses Bayes’ rule to update its informationform matrix Ωt with new identity readings, which are provided by the tracker as a matrix ωt . Recall that identity readings are information on measurement to identity associations, as opposed to transition association information ψt relating measurements at different time steps. More speciﬁcally, the goal of the Update Step is to use ωt as evidence to update the prior Ω− (from the Diffusion Step) to the posterior Ω+ . We require ωt to be an t t information-form matrix, so that the identity readings are encoded in the distribution A(ωt ). Let Pt denote the event that P ∈ AMt ,Nt is the true data association at time t before considering the evidence in ωt , i.e. pr(Pt ) = α(P ; Ω− ). By deﬁning t pr(ωt |Pt ) ≡ α(P ; ωt ) , it follows that the posterior of Ωt given evidence ωt is Ω+ = Ω− + ωt t t Proof of Update Step: • We need to show that pr(Pt |ωt ) = α(P ; Ω+ ). Using Bayes’ Rule, t pr(Pt |ωt ) = = pr(ωt |Pt )pr(Pt ) pr(ωt |Rt )pr(Rt ) R∈A
+Mt ,Nt
+
+(10)
+
+α(P ; ωt )α(P ; Ω− ) t α(R; ωt )α(R; Ω− ) t R∈A
+Mt ,Nt
+
+=
+
+(exp tr P ωt )(exp tr P Ω− ) t (exp tr Rωt )(exp tr RΩ− ) t R∈A
+Mt ,Nt
+
+=
+
+exp tr P (ωt + Ω− ) t exp tr R(ωt + Ω− ) t R∈A
+Mt ,Nt
+
+= α(P ; Ω− + ωt ) = α(P ; Ω+ ) t t 13
+
+6.3.1
+
+Constructing ωt
+
+In general, the tracker will not provide identity readings as information-form matrices ωt . We therefore need to construct ωt from whatever information is provided. Let us suppose that the tracker’s sensing model produces marginal probabilities of the form j pr(xi → zt |Tt ), where i ∈ Idt and j ∈ Mt . Supposing that for some identity i, t
+j pr(xi → zt |Tt ) = t
+
+γ j=i (1 − γ)/(Mt − 1) j = i
+
+(11)
+
+j then we can easily construct a satisfying ωt by making row i equal ln pr(xi → zt |Tt ) as t deﬁned above, and setting all other rows to zero. Furthermore, it is trivial to show that distributions A(ωt ) are invariant to the addition of a scalar to any row of ωt , provided Mt ≥ Nt .5 Since the CIMBal requires Mt ≥ Nt for all t, we may therefore subtract ln(1 − γ)/(Mt − 1) from the ith row to obtain:
+
+i,j ωt =
+
+ln γ(Mt − 1)/(1 − γ) i = j 0 otherwise
+
+(12)
+
+j In the case where marginals pr(xi → zt |Tt ) are provided for multiple identities i, one t may generate a unique ωi for each identity as described above, then sum the ωi ’s to get ωt . This is equivalent to performing the Update Step on each ωi in succession. Using this formulation, the Update Step has a runtime upper bound of O(Nt ).
+
+6.3.2
+
+Caveats
+
+The aforementioned construction does not cover situations where marginal probabilij ties pr(xi → zt |Tt ) such that t 1. i ∈ Idt and j ∈ Mt , or / 2. i ∈ Idt and j ∈ Mt , or / 3. i ∈ Idt and j ∈ Mt / / are given. In all 3 cases, the given marginal references entries outside of Ω− . One t solution is to expand Ω− to include a new zero row and/or column corresponding to t the identity and measurement in the marginal, similar to what was done in the Diffusion Step for references to measurements outside Mt . This solution is premised on the notion that zero entries of Ωt loosely indicate a lack of information regarding the corresponding measurement-to-identity associations. The overall, qualitative effect is to diffuse the probability mass in αt over the newly-introduced measurements and targets. The precise effects, however, vary depending on the current values of Ω− . t
+5 If
+
+Nt ≥ Mt , the distributions are instead invariant to the addition of a scalar to any column of ωt .
+
+14
+
+6.4
+
+Pruning Step
+
+The CIMBal uses the conditioning proposition to prune highly likely data associations from Ωt , reducing its size and hence the runtime of all other CIMBal operations. This is the key operation that allows the CIMBal substantial runtime and space savings over the IMKF. More speciﬁcally, the CIMBal checks for potential identities of interest i ∈ Idt , j i ∈ Id0 and relevant measurements j ∈ Mt such that pr(xi → zt ) ≈ 1, deleting row / t −1 −1 R2It (i) and column C2Mt (j) when this condition has been met. Recall that such j a deletion conditions αt on the event xi → zt ; this produces a good approximation t j i to the unconditioned αt when pr(xt → zt ) ≈ 1. When there are multiple pruning candidates i and j, the CIMBal prunes one pair (i, j) at a time until there are no longer any candidate pairs. 6.4.1 Identifying Pruning Candidates
+
+j Identifying (i, j) : pr(xi → zt ) ≈ 1 is normally prohibitive because of the factorial t complexity of computing such marginals. In order to overcome this, the CIMBal selects (i, j) pairs in two steps. The First Step uses a fast O(Nt Mt ) approximation to compute all Nt Mt data associations marginals in Ωt . In the Second Step, the highest marginals (up to a maximum of H) from the ﬁrst step that
+
+1. Do not involve i ∈ Id0 2. Are not signiﬁcantly lower than some pruning threshold κ are re-estimated using the Metropolis-Hastings algorithm (Robert and Casella 2005) j in O(z 2 ), where z = max(Nt , Mt ). For each marginal pr(xi → zt ) re-estimated to t −1 be greater than κ, the CIMBal deletes row R2It (i) and column C2M−1 (j) from Ωt , t while updating R2It and C2Mt appropriately. 6.4.2 First Step: Fast Approximation
+
+The ﬁrst approximation produces an Nt × Mt matrix A, where element Ai,j approxij mates pr(xi → zt ). A is generated in O(Nt Mt ) time via the following equations: t A= Rx,y = Cx,y =
+R +C 2 PRx,y a Ra,y C P x,y b Cx,b
+
+Rx,y = Cx,y =
+
+exp Ωx,y t P x,b b exp Ωt exp Ωx,y t P a,y a exp Ωt
+
+(13)
+
+where R , C , R and C are also Nt ×Mt matrices, and exp denotes element-wise matrix exponentiation. In short, exp Ωt is normalized across columns and then across rows to get C . This normalization is also performed across rows and then across columns to get R . Finally, R and C are averaged to get A. 15
+
+In general, the matrix A will not be doubly stochastic. Experimentation on 10 × 10 random matrices Ω shows that for high cutoffs κ ≥ 0.9, while the Fast Approximation generates a sizeable number of false negatives, it generates very few false positives. This behavior is illustrated in Figure 1. 6.4.3 Second Step: Metropolis-Hastings Approximation
+
+Observe that relative probabilities αt (P1 )/αt (P2 ) can be computed in O(min(Nt , Mt )): αt (P1 ) exp tr P1 Ωt = αt (P2 ) exp tr P2 Ωt (14)
+
+This allows us to use the Metropolis-Hastings algorithm to accurately re-estimate canj didate marginals pr(xi → zt ) provided by the First Step. Moreover, when pr(xi → t t j zt ) is being re-estimated, a proposal density favoring data associations P : Pj,i = 1 j should be used. This is because we expect pr(xi → zt ) to be close to 1 with high probt ability, assuming that the pruning threshold κ is close to 1 while candidate marginals coming from the First Step were not estimated to be signiﬁcantly lower than κ. When Ωt is square, one such proposal density can be implemented by generating a random data association6 P uniformly, and then: 1. If P (i) = j (i.e. Pj,i = 1), with probability p swap P (i) with P (k) = j. 2. If P (i) = j, with probability 1 − p swap P (i) with a randomly chosen element P (k) : k = i. As these swaps can be performed in constant time, the use of this proposal density does not affect the asymptotic complexity of the Second Step. Other proposal densities also exist, and their use is encouraged should they better ﬁt the expected distribution of marginals from the First Step. If O(z) iterations per marginal (where z = max(Nt , Mt )) are used to estimate only a constant number of marginals, then the Metropolis-Hastings step can performed in O(z 2 ), which is still faster than the limiting O(z 3 ) runtime of the Hungarian algorithm required by the Association Step. Moreover, up to O(z 2 ) iterations per marginal may be used without exceeding O(z 3 ) runtime; alternatively one could choose to reestimate up to O(z) marginals. In our testing, we used 200z iterations per marginal to re-estimate up to H = 5 marginals. However, it should be noted that we inadvertently used an inefﬁcient O(z log z) means of generating data associations, causing our implementation of the Second Step to have O(z 2 log z) runtime. Coupled with our observation that the Second Step accounts for a large fraction of the total CIMBal runtime, we therefore believe the CIMBal can perform better than our results would indicate.
+that a random data association P ∈ AM ,N can be uniformly generated in O(z) time, by genert t ating a permutation on Sz and then reading only the ﬁrst min(Nt , Mt ) elements.
+6 Note
+
+16
+
+Figure 1: True marginals vs. fast approximation marginals for 20 randomly generated 10 × 10 Ω’s, with each element distributed according to U(0, 25). Given a cutoff of κ = 0.9, the percentages of true/false postives/negatives are given in each case. The ratio of FP’s to TP’s to FN’s is approximately 1 : 7 : 49, indicating that the approximation is more often too conservative, but only 1 in 7 are false positives.
+
+17
+
+6.5
+
+Association Step
+
+ˆ The most likely data association Pt is required to update the |Id0 | Kalman ﬁlters K. This was given by (5), which can be solved in O(max(Nt , Mt )3 ) using the Hungarian max-matching algorithm on Ωt (Papadimitriou and Steiglitz 1998), according to ˆ PtT =
+i,j
+
+1 0
+
+Hungarian chooses [Ωt ]i,j otherwise
+
+(15)
+
+ˆ ˆ where PtT is the transpose of Pt . Then, for each identity of interest i ∈ Id0 , its j corresponding measurement under the most likely data association is zt where j : C2M−1 (j),R2I−1 (i) t t ˆ Pt = 1. Once determined, the |Id0 | corresponding measurements are used to update the Kalman ﬁlters. If few changes in Ωt are expected between timesteps, then the dynamic Hungarian algorithm (Mills-Tettey, Stentz, and Dias 2007) should be used instead, as the former may be able to solve (5) in less than O(max(Nt , Mt )3 ).
+
+7
+
+Experiments
+
+Assuming that the support of ψt has size O(z) (where z = max(Mt , Nt )), then the CIMBal requires O(z 3 ) to run through time step t. When this is compared to the IMKF’s per-time step runtime of O(N 3 ), we see that CIMBal has the potential to run much faster, especially when the Pruning Step is successful in keeping z N for most time steps. We support this claim by testing the CIMBal against the IMKF on the same data set used by Schumitsch et al. (2006). We will also see that the CIMBal suffers no signiﬁcant loss of tracking accuracy, despite running an entire order of magnitude faster compared to the IMKF.
+
+7.1
+7.1.1
+
+IMKF Data Set
+Test Setup
+
+We tested the CIMBal on the data used in Schumitsch et al. (2006) (provided courtesy of Schumitsch et al.), which was generated via a DARPA-designed program for use in the DARPA ACIP. The generated data contains over 3,000 objects moving through an urban environment in a realistic fashion. N = 2412 of these objects moving over 678 time steps were selected to make up the world; every one of these objects is labeled with a unique identity in [N ], and Figure 2 gives their tracks. The number of measurements generated was ﬁxed at Mt = N . We selected 30 objects at random to be the identities of interest Id0 . We ran the CIMBal and IMKF in a series of trials varying over two parameters: 1. The Frequency of Identity inforMation (F IM ) per measurement per timestep at F IM = 0.100, 0.033, 0.010. This represents the rate at which identity readings are provided by a tracker. More speciﬁcally, F IM is the probability for each measurement that the tracker will provide the true corresponding identity, at any timestep. For example, F IM = 0.100 means that at every time step, there is a 0.1 probability per measurement to get an identity reading for that measurement. 18
+
+2. The pruning threshold κ at κ = 0.99, 0.9. Moreover, in each trial the IMKF was run once, while the CIMBal was run in two setups: 1. 30T setup: The CIMBal was run once with Id0 as described earlier. 2. 1T setup: The CIMBal was run 30 times, each time with a different i ∈ Id0 as the single identity of interest. The details of our Metropolis-Hastings implementation are given in the Pruning Step, Second Step. Accuracies for the IMKF and 30T CIMBal setups are given as the mean fraction of timesteps where identity i’s true corresponding measurement was correctly identiﬁed, over all 30 i ∈ Id0 . The accuracies for 1T CIMBal setups are given as the mean fraction of timesteps where the single identity’s true corresopnding measurement was correctly identiﬁed, over all 30 runs. Runtimes shown are for the IMKF/CIMBal only — they do not include low-level tracker runtime, which includes the time required to generate ψt and ωt . As the same low-level tracker is used for both the IMKF and CIMBal, its contribution to overall runtime is the same for both ﬁlters. Also, note that the runtime for 1T CIMBal setups is given as the mean over all 30 runs, not the sum. 7.1.2 Results and Discussion
+
+Our results show that the CIMBal is as accurate as the IMKF at tracking the identities of interest Id0 (Figure 3). Compared to the IMKF, the 30T CIMBal setup runs signiﬁcantly faster; in particular Figure 4 shows that even under sparse identity readings F IM = 0.01, the 30T CIMBal is an order of magnitude faster than the IMKF, when low-level tracker runtime has been excluded from both. Increasing F IM to 0.1 makes the 30T CIMBal another 5 times faster. We have noticed one drawback to the CIMBal: under low F IM = 0.01, runtime per time step (iteration time) and |Ωt | increase over time for both the 1T and 30T setups. However, with high F IM = 0.1 these quantities remain more or less constant over time (Figures 5, 6). Figure 7 shows that CIMBal runtime scales according to O(z 3 ): when iteration time is plotted against z on a log-log scale, the slope of any of the trends — where each trend represents a speciﬁc number of Metropolis-Hastings re-estimation candidates — does not exceed 3. Additionally, we have observed that the Metropolis-Hastings algorithm accounts for a signiﬁcant fraction of the CIMBal’s runtime. This is evidenced by the large gaps between the trends in Figure 7; notice how going from 1 to 3 re-estimation candidates doubles the runtime. This, coupled with the fact that H is only a maximum on reestimation candidates, suggests that CIMBal runtime can ﬂuctuate signiﬁcantly from one time step to the next — a trend that is clearly observed in Figure 5.
+
+8
+
+Conclusion
+
+We have devised an IMKF variant we call the CIMBal, with several major advantages over its predecessor: 19
+
+Figure 2: Object tracks in the test data. The vertical axis represents time. Thick opaque lines are identities of interest. Transparent lines are other targets. Spheres represent events when two nearby tracks become confused.
+
+20
+
+Figure 3: IMKF and CIMBal accuracies. 1T and 30T denote the single and 30 identities of interest CIMBal setups respectively. 1. The CIMBal runs much faster and uses less space than the IMKF, in situations where only a small subset of objects/identities need to be tracked. 2. The CIMBal can handle changing numbers Mt of measurements with time. 3. The CIMBal does not require Mt = N (where N is the number of identities). 4. The CIMBal does not even require N to be known, in the sense that no CIMBal operation requires the value of N . This has the consequence that the low-level tracker may increase N at any time, provided that existing identity-to-object mappings are left unchanged. Decreasing N is not permitted, however. Key to the CIMBal’s performance is the Pruning Step, which removes high-probability identity-to-measurement associations, thus decreasing the size of Ωt with minimal loss in accuracy. We expect the CIMBal to be of utility in applications requiring its advantages, such as aerial surveillance and camera networks.
+
+9
+
+Further Research
+
+There are a few avenues for further improvement. First, the Fast Approximation might be improved to be more statistically sound, allowing the CIMBal to propose better 21
+
+10
+
+5
+
+Semi−log cumulative runtime
+
+10
+
+4
+
+10
+
+3
+
+Runtime (s)
+
+10
+
+2
+
+10
+
+1
+
+10
+
+0
+
+10
+
+−1
+
+0
+
+100
+
+200
+
+300
+
+400
+
+500
+
+600
+
+700
+
+Timestep
+Figure 4: Semi-log plot of cumulative runtime. Color codes — Green: IMKF with F IM = 0.01, Magenta/Red: 30T CIMBal with F IM = 0.1 (magenta) and 0.01 (red), Cyan/Blue: 1T CIMBal average with F IM = 0.1 (cyan) and 0.01 (blue). Line styles: Solid: κ = 0.99, Dashed: κ = 0.90.
+
+22
+
+10
+
+2
+
+Semi−log Runtime per timestep versus timestep, excluding the time taken to run the sensor
+
+10 Runtime in seconds 10
+
+1
+
+0
+
+10
+
+−1
+
+0
+
+100
+
+200
+
+300
+
+400
+
+500
+
+600
+
+700
+
+Figure 5: Semi-log plot of runtime for each time step. Color codes and line styles are the same as in Figure 4.
+
+Timestep Green = IMKF, Cyan/Blue = 1−target CIMKFs avg (IP 0.1/0.01), Magenta/Red = 30−target CIMKF (IP 0.1/0.01) Solid = PT 0.99, Dashed = PT 0.90
+
+23
+
+10
+
+3
+
+Semi−log z versus timestep Maximum possible z = 2412
+
+10
+
+2
+
+z 10
+1
+
+10
+
+0
+
+0
+
+100
+
+200
+
+300
+
+400
+
+500
+
+600
+
+700
+
+Figure 6: Semi-log plot of z over time, where z = max(Nt , Mt ). Color codes and line styles are the same as in Figure 4.
+
+Timestep Cyan/Blue = 1−target CIMKFs avg (IP 0.1/0.01), Magenta/Red = 30−target CIMKF (IP 0.1/0.01) Solid = PT 0.99, Dashed = PT 0.90
+
+24
+
+Figure 7: Log-log plot of iteration time versus v, where v = max(Nt , Mt ). Each point represents a particular time step in either a 30T or 1T CIMBal setup, for the parameters F IM = 0.01 and κ = 0.99 or 0.9. Point colors indicate the number of candidates re-estimated using Metropolis-Hastings during that iteration, from 0 (dark blue) to 5 (dark red). Observe that the slope of any colored trend does not exceed 3, implying that the CIMBal achieves O(v 3 ) runtime in practice.
+
+25
+
+j re-estimation candidates pr(xi → zt ) to the more accurate but slower Metropolist Hastings step. In particular, the Fast Approximation’s high rate of false negatives negatively affects the overall performance of the CIMBal. This is because certain pruning candidates might be consistently missed, thus keeping |Ωt | larger than it needs to be. Ideally, we desire a Monte Carlo method that quickly estimates high probability j marginal associations pr(xi → zt ), where by ”quickly” we mean faster than the total t time required by the Metropolis-Hastings step. Second, the Metropolis-Hastings algorithm need not be run as often as it is now. It is likely that any marginals pr(xi → z j ) that are estimated by the Metropolis-Hastings algorithm during some timestep tk , will be estimated again in future timesteps tk+r for r ≤ some horizon h; this is especially true when identity information is scarce, since the marginals do not change as dramatically by the diffusion step as they do by the update step. Hence for a given marginal, one can apply the importance sampling technique (Liu 2001) on the sample sequence generated at tk to estimate the new value of the marginal at tk+r . With respect to the CIMBal, we can implement importance sampling during Metropolis-Hastings by taking a previous sample sequence, reweighing each sampled permutation Pi by α(Pi ; Ωtk+r )/α(Pi ; Ωtk ), and then using this reweighed sequence to re-estimate pr(xi → z j ). This requires a constant fraction fewer computations than generating proposal permutations and calculating acceptance probabilities normally, though the asymptotic complexity still remains O(z) per sample. The primary drawback to importance sampling is that additional space is required to store Ωt ’s from previous timesteps, though we expect the improvement in runtime to be worth the extra space. Finally, while the effects of deleting rows and columns from Ω are explained by the conditioning proposition, adding rows and columns is only understood to diffuse the mass of the distribution α over the new measurement-to-identity associations made possible; furthermore the diffusion is highly dependent on the existing entries of Ω. A formula or approximation for the new rows/columns that results in a more precise redistribution of the probability mass would be an important step forward.
+
+10
+
+Acknowledgements
+
+We would like to thank Brad Schumitsch for providing us with his dataset, and we would also like to thank Jonathan Huang for his helpful discussions.
+
+26
+
+References
+Betke, M., D. E. Hirsh, A. Bagchi, N. I. Hristov, N. C. Makris, and T. H. Kunz (2007). Tracking large variable numbers of objects in clutter. In CVPR. IEEE Computer Society. Dellaert, F., S. Seitz, C. Thorpe, and S. Thrun (2007). Em, mcmc, and chain ﬂipping for structure from motion with unknown correspondence. Machine Learning 50(1-2), 45–71. Fortmann, T., Y. Bar-Shalom, and M. Scheffe (1980, December). Multi-target tracking using joint probabilistic data association. In Proc. IEEE Conference on Decision and Control, pp. 807 – 812. Huang, J., C. Guestrin, and L. Guibas (2007). Efﬁcient inference for distributions on permutations. In Proc. NIPS 2007. Kondor, R., A. Howard, and T. Jebara (2007, March). Multi-object tracking with representations of the symmetric group. In Artiﬁcial Intelligence and Statistics, AISTATS, San Juan, Puerto Rico. Liu, J. S. (2001). Monte Carlo Strategies in Scientiﬁc Computing. Springer-Verlag. Mills-Tettey, G. A., A. T. Stentz, and M. B. Dias (2007, July). The dynamic hungarian algorithm for the assignment problem with changing costs. Technical Report CMU-RI-TR07-27, Robotics Institute, Carnegie Mellon University, Pittsburgh, PA. Oh, S. and S. Sastry (2005, June). A polynomial-time approximation algorithm for joint probabilistic data association. In Proc. American Control Conference (ACC), Portland, OR, USA. Page, L. (2007, October). Boeing robo-chopper for darpa’s super-spyeye. The Register. Papadimitriou, C. H. and K. Steiglitz (1998, July). Combinatorial Optimization : Algorithms and Complexity. Dover Publications. Pasula, H., S. J. Russell, M. Ostland, and Y. Ritov (1999). Tracking many objects with many sensors. In IJCAI, Stockholm, Sweden, pp. 1160–1171. Reid, D. (1979). An algorithm for tracking multiple targets. IEEE Transactions on Aerospace and Electronic Systems AC-24, 843–854. Robert, C. P. and G. Casella (2005, July). Monte Carlo Statistical Methods (Springer Texts in Statistics). Springer. Schumitsch, B., S. Thrun, L. Guibas, and K. Olukotun (2006, August). The identity management kalman ﬁlter (imkf). In Proceedings of Robotics: Science and Systems, Philadelphia, PA, USA. Shin, J., L. J. Guibas, and F. Zhao (2003). A distributed algorithm for managing multi-target identities in wireless ad-hoc sensor networks. In F. Zhao and L. J. Guibas (Eds.), IPSN, Volume 2634 of Lecture Notes in Computer Science, pp. 223–238. Springer.
+
+27
+

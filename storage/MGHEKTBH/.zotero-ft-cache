@@ -1,0 +1,139 @@
+[19]
+
+measurement and analysis of calcium signaling
+
+335
+
+accumulation in non‐P‐glycoprotein mediated multidrug resistant tumour cells. Br. J. Cancer 68, 939–946. Vickers, P. J., Dickson, R. B., Shoemaker, R., and Cowan, K. H. (1988). A multidrug‐resistant MCF‐7 breast cancer cell line which exhibits cross‐resistance to antiestrogens and hormone‐independent tumor growth in vivo. Mol. Endocrinol. 2, 886–892. Villa, A. M., and Doglia, S. M. (2004). Mitochondria in tumor cells studied by laser scanning confocal microscopy. J. Biomed. Opt. 9, 385–394. Zhou, Y., Xu, Y., Qi, J., Xiao, Y, Yang, C., Zhu, Z., and Xiong, D. (2006). Sorcin, an important gene associated with multidrug‐resistance in human leukemia cells. Leuk. Res. 30, 469–476.
+
+[19] Measurement and Analysis of Calcium Signaling in Heterogeneous Cell Cultures
+By GILLIAN R. RICHARDS, ANDREW D. JACK, AMY PLATTS , and PETER B. SIMPSON
+Abstract
+
+High‐content imaging platforms capable of studying kinetic responses at a single‐cell level have elevated kinetic recording techniques from labor‐ intensive low‐throughput experiments to potential high‐throughput screening assays. We have applied this technology to the investigation of heterogeneous cell cultures derived from primary neural tissue. The neuronal cultures mature into a coupled network and display spontaneous oscillations in intracellular calcium, which can be modiﬁed by the addition of pharmacological agents. We have developed algorithms to perform Fourier analysis and quantify both the degree of synchronization and the effects of modulators on the oscillations. Functional and phenotypic experiments can be combined using this approach. We have used post‐hoc immunolabeling to identify subpopulations of cells in cocultures and to dissect the calcium responses of these cells from the population response. The combination of these techniques represents a powerful tool for drug discovery.
+
+Introduction
+
+High‐content screening has become established as a valuable tool for drug discovery, allowing rapid quantiﬁcation of end point parameters such as neurite outgrowth (Simpson et al., 2001), cell motility (Richards et al., 2004), and intracellular translocations (Ding et al., 1998) that were previously not amenable to high‐throughput screening. While these ﬁxed end
+METHODS IN ENZYMOLOGY, VOL. 414 Copyright 2006, Elsevier Inc. All rights reserved. 0076-6879/06 $35.00 DOI: 10.1016/S0076-6879(06)14019-7
+
+336
+
+measuring biological responses with automated microscopy
+
+[19]
+
+point assays have proved extremely useful over a number of years, it is becoming more apparent that being able to quantify the kinetics of cellular events is important for elucidating drug targets and molecular mechanisms (Simpson, 2005; Simpson and Wafford, 2006). High‐throughput imaging of rapid and/or transient cellular events is now possible with the development of imaging systems such as the GE INCell 3000, BD Pathway HT, Cellomics KineticScan, and EvoTec Opera (for a review, see Zemanova et al., 2003). The BD Pathway HT Bioimager offers confocal imaging capability, ﬂexible combinations of excitation and emission ﬁlters, and integrated liquid handling. The imager allows high‐resolution single‐cell imaging of many individual cells, or ‘‘regions of interest’’ (ROI), within each well across a microtiter plate. We have used this system to implement a variety of kinetic assays (Chan et al., 2006). The ability to track individual cell responses within a population permits the use of more complex cell cultures in screening, such as stem cell‐derived populations (Richards et al., 2004) and primary cell cultures (Chan et al., 2006). In central nervous system drug discovery, the use of cultures of this nature has the advantage of providing an in vitro model that may resemble tissue or in vivo responses more accurately than traditional recombinant cell lines. Combining this ability with kinetic imaging techniques represents a powerful tool for drug discovery whereby functional and phenotypic responses can be studied simultaneously. We have established a number of techniques for analyzing high‐content kinetic calcium signaling responses from entire heterogeneous cell cultures and subpopulations within them.
+Characterization of Calcium Signaling in Rat Cortical Cultures
+
+Overview We have established methodology that enables E17 embryonic rat cortical cultures to be used as an in vitro model of neuronal development and network formation. Calcium imaging studies indicate that these cultures display spontaneous calcium signals and form a complex synaptically coupled network over time. Between 1 and 3 days after plating very few, if any, cells show evidence of calcium ﬂux. At 5 to 8 days of culture, the cells begin to exhibit asynchronous intracellular calcium transients. From 9 to 14 days, the cell population showed synchronized oscillations of intracellular calcium with modest amplitude (see Fig. 1). The synchronous oscillations observed in mature cortical cultures can be modulated pharmacologically, producing changes to the frequency and amplitude of the waveform (see Fig. 2). To enable this system to be utilized as a tool within drug discovery, we have developed a method for performing Fourier analysis of imaging‐derived
+
+[19]
+
+measurement and analysis of calcium signaling
+
+337
+
+data sets to rapidly quantify the degree of synchronization of a culture and the characteristics of synchronized oscillations. Fourier analysis is a commonly used mathematical tool and can be performed by a variety of commercially available software, such as MATLAB (The MathWorks Inc., Natick, MA; see Uhlen, 2004) and Statistica (StatSoft Inc., Tulsa, OK). Calcium signaling data are acquired using automatic ROI identiﬁcation deﬁned in such a way that each ROI represents a single cell or small cluster of cells. Series of images are converted to numerical data indicating the variation of intensity with time for each ROI. Numerical data are imported into Statistica 6.1 for multistep analysis consisting of detrending, splitting, and Fourier analysis. For each ROI, the median intensity value
+
+FIG. 1. (continued)
+
+338
+
+measuring biological responses with automated microscopy
+
+[19]
+
+FIG. 1. Rat cortical neuron primary cultures were maintained for up to 14 days following plating, and spontaneous calcium ﬂuxes were recorded using the BD Pathway HT imaging system. Activity develops with time in culture, from quiescence to asynchronous to synchronized oscillation. Example traces are shown from 2 (A), 7 (B), 9 (C), and 14 (D) days in culture. Data are expressed as the fold change from basal ﬂuorescence (DF/F).
+
+is subtracted from each data point in order to center each ROI series around zero. Figure 3A shows raw data obtained, with the average ﬂuorescence intensity varying from cell to cell, and Fig. 3B illustrates normalization of data by subtracting the median and rescaling. As photobleaching or leakage of the calcium indicator can occur, resulting in a gradual decrease in intensity, the option to calculate and remove this linear trend from data is also included. Where appropriate, data can be split into regions on the
+
+[19]
+
+measurement and analysis of calcium signaling
+
+339
+
+FIG. 2. Synchronous oscillations in intracellular calcium can be modulated. In this example the addition of 10 M bicuculline increased the amplitude and decreased the frequency of the oscillations.
+
+basis of time, for example, ‘‘basal’’ and ‘‘drug addition’’ (see Fig. 3A and B; drug addition is indicated by the black bar). Single‐series Fourier analysis is performed to identify and quantify the underlying cyclical components of the calcium signaling (for further information, see Bloomﬁeld, 2000) and produces a plot of the spectral density against frequency (see Fig. 3C). Fourier analysis is performed on each ROI series individually, and the results can be displayed as an average of all the ROIs within a well, as in Fig. 3C, or as individual plots, as in Fig. 4. The spectral density provides a method to determine the frequency, which contributes most to the overall periodic behavior of calcium signaling observed within the cortical culture. Although the plots do not provide a direct measure of amplitude, they do provide an indication of the relative strength of the different frequencies that form the oscillation. Spectra plotted in Fig. 3C thus reﬂect and quantify the drug‐induced decrease in frequency and increase in amplitude observed in Fig. 3A and 3B. Statistical comparisons of both the frequency at which the peak spectral density occurs and the magnitude of the peak spectral density can therefore be performed using this analysis. Downstream signaling pathways can be inﬂuenced by information encoded in both the frequency and the amplitude of calcium oscillations (Berridge, 1997), and the analysis methods described permit quantiﬁcation of these complex aspects of cell signaling behavior. We have used the techniques described here to determine a measure of the degree of synchronization of rat cortical cultures (see Fig. 4) and to analyze the effects of acute (see Fig. 3) and of chronic additions of drugs
+
+340
+
+measuring biological responses with automated microscopy
+
+[19]
+
+FIG. 3. Series of images are analyzed to produce numerical intensity values for each ROI, which can be plotted against time (A; black bar indicates addition of 10 M bicuculline). The individual ROIs vary in intensity levels depending on dye loading and cellular
+
+[19]
+
+measurement and analysis of calcium signaling
+
+341
+
+to these cells. Using this analysis technique permits rapid quantiﬁcation of alterations to the oscillatory properties of the cultures and is beneﬁcial for performing statistical comparison of complex cell signaling. This
+
+FIG. 4. Spectral analysis of spontaneous calcium signaling can be applied to determine the degree of synchronization of a cortical culture. Each line on the spectra corresponds to an individual ROI. In early cultures with asynchronous signaling, individual spectra are disparate (A), whereas in later cultures where synchronous oscillations are established, individual spectra have similar proﬁles (B).
+
+characteristics. Before any further analysis, each data series is normalized by subtracting its median value from each data point to center each series around zero (B; black bar indicates addition of a drug). Data are divided in ‘‘basal’’ and ‘‘drug addition’’ regions, and then single‐ series Fourier analysis is performed. The average spectral density for all the ROIs is plotted against frequency for each region (C).
+
+342
+
+measuring biological responses with automated microscopy
+
+[19]
+
+approach is not only applicable to kinetic measurements of calcium signaling, but equally could be applied to any cell culture system or assay where cyclical changes in signal intensity are observed, for example, NF‐B translocation (Nelson et al., 2002, 2004). Assay Protocol 1. Obtain rat E17 embryonic cortices according to local regulations governing the use of laboratory animals in experimentation. Dissect cortices under sterile Hanks balanced salt solution (HBSS; Invitrogen, Paisley, UK), removing the meningeal layer and refractory bulb. Chop cortices in a fresh culture dish with bowspring scissors and transfer to a 1:10 trypsin solution at 37 for 30 min. Neutralize the digest with Neurobasal media supplemented with penicillin, streptomycin, fungizone, L‐glutamine, and 10% fetal calf serum (FCS) (all from Invitrogen). Pellet the cells by centrifugation, remove supernatant, and triturate the pellet in 1 ml Neurobasal medium. Add 19 ml of Neurobasal media and then ﬁlter the solution with a 70‐m cell strainer. Plate cells in poly‐D‐lysine‐ coated 96‐well plates (Biocoat, BD Biosciences, Oxford, UK) at 50,000 cells/well in 100 l/well of Neurobasal medium supplemented with 1:50 B27 (Invitrogen). Change the medium following overnight incubation at 37 /5% CO2. Maintain cultures at 37 /5% CO2 with 50% medium changes every 3 to 4 days. Note that it may be best to avoid using wells at the edges of the plate for experiments, as edge effects may be particularly prominent in long‐term cultures. 2. Wash cells with 100 l/well physiological salt solution (KHB: 118 mM NaCl, 4.7 mM KCl, 4.2 mM NaHCO3, 1.2 mM KH2PO4, 1.3 mM CaCl2, 1.2 mM MgSO4, and 10 mM HEPES; all from Sigma‐Aldrich) and then incubate with 100 l/well 5 M Fluo‐3‐AM/ 0.004% pluronic acid (TefLabs, Austin, TX) for 1 h at room temperature in the dark. Following incubation, wash cells three times in KHB, leaving a residual volume of 100 l/well. 3. Transfer the cell plate to a microplate‐based high‐content imaging system with the capability of recording kinetic ﬂuorescent responses from individual cells. Data presented here were acquired using a BD Pathway HT bioimager. For experiments where compound additions are required, prepare solutions in KHB at 10Â [ﬁnal] and add 11 l per well during recording. 4. Acquire a series of images from each well using appropriate ﬁlter settings and exposure times to record the kinetic activity of the culture. Typically, images are acquired every 0.5 to 1 s with an exposure of 0.3 to
+
+[19]
+
+measurement and analysis of calcium signaling
+
+343
+
+0.8 s for a period of 2 to 5 min. For experiments where compounds are applied, ensure that a sufﬁcient period of basal activity is recorded prior to the addition to allow analysis of compound‐evoked changes. 5. Analyze the images to produce intensity values for each cell or ROI and produce an output ﬁle suitable for further analysis. 6. Center data about zero by calculating the median ﬂuorescence for each ROI and subtracting this median from each time point of the ROI. Then rescale data by calculating the median of the absolute values of the centered ROI and dividing each time point by this new median value (because data have been centered, the absolute value is necessary, otherwise the median would be approximately zero). This centering and scaling procedure will adjust for the different signal strength of each ROI. If the ROIs have been measured under different conditions, then split data into different variables according to time at which each treatment condition began and ended. Each of these new variables is now analyzed separately. 7. Centered and scaled data are analyzed using the default single series Fourier analysis in Statistica. This default analysis also subtracts the series average and removes any linear trend before calculating the Fourier decomposition. This is important, for example, if photobleaching has produced a general decline in ﬂuorescent values with time. For each individual ROI, the spectral density at each frequency is generated by the Fourier analysis. The frequencies reported by Statistica assume that the observations come from time 1, 2, 3... so in order to interpret the frequencies correctly, the reported frequencies are divided by the average interval between images in original data (note that it is vital that the images are taken at equally spaced intervals). 8. If the average spectrum is required for a set of ROIs (and/or for a particular treatment condition), then a simple average of the spectral density for each frequency is taken across the ROIs. Once the ﬁnal densities have been calculated, then the frequency that has the highest density can be calculated and used to make comparisons across different conditions.
+
+Subpopulation Analysis of Calcium Signaling in Cocultures
+
+Overview In recent years many researchers have focused their attention on stem cell therapy, with both transplantation and activation of endogenous populations of progenitors considered to be potential strategies (for reviews, see Mitchell et al., 2004; Zhu et al., 2005). For either approach, the ability of precursors to divide, migrate, differentiate, and integrate in an appropriate
+
+344
+
+measuring biological responses with automated microscopy
+
+[19]
+
+FIG. 5. Cocultures of rat cortical cells and human neural precursors are loaded with Fluo‐3, and calcium imaging of spontaneous signaling is recorded from the entire population (A).
+
+[19]
+
+measurement and analysis of calcium signaling
+
+345
+
+manner will be critical for replacing damaged tissue and correcting functional deﬁcits. We have previously developed high‐content screening methodologies suitable for quantifying migration and differentiation in neural cell populations (Richards et al., 2004; Simpson et al., 2001), which were suitable for ﬁxed end point analysis. The availability of the cortical cultures as a model system and the ability to perform high‐content combined kinetic and phenotypic experiments have enabled us to develop methodology to study the integration of human neural precursors into an established neural culture in a manner amenable to higher throughput screening. Human neural precursor cells are seeded onto established rat cortical cultures produced as described earlier. Cells are then cocultured for the desired period of time and then subject to calcium imaging, as described earlier, and data are recorded from the entire population (see Fig. 5A and B). Following kinetic experiments, cell plates are ﬁxed and labeled with a primary antibody that speciﬁcally recognizes human nuclei and then a ﬂuorescent secondary antibody. The cell plates are reimaged (see Fig. 5C) and new ROIs are deﬁned that represent only those cells positive for human nuclear labeling. Original kinetic calcium signaling data can be readily reanalyzed to reﬂect the responses of this subpopulation alone (see Fig. 5D). Spectral analysis can then be performed to quantify the similarities or differences between the populations of cells (see Fig. 5E and F). The diversity of ﬂuorescent secondary antibodies and the ﬂexibility of excitation and emission ﬁlters in an imager such as the BD Pathway HT mean that this methodology can be adapted to include a number of different primary antibodies and yield still further information from the same experiment. We have typically included antibodies to neural progenitors, glia, and neurons to facilitate investigation of both functional responses and cell fate. Assay Protocol 1. Obtain rat cortical neuron cultures as described earlier. 2. Culture human neural precursor cells and obtain a single cell
+
+Series of images are analyzed to produce numerical intensity values for each region of interest (ROI), which are plotted against time (B). Cell plates are ﬁxed and labeled with human nuclei‐ speciﬁc antibodies (red), a neuronal marker (green), and a nuclear label (blue) (C). Identiﬁed human nuclei are used to redeﬁne a new set of ROIs, which are used to reanalyze the kinetic data ﬁle. Data for the subpopulation of human cells can thus be plotted (D). Spectral analysis can be performed on the two sets of ROIs to compare to the results (E and F).
+
+346
+
+measuring biological responses with automated microscopy
+
+[19]
+
+suspension, as described previously (Richards et al., 2004). 3. Seed the precursor cells onto the cortical cultures at a density of 5000 cells/well. Typically, cells are seeded onto cortical networks that are either 1 or 7 days old and cultured for a further 2 weeks. 4. Coculture the cells for the required period of time at 37 /5% CO2 with 50% medium changes every 3 to 4 days. 5. Wash cells with 100 l/well physiological salt solution (KHB: 118 mM NaCl, 4.7 mM KCl, 4.2 mM NaHCO3, 1.2 mM KH2PO4, 1.3 mM CaCl2, 1.2 mM MgSO4, and 10 mM HEPES; all from Sigma‐Aldrich) and then incubate with 100 l/well 5 M Fluo‐3‐AM/ 0.004% pluronic acid (TefLabs) for 1 h at room temperature in the dark. Following incubation, wash cells three times in KHB, leaving a residual volume of 100 l/well. 6. Transfer the cell plate to a microplate‐based high‐content imaging system with the capability of recording kinetic ﬂuorescent responses from individual cells. Data presented here are acquired using a BD Pathway HT bioimager. 7. Acquire a series of images from each well using appropriate ﬁlter settings and exposure times to record the kinetic activity of the culture. Typically, images are acquired every 0.5 to 1 s with an exposure of 0.3 to 0.8 s for a period of 2 min. Analyze the images to produce intensity values for each cell or ROI and produce an output ﬁle suitable for plotting. 8. Remove the cell plate from the imager and wash gently in phosphate‐ buffered saline, pH 7.4, (PBS). Fix the cells with 4% paraformaldehyde for 10 min, wash three times with PBS, and add blocking buffer (PBS/0.1% Triton‐X /5% normal goat serum; all from Sigma‐Aldrich) for 1 h at room temperature. Wash cell plates three times with PBS and add mouse antihuman/nuclei antibody 1:100 and rabbit anti‐MAP2 (an early neuronal marker) 1:200 in blocking buffer (both from Chemicon, Temecula, CA) and incubate overnight at 4 . Wash cell plates three times with PBS and add staining solution containing 1:500 Alexa‐594 conjugated antimouse secondary antibody, 1:500 Alexa‐488 conjugated antirabbit secondary antibody, and 5 M Hoechst 33342 in PBS (both from Invitrogen, Paisley, UK) for 1 h at room temperature. Wash the cell plate three times with PBS and then return it to the high‐content imager. 9. For each well, acquire an image using appropriate ﬁlter settings to indicate the location of the Alexa‐594‐labeled nuclei. Use this image to redeﬁne a new set of ROIs and reanalyze previously acquired kinetic data. Plot the intensity values for this subpopulation of cells and determine whether the human neural precursor cells display similar calcium signaling to the underlying cortical culture. Additional images of all nuclei and MAP2‐positive neurons can also be acquired to identify whether any of the human neural precursors have adopted a neuronal phenotype.
+
+[19]
+
+measurement and analysis of calcium signaling
+
+347
+
+10. Spectral analysis can be performed, as described earlier, to permit statistical analysis of the signaling properties of the two populations of cells.
+Acknowledgments
+We are grateful to Mathew Leveridge for cell culture and David Pellat for provision of Excel‐based data plotting macros.
+
+References
+Berridge, M. J. (1997). The AM and FM of calcium signalling. Nature 386, 759–760. Bloomﬁeld, P. (2000). ‘‘Fourier Analysis of Time Series: An Introduction.’’ Wiley, New York. Chan, G. K. Y., Richards, G. R., Peters, M., and Simpson, P. B. (2006). High content kinetic assays of neuronal signalling implemented on BD Pathway HT. Assay Drug Dev. Technol. 4, 143–152. Ding, G. F. J., Fischer, P. A., Boltz, R. C., Schmidt, J. A., Colaianne, J. J., Gough, A., Rubin, R. A., and Miller, D. K. (1998). Characterization and quantitation of NF‐B nuclear translocation induced by interleukin‐1 and tumor necrosis factor‐. J. Biol. Chem. 273, 28897–28905. Mitchell, B. D., Emsley, J. G., Magavi, S. S., Arlotta, P., and Macklis, J. D. (2004). Constitutive and induced neurogenesis in the adult mammalian brain: Manipulation of endogenous precursors toward CNS repair. Dev. Neurosci. 26, 101–117. Nelson, D. E., Ihekwaba, A. E., Elliott, M., Johnson, J. R., Gibney, C. A., Foreman, B. E., Nelson, G., See, V., Horton, C. A., Spiller, D. G., Edwards, S. W., McDowell, H. P., Unitt, J. F., Sullivan, E., Grimley, R., Benson, N., Broomhead, D., Kell, D. B., and White, M. R. (2004). Oscillations in NF‐B signaling control the dynamics of gene expression. Science 306, 704–708. Nelson, G., Paraoan, L., Spiller, D. G., Wilde, G. J., Browne, M. A., Djali, P. K., Unitt, J. F., Sullivan, E., Floettmann, E., and White, M. R. (2002). Multi‐parameter analysis of the kinetics of NF‐B signalling and transcription in single living cells. J. Cell Sci. 115, 1137–1148. Richards, G. R., Millard, R. M., Leveridge, M., Kerby, J., and Simpson, P. B. (2004). Quantitative assays of chemotaxis and chemokinesis for human neural cells. Assay Drug Dev. Technol. 2, 465–472. Simpson, P. B. (2005). Getting a handle on neuronal behaviour in culture. Eur. Pharm. Rev. 10, 56–63. Simpson, P. B., Bacha, J. I., Palfreyman, E.L, Woollacott, A. J., McKernan, R. M., and Kerby, J. (2001). Retinoic acid evoked‐differentiation of neuroblastoma cells predominates over growth factor stimulation: An automated image capture and quantitation approach to neuritogenesis. Anal. Biochem. 15, 163–169. Simpson, P. B., and Wafford, K. A. (2006). New directions in kinetic high information content assays. Submitted for publication. Uhlen, P. (2004). Spectral analysis of calcium oscillations. Sci. STKE 258, l15. ´ Zemanova, L., Schenk, A., Valler, M. J., Nienhaus, G. U., and Heilker, R. (2003). Confocal optics microscopy for biochemical and cellular high‐throughput screening. Drug Disc. Today 8, 1085–1093. Zhu, J., Wu, X., and Zhang, H. L. (2005). Adult neural stem cell therapy: Expansion in vitro, tracking in vivo and clinical transplantation. Curr. Drug. Targets 6, 97–110.
+

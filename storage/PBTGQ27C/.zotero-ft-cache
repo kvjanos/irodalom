@@ -1,0 +1,1726 @@
+Neural Networks and Evolutionary Algorithms Diplomarbeit
+
+Universität Rostock, Institut für Informatik
+
+Vorgelegt von :  Geboren am Gutachter : : 
+
+Huascar Fiorletta 27.11.1980 Roma Prof. Dr. rer. nat. habil. Van Bang Le Prof. Dr.­Ing. habil. Peter Forbrig 16.09.2006 1
+
+Abgabedatum :  
+
+2
+
+Abstract
+This work contains an introduction to the world of Neural Networks followed by the basics of  Evolutionary algorithms. An overview of the biological inspiration of both fields as well as  their   theoretic   foundations   is   presented.  A   review   of   the   most   influential   advances   in  evolutionary   algorithms   is   also   offered   keeping   a   critical   approach   to   a   field   which   is  extremely broad and in continuous expansion. Finally the JoonePad and JooneFarm projects  are   presented,   introducing   the   reader   to   a   user   friendly   tool   that   aspires   to   be   an  experimentation   workbench   for   neural  networks   and   evolutionary   algorithms   enthusiasts  enabling them to evolve neural network topologies.
+
+Keywords:  evolution   strategies,   genetic   algorithms,   neural   networks,   Joone,   JoonePad,  JooneFarm. 
+
+3
+
+Table of contents
+  Neural Networks and Evolutionary Algorithms                                                       ................................................... ...................                        1     Diplomarbeit                                                                                                                               ......................................................................................................................... ....       1     Abstract                                                                                                                                       ................................................................................................................................ 3 .....         Table of contents                                                                                               ........................................................................................... ...........................                                4     List of abbreviations                                                                                                          ..................................................................................................... ...........                6     Motivation and goals                                                                                                        .................................................................................................... ............                 7     Introduction                                                                                                            ........................................................................................................ ......................                           8     Chapter 1                                                                                                                                     ................................................................................................................................  13 .      Basics of Neural Networks                                                                                             ......................................................................................... ............                  13     1.1­ Why neural networks?                                                                            ........................................................................ ............................                                  13     1.2­ What a neural network is                                                                                    ................................................................................ ................                      15     1.3­ Network topology                                                                                    ................................................................................ ...........................                                 16     1.4­ The McCulloch­Pitts neuron                                                                  .............................................................. ............................                                  17     1.5­ The Perceptron                                                                                                                 ........................................................................................................  23 ........            1.6­ The perceptron learning algorithm                                                                                      .............................................................................. 28 ...       1.7­ Convergence to optimum                                                                                                  .........................................................................................  34 .......           1.8­ The multilayer perceptron                                                                     ................................................................. .............................                                   36     Chapter 2                                                                                                          ...................................................................................................... ..........................                                43     Basics of Genetic Algorithms                                                                                    ................................................................................ ................                      43     2.1­ The beginning                                                                                                        .................................................................................................... .............                   43     2.2­ A little bit of genetics                                                                                            ........................................................................................ .............                   44     2.3­ Evolution as an optimization algorithm                                                                          .................................................................  50 ........            2.4­ Quality function, mutation and crossover                                                             ......................................................... .............                   58     2.5­ The role of chance                                                                                                ............................................................................................ ..............                    64     Chapter 3                                                                                                          ...................................................................................................... ..........................                                65     Evolution Strategies                                                                                       ................................................................................... ............................                                  65     3.1­ Rechenberg, the pioneer                                                                                  .............................................................................. ...................                         65     3.2­ The (μ + λ) ES                                                                                                              .....................................................................................................  66 ..........              3.3­ The (μ , λ) ES                                                                                                  .............................................................................................. ..................                        68  
+
+4
+
+  3.4­ ES generalization                                                                                                                ........................................................................................................ 69 ....        3.5­ Recombination in ESs                                                                                       ................................................................................... .................                       69     3.6­ Isolated populations                                                                               .......................................................................... ............................                                  70     3.7­ Rechenberg­Schwefel notation for ES                                                    ................................................ ...........................                                 72     3.8­ Progress window and adaptive mutations                                                         ..................................................... .................                       74     Chapter 4                                                                                                          ...................................................................................................... ..........................                                80     Genetic Algorithms                                                                                                    ................................................................................................ ................                      80     4.1­ Holland the father of genetic algorithms                                                                             .......................................................................  80 .      4.2­ Similarities and differences wit ESs                                                              .......................................................... ....................                          80     4.3­ A framework for GAs                                                                                       .................................................................................. ..................                        81     4.4­ Chromosomes as samples of schemata                                                                  ............................................................. ............                  86     4.5­ Some operators                                                                                                      .................................................................................................. .............                   90     4.6­ A basic GA                                                                                                     ................................................................................................ ....................                          93     4.7­ The 2­armd bandit                                                                                                ............................................................................................ ..............                    96     4.8­ The schema theorem                                                                                                            .......................................................................................................  99      4.9­ The genetic traveling salesman problem, an example                                                        ...............................................  102 ...       Chapter 5                                                                                                                     ................................................................................................................. ..............                    111     Evolution and Neural Networks                                                                                                ........................................................................................ 111 ....        5.1­ Introduction                                                                                                      .................................................................................................. .................                       111     5.2­ Weight determination in NNs                                                                            ........................................................................ ...............                     111     5.3­ Network topology determination                                                                           ....................................................................... ...........                 119     5.4­ Hybrid methods and other application fields                                                 ............................................. ..................                        141     Chapter 6                                                                                                                                     ...............................................................................................................................  155      JoonePad and JooneFarm                                                                                          ..................................................................................... ...............                     155     6.1­ Introduction                                                                                                                       ................................................................................................................ ...      155     6.2­ The Frameworks                                                                                              .......................................................................................... .................                       155     6.3­ The implementation of the evolutionary framework                                                          ........................... ....................... .    156     6.4­ Writing a JooneJob                                                                                  .............................................................................. .........................                               174     ­ Conclusion and outlook                                                                                             ......................................................................................... ............                  177     Appendix A                                                                                                                               ......................................................................................................................... ..      179     Examples’ Code                                                                                                                     ...........................................................................................................  179 ........             – The genetic traveling salesman problem                                                  .............................................. ...........................                                 179     Bibliography                                                                                                          ...................................................................................................... ...................                         186  
+
+5
+
+List of abbreviations 
+BP EA ES  GA GUI HW  NN Backpropagation Evolutionary algorithm Evolution strategy Genetic Algorithm Graphical user interface Hardware Neural network
+
+MVC  Model View Controller PDA  Personal digital assistant RMSE Root mean squared error SA SW TSP Simulated Annealing Software Traveling salesman problem
+
+TDS  Training data set XML  Extensible Markup Language XOR Exclusive disjunction 
+
+6
+
+Motivation and goals
+From time immemorial man has always exploited nature as a source of inspiration in  order to solve the challenges he faced. The airplane and the sonar as well as the neural  network and the genetic algorithm are only part of this observation­and­analysis process.  Consequently the motivation behind this work is a deep interest in two of the latest, most  promising   and   fascinating   technologies   that   natural   inspiration   has   ever   provided:  evolutionary algorithms and neural networks. Following his beliefs in the principles of open  source and free content the ultimate goal that the author had in mind while at work was the  creation of a text that might introduce people with little or no knowledge in the world of  evolutionary computation and neural networks. In the hope that the reader might become  interested   and   read   further   about   this   new   technologies,   the   author   tried   to   develop   a  stimulating approach to a branch dominated by often very technical publications. The work  includes the next steps: • • • The reader will be first introduced to the basics of evolutionary algorithms and those  of neural networks.  Subsequently a review of the literature enclosing remarks, comments and  comparisons will be presented.  Finally the author’s approach to the development of a framework for the evolution of  neural network topologies will be illustrated. 
+
+7
+
+Introduction
+The process of diversification has always been part of any evolving knowledge acquisition. So  at  the  beginnings philosophy embraced  physics, rhetoric  and theology;   medicine divided  itself into numerous fields and mathematics saw the birth of informatics.  As history demonstrates, with the passing of time there has always been a subdivision of  disciplines into branches that went deeper in examining particular aspects of the original field  of study.  We all know computer science is a quite young science and we should be aware that we are  not far away from the steam motor or the bow if compared to their respective disciplines.  Many   say   that   after   the   industrial   revolution   we   are   entering   the   digital   or   electronic  revolution, but again, we are just “entering” and it would make sense to realize that computer  science is a discipline that it is slowly branching in many domains.  Today’s software development is mainly a handmade process. Surely in a so young science  the distinction between artisans and intellectuals is still blurred. So what is a programmer? He  might be a simple translator, the interpreter between his boss’ wishes and the computer. But  he might also be an inventor, creating new programs or he might be a scientist, elaborating  theories.  But  in   the   end  he   always   will   have   to   pass  instructions   to   the   computer   in   a  handmade fashion. The point is, a computer is a black box which receives inputs from one side and delivers  outputs on the other. The programmer intervenes in such a process by giving the computer a  second input that could be called the “Instructions flow”, to distinguish it from the “Data  flow”.   The   instruction   flow   teaches   the   computer   on   how   to   handle   the   original   input  information (“Data flow”) in order to obtain the desired output. 
+
+8
+
+Programmer
+
+Instructions flow
+
+Input (Data) Computer
+
+Output (Data)
+
+Data flow
+
+To most of us it is clear that there is a great difference between Assembler and Java, this is  because with the passing of time higher degrees of abstraction are reached in the Instructions  flow, making the programmer’s life easier and allowing them to elaborate more complex data  flows. So we could consider the ever bigger image files as an increased data flow, while the  introduction of Xml interfaces like Xul or SwiXML would represent a more abstract level in  the Instructions flow.  In  such   a model the instructions  flow might  vary in quality and quantity but  remains   a  constant of this model, meaning that in the end it is always a person who must instruct the  computer about how to elaborate the data flow to achieve a certain goal, no matter how easy  or hard this task is.  In contrast the animal brain functions in a totally different way. The day by day basic empiric  learning process is based on a trial basis (TestOperateTestExit model) where the output is  compared with the input, and then the input is modified in order to achieve the desired result.  The  regulation of our body temperature is a basic example. One person that is dressing  himself will check if he feels a comfortable temperature (the test), in case he realized a  discomforting feeling because his body’s temperature is too high or too low he‘d try to put  something on or to take something off (operation). After changing his clothes the person  would wait again some time in order to check again his body’s temperature. If the situation  had   worsened   he   would   act   in   the   contrary   direction  he   did   last   time,   if   instead   the  temperature improved but not enough, he would again repeat his last action; then another  cycle of test and operation would begin until a satisfactory result is reached.
+
+9
+
+Person
+Adjust (more/less clothes) Body temperature control
+
+Input (clothes I wear)
+
+Organism
+
+Output (body temperature)
+
+It is from the abstraction of these empirical experiences that a person is in condition to  elaborate knowledge in form of generalized statements. Phrases like “put your pullover on if  it’s  snowing outside” are the result of experience, which might come from an empirical  experiment (“I got a cold last winter”) or information received from someone else (“Mom  told me so”). This knowledge can later be used as basis in order to speculate about possible  events in the future and to create generalized conclusions like “if a person goes in the snow  without sufficient clothes it’s almost certain he will get ill”. Such conclusions can later be  transmitted  to other  persons  through  a  more  or  less   formal  language;  so  when  a  doctor  communicates with another doctor he uses a specialized vocabulary to describe the same  things a common person would describe in simple and often vague words.  This  transmission of knowledge will speed up the information acquisition process of the  recipient person by eliminating the necessity of an empirical experiment for every concept  that they acquire, an example: we BELIEVE in atomic energy because someone explained to  us what it is or because we read a book, but in the end very, very few persons have assisted to  a demonstration of it.  Often the communication of our knowledge has forms that can be represented by a flow chart,  and therefore translated in a sort of meta­programming algorithm (when you...then… and if  you…); while for most people the recipient of the communication is represented by another  person in the case of a programmer it corresponds with the computer, being programming  languages the formalisms used for the transmission in the latter case.  If we ever want a machine to make a work “instead” of us and not “for” us, implying the  absence  of   a   human  being  as   instructor   or   controller   and   therefore   the   absence  of   the  “instructions flow”, this machine will have to have the same capabilities that we posses or  even more. This involves, among others, the potential of learning and solving new unexpected  problems. Today’s computers are not in the position to completely replace a human being,  partly   (someone  would   say)   because  of   their  technological  level   partly   because  of   their 
+
+10
+
+intrinsic structure, so different from a human brain. Neural networks represent a different  approach to the need of emulating human behavior and capabilities in machines. Let us now imagine a system “alpha” that would be able to solve more problems than a  system “beta” without the need of additional instructions, we would certainly call alpha more  intelligent than beta. Let’s be x the amount of instructions that we give to alpha and beta, x  could be measured in programming time, basic operations or code lines but what we need is  just a measure for comparison so let’s use the basic operations. Using x instructions it could  be possible to teach beta how to resolve a determined number of problems (y combinations of  the data flow), but using the same x instructions it could be possible to teach alpha how to  learn to solve problems using the information of the data flow. Now, given a sufficiently big  data flow, alpha would end up being able to handle more problems than beta, being both  given   an   amount   x   of   instructions;   this   would   render  alpha   more   intelligent   than   beta  according to our previous definition. We  must be aware that also neural networks have an analogy with the classic computer  programming,  both   of   them  have   a   “data   flow”   and  an   “instructions  flow”,   that  is   the  necessity of a designer, a person that creates or instructs them. If only it could be possible to  eliminate  the  “instructions  flow”,  or  to restrict it   to  a   minimum   by  delegating  as  much  knowledge acquisition as possible to the “data flow” we would generate a system with a  higher   degree   of   intelligence,   a   system   producing  the   same   results   but   with   a   smaller  instructions flow (maintaining the precondition of a sufficiently big data flow).  Nowadays the most common practice is to train a neural network with patterns; we could  consider   the   patterns   as   the   data   flow   and   the   creation   of   the   neural   network   as   the  instructions flow.  This  technique  already represents  a step  forward in  comparison to  the  classic programming because the neural network is able to determine the best weights for its  synapses with help of the input patterns. Never the less the topography of the net must be  determined by the user, and this represents a non trivial instructions flow. As said before our  goal is to reduce the instructions flow and obtain the same or a better system, there are two  choices in this case. The first would be to use a higher formalism that would reduce the  amount of work done by the user, for instance the creation of a new neuron type with a more  complicated   transfer   function.   The   second   possibility   would   be   the   reduction   of   the  instructions flow by delegating part of the network creation to the data flow. This can be  achieved if we have another system that would return us a neural network starting from a  determined data flow (input and output).
+
+11
+
+Input Desired output  Neural Network System
+
+It is in this second case that genetic algorithms have proved useful and in the following  chapters it will become clear why. 
+
+12
+
+Chapter 1 Basics of Neural Networks
+
+1.1 ­ Why neural networks?
+Human vs. computer 
+Without any doubt computers have achieved in certain areas efficiency levels which  are simply inconceivable for human beings; their speed of calculus ridicules the most skillful  man, their possibility of storing huge amounts of information, such as images for example,  over long periods of time without loss or degradation is something man hasn't reached yet.  Scalability  is   also  a  very  interesting  feature,  adding  memory  to  a  computer  is  relatively  simple, but expanding the capabilities of a human brain is not that easy. Even considering the  reaction time of a today’s computer memory we would discover that it is in the lap of the  nanoseconds while the human brain is still far away from that.  But on the other side humans still have some advantages over computers. Although  the speed of a single neuron is quite small (about 100 Hz), the particular structure of our  brain  enables  us  to  perform   much  better  than  computers  in  certain  kinds   of   operations.  Humans are quite good at recognizing patterns; the classic example for this would be the  “party conversation”. Even if in a party a person will acoustically perceive a large number of  voices at the same time, he will still be able to follow a conversation with his immediate  neighbor,   this   because  of   the   filtering   capabilities   of   our   brain.   A   similar   case   is   the  distinction between figure and background, where a visual stimulus is elaborated in order to  extract information. We perform all these tasks without thinking about it, not even perceiving  them as a burden. Only when an optical illusion is presented to us or when we discover a  camouflaged animal, we realize the way we analyze our sensorial information. The difficulty  of analyzing an optical illusion might let us crack a smile, or, in the case of the camouflaged  animal,  squeeze  our  eyes  but  what  is  most   important  is   the  perception  of  performing  a  difficult task of which we were not aware. 
+
+13
+
+The reason behind the differences
+The origin of the differences between a human brain and a computer are to be found in their  different structures. Our brain works massively parallel, it has something like 100 billion  neurons each one of them deeply connected with some other 10 thousand  neurons. Each  neuron is composed of three parts.  1. A cell body, also called soma, which contains the cell nucleus and is responsible for  the creation of the proteins needed by the axon, as well as for the vital activities of the  cell. 2. The dendrites which form a branching structure around the cell. They convey  electrical stimulations coming from the neighboring cells to the centre of the neuron.  It’s easy to see them as the “input” of the neuron.  3. An axon. The “output” of the neuron. A thin but very long extension of the cell  needed to transport the electrical impulses of the neuron to other cells. It can be  longer than a meter, an amazing distance if compared with the diameter of the single  neuron (from 0.004 till1 mm). As   anybody   knows   the   computer’s   central  processing   unit   is   composed   of   millions   of  transistors, which are quite different from a neuron. In addition a computer is composed of  specialized  peripherals   each   one  of   those  performing  a   specific   task  such   as   storage   or  communication. Computer work mainly sequentially or with a quite restricted amount of  parallelism. It  is  therefore  clear  how  different  the  structure  of  a   human  brain  in  comparison  with  a  computer can be. In order to efficiently fulfill those tasks where computers still lay behind  humans a new approach had to be found. This is the reason why artificial neural networks  were created. Such networks are constituted by artificial neurons connected to one another  with the final goal of emulating the functioning of a biological network. The purpose of  artificial neural networks is not to copy the normal neuron functioning, rather they try to  create  a  model  of the behavior  of the  original neuron. It would  be not only  impossibly  complicate but also senseless to copy every function of a biological neuron; we wish to deal  with an essential model only, a model that has more or less the same relations a geographic  map has with reality. It is therefore wrong to expect that an artificial neuron is capable of  accomplishing the tasks of a biological one. We must always bear in mind that we will be  dealing with models.
+
+14
+
+1.2 ­ What a neural network is
+In the literature there are many definitions for a neural network which often vary considerably  from one to the other, it is therefore necessary to understand that the following definition of  neural network can only be approximate and incomplete; nevertheless it might be useful in  order to get at least a rough idea of what neural network is. A neural network is a model including information processing units called neurons that are  connected through links. Such links, also called synapses, have a direction and a weight.  While the direction of the propagating signal is determined by the direction of the arrow that  represents the link, its weight determines a multiplication factor for the signal transmitted  through it and is depicted as a small number over the link.
+
+1
+
+Neuron Links A net
+
+1 5
+
+2 1 5
+
+2
+
+Another important element of a neural network is the integration function, each neuron has a  function g(x1, x2, …,xn) where xn is the nth  signal that the neuron receives through a link. This  function transforms all the n input values x into a single value.
+
+X1 w1 X2 w2 w3 X3 w4 X4 f( g(x1 ,x2 ,x3 ,x4) )
+
+15
+
+The activation function (also output function) f() instead, determines the output of the neuron  starting from the single value provided by the g()function. 
+
+1.3 ­ Network topology
+It is obvious that neural networks composed of a single neuron have a quite limited  utilization; in order to achieve a certain grade of functionality it is therefore necessary to link  several neurons to one another. The term layer denotes a group of neurons that have the same  characteristics, the same activation and integration functions as well as the same links to  other neurons. This implies that if a neuron of the layer H is connected with one neuron of the  O layer all the neurons of the layer H have a link to each of the O layer neurons. Otherwise  there would simply be no connection between any of the neurons of the two layers.
+
+Layer I
+
+Layer H
+
+Layer O
+
+Generally neural networks have an input layer, an output layer and one or more hidden layers.  The input layer is a layer (here the “I” layer) whose activation function is the input of the net.  It is important to note that input layers don’t elaborate information, therefore they are not  considered when counting the layers that compose a net. The output layer is the last one and  receives the results of the net (here shown as the “O” layer). The layers that are found  between the input and the output layer are referred to as hidden (hence the “H” name for the  middle layer).  There is another criterion for the classification of a network’s topology. Nets can be  subdivided into feed forward and recurrent networks. Feed forward networks do not contain  loops in their graphs; this means that all the signals flow from the input layer towards the  output layer. All the nets depicted up to this point were feed forward. If one would follow the  direction of the links imaginarily tracing the route of a signal, it will soon be clear that in a  feed forward net it is not possible to reach again a neuron belonging to a layer where the  signal already transited. To the contrary, a recurrent network is a network that has a cycle 
+
+16
+
+inside of its topology. This means that a signal could pass more than once through the same  neuron. The following illustration shows a recurrent network where the red arrows indicate  the cycle. 
+
+Recurrent networks are clearly more complicated than feed forward networks. In a neural  network, each neuron computes a certain function using as arguments all its xn inputs at a  time i, let’s call this function fi(x1,x2,…,xn). Although a loop needs not to be direct and can  include many neurons, we will suppose for simplicity reasons, that our neuron has a direct  loop that connects its output to its own input. In such case fi() has as arguments not only the n  synapses but also fi­1 (x1,x2,…,xn), therefore  fi() becomes then fi(x1,x2,…,xn,fi­1 ( ) ). This means  the existence of recurrent functions. Since recurrent networks have a wider range of problems  such as when to stop the computation, we will subsequently focalize only on feed forward  networks.  
+
+1.4 ­ The McCulloch­Pitts neuron
+The oldest and probably the easiest neuron to understand is the McCulloch­Pitts neuron.  In the first years of the 1940’s Warren McCulloch and Walter Pitts introduced what we regard  today as the first neural networks. Those networks were composed of neurons that performed  a relatively simple logical operation. To start with, the output of a McCulloch­Pitts neuron is  either 1 or 0, this is called a binary activation function. All the links of the neuron are  directed and not weighted; they are also subdivided into excitatory and inhibitory links. If one  or more inhibitory links are active the neuron has an output of 0, said in other words, it  doesn’t fire. If no inhibitory link is active, all the active input links are summed and compared  with the threshold value θ, if their value is bigger than θ then the neuron fires, this is, its  output is 1. This is the reason why McCulloch­Pitts neurons are represented by a circle  containing the threshold value.
+
+17
+
+X1
+
+X2 Y1 X3
+
+θ
+
+f( g(x1, x2, x3, x4, θ) ) = 1/ 0
+
+Inhibitory link
+
+• • • • •
+
+Excitatory links = X1, X2, X3 Inhibitory Links = Y1  Threshold = θ Integration function g(x1 ,x2,… ,xn) =  ∑ x i
+i =1 n
+
+Activation function  f( g(x1, x2, x3, x4, θ)) = 1  0  If   = 0 and ≥ θ If   > 0 or  < θ
+
+It is easy to recreate basic logical function such as “and”, “or”, “not”. In this case only a  neuron is sufficient. 
+X1
+
+NOT Y1
+
+AND
+
+0
+
+2
+
+X1
+
+OR
+
+X2
+
+1
+
+X2
+
+18
+
+Please note that networks that use McCulloch­Pitts neurons are limited to binary  transmission of data, in other words, on its synapses travel only ones and zeros; consequently  such nets can only elaborate binary functions. Given that the geometrical interpretation of a  McCulloch­Pitts neuron will be referenced quite often it is appropriate to introduce it now.  Let’s imagine a McCulloch­Pitts neuron with only two input synapses, x1 and x2. The  threshold value θ divides the space in two according to the equation  ∑ xi
+i =1 n
+
+≥ θ. The 
+
+illustration below shows the division of the two dimensional space for a value of θ = 1 which  is the case of the “or” function. It is important to note that in this case the diagonal of the  square (marked with blue) is part of the upper triangle, which is the area where the neuron  fires. In fact the sum of all the input synapses must be bigger or equal to zero. Since the blue  line represents the threshold we will call it threshold line from now on.
+X1
+
+1
+
+0
+
+1
+
+X2
+X 1+X2 = 1
+
+The “and” function is similar to the “or” function but with a threshold value of two, this  implies that the threshold line X +X  has been shifted outwards. Here again the threshold line is  part of the area where the neuron fires. The intersection of the firing area and the square  representing all the possible inputs of the neuron returns only one point (1;1). This point is  the only combination that lets the “and” neuron fire.  
+1 2
+
+19
+
+X1
+
+1
+
+0
+
+1
+
+X2
+
+X 1+X2 = 2
+
+The case of a neuron with three different input synapses sees the threshold value of  the “or” function unvaried while in the “and” neuron it becomes 3. It is now possible to  determine the generic threshold value for a “or” neuron and for a “and” neuron which have n  input synapses. The “or” neuron has always a constant threshold value θ = 1 while the  threshold of the “and” neuron is determined by the number of input synapses and is θ = Xn.
+
+θ = 1
+X1 X2 OR
+
+θ = Xn
+X1 X2 AND
+
+1
+
+3
+
+X3
+
+X3
+
+This time the graphical interpretation of the McCulloch­Pitts neuron implies a 3D cube  whose 8 vertexes represent all the possible combinations of the input synapses. The blue  triangle represents the border of the threshold condition X1+X2+ X3 ≥ 1. Analogously to the 2D  case, the space is divided into two half­spaces, the firing combinations, depicted by red  points, and those combinations that cause the neuron output to be equal zero, depicted by  white points. 
+
+20
+
+OR X2
+(0;1;0)
+
+X 1+X2+ X3= 1
+
+(0;0;0) (1;0;0) (0;0;1)
+
+X1
+
+X3
+
+The case of an “and” neuron with three input synapses sees again the threshold condition  shifting away from the origin. In this case the only firing solution has coordinates (1;1;1).
+
+AND X2
+(0;1;0)
+
+X 1+X2+ X3= 3
+
+(0;0;0) (1;0;0) (0;0;1)
+
+X1
+
+X3
+
+In order to represent the space of the solutions of a neuron with more than three input  synapses, it would also be necessary to use a graph with more than three dimensions,  unfortunately this is simply not possible. Consequently the concept of hyper plane will be  used. A hyperplane is mathematically described as: “any codimension­1 vector subspace of a  vector space”. That means a vector having one dimension less than the space that contains it.  A n dimensional hyperplane is described by a formula that looks like this: a1x1 + a2x2 + ... +  anxn = b. A hyperplane always divides the space into two different subspaces, we can 
+
+21
+
+therefore imagine the McCulloch­Pitts neuron as a hyperplane in the n dimensional space  where n is the number of input synapses. It is interesting to note that a network of McCulloch­Pitts neurons with two layers can  compute any logical function F: {0,1}n ­> {0,1}. The easiest way to understand this is again  graphically. The first layer of the decoding network is composed of m neurons, being m the  number of input combinations for which the function F returns the value 1. 
+m = 4 ; n = 3
+Activating combinations 
+
+X1 X2
+
+3 2 1 1
+
+(1, 1, 1) (1, 1, 0)
+
+X3
+
+2
+Decoders
+
+(0, 1, 0)
+
+Every decoder is connected to a normal synapse if that variable is positive in the combination  that the neuron is decoding. E.g. neuron number one decodes the combination (1, 1, 1) this  means it has three synapses as input. But if the decoded combination includes zeros, the  respective synapse is inhibitory. E.g. neuron number two decodes (1, 1, 0) therefore has an  inhibitory synapse connected to the x3 variable. The threshold value of each neuron is simply  equal to the number of positive synapses it has. Each neuron is then connected to a single  output neuron with threshold value 1.  The following diagram shows the codification of the “or” function according to this method. 
+
+m = 3 ; n = 2
+
+X1 X2
+
+1 2 1 1
+
+Activating combinations  (1, 0) (1, 1)
+
+(0, 1)
+
+Decoders
+
+22
+
+But as we know, the “or” function can also be calculated by a single neuron. In  conclusion we have seen that a function can be represented by more than one network, those  networks that represent the same function are called equivalent. 
+
+1.5 ­ The Perceptron
+As already said neural networks can have weighted edges, such innovation was  introduced in 1958 by Rosenblatt when presenting his perceptron model. The perceptron  model was later studied and improved in the 60’s by Minsky and Papert. While Rosenblatt  designed the perceptron as a whole weighted network whose synapses where s tochastically  determined, and introduced other elements such as bounds to the maximum number of input  links; the only difference between the McCulloch­Pitts and the Minsky Papert perceptron  model is the fact that synapses are weighted. Please note that when talking about a perceptron  we will refer to the Minsky Papert model. The Minsky Papert Perceptron model was used in experiments where it had to read a  “pattern” projected on a surface.  In order to do this, some sensors, called predicates, where  attached perceptron. The predicates would output only 1’s and 0’s to the perceptron and this  would perform all the computations. 
+P1
+
+T
+
+w1 P2 w3 w2
+
+θ
+
+P3
+
+Let’s now take a brief look to weighted links. A weighted link can be interpreted as a  simplified notation for a branching link. Two synapses are equivalent if the weight of the one  is equal to the number of branches that are attached to the neuron of the other. For example,  the following two diagrams are equivalent.
+
+23
+
+X1
+
+1
+
+X1
+
+3
+
+1
+
+Using this interpretation of weighted link it is possible to understand the exact definition [1]  of perceptron: A simple perceptron is a computing unit with threshold θ which, when receiving the n real   inputs x1, x2, x3,…, xn through edges with the associated weights w1, w2, w3,…, wn outputs 1 if  the inequality   ∑ wi x i ≥ θ holds and otherwise 0.
+i =1 n
+
+That is:
+
+1  Y = 0 
+
+If ≥ θ otherwise
+
+The graphical interpretation of the perceptron is similar to the McCulloch­Pitts neuron but  the fact that the weights w1, w2, w3,…, wn ∈  ℜ  makes that the threshold line doesn’t  necessary pass through the vertexes of the square representing the  input space.
+X1
+
+1
+
+0
+
+1
+
+X2
+
+2X 1+0.7X 2 = 1
+
+24
+
+The interesting thing about weighted networks, besides a more compact representation,  resides in the fact that a net can “learn” by changing the weights of its links. In fact the “or”  perceptron and the “and” perceptron differ in the weights of their links but maintain the same  topological structure.  
+X1
+
+2
+
+OR
+
+1
+2
+
+X2
+
+1
+
+0
+
+1
+
+X1 0.6 AND
+
+1
+0.6
+
+X2
+
+1
+
+0
+
+1
+
+By changing the weights of the links that form the input of the neuron and the threshold value  it is possible to shift and rotate the threshold line. Since the weights are real values in the 
+
+25
+
+figure above the threshold line doesn’t pass through any of the input space vertexes. These  weights can be manually set or even found through an algorithm. In case a learning algorithm  is used, the threshold value is often set to zero and a negative link, the so called bias, is added  to the perceptron. This simplifies significantly the work of the algorithm that deals with those  weights.
+X1 X2 W2 W1 X1 W1 W2
+
+θ
+
+becomes ­>
+
+X2
+
+0
+
+­θ
+1
+
+x1, x2, x3,…, xn  → x1, x2, x3,…, xn, xn+1 with xn+1 = 1 w1, w2, w3,…, wn → w1, w2, w3,…, wn, wn+1 with wn+1 = ­θ By now it should be clear that a single perceptron divides the solution space into two different  areas, the first containing all the firing combinations and the other the remaining ones.  Generalizing the graphical interpretation of a perceptron it is easy to see that changing the  weights of the input synapses, it is possible to rotate and shift the line that separates the two  spaces, the same is possible for the plane and the hyperplane that divide the input space of  higher grades. Yet one perceptron is not capable to compute every function, only linear  separable functions can be represented through a single perceptron. Linear separable are  those functions where all the points that return a 1 can be separated from all the points that  return zero respectively through a line, plane or hyperplane. A more rigorous definition of linear separability [1] would be: Two sets of points A and B in an n­dimensional space are called linearly separable if  n +1 real numbers  w1, w2, w3,…, wn, wn+1 exist, such that every point(x1, x2, x3,…, xn)∈ A  satisfies   ∑ wi x i
+i =1 n
+
+≥ wn+1 and every point (x1, x2, x3,…, xn)∈ B satisfies  
+
+∑w x
+i =1 i
+
+n
+
+i
+
+<  wn+1 .
+
+26
+
+Linearly separable
+
+Not linearly separable
+
+0
+
+0
+
+A typical not linearly separable function is the “xor” a brief look at its input space makes  immediately clear that a single perceptron cannot compute such a function. No straight line  can separate all the white points from the red ones. XOR
+X1
+
+1
+
+0
+
+1
+
+X2
+
+The mathematical demonstration for this is the following: 
+How the result should be in  comparison with θ 0 < θ W1 ≥ θ W2 ≥ θ w1 + w2 < θ
+
+Value x1 0 1 0 1 X2 0 0 1 1
+
+For the given x1, x2 w1x1 + w2x2  = 0 w1 w2 w1 + w2
+
+In the first column appear all the possible input combinations for the xor function, in the  second column they are substituted in the integration function of the perceptron and finally  compared with the threshold value in the third column. The inequalities of the third column  that are marked with red contradict eachother, it is impossible to find two weights bigger than  zero whose sum is smaller than the value of one of them. In brief, it is not possible to find 
+
+27
+
+two weights w1, w2 for the links of the perceptron so that the xor function is correctly  calculated.
+
+1.6 ­ The perceptron learning algorithm
+Neural networks do have a computational capacity but they are particularly remarkable  because of their learning capabilities, they can be adapted to perform a certain task that they  originally weren’t able to. We know a neural network can be improved by changing the  weights of its synapses. For this purpose all the weights of a neural network could be grouped  in a vector of n dimensions, where n represents the number of weights that our neural network  has:  w = (w1, w2, w3,…, wn) We can now divide the input space into two sets of vectors P and N. Where all the  vectors of P should return 1 and all the vectors of N should return 0: 
+∀x ∈ P ⇒ f w ( x) = 1 ∀x ∈ N ⇒ f w ( x ) = 0
+
+In case of a perceptron  f w (x )  is equal to:
+
+w• x ≥θ
+Starting from this we will now introduce the definition of positive and negative half space [1].  Please note that, like previously described, the notation used in this definition supposes that  the threshold value θ has been set to zero and that an ever active link with weight –θ has been  added. The open (closed) positive half space associated with the n­dimensional weight vector  w is the set of all points  x ∈ ℜ n for which  w • x > 0  ( w • x ≥ 0 ). The open (closed) negative  half space associated with w is the set of all points  x ∈ ℜ n for which  w • x < 0  ( w • x ≤ 0 ). In order to calculate how efficient our perceptron is in classifying the input patterns, we need  a function that measures the number of errors our perceptron makes. The error function E(W) 
+
+28
+
+tells us how many input patterns have been wrongly classified using the weights of the weight  vector w:
+E ( w) = ∑(1 − f w ( x )) +∑ f w ( x)
+x∈A x∈ B
+
+Obviously in the best case E(W) is 0. This is the so called global optimum, the weight  vector with the lowest error rate at all. It is a good idea to spend some time defining more  precisely what a global optimum is and which difference there is between global and local  optimums. First we define a vector w ∈ M = (w1, w2, w3,…, wn) where wn is a real parameter. Then we  have to define a goal­function that will assign a real value indicating the quality to each  vector g(w)→ℜ, we will use the error function as goal function. If there exists a x* so that: g(x*)≤ g(x)  ∀x ∈ M → x* is a global minimum g(x*)≥ g(x)  ∀x ∈ M → x* is a global maximum The global optimum of a minimization problem corresponds to the global minimum,  analogously in case of maximization it is the global maximum. In the case of the error  function we are looking for a very low value (few errors) therefore we are searching a global  minimum. Besides the concept of global minimum/maximum there is the idea of local  minimum/maximum. In this case, if there exists some ε > 0 such that: g(x*)≤ g(x)  ∀x / | x * −x |< ε → x* is a local minimum g(x*)≥ g(x)  ∀x / | x * −x |< ε → x* is a local maximum That is to consider all the vectors whose distance from x* is less than ε, practically we are  looking in the “neighborhood” of x*.  In first instance it could be possible to calculate the weight vector manually, exactly  like we have done for the “or” and the “and” perceptrons, unfortunately this might not only  result a tedious task but rather contradictory too, as a matter of fact we are interested in neural  networks because of their learning capacities, their ability to learn by example and adapt to  new tasks. In order to achieve this without having to set the weights manually, a learning  algorithm is needed. The first thought would be to randomly choose a new weight vector, but  this cannot be defined as learning since all the previous information is not considered. Then we could “train” the net, in order to achieve this we want to use the positive and  negative reinforcement; that is the reinforcement of positive (or correct) behaviors and the  suppression of negative (or wrong) behaviors, this notion has been derived from psychology.  Children are punished every time they present a behavior that is not desired, such as lying for  example, while on the other side they are given recompenses for good conduct like successful  29
+
+studying; this is a mechanism that is deeply rooted in our society and is directly derived from  nature itself. In the same way we desire that every time our net incorrectly recognizes a  pattern the probability for this to happen again became lower by adjusting the weights.  The perceptron learning algorithm allows us to train a perceptron on the basis of two sets  of vectors, P and N, in an n dimensional input space. All the vectors belonging to P are  supposed to belong to the positive half space whereas all the vectors of N lay in the negative  half space. Vectors can change over time and therefore the notation takes into account the  time variable t.  Perceptron learning algorithm: START:  The weight vector w0 is randomly generated. The time variable t is set to 0. TEST: A vector x ∈ P ∪ N is randomly selected  If x ∈ P and  wt • x > 0  go to TEST. If x ∈ P and  wt • x ≤ 0  go to ADD. If x ∈ Ν and  ADD: 
+
+wt • x < 0 go to TEST.
+
+If x ∈ Ν and  wt • x ≥ 0 go to SUBTRACT. Set  wt +1 = wt + x  and t = t + 1, go to TEST. SUBTRACT: Set  wt +1 = wt − x  and t = t + 1, go to TEST. The graphical interpretation of this algorithm is best visualized when the weight vector has  only two components. Reminiscent of the algorithm, our first weight vector will be randomly  chosen. The threshold condition  w • x ≥ 0 is true for all those vectors whose angle with w is  smaller than 90°, this is the half space that in our graph is marked red.
+
+30
+
+w
+
+0
+
+The 1st and 3rd conditions of TEST are those cases where the weight vector w already  correctly classifies the input patterns; in that case w is not changed at all. But whenever the  input pattern is wrongly identified (2nd and 4th conditions) w is changed by correspondingly  adding or subtracting the erroneously recognized pattern. This rotates w and its perpendicular  linear separation. ADD
+
+wt
+
+wt
+
+0
+
+0
+
+wt+1 x
+
+x
+
+x ∈ P After the addition of w and x into wt+1, x is correctly recognized, now it lays in the positive  half space. 
+
+31
+
+SUBTRACT
+
+wt
+
+wt+1
+0
+
+wt x
+
+0
+
+x
+
+x ∈ Ν Also here x is correctly recognized after the subtraction. There is a proof that if P and N are finite and linearly separable, our algorithm will converge, after a finite number of steps it  will reach a weight vector w that correctly recognizes P and N. At first a couple of  assumptions must be made, this will render the demonstration easier without loss of  generality. 1. A new set P is defined as the union of the vectors of the original P and the negate  elements of N.  → P = P ∪ N − 2. The vectors of the new set P are normalized. This is possible because if there is a  vector w so that  w • x > 0  then this is also valid for a vector ηx where η is constant. 3. Also the weight vector w is normalized and labeled as w*. δ is defined as a fixed positive number so small that:
+
+∀x ∈ P → w * • x > δ
+The cosine of the angle ρ formed by  wt + and w* is: 1 (a)  cos ρ =
+
+w * •wt +1 | wt +1 |
+
+Since on the basis of the 1st assumption all the input vectors are positive follows that the  weight vector can be corrected only through ADD. Let’s now consider the numerator of  equation (a) when after using ADD wt has been transformed into wt+1.
+
+32
+
+w * •wt +1 = w * •( wt + x) = w * •wt + w * •x ≥ w * •wt + δ
+
+This means that after n steps:
+w * •wt +1 ≥ w * •w0 + (t + 1)δ  (b)
+
+Let’s now consider:
+
+| wt +1 | 2 = wt +1 • wt +1 = ( wt + x) • ( wt + x) =| wt | 2 + 2wt • x + | xt | 2
+Since |w|, the denominator of (a), is always positive we can conclude that  w • x must be  negative, otherwise the ADD routine would not be executed. Moreover |x| =1 because all the  vectors have been normalized. Therefore:
+
+| wt +1 |2 ≤| wt |2 +1
+Which means:
+
+| wt +1 | 2 ≤| w0 | 2 +(t + 1);
+| wt +1 | ≤ | w0 | 2 +(t + 1)  (c)
+
+Substituting (b) and (c) in (a):
+
+cos ρ ≥
+Which for t → ∞:
+
+w * •w0 + (t + 1)δ | w0 | 2 +(t + 1)
+
+lim t →∞
+
+w * •w0 + (t + 1)δ | w0 | 2 +(t + 1)
+
+=∞
+
+33
+
+But since cos ρ ≤ 1 , we deduce t must have an upper bound. So the steps (t) of our learning  algorithm must be finite. The perceptron learning algorithm is classified as supervised learning with reinforcement.
+Corrective
+
+Supervised Learning Unsupervised  It is supervised because the net is trained with some examples for which the desired  output is already known, the weights are then corrected according to the correct or wrong  classification of the input pattern. Unsupervised learning instead, implies that the net must  find a solution for a problem but is given no example about how to solve it. Corrective learning changes the weight vector with a standard step, using only the  information whether the input pattern has been correctly recognized or not. Reinforcement  learning instead, considers the extent of the error and changes the weights proportionally to  this measure and this is the case of the perceptron learning algorithm, the wider the angle  between wt and x is, the bigger the distance between wt and wt+1 (the correction) will be.
+Reinforcement
+
+1.7 ­ Convergence to optimum
+The original error function for the perceptron was:
+E ( w) = ∑(1 − f w ( x )) +∑ f w ( x)
+x∈A x∈ B
+
+If we want to generalize the error function of in supervised learning, we could say that  the error function of the network is the sum of all the single errors during the network  training. And we could define the recognition error of the single pattern as proportional to the  distance between the desired and the real output vectors. In order to calculate the error for a 
+
+34
+
+net that has been trained with a supervised learning algorithm the sum squared error (SSE)  function is generally used. Every input x is coupled to the desired output t so that L is the set  of all the pairs (x;t), while the actual output of the net for x is y. We can therefore indicate the  error of the network when recognizing a single input pattern(x;t) as:
+E x ,t = ∑i| ti − yi |2
+
+The total error is the sum of the errors that the net made while recognizing all the input  patterns of L: 
+E = ∑ x ,t )∈L E x ,t = ∑ x ,t )∈L ∑| ti − yi |2 ( ( i
+
+Essentially the weight vector that we are looking for is the vector w that minimizes  the error function. But how to find it is not exactly a trivial question, let’s start to explain one  way of diminishing the network error through an example. We will assume for a moment that  we have only one weight w whose initial random value is 3 and that our error function is:
+E = ( w − 7) 2
+
+The graph of this error function looks like this:
+
+70 60 50 40 30 20 10 0 1 3 5 7 w 9 11 13 15
+
+Now, if we want to decrease the network error should w increase or decrease? How much? Or  is it already the best solution? To answer these questions we have to find derivative the error  function. The function derivative will give us an idea about the slope of the error function in  the current point. In order to reach a lower error we wish the point representing the weight  value to descent along this slope. 
+∂E = 2w − 14 ∂w
+
+Error
+
+35
+
+That for w = 3 it is equal to ­8. The negative sign of ­8 indicates us that at the current point  the slope goes down, so we have to increase our weight w if we want to achieve a smaller  error. The amount of increase is often called “step” and depends on the implementation of the  learning algorithm, nevertheless the direction in which we have to move the weight is clear. In future we will say that our algorithm is converging when the current solution is  reaching a stable solution, a global or local optimum, for the optimization problem. Relating  to the previous example, if w would follow the slope downwards we can say that it is  converging to 7.
+
+1.8 ­ The multilayer perceptron
+In this chapter we have seen that the xor problem cannot be solved by a single  perceptron, but a network with more than a single perceptron might be able to. A possible  solution would be a multilayered network where each perceptron of the first layer should  decode a linearly separable section of the input space. The result should be then combined by  an output perceptron.
+
+X1 X2
+
+Yet this network is not capable to learn, the problem is that the output perceptron doesn’t  receives the actual inputs, instead he receives only the binary outputs from the hidden layer  perceptrons. This means that the synapse’s weights cannot be properly adjusted; the learning  algorithm is not capable to determine the amount of correction that is necessary on the basis  of 0’s and 1’s. This is called the credit assignment problem. The threshold function of the  neurons of the first layer eliminates the information needed to adjust the weights of the 
+
+36
+
+following layers. The key is to change the activation function of the perceptron. The step  function has to be substituted for the sigmoid function. 
+Out Out
+
+g()
+
+g()
+
+Step function
+
+Sigmoid function
+
+The sigmoid function is practically equal to the step function when the integration function  g() is very small or very big. The difference is that in the neighborhood of the threshold value  the sigmoid function, unlike the step function, assumes the whole gamma of values between  one and zero. This allows information about the input to be transmitted to the following layer.  The mathematical reason because the threshold function has to be changed is that we actually  need a continuous and differentiable error function. Since the step function is not continuous  it is necessary to substitute it for the continuous sigmoidal function s c : ℜ → (0,1) :
+
+s c ( x) =
+
+  Where the constant c determines the shape of the sigmoidal curve; in fact  lim c →∞ s c is equal  to the step function.  As the activation function of the neuron changes so the learning algorithm must be  adapted. The new learning algorithm is called “backpropagation” and has an interesting story.  Although presented in 1986 by Rumelhart, McCelland and Williams, it was later found that in  1982 Parker and even as early as in 1974 Werbos had similar conclusions. Backpropagation is  another example of supervised learning and it is based on the same principles of the  perceptron learning algorithm. A series of input patterns whose desired output is known are  given to the net, as next the actual output is compared with the desired one, the derivative of  the error function is calculated and a correction for the weight vector is decided.  Subsequently it all starts with the definition of the error function. After all a network is  nothing more than a graph containing computing nodes, each node calculates a primitive  function on its inputs and transmits the result to the nodes that are attached to it through 
+
+1 1 + e −cx
+
+37
+
+edges. In general every input pattern is elaborated by the net and transformed into an output  pattern, so the network is one of the possible implementations for a complex function  composed of many primitive functions. This complex function is called “network function”.  Learning means adapting the weights of the net so that the network function is as similar as  possible to another function f. Often it happens that the user doesn’t exactly knows the  formula of f, this is the reason why in the case of supervised learning we are not given the  function f itself rather examples of inputs and desired outputs of this function in form of pairs  (x;t).  Having substituted the activation function we will assume that every primitive function of the  network is continuous and differentiable. To start we will extend the network so that it will  calculate our error function. This is done by adding two additional layers that compute the  difference between the output and the t vector. x1 x2 x.. xn
+Input Layer Hidden  layers
+
+o1 o2 o.. om
+Output Layer
+
+½(o1­t1)2 ½(o2­t2)2 ½(o..­t..)2 ½(om­tm)2
++
+
+E
+
+Moreover each neuron of the network will be modified. Neurons will be divided into two  parts, one part will calculate the activation function, as usual, while the other will store the  derivative of the activation function.
+
+f ’    f
+
+As said before, combining different nodes that implement basic functions we can obtain a  network that calculates a complex function through function composition. Let’s graphically  examine the case of two nodes that are connected together. 
+
+38
+
+x
+
+g’(x)   g()
+
+g(x)
+
+f’(g’(x))    f()
+
+f(g(x))
+
+On the other side Backpropagation is exactly the contrary of function composition; a one is  fed from the output towards the input layer. This enables us to calculate the derivative of the  network function. 
+
+f’(g’(x))g’(x)
+
+g’(x)   g()
+
+f’(g’(x))
+
+f’(g’(x))     f()
+
+1
+
+If feed forward, the new modified network calculates the error function E and since it is  composed of single continuous and differentiable functions also E is continuous and  differentiable. This means that using backpropagation it is possible to calculate the derivative  of network function.  Now that the general idea has been explained, it is time to describe the  backpropagation algorithm in detail.  ∂ E If    is the partial derivative of E with respect to wk, we define the gradient of E as: ∂ k w
+ ∂E ∂E ∂E ∇ E =   ∂w ; ∂w ;...; ∂w 2 k  1  ;  
+
+∇ E lets us know how the error changes when a single weight  wk is changed. From here we  can calculate the weight correction ∆wi; since it is necessary to move along the error function  surface going in the direction of decreasing error a minus has been added:
+−η ∂E ∂wk
+
+∆wi =  
+
+ 
+
+for i = 1,…,k
+
+Where  η is the learning constant, and determines how strong the correction is.  Our network has n inputs an m outputs and we can define:
+
+39
+
+1. The network input vector: x = (x1, x2, x3…xn)  2. The target vector: t = (t1, t2, t3…tm) 3. The weight of the link from neuron i to neuron j: wij
+o 4. The input of the neuron j: netj =  i∑ i wij :i → j
+  w ij  
+
+5. The output of the neuron i: oi = f(neti)  6. The set L = {(x1; t1),… (xp; tp)} of all training patterns 7. The set A = {(o1),… (om)} of all output neurons 1 8. The error function E = ∑x ,t )∈L E x ,t  with  E x ,t = ∑| o k − t k | 2 which is directly  ( 2 k∈A derived from the SSE
+
+The steps of the backpropagation learning algorithm are: 1. Initialize the network weights randomly 2. Select a couple (x;t) belonging to L 3. Feed forward computation: by using the input x and the target function t calculate the  net output E. At each node the derivative is stored into the left side. 4. Back propagation: feeding a 1 into the output neuron and using the derivatives stored  ∂ x ,t E ∂ ij w in each neuron calculate . ∂E η − x ,t ∂wij 5. Adapt the weight wij = wij  +  (  ) 6. If the error is small enough stop otherwise repeat from number 2 Point number four determines the name of the whole algorithm, and it is not by chance! For  that reason it is worth to take a closer look to its mathematical fundaments.  • We know that Ex,t depends from netj and that netj depends from wij; using the chain  rule we can therefore say that:  ∂E x ,t ∂E x ,t ∂net j = ∂wij ∂net j ∂wij (a) . ∂net j ∂wij ∂ = o The second part of (a) is ∑jo i wij = i:∑j ∂w o i = o i ∂wij ∂wij i:i → i→ ij
+
+40
+
+• •
+
+o The first part of (a) is the variation of error by changing the input of the input  ∂E x ,t =δ j . of the neuron  − ∂net j ∂E x ,t δ = δ j oi    and from that follows: ∆wi =   η j oi . Now we can write (a) as  − ∂wij It is possible to calculate  δj , we know that  E x ,t  depends from oj and that oj  depends form netj  then:  ∂o j ∂E x ,t ∂E = − x ,t (b) δ j = − ∂net j ∂o j ∂net j ∂o j = f j ' (net j ) o Considering the second term of (b)  ∂net j o In case of an output neuron the first term of (b) becomes  1 ∂ ∑| o k − t k | 2 ∂E x ,t 2 k∈A = ∂o j ∂o j
+1 = 2 ⋅ (o j − t j ) 2 = −(t j − o j )
+
+      and therefore  δj  becomes then  δ j = f j ' (net j )(t j − o j ) o In case of a neuron j belonging to a hidden layer the first term of (b) becomes
+∂E x ,t ∂o j =
+k : j →k
+
+∑ ∂net
+k
+
+∂E x ,t ∂net k ∂o j k ∂ ∂o j
+
+      =
+
+k : j →k
+
+∑ ∂net
+k: j → k
+
+∂E x ,t
+
+∑w
+i
+
+ij
+
+oi
+
+= − ∑δ k w jk
+
+δ that substituted in (b) gives  δ j = f j ' (net j ) k :∑ k w jk j→ k
+
+•
+
+For the sigmoidal activation function 
+f j ' ( net j ) = s ' ( net j ) = s (net j )(1 − s ( net j )) = o j (1 − o j )
+
+In conclusion:
+
+41
+
+(d) δ j = o j (1 − o j )(t j − o j )  for an output neuron. δ j = o j (1 − o j ) ∑δ k w jk  for the hidden neurons.
+k: j → k
+
+where the weight correction is: wij = wij +
+
+η j oi δ
+
+.
+
+To correct the weight of a link we must first calculate the value of δ, from (d) it easy to see  that δ is a function of all the δ of the next layer k with the only exception of the output  neuron. This means that all the weight corrections must be done starting from the output  neuron and back propagating through the net as we have seen during the introduction. Back to the original xor problem we can now see that there is a solution that enables our  network to decode the xor function.
+
+X1
+
+1 1 1
+
+0.5
+
+1 0.5 ­1
+
+X2
+
+1
+
+1.5
+
+Nevertheless there is a chance that the learning algorithm might converge to a solution that is  doesn’t correctly decode the xor function. 
+
+X1
+
+­2 ­1.8 4.3 9.2 ­4.5 0.8 5.3 8.8 0.8
+
+X2
+
+Fortunately this local minimum solution occurs only in something like 1 % of the training  cases.
+
+42
+
+Chapter 2 Basics of Genetic Algorithms
+
+2.1­ The beginning
+It might be hard to believe but the scientific basis of genetic algorithms lay in a new  world view originated during the nineteenth century. It was Charles Darwin (1809 – 1882), a  British naturalist, who in 1858 published “On the Perpetuation of Varieties and Species by  Natural Means of Selection” introducing the nowadays widely accepted “Evolution Theory”.  A fundamental principle of the evolution theory is that species are mutable, they originate  evolve and even extinguish. This revolutionary world view upset all the beliefs of his time, as  the catholic creationism was the predominant belief in the western society of the nineteenth  century. Creationism depicted the world as created by a God or another intelligent being. In  such   world  view,   species  were  immutable  and  ever  existing.  For  thousands  years  before  Charles Darwin introduced his theory, this had been the explanation for the origin of the  animals. Man, instead, was seen as a special species, not belonging to the animal world, he  was   rather   regarded   as   the   elected   race   in   the   universe,   the   centre   of   it.   Beyond   the  philosophical considerations on the impact that Darwin's theory had in the society and the  way man sees himself, it's important to understand why the observations made by Darwin  constitute the base for today’s research in the informatics field. The validity of our future  algorithms will depend on the validity of the principles on which they are based, and, since  such principles derive directly from the evolution theory, it is fundamental to understand it,  especially   in   a   period  where  still   exist   people  that,  on   the  grounds  of   religious   beliefs,  question such a theory. A first observation that Darwin made was that individuals in a species are similar but not  identical; this means that they have differences which, although small, would determine the  relation between the individual and its environment. Darwin also noted how the features of  individuals   that   successfully   adapted   to   the   environment   were   present  in   the   following  generations with an increased rate. His conclusions were that better adapted organisms had  bigger chances of survival and as a consequence, of reproducing, on the other hand organisms  that weren't good adapted tended to disappear because of an increased dying probability. 
+
+43
+
+These  two   factors  would   shape  the   features  of   a   species  from  generation  to   generation,  transforming the fundamental characteristics of an individual belonging to that species.  Another fundamental point of Darwin’s theory was that a big part of the animals  belonging to a species die before they can reproduce themselves; this is the consequence of  the population growth in animals. As already Malthus noticed back in 1798, animals grow  exponentially while the vital resources at their disposition grow in the best of all cases  linearly. This is traduced in a high rate of deaths that will keep the population constant and  produce a fight for the resources. In such a fight is again the individuals that adapted best  have a higher probability to survive and therefore to pass their genetic features to the  following generations. In the case of the emperor penguin the survival rate of chicks is 20%,  60% of them dies during the first year because of hunger, cold and accidents while the  residual 20% never gets out of the egg.
+
+2.2­ A little bit of genetics
+Every individual has a genotype that we could describe as the “construction map” of the  creature. On the other side there is  the phenotype that could be regarded as one of the  possible results of the “map”. All the inheritable information of an individual represents his  genotype.   To   clear   this   it   could   be   helpful   to   make   an   example.   Every   person   has   a  determined genotype at birth; this is the information that will determine his features: the color  of his hair, the color of his eyes and even the proteins his body will synthesize. But the  external   appearance  of   a   person  is   not   only   to   be   ascribed  to   his   genotype.   There   are  environmental variables that influence the development of an individual. So the weight of a  person is deeply determined by the diet he follows, and the diet is deeply correlated to the  geographic region where such person lives. If the same person would have a diet based on  fish instead of meat, this would dramatically change his outer appearance, although in both  cases  his  genotype  (features  inherited  from  his  parents)   would  be   the   same.   These  two  different outcomes of the person’s genotype are the so called Phenotypes. The phenotype is  nothing   more   than   the   manifestation   of   the   organism   based   on   his   genotype   and   the  influences of the environment (genotype + environment → phenotype).  There are various structures that scientist identified as involved in the transmission of the  hereditary   information,   they   have   been  ordered  in   a   hierarchical  structure,  they   will   be  introduced  starting   from   the   smallest   element   (Bases)   and   following   toward   the   macro  structure (DNA).  All the information of the genotype is stored using an alphabet of four different chemical  bases. These bases are called: adenine, guanine, cytosine and thymine.   
+
+44
+
+P D P D P
+
+Nucleotide Adenine Thymine
+
+P D P
+
+Guanine
+
+Cytosine
+
+D P
+
+D = Deoxyribose P = Phosphoric acid Every base is linked to a sugar element called deoxyribose, which is itself connected to  another  deoxyribose  element   through   a   phosphoric   acid  molecule.  A   single   deoxyribose  molecule together with a single phosphoric acid molecule and a base constitute a nucleotide.  All nucleotides are linked together forming a chain which is linked to another identical chain  to form a spiral structure called the DNA (deoxyribonucleic acid). The DNA is the container  of the entire individual’s genetic information and is directly correlated to the genotype.
+
+45
+
+In order to link the two chains of nucleotides and form the DNA the bases are connected  among themselves but not every combination is allowed. The only possible combinations are:  (adenine, thymine), (thymine, adenine), (guanine, cytosine) and (cytosine, guanine).  It is known that the bases are grouped in triplets, being a triplet a sequence of three bases  representing the code for an amino acid.  The proteins that we synthesize are composed of  amino acids, molecules that contain amino (NH2) and carboxylic acid (COOH) ends. So in  the  end  the  sequence  of  the  triplets  is   nothing  more  than  a   coding  for  the  synthesis  of  proteins. It might be confusing to realize that all the possible combinations of the 4 DNA  bases in groups of 3 (the triplet) are equal to 43 = 64 while in reality only 20 amino acids are  synthesized. The question is what happens with the remaining 44 combinations (also called  codons)? Three of them are the so called “nonsense codons”, they are sequences that indicate  when to stop the synthesis of the proteins. The rest of the possible combinations are simply  other forms of codifying the same amino acids. This is possible because those triplets that  share the first two bases represent the same amino acid independently from the third base that  composes the triplet; so GCC and GCA codify the same amino acid: Alanine. This renders  the genetic code redundant and as a consequence also the DNA is a redundant code, said in  other words, DNA is not the shortest form to describe a genotype.  The triplets can be then grouped in genes. A single gene establishes the structure of a protein  and controls when and where the protein will be produced, in this way a gene is directly  responsible for a determined hereditary characteristic of the individual. It is interesting to  know that genes have variable lengths, they can range from hundreds of bases up to thousands  and they might even overlap each other. The word gene refers to a well defined place in the  DNA that determines a protein. The actual content of that place is called allele and can be  different from individual to individual.
+
+46
+
+Gene ? ? ? ?
+
+a a t t g
+
+g a g c a
+
+t tt a g c
+
+g g c a t Alleles
+
+The containers for genes are the chromosomes, whose name was determined by the fact that  they are visible under the microscope once properly dyed. When an individual inherits the  features of his parents he can’t take one gene from here and another from there, he inherits  chromosomes as a whole and therefore the inheritance of certain characteristics coded in a  gene  is   associated  with  the  inheritance  of  the  characteristics of the other  genes  that  are  present in the same chromosome. This means we inherit blocs of features and not single ones.  It is important to note that the number of chromosomes is identical for all the individuals in a  species and does not depend on the complexity of the organism, in the case of human beings  there are 23 different chromosomes. Since every chromosome is present two times, there are a  total of 46 chromosomes (23 pairs). The union of all chromosomes results in the already cited  DNA which is to be found in the nucleus of every somatic cell of the body. Conventionally  two chromosomes in the same pair are called homologous, they code the same information  and while one comes from the father the other comes from the mother. Which of the two  chromosomes is actually used to synthesize the proteins is established by the mendelian  inheritance rules, for the moment it is only important to know that for every gene there are  two copies, one on each chromosome. 
+
+47
+
+One chromosome
+
+Another chromosome
+
+Homologous chromosomes
+
+Homologous chromosomes
+
+Not homologous
+
+There  are  fundamentally   two   different   processes  where  the  genetic   material  of   a   cell  is  transmitted to another. They are called mitosis and meiosis.  Mitosis is the process where a single cell divides itself into two cells that will share the same  genetic patrimony. This is the mechanism that enables organisms to regenerate their tissues  whenever they are wounded; the growth of a lost tail in the lizard is an incredible example of  this process. The first step is the DNA replication, this is called the S phase. The DNA is now  uncoiled and the two nucleotide chains are divided; on each one of these two strands a new  one is built and, since for each base there is only another complementary base, the two new  double   strands   result   identical   to   the   original   one. 
+
+Original DNA DNA Division Single strand (original)
+
+New complementary  strand
+
+In this way every chromosome is replicated. The two identical chromosomes (also called  chromatids)   produced  during   the   S   phase   are   still   joined   together   in   the   center   by   a  centromere. 
+
+48
+
+Centomere
+
+Chromatide
+
+Chromatide
+
+In the following phases (Prophase, Prometaphase, Metaphase, Anaphase) the chromatides  will   align   with   the   cell   equatorial   plane  and   then   divide   themselves   into   two   identical  chromosomes. Each one of these chromosomes will then travel to its own cell pole. 
+
+The last phase (Telophase) sees the cell membrane dividing in two equal parts thus producing  two independent cells that share the same identical genetic code. Mitosis is the mechanism  that nature has found in order to transmit the genetic information of a cell without changes. Meiosis alternatively poses as the process that creates the cells needed for the reproduction.  As said before there are some cells that are called gametes, they are special cells needed for  the sexual reproduction of organism, these cells have a peculiarity, they have only one set of  chromosomes, the half of a normal DNA. If a cell has two sets of chromosomes is called  “diploid” while if it has only one set of chromosomes it is called “haploid”. Haploid cells are  not an error, rather a necessity. If two cells having a complete DNA would join together they  would create a cell with two DNA, meaning that every time two individuals would reproduce  themselves the number of DNA molecules of their offspring would double with catastrophic  consequences within a few generations. The first step of meiosis is, like in the mitosis, the replication of the chromosomes into  chromatides.     The   so   called   meiosis   I   phase   sees   the   separation   of   the   homologous  chromosomes into two cells. Meiosis I is followed by meiosis II, here again a division takes  place, but this time are the sister chromatides that are separated and sent to a separate cell. At  the end of the process there will be four haploid cells.
+
+49
+
+In meiosis there are two important differences if compared to mitosis. The first is the  creation of haploid cells; during reproduction two haploid cells (the gametes) will join to  create a new individual. This has as consequence that the genetic material of the new born  will be a combination of his mother’s and father’s genetic materials.  The second is crossover. During the prophase homologous chromosomes exchange  genes; this means that a part of the mother’s chromosome is inserted into the father’s  chromosome and vice versa. This is a second mixing of the genetic material and it is  especially important because a brand new chromosome is created by mixing the available  ones.
+
+2.3­ Evolution as an optimization algorithm
+It is astonishing to realize the perfect functioning of even the simplest organism. The  complexity of multicellular organisms is something that we haven’t yet completely  understood. In fact until today we haven’t been able to replicate such a wonderful structure as  the human brain can be. Even a fly is such a complex organism that scorns our most complex  airplane. This is what many call “the mystery of life”, a so complex variety of organisms,  species and mechanism present in nature to remain incomprehensible for us in many of its  parts. It is undeniable that the natural selection has performed an astonishing task in the  evolution of species. Selection has produced very complex organisms that have successfully  adapted to the changing environments encountered in different times, eras and geographical  locations; it must therefore pose as a valid model for the construction of optimization  algorithms.  As said before all the genetic information of an organism is stored in the DNA and is  coded with the famous four bases: adenine, guanine, cytosine and thymine. We could see this 
+
+50
+
+as a code in base 4. We could then consider each organism (or at least its genotype) as  nothing more than a combination of the four bases. Please note that being the DNA a  redundant code this relation is injective, a relation of N elements to 1; that means that there  are several codifications of the DNA that will result in the same genotype.  At this point it is possible to abstract the evolution into a more or less generic  algorithm. At first we will define the gene pool as the set of alleles available among the  members of a population. Please remember that in biology the gene indicates a region of the  DNA while the allele is the actual information that is contained in that region for a particular  individual. So it could be possible to imagine the chromosome as the name and length of a  variable, while the allele is actual value for that variable, in such metaphor the gene pool is  the set of all “variable values” actually present.  In light of this, evolution can be seen as a non deterministic procedure whose goal is  to optimize the gene pool of a species according to the given environmental variables. The  genotype of a single individual is here represented by a vector that in computer science is  often referred to as chromosome, in reminder of its organic counterpart. Each chromosome  vector is one of the possible combinations of values in the search space (the set of all possible  solutions) and is given a certain quality value by the quality function.  4 1 6 8 2 3 5 Chromosomes in the mono  dimensional search space of  
+
+51
+
+Quality function Quality
+
+1
+
+2
+
+3
+
+4
+
+5
+
+Chromosomes
+
+The value provided by the quality function is used to make a selection of the chromosomes  that will, create the next generation of chromosomes, thus altering the gene pool in respect to  the starting point. We are also aware that in the quality function there are local optimums and  we know that there are generally a huge number of combinations in the search space. In fact  the human genome is estimated to be composed of something between 20,000 and 25,000  genes. Even if this represents an immense search space, evolution has nevertheless found  successful solutions. The most important operators in the evolution are: crossover, mutation  and fitness determination. We will examine them in detail later on, now it will be shown how  the combination of all these operators in the evolution process can shape a population from a  statistical point of view.  According to Kattman [12] there are mainly four possible  action courses that evolution can take while influencing a population. In the following graphs  used to describe these courses the same notation is always used:
+
+52
+
+Individuals of the 1st generation
+
+Individuals of the 1st generation that actually reproduce
+
+Individuals of the following generation
+
+The first case is called reducing selection.
+
+Number of individuals
+
+Features
+
+In this case the variance of the gene pool is reduced and the amount of individuals sharing the  fittest genotype is increased (homogenization). This is a transitory step of the evolution in the  process of search for the optimal gene pool.  The second case is represented by the stabilizing selection.
+
+53
+
+Number of individuals
+
+Features
+
+Here the diversity of the genetic patrimony has stabilized and converged to a (maybe sub)  optimum. Since the population changes are cyclical there is no further evolution of the gene  pool. The third case is the transforming selection.
+
+54
+
+Number of individuals
+
+Features
+
+The gene pool of the population is here slowly shifting towards a more favorable solution.  Again, this is a transitory step towards the optimum gene pool.  The fourth and last case is the disruptive selection.
+
+55
+
+Number of individuals
+
+Features
+
+The gene pool is here dividing itself into two different pools that drift each towards its own  optimum. This is a starting point for the creation of two different races starting from one and  a transitory state.   Under the light of these four different influences of selection on a gene pool it is possible to  determine the role played by two variables, the time and the number of individuals that  compose a generation. The time a generation lives represents the vertical dimension of the  search algorithm, it is the depth of search of our algorithm. Time influences in first instance  the number of litters a generation can produce, and the persistence in time of its gene pool.  The longer a generation lives the longer its genes are present in the population gene pool.  Increasing the living time of a generation increases the number of individuals present in a  population (the area under the curve) and shifts our curve upwards.
+
+56
+
+Number of individuals
+
+Features
+
+The life span of the average individual is a very important factor; it is known that in living  creatures with very short life cycles the adaptation to the environment converges faster. This  is in part consequence of a shorter lifecycle that determines a fast loss of the oldest genetic  information, in part the consequence of a short sexual maturity and an increased rate at which  an individual is capable of reproduce; factors that are accountable for the constant  introduction of new genetic information. So, in case of insects or bacteria it is possible to  observe in a relatively short time space the developing of resistances against those chemical  agents that men use to combat them. The pulse at which the optimum solution moves in the  search space corresponds to the time between one generation and the next, it is therefore clear  how the life span of a species is a fundamental variable for our optimization problem.  A bigger temporal overlapping of subsequent generations might maintain a larger base  of genetic information, which is useful to avoid local optima but might also slow down  convergence. Moreover the population size varies with generation overlapping too; in those  cases where resources are limited this could lead to an exacerbated fight for surviving. Every  time the number of individuals that actually reproduce is reduced we speak of an increased  selection pressure. Increased selection pressure lowers the curve of the reproducing  individuals and restricts its variance of features, thus a steeper curve is achieved.
+
+57
+
+Number of individuals
+
+Increasing selection Pressure
+
+Features
+
+The number of individuals is, on the other side, the horizontal dimension of the research, it is  the parallelism grade of our algorithm. This variable drastically determines the convergence  to an optimum. Large litters produce a larger gene pool and an augmented broadness in the  search for an optimum. Animals that have a small brood, like pandas, have a reduced  adaptation capability and so, as nature demonstrates, they are quite prone to extinguish.
+
+2.4­ Quality function, mutation and crossover
+There are some mechanisms in the transmission of the genetic information of an  individual that are fundamental for natural selection. Considering their essential role in our  future genetic algorithms it is worth to analyze them a little more in detail.  The so called quality function (in evolution strategies) or evaluation function (in genetic  algorithms) assigns a value to each chromosome indicating its quality according to a certain  criteria. It will be the nature of the problem we want to solve that will determine the quality  function, so the same solution will generally have different quality values in different  problems. Now, the point of our optimization is to find a vector that returns a maximum  or a minimum value for such quality function. Since the quality function is nothing more than  a function that returns a value indicating how good the current chromosome approximates the  optimum, it is such function that defines the optimization goal, in that a determined vector is  58
+
+a “good” solution for a certain quality function and not for another one. E.g. a quality  function with the form of a parabola has an optimum solution (minimum) in a completely  different point (the chromosome vector) from the one of a logarithmic quality function.  We  can then imagine the quality function as a surface with hills and valleys where each  chromosome vector “v” represents a set of coordinates coupled with a quality value “Q(v)”  indicated by the corresponding point for those coordinates on the surface of the function. The  genetic algorithm will move the points representing the chromosomes along the quality  function surface using a certain strategy, usually shaped like a path. The mechanisms that  determine the path take advantage of the available information regarding the points that have  been covered up to the moment. In this way the mutation and the crossover operators are used  on the available data to create the next step of the path. 
+
+ϕ
+Rechenberg [7] As seen before, crossover indicates the exchange of chromatides’ pieces among two  chromosomes during the prophase of the meiosis. This has as a consequence that the genetic  information is recombined mixing parts of the genetic information of one parent with parts of  the other one. It is in this way that the new individual will present fresh characteristics,  revealing a new solution for the problem of adaptation to the ambient; evidently this has as  consequence the development of the species through the introduction of individuals that  represent the mix of the features of their parents. If there wouldn’t be any crossover, natural  selection would simply be restricted to a search for the best solution among all those already  available. Alternatively, new solutions that lay between the parent solutions are always  introduced in the gene pool with the use of crossover.  Crossover can be simulated in many different ways. A first rough subdivision would  between dominant/recessive or co­dominant crossover, exactly like it happens in humans.  Dominant/recessive genes mean that the child will show the features of only one of both  parents. As seen before DNA has always two copies for each chromosome, one coming from  the father and the other from the mother. This means that the same feature will be coded by  two different genes, again, one coming from the mother and the other from the father. 
+
+59
+
+However it often happens that only one the two alleles that code a certain gene is actually  used to produce the phenotype, said in other words: in dominant/recessive genes only the  father or only the mother information is used.  The allele that is actually used is called  dominant while the other one is called recessive. So the individual will in the end show only  the traits of one of its parents. This is the case of many inherited illnesses like hemophilia, the  individual is either affected or not but it can’t be affected “just a little”. This can be replicated in an algorithm by creating a new solution starting using the  information of its parents’ vectors by copying their values according to a certain schema. Parent 1 <2,6,9,5> Parent 2 <3,1,4,7>
+
+Child <2,1,4,5> There are a lot of different schemata to determine which value should be chosen in order to be  copied in the child chromosome, since their efficiency is determined by the context in which  they are used they will be introduced together with their respective algorithms afterwards. Co­dominant means that both the father’s and the mother’s genes are used at the same  time, the child will then show a mix of its parent features. The blood type of a person a good  example; people can have the A blood type gene ,the B blood type gene and the i blood type  gene. The “i” gene is recessive, that means that if coupled with an A the individual will have  A blood and if coupled with B will produce blood of type B. But when a person has both A  and B genes will present the so called AB blood type, this is co­dominance!  For a real vector  this can be translated with average values. Parent 1 <2,6,9,5> Parent 2 <3,1,4,7>
+
+Child <2.5 , 3.5 , 6.5 ,6> Dominant/recessive crossover is by far the most used in genetic algorithms, therefore  it is often implied that when talking about crossover it is a dominant/recessive crossover.  Taking a more mathematical approach to crossover we could say that crossover can be  graphically represented as an operator that inserts a new point in one of the vertexes of a 
+
+60
+
+hypercube. To construct such a hypercube we have to use two stars of hyperplanes, one for  each chromosome. Each star is composed of all the hyperplanes that have the following form:  xi = ci where xi is the ith component of the search space and ci is the value of the chromosome  for that component. Intersecting the hyperplane stars of the two chromosomes involved in  crossover we obtain a hypercube. The crossover simply chooses one of the vertexes of this  hypercube. Let’s make an example in the three dimensional space, we will use the following  two chromosomes A:(2,5,4) and B:(4,7,6).  The hyperplane star that passes through A is composed of three planes: X = 2 Y = 5 Z = 4 Y=2 Z=5 X=4 Likewise the star for B will be: X = 4 Y = 7 Z = 6 Now, A and B are two vertexes of the cube created by these planes,
+
+61
+
+Crossover will generate a new solution that lays on any of the vertexes of the cube.  Mutations instead, are changes in the code of the DNA; in nature they can be  produced by chemical agents or by radiations such as the X­rays. Although big mutations in  the genetic material render the cell unable to live, it isn’t correct to consider mutations as a  purely negative factor in the evolution process. In fact these changes play a fundamental role  in evolution; they introduce variation in the genetic patrimony of a population. According to  Darwin’s theory only the fittest survive while the biggest part of a population never manages  to reproduce. If we see every individual as a DNA, and therefore as a combination of all the  possible sequences of the four bases, it is obvious that together with the death of the biggest  part of the population an enormous amount of genetic information goes lost. Supposing the  environmental variables are fixed, the genetic information present in a population will tend to  become uniform through the generations. The DNAs will “converge” to an optimum solution.  Under the influence of the natural selection and with the passing of a large number of  generations, the gene pool variance of a population tends to reduce itself. The individuals of  such a population tend to have the same features, the ones of the fittest individual.  Theoretically all the possible sequences of bases would have converged to one single  combination, the fittest for that environment. But what would happen if the environmental  variables would suddenly change and render that combination not suitable for survival? The  whole population would be unable to adapt to the new environment and would consequently  extinguish. Mutations introduce new variants in the converging genetic combinations; they  represent a random variable that is needed to avoid a risky grade of homogeneity among the  individuals of a species. The importance of such a random value in optimization problems  has been recognized long before the introduction of genetic algorithms. The use of a properly  weighted random factor is essential for the avoidance of local optimums, in fact a random 
+
+62
+
+value can be often found in classic algorithms such as the simulated annealing. The use of a  random value introduces the chance (generally quite small) of jumping to a neighboring  solution that is normally worse than the best one found up to date. The advantage in this is  that the neighborhood of the new solution might contain another solution that is better than  the previous local optimum.  In the following graph we suppose to have an algorithm that follows blindly the slop  towards a maximum, of the starting point was x=0 then the algorithm would converge to the  local optimum circled with a dotted line and would stay there. If a proper random factor  would be introduced the algorithm might jump following the arrow and then converge to the  global optimum.
+
+Local optimum Global optimum Mutation effect
+
+F I T N E S S
+
+FEATURES OF THE INDIVIDUAL
+
+Therefore mutation increases the chances of finding the global optimum. It is  important to remember here that the DNA is a redundant code, fact that attenuates the actual  effects of such mutations, never the less the chances of a mutation must be kept to a  minimum; in fact in nature they occur between once every 105 and once every 109 genes. The  reason behind the necessity of a low rate of mutations can be easily understood. A mutation  moves the current optimum to a solution that is (with a very high probability) worse. If our  algorithm gets stuck in a local optimum and keeps it as the best solution for a large number of  cycles, it is probable that a mutation will occur on that solution. This would initiate again the  search for an optimum. But if the mutation would occur with a very high rate, let’s suppose  once every two iterations, the temporary optimum found would constantly move to a random  solution thus preventing any convergence towards a better solution and rendering the  algorithm useless. 
+
+63
+
+2.5­ The role of chance
+The theory of evolution, at first glance, is deterministic. This means that given the  same genetic, environmental and temporal variables the evolution outcome is the same. But a  closer look reveals that chance plays a fundamental role in the evolution. Firstly, chance is a  big factor that manipulates the survival in the real world. It is not always true that the fittest is  the survivor and there are many factors in addition to the genotype of an individual that  determine its survival. Let’s make an example. If a group of animals is escaping from a  predator, they will all have different speeds, being the fastest the fittest for survival. But dying  because of a landslide is not something that has to do with the DNA, it is an event in which  the speed of an animal or its reaction time are negligible. In this case the surviving chances of  an animal are proportional to the distance from the landslide center, a factor that can be  considered as casual. Even though this case doesn’t takes in consideration the fitness of an  animal but it can surely influence the gene pool of a population.  As already said, mutations are factors that occur randomly and, as if this wouldn’t be  enough, they do not always really cause an effect. A mutation might occur in a recessive  allele or it might change the third base of a triplet, influencing in no way the production of  amino acids, and this case alone represents already the 33% of mutations. Sometimes a  mutation might even reverse the effects of a previous mutation thus returning to the original  state. There are two ways for this to happen: the first is the alteration of the same base for two  times, the other is a mutation of a second gene that will cause the inhibition of the effects of  the first mutation. Last but not least the influence of chance during the cross over.  Considering the maximal amount of reproductive cells produced during the average life of a  human being, it is statistically impossible that two of these cells would have the same genetic  code. This gives us an idea of the real recombination effect that cross over has in the meiotic  process. In consideration of all this it would be more appropriate to rephrase the natural  selection definition with “the fittest has a higher chance of surviving”.
+
+64
+
+Chapter 3 Evolution Strategies
+
+3.1­ Rechenberg, the pioneer
+The first attempts to emulate evolution in order to solve problems took place during the  60’s at the Technischen Universität in Berlin. At those times Ingo Rechenberg labelled the  new methods as Evolution strategies (ESs), the main idea behind the evolution strategies was  to abstract the basic mechanisms of evolution and use them to improve technical applications.  “The   island   of   the   crabs”,   a   science   fiction   book   of   Anatolij   Dnjeprow,   inspired   in  Rechenberg the idea of natural selection being applied to machines. Rechenberg’s plan was to  copy from nature only those methods that were fundamental, indeed he affirmed that it is  nonsense to copy every single detail of the evolution process in a 1:1 scale because in that  case the goal would disappear in the gigantic effort of imitating evolution in its finest detail.  The  first optimization problems for which Rechenberg used his evolution strategies were  typical  engineering  problems.  They   where  mostly   based  in   finding  the  best   shape  for   a  specific   use,   for   example:  the  best  form  for   a  given   surface  and  air   flow,   the  best   heat  dissipating form for metal plates or the best conjunction between two fluid transporting tubes  that laid at a 90° angle. The results that Rechenberg achieved where astonishing, even more  surprising if considered that some of the first experiments were calculated by hand due to the  lack of computers, and that even those experiments that used a computer could count only on  such limited resources that would let them last entire weeks.  The first experiment, called “Darwin im Windkanal”, was done with an articulated metal  plate where each of its five pivots was adjustable in 2° steps. The ES was used to calculate the  optimal form of the plate so that it would offer the least resistance to the air flow (represented  by   the   orange   arrow).   The   idea   was   to   simulate   the   evolution   of   river   animals.   The  transformation from zigzag shaped prehistoric worms into today’s flow optimally formed  fishes. 
+
+65
+
+All the possible combinations of the pivots in 2° steps where 515 = 345.025.251 a huge search  space. During the experiments was found that after 200 iterations of the ES, the metal plate  had reached the optimal form, which was a totally straight surface. This proved the validity of  ESs but was no real breakthrough since the use of a straight plate in such environment was  very well known and easily predictable. In order to probe the adaptability of ESs to different  environmental   variables   Rechenberg   made   another   experiment   changing   the   wind   flow  direction. This time the results where less trivial, the plate assumed an oblique form that was  optimal  but   not   calculable  using  the   fluid   mechanics  known   in   the   sixties.  Throughout  successive experiments Rechenberg succeeded in developing heat dissipating plates with a  97% higher heat dissipation coefficient and a conjunction with 10% less flow deflection loss  in respect to their starting designs. Several other experiments followed, demonstrating the  strengths of ESs and starting a deep interest in the field of ESs.  ESs  are  a  series  of  optimization   algorithms  that  share  the  same approach  to the  problem.  There  are  individuals  that  form  a  population,  to  be  more  exact  each  off   those  individuals represents a possible solution for the given problem and is coded in a vector of  real parameters, the chromosome. The reason for the use of real values in the codification is  the direct consequence of the engineering problems that Rechenberg originally tried to solve  with help of ESs, in fact the chromosomes employed in the first experiments used to represent  angles between surfaces, lengths and other physical dimensions that had to be coded with real  values  in  order  to obtain  usable  results.  Such  chromosomes  generally  undergo  cycles  of  reproduction,   mutation   and   selection   until   a   certain   criterion   is   reached.   In   the   next  paragraphs we will examine the different structures of this cycles and how they differ one  from the other. 
+
+3.2­ The (μ + λ) ES
+The   first   evolution   strategies   were   masterpieces  of   simplicity.   In   1964   Rechenberg   had  already experimented with the so defined “(1 + 1)­ES”, starting from a given chromosome, a  second one is created through duplication, this “child” chromosome is then mutated and  thrown into an urn together with the original vector, the so called “father” chromosome. The  solution that proves to be the both of both is extracted from the urn, the other one discarded,  and then a new cycle (generation) begins. Hereby the name 1+1, the first 1 indicates that there  is one father and the plus sign the fact that it is thrown into the urn together with the child  chromosome, the second 1. This procedure would go on until the break criterion is reached,  this might be quality of the current chromosome or the number of generations, some temporal  constraint might also be used to control the maximum runtime of the ES. 
+
+66
+
+(1 + 1) ES 
+Generation ( γ) =   1 Father 
+
+     2
+
+3
+
+    
+Best solution 
+
+Mutation Selection
+
+Mutation Selection
+
+Mutation Selection
+
+Urn
+
+Father
+
+Child
+
+A generalized version of the (1 + 1) ES would be the (μ  +  λ) ES, where  μ  denotes the  number   of   chromosomes   that   survive   the   selection   process   to   become   the   parent  chromosomes of the next generation, while  λ  designates the number of child chromosomes   that are created at each generation. For instance, (2 + 3) ES means that 3 new vectors are  created   by   randomly   cloning   the   original   2   parent   vectors   with   uniformly   distributed  probability; then the so obtained child chromosomes are mutated with normally distributed  probability. All the 5 vectors are then thrown into the urn and from there only the 2 best are  selected to be the parents of the next generation.  (2 + 3) ES 
+Generation ( γ) =   1 Parents Mutation
+
+     
+
+2
+Best solutions 
+
+Selection Urn
+
+67
+
+The “Darwin im Windkanal” experiment earlier described, used a (1 + 1)­ES after the initial  approach with a (1 + 10)­ES was interrupted because it revealed to be too time consuming. As  it can easily seen (μ  +  λ) ES are monotonic non­decreasing functions, where quality(b)  ≥   quality(a)  ∀b > a , in other words the best solution never gets worse than the best solution of  a previous cycle. 
+
+3.3­ The (μ , λ) ES
+We mentioned before some quality functions may have some local optimum, although  in   ESs   a   mutation   operator   is   used,   this   might   not   be   sufficient   to   avoid   premature  convergence in such a local optimum. Since a (μ  +  λ) ES hands the best solution over the  generations it is quite prone to get stuck in local optimums. This is something that doesn’t  happens in nature, where even the fittest individual has a limited life span and, no matter how  long it will live, it will eventually die, consequently removing its genotype from the pool. In  nature there is no immortal individual, although cloning is a hot topic these days it hasn’t had  yet   succeeded   in   making   a   particular   genetic   material   eternal.   Although   it   would   be  interesting to simulate the usefulness and impact of cloning on a gene pool we have to come  back to our (μ  , λ) ES. A (μ , λ) ES emulates more accurately natural selection in that only   the children chromosomes are thrown in the urn. All the parents are automatically discarded,  no   matter   how   good  or   bad,  each   chromosome  lasts   one  and  only   one  generation.  The  remaining  procedures  such   as   cloning,  mutation  or  quality   calculation  are  identical  to   a  normal (μ + λ) ES.  (2 , 3) ES 
+Generation ( γ) =   1 Parents
+
+     
+
+2
+Best solutions 
+
+Mutation
+
+Mutation Selection Selection
+
+Urn
+
+68
+
+The consequence of switching from a “+” to a “,” ES is that the quality function of the best  solution   is   not   anymore   non­decreasing;   practically   there   is   no   guarantee  that   the   best  solution of the (n + 1)th  generation will be better than the one of the nth  generation, but this is  the price to pay for the prevention of premature convergence. 
+
+3.4­ ES generalization
+From now on the two ESs previously described will often be referred to as (μ  #  λ),  where “#” is a wildcard symbol representing either “,” or “+”; this generalized reference is  often used in those fields where both families of ESs share many common properties. There  are many possibilities to vary a (μ # λ), for example simulating population size fluctuations   by dynamically changing the values μ and λ. In fact in nature most populations do not have a  steady size, the human race is, for example, exponentially increasing while other populations,  such as snowshoe hares (some kind of rabbit), undergo observable cyclical fluctuations. It  might be interesting to establish the  μ  or λ  values at each cycle with such functions as sine   (cyclical population sizes), exponential functions or even functions that are dependant on  other   parameters of the ES. Please note that changing  μ  and  λ  it is possible to control   selection pressure. Selection pressure is mathematically represented by the quotient s = μ / λ,   that   is   the   fraction   of   individuals   of   the   entire   population   that   eventually   reproduce.  Nevertheless there is a restriction that must be kept in mind when setting the parameters of an  ES, for obvious reasons μ must always be smaller than λ.
+
+3.5­ Recombination in ESs
+The ESs presented up to this point use only the mutation and quality calculation  functions;   it   is   time   to   introduce   the   recombination   (crossover)   operator.   We   know  recombination tries to emulate the chromosomal crossover in cells, but, if we want to use it,  we have first to add a new parameter ρ to the so far used notation. A (μ / ρ # λ) ES is a (μ #  λ) ES where chromosomes are chosen in groups of ρ with uniformly distributed probability   in order to be recombined and produce one child chromosome. It is extremely important to  note   that  the  recombination is  done by  choosing  two  parents   with  uniformly  distributed  probability; this means that the quality of the chromosome has absolutely no influence on the  number of children a chromosome produces, nor is it taken into consideration when two  parent chromosomes must be selected to produce a new child chromosome. 
+
+69
+
+(3/2 + 3) ES  Generation ( γ) =   1
+
+     
+
+2
+Best solutions 
+
+Urn
+
+Since animals have only two parents, ρ is usually set to 2, nevertheless it mustn’t be forgotten   that possibilities are much wider. Both dominant/recessive and co­dominant crossover have  been used in ESs. In the case of a d/r crossover a “mask vector” of the same length of the  parents is created. The mask vector is a series of 0 and 1 that are randomly chosen, the child  is then created substituting all the 0’s with the respective values of the first parent and all the  1’s with the values of the second parent.
+
+Parent 1 <2,6,9,5,4,5>
+
+Parent 2 <3,1,4,7,2,8,0>
+
+Mask <1,1,0,0,1,0> Child <2,6,4,7,8,5>
+
+3.6­ Isolated populations 
+
+70
+
+Sometimes   it   is   useful   to   simulate   the   existence   of   populations,   which   are  chromosome groups that are divided from one another. The idea of simulating population has  two different reasons. The first is the speed advantage that is achieved when using parallel  computing. In case of a distributed environment (several computers connected together) or a  single   multi­processor   system,   it   is   possible   to   achieve   a   higher   speed   through   the  parallelization of the calculations. If each population is assigned to a processor the grade of  parallelization is higher in comparison to the case where a single bigger population runs on  all the machines/processors at the same time, therefore tasks are solved more rapidly. Besides  in   case  of   a   distributed   system   where  network   communication   and  data   transfer   among  computers are slow in comparison with the processing times, the isolation model provides a  successful method to reduce communications to the bone, augmenting therefore the overall  efficiency. The second reason behind the introduction of populations is the need for a more  accurate   simulation   of   nature.   In   fact   most   species   in   nature   are   bound   to   a   certain  geographical zone resulting in the different races typical of each place. This has often had as  consequence the creation of “biological niches”, very peculiar gene pools that would rapidly  extinguish   if   confronted   with   the   mainstream   gene   pool   but   that   nevertheless   present  interesting features worth analyzing. A typical example for gene pool niche would be the case  of native Australian animals, such as the Tasmanian tiger, which have encountered enormous  survival difficulties once in competition with species imported by humans. Rechenberg used the [μ’ #  λ’ (μ  #  λ)] notation to indicate the use of populations. Each   population is a detached set of chromosomes that develops in an independent fashion, without  communicating with the other existing populations (island model). The notation indicates that  each population uses a (μ # λ) cycle and that the μ’ best out of λ’ populations are selected to  become the parent populations of the next cycle.  Let’s make an example with a [1, 4 (2, 3)]­ES: Following   a   normal   (2,3)­ES   schema,   each   population   consists   of   2   parent  chromosomes that are mutated in order to produce 3 child chromosomes. The 2 chromosomes  with highest quality values are then chosen to be the parents of the new generation. The  previously described (2, 3)­ES schema is applied to 4 (λ’) different populations, at the end of   the   process   the   best   population   (μ’=1)   is   chosen   as   the   parent   population   of   the   next  generation. This single population of 2 elements will be replicated 4 times in the next cycle in  order to create the needed child populations which will, again, follow the (2, 3)­ES schema.  There is no fixed way to establish the quality of a population, common methods are: median  quality of the individuals, the quality of the best individual or even the quality variance of the  population.  Now   it   is   time   to   introduce   an   additional   parameter,   γ,   representing   the   number   of  generations that a population remains isolated. This means that in a [1, 4 (2, 3)5] ­ES each of  the 4 child populations will go through 5 cycles of a (2, 3)­ES totally isolated from the other  71
+
+populations. After the fifth generation the parents of each population will be finally compared  with their “brother” populations in order to select the best population, as it would happen in a  normal [1, 4 (2, 3)]­ES. 
+
+3.7­ Rechenberg­Schwefel notation for ES
+At this point it is possible to determine a general notation for Evolution Strategies. 
+
+[μ’/ρ’ # λ’ (μ/ρ # λ) γ] γ’ ­ ES #  μ’ λ’ ρ’ γ’ μ λ ρ γ
+= represents either a “+” or a “,” = number of Parent­Populations = number of Child­Populations = Recombination Index for Populations = number of population generations = number of Parent­Individuals = number of Child­Individuals = Recombination Index for Individuals = generations in isolation
+
+Let’s make a graphical example:
+
+[μ’/ρ’ # λ’ (μ/ρ # λ) γ] γ’ ­ ES = [3/2 , 4 (4/2 , 6) 2] 1 ­ ES
+
+72
+
+Parent populations
+
+μ ’ =
+
+      1
+
+     2
+
+       3
+
+2 parent populations create a child population
+
+ρ’ = 2
+Child populations
+
+λ’ =
+
+      1
+
+    2
+
+3
+
+        4
+
+Each population undergoes a  (4/2 , 6)  ES 2 times since γ = 2
+
+      …
+Child chromosomes creation  Parents are discarded since “,” ES
+
+   2
+
+…
+
+       …
+
+ρ = 2 (parents per Child)
+
+      …
+
+   
+
+   2
+
+…
+
+       …
+
+Selection of the fittest chromosomes Start of the second (4/2, 6)ES cycle
+
+μ (parents)  = 4 
+
+      …
+
+   2
+
+…
+
+       …
+
+Child chromosomes creation  Parents are discarded since “,” ES
+
+ρ = 2 (parents per Child) λ = 6 (children number)       …        2 …        …
+
+Selection of the fittest chromosomes End of isolation
+
+μ (parents)  = 4 
+73
+
+Child Populations Parent populations are discarded since “,” ES
+
+λ’ =
+
+      1
+
+     2
+
+           3
+
+       4
+
+Selection of the fittest populations
+
+μ ’ =
+
+      1
+
+     2
+
+       3
+
+It is possible to make a couple of additional remarks on this notation: nesting in orders higher  than two {..[..(..)..]..} is theoretically possible but it doesn’t actually deliver real advantages  [3]. It has been noted [3] that unfortunately this notation is not apt to describe all the possible  combinations for an ES. In fact all populations run for the same amount γ of cycles while it  would be very interesting to have a “control group”, a population that would continue in  isolation while the other populations follow the standard ES. Similarly the / operator doesn’t  define a specific recombination method.
+
+3.8­ Progress window and adaptive mutations
+The basis mutation algorithm that Rechenberg used mutates the jth parent vector xPj of  the gth generation by adding a random vector zi in order to obtain the ith child vector xCi. The  formula he used was: 
+g g (a)  xCi = x Pj + δ ⋅ zi
+
+Being δ  a multiplication factor that is used to determine the step of the ES and the  zi vector  1 components <z1, z2, ... zn> normally distributed random numbers with  σ =  variance.  Such  n variance is needed to ensure the length of the |z| of the random vector remains centered on 1  independently from the number n of components that compose the z vector. 
+
+74
+
+The problem of finding the suitable value for  δ  is anything but trivial since a good ES with  the wrong  δ  is most likely to fail its goal.   We can represent all the possible mutations  obtained by adding the random vector z to our chromosome x with a hypersphere centered on  x. Since the components of z are normally distributed the nearer we get to the centre the  denser the hypersphere is. By changing  δ  we actually change the radius of our hypersphere,  this means the influence range of the mutation operator.  If we want to achieve an optimal  search we must then adjust the value of  δ  to the quality function that we are dealing with.   Moreover even inside the same quality function it might be necessary to regulate δ according  to the current position on the quality function’s surface. Let’s make an example, imagine that  we have a relatively flat quality function with a very steep hill in the centre. 
+
+δ2
+
+Mutation  Range
+
+δ1
+Z = 8*(sin(x)/x)*(sin(y)/y)
+
+It is evident that δ1 should have a bigger value to accelerate convergence while δ2 should be  small enough to allow a thorough search of the immediately surrounding space. Rechenberg  has analytically examined various quality functions such as the sphere model and the corridor  model   (an   elongated   cube)   and  found   functions   that   determine   the   optimal   value  for   δ.  However this task is difficult, especially for complicated quality functions, and it must be  considered that most quality functions are very far away from a simple cube or sphere, not to  talk about those cases where the quality function is not explicitly known. As a conclusion we 
+
+75
+
+can regard δ as part of the optimization problem itself, with the consequence that it must be  constantly changed according to the current state of the optimization algorithm.  To visualize this Rechenberg defined the evolution window showing the influence of  δ  on  convergence speed. The progress window graphically displays the efficiency of the different  δ values, in terms of the advance­speed φ. 
+
+Progress Window 0.3
+
+↑
+
+φ* 0.2 0.1 0 10­5 10­3 10­1 → δ* 101 103 105
+
+Where φ* = φ/ω is the universal rate of progress and δ * = δ/ω the universal mutation step  size. The denominator  ω  is the median radius of curvature of the contours of the quality  function hills in neighborhood. In other words,  ω  is a local measure of the non linearity of  the search space, a gauge for the measurements. However, without going too much in detail,  what interests us is the meaning of the graph; it shows that the amount of mutation applied  during the cloning process (x axis) determines the speed of the progress (y axis), which  traduced is how fast we will reach an optimum solution. If the mutation is too big (right blue  square area) there will be no progress at all, while if the mutation is too small (left blue  square area) the ES might not be efficient enough to obtain results in acceptable times. The  space  among the two blue squares is the “evolution window” and represents the step of  mutation that will produce the best results. The question is then, how is it possible to obtain a  suitable δ? In the case of a (μ  ,  λ) the simple kind of mutation previously introduced can be extended  like   indicated  from  Schwefel   in   order  to  obtain   a   much   more  performing   mutation  that  evolves the increment variable δ. In the gth generation each child vector xC is created mutating  a random parent vector xPi by adding a random vector z formed like previously described.
+
+76
+
+(a) becomes then:
+g g g xC1 = x Pi + δ C1 ⋅ z1
+g g g g g g xC 2 = xPj + δ C 2 ⋅ z2    ... xCλ = xPk + δ Cλ ⋅ zλ
+
+Where i,j,k,... are random numbers [1,2,... λ] and 
+g g g g δC1 = δ Pi ⋅ ξ1 δC 2 = δ Pj ⋅ξ2   ...
+
+g g δ Cλ = δ Pk ⋅ξλ
+
+With   ξ   established  either  randomly   or   deterministically.   For   the  determination   of   ξ   i i Rechenberg [5] recommends:  “IF RND < 0.5 THEN  ξi = α  ELSE ξi = α for n > 100
+1
+
+α
+
+ ” with α = 1,3 for n < 100 and lower values of  
+
+Similarly to the chromosomes, the mutation steps  δ  undergo in this way a selection process   where   each   δ   is   coupled   with   a   determined   chromosome,   almost   extending   it   with   a   “mutation amount parameter” that is refined through the generations. This happens because  the  δ  of the (g+1)th  derives from the best of the  δ  belonging to the gth  generation. The δ  dependency on the parent’s δ follows the selection schema[5]:
+
+g+ g x P1 1 = xCB1 g g δ P1+1 = δCB1
+
+g+ g x P 21 = xCB 2
+g g δ P1+1 = δCB1
+
+.... ....
+
+g +1 g x Pµ = xCBµ
+
+g +1 g δ Pµ = δCBµ
+
+Where the Bi index indicates the ith best child chromosome.  The reason because the adaptive step is not used in a (μ + λ) is that, it might happen that all  the parent chromosomes have a too large step value. What happens when the step is so large  is that the mutations “jump over” the optimum. In such case all the children chromosomes  produced would have a lower quality than the parents, resulting in infinite generations with  the same set of parents.
+
+77
+
+Current parent Global optimum Mutation effect (too large)
+
+F I T N E S S
+
+FEATURES OF THE CHROMOSOME
+
+In contrast (μ , λ) ESs don’t suffer from this problem since no parent is ever lasting. Now let’s see a similar alternative step adaptation method also belonging to Schwefel. This  time  the chromosome <x> must be expanded to  <x,σ>   where x represents the original  chromosome   and   σ   is   the   vector   of   the   standard   deviations.   This   means   that   each   chromosome becomes two times longer and carries the information of its mutability. For the  recombination of two vectors the normal techniques of vector mask or median value can be  used: <(x1, x2, ... xn), (σx1, σx2, ... σxn)>    recombined with <(y1, y2, ... yn), (σy1, σy2, ... σyn)>
+
+Gives <(z1, z2, ... zn)(σz1, σz2, ... σzn)> where zn σzn are randomly chosen from one of the parents  or represent the median value of their respective parent components. In this strategy mutation follows the schema:
+
+σ new = σ old ∗ e N ( 0, D )
+X new = X old + N (0, σ new )
+
+Where  N(0,D) is a random number with normal distribution, centered on zero and with  standard   deviation   D.   This   is   basically   an   alternative   to   Rechenberg’s   step   adaptation 
+
+78
+
+mechanism; in this case it is D that determines the step of the adaptation for the mutation  parameter. The term  e N ( 0, D )  ensures for an always positive standard deviation. Because of  the normal distribution   e N ( 0, D )   returns values that are very near to 1, slightly smaller for  negative exponents, and slightly bigger for positive ones, this has as consequence that the step  is quite small. 
+
+79
+
+Chapter 4 Genetic Algorithms
+
+4.1­ Holland the father of genetic algorithms
+Genetic algorithms (from now on GA) have originated from the work of John Henry Holland,  whom, although contemporary of Rechenberg, worked independently and somehow starting  from other premises. Even if Holland’s best known book “Adaptation in Natural and Artificial  Systems” [15] is dated 1975 he had been working on GAs since at least 1962. Holland had  studied at the MIT and as an expert computer programmer, worked for the IBM on what  would become the first commercial scientific computer the “701”. Like Rechenberg also  Holland got his inspiration from a book, "The Genetic Theory of Natural Selection" which  provided him with the idea that evolution is training animals to adapt to the environment; the  subsequent logical step was to solve the question if this mechanism would also be successful  with   computer  programs.  What  really   made  Holland’s   work   interesting  was   the   idea  of  crossover, in Holland’s own words [14]:  “...  in  the early 1960s, Hans J. Bremermann (1926 Bremen ­ 1996) of the University  of   California   at  Berkeley  added   a   kind   of   mating:   the   characteristics   of   offspring   were   determined by summing up corresponding genes in two parents. This mating procedure was   limited, however, because it could apply only to characteristics that could be added together   in a meaningful way.”.  Therefore   Holland   would   proceed   to   develop   what   he   called   Genetic   Algorithms,   a  programming technique that used mutation and crossover, the introduction of which proved to  be a breakthrough. Later on he worked on the representation of computer programs in a  suitable genetic code and introduced the idea of schemata for the construction of a more  rigorous GA theory. 
+
+4.2­ Similarities and differences wit ESs
+
+80
+
+The   first   difference  between  evolution   strategies  and  genetic   algorithms   is   that  Holland  started its research with a deep interest on what GA could make for computers, something  quite different from the original Rechenberg’s approach, a manual effort to solve a practical  engineering   problem.  Consequently   the   problem  codification   and  the   solving   techniques  reflect the kind of problems that the each author originally intended to solve. A second  difference   is   that   ESs   use   only   the   quality   function   to   build   the   ranking   list   of   the  chromosomes and subsequently proceed to the creation of the next generation following the  schemata that employ the quality value previously assigned to each chromosome. On the  other  side, GAs  take  a  slightly different strategy. First  it  must  be  said  that  the function  assigning the “quality” values to each chromosome is not anymore called “quality function”  rather evaluation function. Then a new function must be introduced, the fitness function; this  function measures, on the basis of the value returned from the evaluation function, which is  the probability that a certain chromosome takes part in the creation of the next generation.  This reflects a different approach in comparison with ESs, while in ESs the possibility for a  chromosome to be chosen as parent was equal for all the chromosomes (uniformly distributed  p=1/n) now it can be determined by the fitness function and its independent input variable the  evaluation of the chromosome. It follows that in many cases the evaluation of a chromosome  is NOT equal to its fitness. Is important to note that originally Rechenberg only mutation as  operator, a technique not directly criticized but strongly opposed by Holland. Indeed Holland  compared a GA using exclusively mutation to an enumerative algorithm. GAs use instead a  variety of operators that will be examined later on but out of which stands crossover.
+
+4.3­ A framework for GAs 
+In order to allow a rigorous mathematical study of GAs Holland developed a mathematical  framework and introduced it in his first book [15]. The construction of a formal framework  was needed to define a generic outline that could be found in adaptation problems belonging  to different fields. For example, every time we consider an evolving system there will be an  environment to which a certain structure adapts. The problem of identifying such system is a  valid question both in a game theory problem and in an artificial intelligence one. So Holland  tried to include all the salient features of a common adaptation problem into a single common  framework that could eventually permit to compare and possibly translate the results found in  a determined field into another field of adaptation problems.  Holland recognized that independently from the particular adaptation problem to solve there  are always determined structures  that are modified with the passing of time; e.g. the well  known chromosomes in the field of genetics or the mixes of goods in an economic planning  problem, maybe the structure of a network in AI. As said before, such structures vary over  time   and   to   do   this,   some  operators  that   change   the   structure’s   state   are   needed,  for 
+
+81
+
+chromosomes these operators might be the already well known mutation and recombination  while for economic planning the production activities are responsible for the change of the  good mixes. The sequence with which such operators are applied to the structures generally  responds to a well defined plan and such plan can be seen as a trajectory through the set of all  possible structures.  Generally it is implied that the plan acts on a discrete time basis, to  indicate  this, the generational variable t = 1, 2, 3... is used. Although it might be seem  confusing to use the same designation for cycles that could represent seconds as well as  centuries the positive aspect of this is the abstractness of the framework from its actual  environmental   values,   an   advantage   for   the   previously   advocated   comparisons   among  different fields. Now we are faced with the problem to identify whether the plan’s use of an  operator is steering our structures’  evolution in the right direction or not, if we wish  to  measure this it is important to define a performance measure that will indicate how “well”  our structure(s) is performing. However the performance of a certain structure depends on its  environment too, this might be certain socio­economic circumstances, the current cell type or  even the input/output connections of a neural network. To make a couple of examples [15]:
+Field Genetics Economic Planning Physiological  psychology Game theory Artificial Intelligence Structures Chromosomes Mixes of goods Cell assemblies Strategies Programs Operators Mutation, etc.. Production activities Synapse modifications Rules for iterative  approximation of  optimal strategy Learning rules Performance Meas. Fitness Utility Performance rate Payoff Comparative  efficiency
+
+The kind of problems that an adaptation process is faced with mostly share common features  such as: • • • • A large set of possible structures. A very complicated performance measure showing local optimums,  discontinuities, non linearity.... Time variable performance measures and environments. The filtering of huge amounts of data in order to find the relevant information  needed by the plan.
+
+At this point we can start to formally introduce Holland’s framework: • E, is the environment of the system undergoing adaptation.
+
+82
+
+• • • • •
+
+τ, is the adaptive plan which determines successive structural modifications in  response to the environment. μ, is the measure of performance of different structures in the given  environment. Λ = {A1, A2, ...}, is the (non empty) set of attainable structures.  Ω = {ω1, ω2, ...} is the set of all operators used for modifying the structures.  I, is the set of all possible inputs to the system from the environment.
+
+The structures belonging to A can be composed of sub­structures, exactly like chromosomes  that are made of genes. If each element of Λ is composed of n genes and the ith gene gi can be  occupied with one allele of the set {ai1, ai2, ... aiki} then all the possible structures of Λ are the  set of all possible combinations of alleles, Λ = g1 x g2 x ....x gn = 
+n i 1
+
+gi
+
+The  adaptive plan  τ  generally produces  a different  trajectories of  structures for different  environments, let’s then be Λ(t)  ∈  Λ the structure examined at time t, in order to explore the   environment responses to  Λ(t) the plan uses a set of “sensors”  δi. The symbol I represents  then the range of stimuli that τ can receive, this range is obtained in the following manner: I = I1 x I2 x ... x In =   ∏=1 I i i
+n
+
+Being  IΛ(t) ⊂ I  the single stimulus  perceived at  time t  by  trying the structure  Λ(t)  in the   environment. Let’s make the example of a neural network with k binary inputs, then  I = I1 x I2 x ... x Ik with Ii = {0, 1} and Ii(t)∈ I(t) will represent the actual inputs state of the δ i  sensor at cycle t. Let’s <I(1), I(2), ..., I(t­1)> represent the temporal sequence of the sensors’  inputs, and I(t) the current signal. It is often helpful to retain information in the memory  M about the input history <I(1), I(2), ..., I(t­1)>. Such memory information will be then used by  the plan, in conjunction with the current structure and input in order to determine the next  structure and memory state: τ: I x (Λ1 x  M ) → (Λ1 x  M ) But mostly τ will be referred to in its simplified form: τ: I x Λ → Λ
+
+83
+
+This version of τ is clearly deterministic but, as already seen, evolution is a non deterministic   procedure  that  assigns  a   certain  reproduction  probability  to  each  individual.   Therefore  a  stochastic version of the simplified τ is:  τ: I x Λ → P Where P is the set of admissible probability distributions over Λ. That means that Λ(t + 1) is  chosen   randomly   from   Λ   using   the   probability   distribution  P(t   +   1).   A   more   detailed  description of the previous plan would be: τ: I x Λ → Ω Where the plan doesn’t return a structure but rather an operator to be used on the structure  following the interpretation:
+
+ (I(t), (t)) =  t
+and    t (  (t )) 
+
+ 
+
+P(t  1)
+
+In   this   case   the   plan   deterministically   chooses   an   operator   ω t  which   determines   the  modification   of   the   structure   stochastically.   Such   interpretation   includes   the   previously  stochastic and deterministic versions. As a matter of fact the deterministic version of τ can be  regarded as a particular stochastic version that returns a probability distribution with value 1  on a single structure. τ  is called adapting plan for the reason that it has to interact with an unknown environment   and modify the structures so that they suit best the current environment.  The influence of the environment on the plan is determined by the information that the plan  receives, that is the set I of its inputs. Among such inputs there is the so called  payoff  function   μE(Λ(t)),   which   calculates   the   quality   of   the   current   structure   Λ(t)   in   the   environment E.  μE: Λ →  Those plans that have the payoff function as only input: I(t) =  μE(Λ(t)) 84
+
+Are called payoff­only and when it comes to plan comparison they represent the efficiency  lower  bound. As  a  matter of fact  any  plan that  has additional  inputs  besides the payoff  function is supposed to perform at least as well as a plan that receives the payoff function as  only input. At this point the adaptation problem has shifted one level up, we don’t search  anymore a single structure that performs well in a determined environment but rather a plan  that is capable to efficiently evolve structures. We must therefore introduce a criterion  χ  to  compare the efficiency of the different plans in different environments. Let’s first define de  cumulative payoff for a deterministic plan as:
+
+U ,E (T) = 
+With: 
+
+T t 1
+
+ E ( ( , t ))
+
+ ( , t )  E (( , t ))
+
+representing the structure selected by the plan τ at time t returning the payoff of the structure above
+
+On the other side, the cumulative payoff of a stochastic plan is:
+
+U ,E (T) = 
+With: 
+
+T t 1
+
+ E ( , t )
+
+ E ( , t ) 
+If :
+
+j
+
+P( Aj , t ) E ( A j )  representing the sum of payoffs multiplied by 
+
+the probability of that payoff.
+
+U*E (T) =  lub U ,E (T)
+ 
+
+designates the lowest upper bound of all Uτ,E(T)
+
+And
+
+ε designates the set of all possible environments Γ designates the set of all possible plans   We can say that a plan τ is robust in ε with respect to the asymptotic optimal rate criterion for  Γ when
+
+85
+
+(1)
+
+glb lim[
+E  T
+
+U ,E (T) U*E (T)
+
+] 1
+
+(glb = greatest lower bound)
+
+And we can say that τ is robust in ε with respect to the interim behavior criterion <cT> for Γ  when, for each T
+
+(2)
+
+glb[
+E 
+
+U ,E (T) U*E (T)
+
+]  (1  ct )
+
+Equation (1) indicates that in the limit the cumulative payoff Uτ,E of the chosen plan increases  with the same rate of the best possible plan U*. Equation (2) is a more restrictive criterion that uses the c t series. The ct is an arbitrary series  k that tends to 0, e.g.  . Therefore criterion (2) forces the series Uτ,E to converge to the  (k  T ) j lub with a higher rate than the one for which ct converges to 0.
+
+4.4­ Chromosomes as samples of schemata 
+With help of the previously defined framework Holland explored the GAs in order to find the  mechanism  at   the  source  of   their  efficiency.   He  found  out   that   GAs   where   intrinsically  parallel, to explain this he consequently introduced the notion of schemata. Each structure is  composed of a set of values which are returned by the detectors δi:
+
+{
+
+δ i : Λ → Vi , i = 1,2,..., l
+
+}
+
+So each  structure  A will be represented by a vector of l attributes given by the detector  values:
+
+A ∈ Λ = (δ1 ( Α), δ 2 ( Α),..., δ l ( Α))
+with
+
+δi (Α) ∈Vi , i = 1,..., l
+
+At this point we will introduce a “wildcard” symbol * which stands for any possible value.  Let’s make an example where the admissible values of δ i are Vi = {v1, v2}, an the length l of 
+
+86
+
+the vector 3. Then: A1<v1, v2, v2>, A2<v2,  v1, v2>, A3<v1,  v1, v2> represent three different  structures. And S1<v1,*,*> represents the set of all the structures that have the value v1 at the  first position, therefore A1  and A3  belong to the S1  schemata. If on the contrary we consider  S2<*,*,v2>, A1 as well as  A2 and A3 belong to this schema. More formally schemata are those  l­tuples belonging to Ξ with: 
+l i 1
+
+{Vi
+
+{*}}
+
+an l­tuple A <a1, a2,..., al> belongs to a particular schemata ξ <Δ1, Δ2,..., Δl>when: (I) For each Δi = * → ai ∈ V (II) For each Δi = v∈ V → ai = v And we say that a certain schema is of order k when it has k defined values, Δi ≠ *. E.g: S1<v1, *, *> is of order 1 S2<v1, *, v2> is of order 2 Basically, the lower the order of a schema the more chromosomes it comprehends; as a matter  of fact it is possible to imagine each vector as a point in the search space and each schema as  a subspace of that space. It is obvious that the lower the schema order is the bigger the  subspace will be; in a binary search space <1, *, *, *> will collect half of all the possible  solutions, <1, 0, 1, *> just two of them. Another significant measure for schemata is the defining length, said in other words  the distance among the outermost defined values. E.g.: <1, 0, 1, *> has a defining length of 2,  and <1, 1, *, 0, *> has a defining length of 3. The defining length of a schema has notable  implications in the possibility of destroying a schema during crossover, the lower it is (i.e. the  defining bits are compactly packed) the hardest it will be for crossover to separate them and  the higher the chance for the schema to survive will be. Once defined a schemata  ξ, it is possible to calculate its   observed payoff    (the average  fitness of its trials) and compare it to the current average  (T) in order to determine whether  the structures of  ξ show an above the average payoff. If      (T)  then new instances of ξ  will be created; with the result that the estimation of     will be more precise and that the  average payoff of the whole population  (T) is augmented.
+
+87
+
+Collecting data for the calculus of many    can be done by analyzing relatively few structures  since each one of them is a sample of a great number of different schemata, this is where the  intrinsic parallelism lays. To be exact each structure Ai is instance of 2l different schemata and  it is easy to see why. Given a structure Ai represented by a vector of length l <v1, v2, … vl> it  is possible to create a binary mask vector of length l <1, 0, …, 0> where each 1 means that  the nth value of the Ai vector must be substituted for the wildcard symbol , it is immediately  clear that all the possible combinations of the mask vector are 2l each one corresponding to a  different schema. This means that the performance calculus for a single structure gives us  information about a myriad of different schemata. In this way what is being evaluated is not  the single structure Ai, rather the attributes of the schemata of which it is instance and their  correlations; it is like this that the GA finds and samples with higher frequency the so called  “building blocks”, allele combinations that present a higher performance. E.g. examining the  chromosomes <0, 0, 0> <0, 0, 1> <0, 1, 0> <0, 1, 1> We will implicitly gain information about <0, *,*>
+
+<0, *,*>
+
+F I T N E S S
+
+ξ
+
+While <0, 0, 0> <0, 0, 1> <1, 0, 0> <1, 0, 1>  Are instances of <*, 0,*> thus providing information about that schema.
+
+88
+
+<*, 0,*>
+
+F I T N E S S
+
+ξ
+
+And finally, the original 6 trials: <0, 0, 0> <0, 0, 1> <0, 1, 0> <0, 1, 1> <1, 0, 0> <1, 0, 1> Have   also   intrinsically   sampled   all   the   instances  of   the   following   7   different  2 nd  order  schemata: <0, 0, *> <0, 1, *> <1, 0, *> <0, *, 0> <0, *, 1> <*, 0, 0> <*, 0, 1> Which represent the 7 of the 12 possible 2nd order schemata. Based on this information it is  possible to identify the <0, 0,*> schema, resulting in the detection of a “building block” of  superior performance.
+
+89
+
+<0, 0,*>
+
+F I T N E S S
+
+ξ
+
+At this point it could be possible to see a genetic algorithm as a biased Monte Carlo method  where the whole space is sampled with different frequencies, each determined by the average  fitness of the vectors that describe that particular subspace. It is the fitness function’s duty to  determine how such schemata will influence the following generation composition, or in  other words, the next sampling cycle. 
+
+4.5­ Some operators
+Simple Crossover:
+Crossover could be described as the fundamental operator in GAs, in fact it is the operator  that enables the exploration of the search space by mixing the available solutions into new  ones. Crossover has basically two possible outcomes, the first is the creation of an instance  belonging to a schema that is already present among the population, which means another  sample for that schema and the subsequent refinement of its expected fitness. The second  possible  outcome  is   the   creation  of   a   chromosome  whose  schema  is   not   present  in   the  population, thus exploring new combinations in the search space. In GAs crossover is a little  different if compared with the mask­crossover of ES in that it doesn’t exchange information  on   a   gene   by   gene   basis,   instead   it   swaps   groups   of   contiguous  genes.  The   following  explanation refers to the one point crossover, i.e. where each chromosome is divided in two  groups of genes. Obviously this is the simplest version though it is easy to modify it by  augmenting the number of gene groups that compose each chromosome.  
+
+90
+
+1. Given two structures A = g1, g2, g3, ..., gl and A’ = g’1, g’2, g’3, ..., g’l composed of  l genes, select a random number x from {1, 2, …, l ­1} 2. Create two new structures by exchanging among the original structures all the  genes on the right of x resulting in: A = g1, g2, g3, ..., gx, g’x+1, …, g’l and A’ = g’1, g’2, g’3, ..., g’x, gx+1, …, gl
+
+1 0
+
+1 1
+
+0 1
+
+1 1
+
+0 0
+
+0 0
+
+1 0
+
+1 1
+
+1 0
+
+1 1
+
+0 1
+
+1 1
+
+0 0
+
+0 0
+
+0 1
+
+1 1
+
+Random point
+
+Mutation:
+Although the first experiments that Rechenberg made obtained astonishing results with the  only help of mutation, Holland is quite critic of an algorithm using the mutation operator  only. That kind of plan is, Holland says, nothing more than an enumerative plan with a little  bit of “memory effect” thus with a very limited applicability. In fact mutation only plans do  not choose structures absolutely at random they rather explore the neighborhood of the best  structures found up to date but they do not take into consideration the observed fitness when  deciding which of the structures must be modified. In GAs mutation serves an absolutely  different purpose, it doesn’t represents an operator for the exploration of the search space  instead a modifier if the genetic diversity. As a matter of fact Holland says that mutation is a  background operator whose only goal is to provide crossover with the necessary variety of  chromosomes. If the population has a small size when compared to the set of all possible  structures it is evident that many combinations will remain untested if only crossover is being  used. Mutations try to supply to this lack of alleles by randomly changing some of them. The  other  role  mutation  is   the  avoidance  of  the  local  optima  in  which  the  population  might  converge if the grade of homogenization of the population is too high. The mutation operator  proposed by Holland has a quite simple functioning: 1. Each gene of the chromosome A = g1, ..., gx, ..., gl has a small chance of being  mutated. 2. The alleles of those genes that are mutated are randomly selected with uniform  probability from the Vi possible values that can be assigned to the gene, the remaining  alleles remain untouched. 
+
+91
+
+Inversion:
+The   term   linkage   is   used   to   describe   the   compactness   of   some   alleles   in   the  chromosome, as we know that the closer two alleles are the lower the probability that some  genetic operator separates them is, so the linkage of two alleles has notable consequences for  their evolution. Two adjacent alleles are strongly linked together, thus proving hard to be  separated; if the combination of these alleles is particularly effective the “linkage” effect,  which favors the transmission of such features, might be desired. It might also be advisable to  deliberately introduce a linkage effect in alleles that produce a particularly fit solution but  that are not actually close to each other. To do this Holland introduced a new operator called  inversion whose goal is to change the length of a schema by modifying its instances. To allow  inversion to take place the coding of the genes must be changed, as a matter of fact the  meaning of an allele is determined by its position on the gene, for example: <…, …, 4> is not  the   same   as   <4,   …,   …>.   This   is   an   obstacle   to   the   relocation   of   alleles   inside   the  chromosome and to circumvent this, the codification of genes must be altered so that alleles  have the same interpretation no matter where they occur in the chromosome. Up to now the  chromosome has been composed of single values whose meaning was determined by their  location, now each gene will be composed of a pair of values g = (i, a) where the i is the  index value, which identifies the interpretation of the couple, and a the actual value of the  allele. So the <5, 6, 9, 3, 4, 5> vector becomes <(1,5), (2,6), (3,9), (4,3), (5,4), (6,5)> which is  equivalent  to   the   <(4,3),  (1,5),  (6,5),  (3,9),  (2,6),  (5,4)  >   vector  because  every   index   is  associated  with   the   same   allele   value,   thus   producing  the   same   interpretation   for   both  chromosomes. The functioning of inversion is the following: 1. Given a structure A = g1, g2, g3, ..., gl composed of l pairs of values g = (i, a) 2. Select two numbers from {0, 1, 2, ..., l +1} using uniform random selection, label  the smaller as x1 and the bigger as x2 3. Invert the segment of A that lays among x1 and x2 by setting  A = g1, ..., gx1, gx2­1, gx2­2, ..., gx1+1,gx2, ..., gl
+
+0
+
+1
+
+1
+
+1
+
+0
+
+0
+
+1
+
+1
+
+0
+
+1
+
+1
+
+1
+
+0
+
+1
+
+1
+
+1
+
+1
+
+1
+
+0
+
+0
+
+0
+
+1
+
+1
+
+1
+
+The case of gx1 and gx2­1 is significant as two alleles that were originally far away from each  other are brought close together after inversion has taken place. This doesn’t only transform  the single chromosome but also the different schemata of which it is an instance. It follows 
+
+92
+
+that also inversion is intrinsically parallel and modifies the defined values of those schemata  that produced the inverted instance. As compact schemata of lower order tend to reproduce  more often, to be less subject to crossover and inversion, it is evident that there is a meta­ selection process acting on schemata where inversion is randomly moving the contents of the  schemata. The fact of having changed the coding of a chromosome to couples of values has  some  significant  consequences  for   the   GA;   for   instance  two   chromosomes  whose   index  sequence is different such as: <(1,5), (2,6), (3,9), (4,3), (5,4), (6,5)> and <(4,3), (1,5), (6,5), (3,9), (2,6), (5,4) > cannot be directly crossed over without the risk of obtaining two child chromosomes with  some alleles duplicated and some other missing such as: <(1,5), (2,6), (3,9), (3,9), (2,6), (5,4)  >  to avoid this Holland proposes two possibilities. The first is to allow only homologous  chromosomes to crossover; that is, to consent to crossover only those chromosomes that share  the same sequence of index values (therefore coded in the same way). This method faces the  difficulty of finding two homologous chromosomes in the current population by randomly  selecting them, there is, however, another way. The second possibility is to temporary adapt  the   coding   of   one   chromosome   to   the   other   obtaining   in   this   way   two   homologous  chromosomes capable of crossing over and, once the crossover has taken place, to return to  the original coding. 
+
+4.6­ A basic GA 
+The first and simplest kind of plan that Holland introduced was labeled as R1 plan, it is a  generalized type of plan that presented with help of the previously introduced framework.     B(t) is the set of M structures manipulated by the plan at time t Λ1 is the set of all available structures ρ assigns an operator to a structure A in order to modify it ω is an arbitrary operator which, using the selected structure  i(t)  distribution P over Λ1
+
+B , returns the 
+
+  Holland’s [15] Plan type R1:
+
+1. Set t = 0 and initialize B by selecting M structures at random from Λ1 to form B(0) =  {Ah(0), h = 1, …,M} 2. Observe and store the performances{ μE(Ah(0)), h = 1, …,M } – go to point 4 93
+
+3. Observe the performance of A’(t) and replace μE(Aj(t)(t)) by μE(A’h(t)) 4. Increment t by 1 5. Select one structure Ai(t)(t) from B(t) by taking one sample of B(t) using the probabilities 
+
+Prob(A h (t)) = 
+
+M
+
+ E (A h (t))
+
+ (A h' (t)) h ' 1 E
+
+, h = 1, …, M
+
+6. Determine the operator   t
+
+ to be applied to Ai(t),   t   ( Ai ( t ) (t )) and then use   t  to 
+
+determine a new structure A’(t) by taking a sample of Λ1 according to the probability  distribution  Pt  t (i (t ), A1 (t ),..., AM (t ))    7. Assign probability 
+
+1 to each number 1, …, M, select one number 1 M
+
+j (t )
+
+M
+
+accordingly, and replace Aj(t)(t) by A’(t) – return to point 3 Plans of type R1(PC, PI,  1PM, <ct>) are a slightly more complicated version of the previous  plan,   the   difference   lays   in   that   instead   of   the   generic   operator   ω,   they   explicitly   use  crossover, inversion and mutation operators at each cycle with a determined probability. This  kind  of  plan  is   the one used in the  schema theorem  later on, and  will be  therefore  the  reference for the demonstration of the GAs’ robustness. [15] GENERIC Plan R1(PC, PI, 1PM, <ct>):     Pc as the constant probability of applying crossover to a selected individual Pi as the constant probability of applying simple inversion to a selected individual 1 Pm as the initial probability of mutation of an allele (alternative alleles uniformly  distributed) ct a sequence wit the following conditions: ­ ­ ­
+
+0 ct 1 ct 0
+t t
+
+c
+
+And it used to decrease the mutation rate as time passes by. 
+
+94
+
+1. Set t = 0 and initialize B by selecting M structures at random from Λ1 to form B(0) =  {Ah(0), h = 1, …,M} 2. Observe and store the performances{ μE(Ah(0)), h = 1, …,M } to form U(0)
+M
+
+3. Calculate 
+
+ (0) 
+
+h 1
+
+ h (0)
+M
+
+ ­ go to 7
+
+4. Observe the performance   E (A'(t)) 5. Update   (t ) by calculating   (t ) 
+
+ E ( A '(t ))  j(t) (t )  M M
+
+6. Update U(t) by replacing   j(t) (t ) with  E (A'(t)) 7. Increment t by 1 8. Define the random variable Randt on 
+M
+
+ {1,..., M }  by assigning the probability 
+
+ h (t )  to h  (t )
+
+M
+
+. Make one trial of Randt and designate the outcome i(t).
+
+9. Apply simple crossover to Ai(t)(t) and Ai’(t)(t) with probability Pc where Ai’(t)(t) is  determined by a second trial of Randt. Select one of the resultants at random (uniform  distr.) and designate it as 1Ai(t)(t) 10. Apply simple inversion with probability Pi, yielding 2Ai(t)(t) 11. Apply mutation to 2Ai(t)(t) with probability ct1Pm yielding A’(t) 12. Make a random trial with uniform distribution to each  h j(t) 13. Update B(t) by replacing Aj(t)(t) with A’(t) ­ go to 4 The actual grounds for the efficacy of this kind of algorithm will be analyzed in the following  chapters using again the framework introduced by Holland. 
+M
+
+, designate the outcome 
+
+95
+
+4.7­ The 2­armd bandit
+A GA is initially faced with the absolute uncertainty about the search space and, as it  explores  the   current   chromosomes,  it   gains   more   and   more   information   about   different  schemata.   But   one   problem   remains,   whether   it   should   allocate   the   trials   of   the   next  generation to those already known schemata that present an above­the­average payoff or to  use those trials to explore the remaining schemata in search for an even better schema. This  problem of exploitation vs. exploration tradeoff is commonly known as the “Multi­armed  bandit”   and  it  is a  problem  that has been widely studied in  many fields.  If we wish  to  demonstrate the quality of genetic algorithms we must understand whether they allocate the  samples correctly or not. The Multi­armed bandit problem can be imagined as follows, there are X variables with  different probability distributions and we want to obtain the maximum payoff from the sum  of our N trials but we have no information about which variable has the highest mean. If we  knew which variable has the highest mean the solution to the problem would be trivial, assign  all the N trials to that variable but unfortunately this is not the scenario for a GA. So we have  to find a strategy to assign the N trials maximizing the payoff or, in other words, minimize  the losses. Holland himself explored first the 2 armed bandit problem and then its multi  variable generalization, as for the first problem he hypothesized two schemata ξ and ξ’ where   μξ > μξ’. Here the difficulty is that if the two probability distributions overlap, as it generally  happens, we can’t be absolutely sure that after N trials the variable currently showing the  highest payoff is actually the variable that has the highest mean. Now let’s call ξ1 the variable   currently showing the highest payoff mean and ξ2 the one with the lowest, where n trials have  been assigned to  ξ2 and (N­n) to  ξ1. What we are actually looking for is n*, the value of n   which reduces the payoff losses to a minimum; there are two possible sources of loss: 1. The observed worse (ξ2) is actually the best (ξ), this means that all the (N­n) trials  assigned to ξ1 should have been assigned to ξ2, the total loss is therefore (N ­ n)*| μξ  ­ μξ’|. 2. The observed worse (ξ2) is actually the worse variable (ξ’), this means that all the n  trials assigned to ξ2 should have been assigned to ξ1, in this case the total loss is n*|  μξ ­ μξ’|.
+
+  Let’s now define q as the probability that ξ and ξ’ are wrongly classified, respectively to ξ2  and ξ1. Then the total losses whit N trials are:
+
+96
+
+L( N  n, n)  q *(1)  (1  q ) *(2)   q ( N  n)(    ' )  (1  q )n(    ' )
+To find the minimum of the loss function L we must find where its derivative is equal to zero: 
+
+dL dq dq  (    ' ) q  ( N  n)  1  q  n  dn dn dn  (    ' ) 1  2q  ( N  2n) dq 0 dn
+
+Where dq/dn must be expressed in terms of n. To do this we define:
+
+S1n as the sum of the n payoffs assigned to ξ1 S 2N  n as the sum of the (N­n) payoffs assigned to ξ2
+It follows that:
+
+q  Pr
+
+S1n S 2N  n  0 n N n
+
+That means that q is expressed as the probability that the median payoff of ξ1 is smaller than  the   median   payoff   of   ξ2,   in   other   words   that   ξ   and   ξ’   have   been   wrongly   classified  respectively as  ξ2 and  ξ1. Being q the result of two random variables it is also a random  variable  and  to   calculate  the  value  of   the   previous   expression  means  we   must   basically  determine the area of its distribution curve that lays behinds zero. 
+
+97
+
+Y = μ ­ μ
+ξ
+
+ξ’
+
+Pr
+
+S1n S 2N n  0 n N n
+
+X = S1/n – S2/(N­n)
+
+Holland explored this theme and proposed an optimal allocation of trials which was later  corrected by Dan Frantz [15] [16] reaching the conclusion that:
+
+c2 N 2 n* c1 ln ln(c3 N 2 )
+And 
+
+N  n* e
+
+n*/ 2 c1
+
+ln(c3 N 2 )  n* c2
+
+Where   c1,   c2  and  c3  are   constants  defined  by  Frantz.   Since  as   n   grows   e n*/ 2 c1 tends  to  dominate, we can approximate the previous expression for a large n to:
+
+N  n* ecn*
+Where
+
+c
+
+1 2c1
+
+98
+
+Summing up we can affirm that for the amount of trials allocated to the variable showing the  highest mean must grow exponentially in relation to the trials assigned to the variable with  the observed lowest mean.
+
+4.8­ The schema theorem
+It  is  now our duty to show, in the light of the previous chapter, that genetic algorithms  allocate trials to schemata in an optimal fashion. First we want to calculate the variation, from  one generation to the next, of the number of instances belonging to a certain schema. Let’s  define: • • m(ξ, t) as the number of instances for the schema ξ at time t. E(m(ξ, t+1)) as the expected number of instances for the schema ξ at time t+1.
+
+If the selection follows the R1(PC, PI, 1PM, <ct>) ([15]pag 125) then the expected offspring for  each chromosome is proportional to its fitness reported to the entire population fitness:
+
+E(m( , t+1)) =
+
+f ( ) f (t )
+
+Where: • f ( A) is the fitness of the chromosome A. • f (t )  is the average fitness of the whole population at time t.  Let:
+
+f ( A) f  ( , t ) 
+A 
+
+m( , t)
+
+Be the observed average fitness of the instances of  ξ  at time t. It follows that the expected  offspring for a chromosome is the product of the average fitness of all its instances and the  number of instances in the current generation:
+
+f ( A) (a)  E(m( , t+1)) = 
+A 
+
+f (t )
+
+
+
+f  ( , t ) f (t )
+
+m( , t)
+
+99
+
+It is obvious that the GA, working on a “one chromosome a time” basis, doesn’t explicitly  calculate the fitness and offspring of each schema; it is again the implicit parallelism that  makes the little magic here. As many readers would have already noticed, (a) doesn’t take the  effects of mutation and crossover into account. The two operators can actually augment and  diminish the number of instances that our schema has, let’s then examine the  crossover  survival probability Sc. Sc indicates the lower bound for the probability that after undergoing  simple crossover in one of its chromosomes, the schema is still present in the population. In  this case Sc is considered in a probabilistic way and only destructive effects of crossover are  being taken into account, in fact there are two additional possibilities that are not represented  here. The first is the chance of acquiring new instances through crossover and the second is  the case of two chromosomes belonging to the same schema crossed over, which obviously  produces an offspring compliant with the parents’ schema. However for simplicity we will  calculate the lower bound Sc only and that will suffice for our demonstration purposes. If pc is the crossover occurrence probability. d ( ) is the defining length of ξ. l is the length of the chromosome vector. Then:
+
+Sc ( ) 1  pc
+
+d ( ) l 1
+
+This means that the crossover survival probability depends on the crossover probability and  the fraction of the schema that is occupied by the defined values of the schema. Now it’s time  to   determine   the   disruptive   effects   of   the   mutation   operator,   once   established   that   our  mutation operator always changes the allele (i.e. an allele can’t mutate into itself) we will  define   the  mutation   survival   probability  Sm  in   the   same   way   we   did   for   crossover:   the  possibility for schema H to survive after a mutation takes place in one of its  instances.  Likewise: pm is the mutation occurrence probability. o(H) is the schema order (number of defined values) Then:
+
+100
+

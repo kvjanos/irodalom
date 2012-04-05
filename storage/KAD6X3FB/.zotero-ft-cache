@@ -1,0 +1,188 @@
+brief communications
+
+micropilot: automation of fluorescence microscopy– based imaging for systems biology
+© 2011 Nature America, Inc. All rights reserved.
+
+Christian Conrad1, Annelie Wünsche2, Tze Heng Tan2, Jutta Bulkescher1, Frank Sieckmann3, Fatima Verissimo2, Arthur Edelstein4, Thomas Walter2, Urban Liebel2,5, Rainer Pepperkok1,2 & Jan Ellenberg2
+Quantitative microscopy relies on imaging of large cell numbers but is often hampered by time-consuming manual selection of specific cells. the ‘micropilot’ software automatically detects cells of interest and launches complex imaging experiments including three-dimensional multicolor time-lapse or fluorescence recovery after photobleaching in live cells. in three independent experimental setups this allowed us to statistically analyze biological processes in detail and is thus a powerful tool for systems biology.
+
+The fluorescence microscope has developed into a versatile quantitative measuring device in cell biology. Advanced imaging techniques including four-dimensional imaging and fluorescence recovery after photobleaching (FRAP) can be used to visualize and analyze complex biological processes in cells, organelles and subcellular compartments1,2. However, quantification with statistical significance requires sampling high numbers of events. This poses a challenging problem for the quantification of rare cellular events. In principle, computational image analysis can be used to detect specific cells in microscopy images automatically. Several opensource packages for postacquisition image processing of cell-based assays already include classification by machine learning for cell recognition. Examples are CellProfiler Analyst/CellClassifier3,4 and EBImage5, which provide workflows for fixed cell images as well as CellCognition6, a package dedicated to the classification of large time-lapse datasets with a fast image-processing engine. Several commercial tools, for example, Acapella from PerkinElmer or ScanR from Olympus, enable analysis of a few generally applicable cell-based assays but lack the extensibility to new algorithms that open-source packages have. In contrast, not only
+
+dedicated screening platforms but also state-of-the-art research microscopes have become fully motorized and computer controlled either by microscope vendor or open-source software packages such as µManager. But there has been no software solution to leverage the power of machine learning based cell recognition to automatically control the whole repertoire of fluorescence-based imaging assays. To fill this gap, we developed the Micropilot software that effectively replaces a human expert at the microscope to identify cells of interest and automate even complex fluorescence microscopy– based imaging assays (Supplementary Software). Micropilot provides a machine learning-based module that can be rapidly trained by the user to automatically identify desired cell states during an unattended, fast, low-resolution prescanning mode. Upon identification of a cell of interest Micropilot switches to a complex imaging mode that automatically runs desired complex high-resolution and high-information-content imaging assays such as high-resolution three-dimensional (3D) time-lapse imaging or FRAP. After completion of the desired complex imaging procedure, Micropilot returns to the low-resolution prescanning mode to identify additional cells of interest (Fig. 1a). We used LabView for the main Micropilot program and C for the image analysis routines. We tested Micropilot on the Microsoft Windows platform. Micropilot relies on a robust communication channel to read the low-resolution prescan microscope images, interrupt the scan to analyze them and reconfigure the microscope for the desired complex imaging procedure (Fig. 1b,c). Pseudocode examples are listed in Supplementary Table 1. The hardware prerequisites for such automatic imaging systems are (i) motorization of the microscope stage, (ii) automatic changing of objectives and/or laser scanner zoom, and (iii) switching of fluorescence filter and/or laser lines. The microscope system should also provide multipositioning or grid scanning along with autofocus capabilities. Micropilot can remotely control any microscope offering interfaces to this specification. We implemented Micropilot for Leica SP5, µManager, Olympus ScanR, PerkinElmer UltraView ERS and Zeiss 510. Certainly, µManager as an open-source microscope control software allocates most freedom for users in terms of further developments. To test the power of Micropilot, we applied this platform to three different fluorescence microscopy–based assays, focusing on the biological process of cell division for which low-resolution imaging data from functional genomic studies have recently become available7,8. We aimed to identify automatically the two most transient mitotic stages, prophase and anaphase, in lowresolution prescan images and wanted to assay three different
+
+1Advanced Light Microscopy Facility, European Molecular Biology Laboratory, Heidelberg, Germany. 2Cell Biology and Biophysics Unit, European Molecular Biology
+
+Laboratory, Heidelberg, Germany. 3Leica Microsystems GmbH, Mannheim, Germany. 4Department of Cellular and Molecular Pharmacology, University of California, San Francisco, California, USA. 5Present address: Institute of Toxicology and Genetics, Karlsruhe Institute of Technology, Eggenstein-Leopoldshafen, Germany. Correspondence should be addressed to R.P. (pepperko@embl.de) or J.E. (jan.ellenberg@embl.de).
+Received 26 May 2010; accepted 6 deceMbeR 2010; published online 23 JanuaRy 2011; doi:10.1038/nMeth.1558
+
+nature methods  |  ADVANCE ONLINE PUBLICATION  |  
+
+brief communications
+figure  | Schematic workflow of Micropilot. (a) After autofocussing different positions to find the best focal plane (yellow frame), lowresolution prescan images (optionally maximum z-dimension projections, gray frames) are presented to the automatic classification. If a cell is selected, a complex imaging protocol is executed; otherwise the system continues to prescan. After completion of the complex imaging protocol, the system loops back to prescan mode, continuing at the sample position where it stopped for the complex imaging mode. (b) Communication steps executed by the different microscope systems (red outlines) and the Micropilot software (blue outlines). The microscope sends the image path either via windows registry or socket interface to Micropilot. In the synchronous modes, each positive classification launches the complex imaging mode. In the asynchronous mode, microscope and Micropilot send and receive messages via transmission control protocol or internet protocol (TCP/IP), allowing classification of several different positions before launching the complex imaging protocol for a list of positions. (c) After reading the low-resolution image, Micropilot segments, extracts the feature set per object and classifies the cells during scanning to return eventually the positions of interest. After the criteria are met (time or number of positions) Micropilot deploys the complex imaging and the microscope switches back to prescan mode (a).
+
+a
+
+Autofocusing
+
+Low-resolution prescanning
+
+Loop
+
+Complex imaging
+
+No cell Automatic classification 00000000 00011000 00111100 00111100 00011000 Zeiss, Olympus, PerkinElmer Write image path Listener on and wait Read listener Read image Classification Add position to list Continue prescan Set listener Complex imaging Complex imaging Synchronous (ad hoc) by registry Asynchronous (list) by socket Execute list Send image path Continue prescan Read image Classification
+Send position
+
+Cell
+
+b
+
+N-time loops
+
+Leica
+
+µManager
+Prescan image Image path Start and stop Invoke image path Read image Classification
+Set command
+
+Complex imaging
+
+© 2011 Nature America, Inc. All rights reserved.
+
+Invoke prescan Synchronous (ad hoc) by socket
+
+c
+Feature extraction 1. Shape 2. Texture 3. Moment Segmentation SVM
+
+Get classes
+
+biological processes: (i) the biogenesis of endoplasmic reticulum exit sites (ERESs) after mitosis using high-resolution immunofluorescence, (ii) the assembly of the microtubule spindle using 3D time-lapse imaging and (iii) the binding of chromobox homolog 1 to condensing chromosomes using FRAP. To test the hardware flexibility of the software, we used two different microscopy systems for these assays. ERESs disappear during metaphase in mitosis and reassemble at the telophase or cytokinesis transition9. To understand ERES biogenesis quantitatively, we trained the Micropilot classifier to recognize mitotic cells by their chromosome configuration in the DNA (Hoechst) channel and select those that showed quantifiable expression of YFP-tagged SEC31, a COPII component and ERES marker (Fig. 2a). The trained classifier provided 92% sensitivity (Supplementary Fig. 1a) with a positive predictive value (PPV) of 88% (Fig. 2b). For three microscope slides containing HeLaKyoto cells, we acquired 2,700 image fields at low resolution and detected 173 high-resolution confocal 3D stacks (each comprising 50 slices) of anaphase and later mitotic stages (Fig. 2c) during three unattended overnight scans with only 1.5 h combined handson time. After manual quality inspection of the image data, we quantified the number of ERESs in 91 of the high-resolution 3D stacks. This revealed that the average number of ERESs exponentially increased with the volume increase of the nuclei (Fig. 2d) but showed no clear correlation with the increase in inter-nuclei distance (Supplementary Fig. 1b). As nuclear volume marks the progression of cells from anaphase to cytokinesis, these data are consistent with earlier work9 suggesting ERES biogenesis after mitosis to be most efficient at the telophase or cytokinesis transition. In the future, extending the experiments we performed with
+  |  ADVANCE ONLINE PUBLICATION  |  nature methods
+
+additional markers of ERES composition and systematic microscopy-based quantification enabled by Micropilot will shed more light on the mechanism of postmitotic ERES biogenesis. The assembly of the mitotic microtubule spindle is a highly dynamic process, which starts upon mitotic entry in prophase and is a key prerequisite for genome segregation. We aimed to automatically image prophase cells and the first appearance of microtubule asters in four dimensions, which enables dynamic measurement of structural parameters of the forming spindle such as its length. We trained the Micropilot classifier to identify prophase HeLa cells based on the condensing chromatin (histone H2B tagged with mCherry, abbreviated H2B-mCherry), and subsequently recorded fluorescently labeled microtubules (EGFPtagged α-tubulin, abbreviated EGFP-tubulin) and chromosomes in two-color, 3D time-lapse sequences of live cells at high spatial and temporal resolution. We fed 3,644 fluorescently labeled H2B-mCherry cells into the Micropilot multiclass support vector machine (SVM) classifier to recognize six major mitotic phases (Supplementary Fig. 2a). The resulting classifier achieved 97% mean sensitivity and 87% mean PPV (Supplementary Fig. 2b) in good accordance with other mitotic classifications10,11 and could be used without retraining to control a second confocal microscope from the same manufacturer with very similar prophase PPV of 85% (Supplementary Fig. 2c). These findings indicate good generalization properties of the classifier that is not dramatically affected by hardware variations of the two similar confocal microscopes or biological sample variation over 6 months. In 15 unattended overnight runs, more than 120 high-resolution, 3D time-lapse mitosis movies were generated, instead of an expected 2 months of full-time manual work by an experienced microscopist
+
+brief communications
+Hoechst YFP-SEC31
+
+a
+Hoechst YFP-SEC31
+
+Null or artifact (0)
+
+Untrained images True
+
+Anaphase or telophase with SEC31 signal (1)
+
+b
+
+0 Predict 1 0 10,172 61 10,233 99.4% 560 79.3% Sensitivity
+
+c
+
+d 100 90
+80 70 60 50 40 30 20 10 0 ERES spots
+
+1
+
+116
+
+444
+
+0 17
+Prophase Metaphase Telophase
+
+© 2011 Nature America, Inc. All rights reserved.
+
+figure  | Assays of SEC31 and H2B-tubulin HeLa 25 cells. (a) Examples for Hoechst-labeled (blue; DNA 20 15 label) and SEC31-labeled (green) cells representing 10 null or artifact and anaphase or telophase cells 5 (insets, close-up images). Scale bars, 10 µm. P < 0.0001 0 (b) Confusion matrix of the prediction shows true 0 min 27 min 39 min Metaphase Telophase positives (TP) horizontally against the predicted Scrambled siRNA Scrambled siRNA n = 50 n = 50 class vertically for cells. At edges the total numbers g h7 of the cells are given (overall total, 10,793 cells) 6 corresponding to PPV = TP / (TP + false positives) 5 and sensitivity = TP / (TP + false negatives). 4 (c) Examples of null or artifact (left) and anaphase 3 or telophase (right) cells stained with Hoechst 2 1 (blue) and ERES spot (green) (50 slices of 0.2 µm). 0 Scale bar, 10 µm. (d) Number of ERES spots of 91 8 10 12 14 16 18 20 22 anaphase cells to late-telophase cells plotted versus Length (µm) volume of nuclei, with exponential fit plotted. Red and blue data points correspond to the nuclei in the left and right images in c, respectively. (e) Example of negative control experiment (time resolution, 3 min; 30 slices of 1 µm; maximum projections) started after prophase recognition. Times indicated are after prophase recognition. Scale bar, 10 µm. (f) Spindle lengths after treatment with scrambled siRNA. (g) Example images after treatment with siRNA to CENPE, showing centrosome poles (arrows; left) for the first recognizable metaphase (acquisition as in e). Scale bar, 10 µm. (h) Normal mixture modeling of pole-pole distances in metaphase from 71 movies after treatment with siRNA to CENPE resulted in three distributions, which are shown as colored curves.
+H2B-mCherry EGFP-tubulin
+
+H2B-mCherry EGFP-tubulin
+
+e
+
+f
+
+30
+
+(Fig. 2e and Supplementary Video 1). Quantitative analysis of the movies revealed that the mean pole-to-pole distance of the metaphase spindle of HeLa cells was 15.6 ± 1.6 µm (±s.d.) and increased to 25.3 ± 1.7 µm in telophase (Fig. 2e,f), which is consistent with previous measurements12. Exploiting this automatic quantitative assay for spindle assembly, we analyzed the cells in which expression of the essential centromere protein CENP-E had been knocked down by siRNA. Automatic sampling of 71 CENPEdepleted cells arrested in prophase or prometaphase13, revealed three different subpopulations of spindle lengths, with mean pole-to-pole distances of 15.5 ± 3.2 µm, which correlated with the number of unaligned chromosomes at the poles (Fig. 2g,h). The good statistical sampling of prophase or prometaphase stages enabled by Micropilot thus revealed that depletion of CENP-E activity by RNAi led to different metastable spindle defects rather than a continuous spectrum of abnormal spindle lengths. Condensation of mitotic chromosomes is a dynamic structural reorganization of the genome in mitotic prophase and is poorly understood molecularly. To define candidate proteins for this process their binding to condensing chromosomes needs to be assayed. As an example candidate we focused on chromobox homolog 1 (CBX1 or heterochromatin protein 1 beta (HP1β)). In interphase, CBX1 binds in heterochromatic areas of chromosomes14, but it is largely released from chromosomes in metaphase and freely diffuses in the cell15. To analyze CBX1 binding to condensing chromosomes, we performed automatic FRAP analysis on prophase and interphase nuclei. We trained the Micropilot classifier to identify prophase 3T3 cells based on the condensing chromatin (H2B-mCherry), and subsequently performed automatic
+
+FRAP experiments on CBX1-EGFP by photobleaching half of the nucleus and following the recovery of CBX1 fluorescence during 1 min (Fig. 3a and Supplementary Videos 2–4). The binary prophase classifier had 92% mean sensitivity and 95% mean PPV on untrained images (Supplementary Fig. 3a). In four unattended overnight runs we bleached 115 interphase and 117 prophase cells. The manual selection of the rare prophase stages would have required a full month of work by an expert microscopist. The recovery curves of 50 interphase cells exhibited a characteristic halftime of recovery (t1/2) of 6.7 ± 1.4 s (±s.d.), resulting from the exchange of the heterochromatin-bound pool (Fig. 3b). The t1/2 values of 64 prophase cells were distributed in two distinct populations with distinct kinetics (Supplementary Fig. 3b) suggesting that CBX1-chromatin interactions undergo discrete changes during prophase. By analyzing the chromosome condensation state in the two populations, we found that the two clusters of recovery halftimes corresponded to early and late condensation stages (Supplementary Fig. 3b). In early prophase CBX1 recovered significantly slower than in interphase with a mean t1/2 of 7.8 ± 0.9 s (P = 0.0013), indicating that its binding is increased during condensation. By contrast, in late prophase, when chromosome condensation was nearly complete, CBX1 was largely unbound and recovered significantly faster than in interphase with a mean t1/2 of 4.2 ± 1.1 s (P < 0.0001) (Fig. 3c). The good statistical sampling of prophase stages enabled by Micropilot revealed that CBX1 binding to condensing chromosomes is transiently elevated in early prophase before its release at the end of prophase, suggesting a possible function in the condensation process.
+nature methods  |  ADVANCE ONLINE PUBLICATION  |  
+
+Frequency
+
+Length (mm)
+
+0 21 0 23 0 25 0 27 0 29 0
+Nuclei volume (µm3)
+
+10,288 505 PPV 98.8% 87.9%
+
+19
+
+brief communications
+figure  | Examples and measurements of automatic FRAP on CBX1-EGFP cells. (a) After the automatic selection of an interphase or prophase cell with a trained prophase SVM classifier, a prebleached image was taken, followed by bleaching of the predefined upper half of the nucleus and subsequent time-lapse imaging with 2-s time resolution for 60 s (values in the lower images indicate time relative to bleaching). Scale bar, 5 µm. (b) Normalized intensities for CBX1-EGFP measured during fluorescence relaxation after photobleaching in interphase and prophase cells. We measured, normalized, averaged and plotted over time fluorescence intensities in the bleached region of the nucleus. Error bars, s.d. (c) Recovery rates as box plots for interphase and prophase cell populations.
+
+a
+Interphase
+
+b 1.2
+Normalized intensity
+
+1.0 0.8 0.6 0.4 0.2 0 0 10 20 t1/2 Interphase (n = 50) Prophase early (n = 14) Prophase late (n = 50) 30 40 Time (s) 50 60
+
+Prophase early
+
+c
+255
+Recovery t1/2 (s) Gray levels
+
+10 8 6 4 2 0
+P = 0.0013 P < 0.0001 P < 0.0001
+
+Prophase late
+
+–4 s H2B-mCherry
+
+0
+
+8
+CBX1-EGFP
+
+57
+
+0
+
+Interphase n = 50
+
+Prophase early n = 14
+
+Prophase late n = 50
+
+© 2011 Nature America, Inc. All rights reserved.
+
+To create quantitative data suitable for systems biology at the cellular level of biology, intelligent automation will be crucial to increase throughput and provide statistical relevance of the measurements of very different cellular processes. Micropilot automation reduces bias in cell selection and liberates cell biologists from the tedious work of repetitive manual data generation. Micropilot is broadly applicable in cell biology to carry out a host of quantitative imaging assays in a systematic fashion as required to characterize a large number of genes or perturbations such as in RNAi studies or drug screens. It can be adapted to virtually any imaging system that allows automation and online control based on the results of image classification by machine vision. It will be straightforward in the future to use Micropilot to automate additional high-resolution assays beyond multicolor high-resolution confocal 3D stacks, time-lapse movies and FRAP, such as fluorescence lifetime imaging microscopy and fluorescence cross-correlation spectroscopy. methods Methods and any associated references are available in the online version of the paper at http://www.nature.com/naturemethods/.
+Note: Supplementary information is available on the Nature Methods website. acknowledgments This study was technically supported by the use of the European Molecular Biology Laboratory Advanced Light Microscopy Facility and Information Technology Service Unit. We acknowledge C. Chapuis for the CBX1-EGFP BAC cell line expressing H2B-mCherry. This project was funded by grants to J.E. and R.P. (within the MitoCheck, MitoSys and Systems Microscopy consortia) by the European Commission (LSHG-CT-2004-503464, FP7/2007-2013-241548 and FP7/2007-2013-258068), to R.P. by the Landesstiftung Baden-Württemberg in the framework of the research program RNS/RNAi and within the Nationales Genomforschungsnetz-Plus consortium IG-CSG (01GS0865). T.H.T. is financed by the Deutsche Forschungsgemeinschaft Graduiertenkolleg GRK118.
+
+author contributions C.C. developed the ‘Micropilot’ software and drafted the manuscript. A.W. developed the Visual Basic for Applications macro and performed and analyzed the automatic FRAP experiments. T.H.T. developed the feature selection, extended classification to multiple channels and acquired and analyzed the ERES images. F.V. performed the ERES experiments. J.B. performed and analyzed the spindle length experiments. F.S. and U.L. developed the computer-aided microscopy interface and set up software prototypes. A.E. developed the communication of µManager with Micropilot. T.W. helped with image processing and object feature design. R.P. supervised the project. J.E. supervised the project and revised the manuscript. comPeting financial interests The authors declare competing financial interests: details accompany the fulltext HTML version of the paper at http://www.nature.com/naturemethods/. Published online at http://www.nature.com/naturemethods/. reprints and permissions information is available online at http://npg.nature. com/reprintsandpermissions/. 1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 11. 12. 13. 14. 15. Pepperkok, R. & Ellenberg, J. Nat. Rev. Mol. Cell Biol. 7, 690–696 (2006). Conrad, C. & Gerlich, D.W. J. Cell Biol. 88, 453–461 (2010). Ramo, P., Sacher, R., Snijder, B., Begemann, B. & Pelkmans, L. Bioinformatics 5, 3028–3030 (2009). Jones, T.R. et al. Proc. Natl. Acad. Sci. USA 06, 1826–1831 (2009). Pau, G., Fuchs, F., Sklyar, O., Boutros, M. & Huber, W. Bioinformatics 6, 979–981 (2010). Held, M. et al. Nat. Methods 7, 747–754 (2010). Hutchins, J.R. et al. Science 8, 593–599 (2010). Neumann, B. et al. Nature 6, 721–727 (2010). Hammond, A.T. & Glick, B.S. Mol. Biol. Cell , 3013–3030 (2000). Neumann, B. et al. Nat. Methods , 385–390 (2006). Wang, M. et al. Bioinformatics , 94–101 (2008). Bird, A.W. & Hyman, A.A. J. Cell Biol. 8, 289–300 (2008). Schaar, B.T., Chan, G.K., Maddox, P., Salmon, E.D. & Yen, T.J. J. Cell Biol. 9, 1373–1382 (1997). Muller, K.P. et al. Biophys. J. 97, 2876–2885 (2009). Schmiedeberg, L., Weisshart, K., Diekmann, S., Meyer Zu Hoerste, G. & Hemmerich, P. Mol. Biol. Cell 5, 2819–2833 (2004).
+
+  |  ADVANCE ONLINE PUBLICATION  |  nature methods
+
+online methods Software availability. The Micropilot open source code and documentation are available as Supplementary Software and at http:// www.embl.de/almf/almf_services/hc_screeing/micropilot/. Immunostaining for fixed slide scanning. We established HeLaKyoto cells stably transfected with YFP-SEC31p (previously described in ref. 16), grew them in DMEM (Life Technologies) supplemented with 10% FBS, 1% penicillin and streptomycin, 1% geneticin and 1% glutamine in a 37 °C humidified incubator containing 5% CO2. To enrich the mitotic cell population, cells were first grown on 15-mm coverslips and serum-starved for 48–72 h. We washed cells twice with normal growing medium and incubated them for 20 h before fixation, fixed them with 100% methanol at −20 °C for 4 min, stained them with Hoechst 33342, mounted them on glass slides with Mowiol and used them for confocal microscopy. Fixed slide preparations were kept at 4 °C and scanned at room temperature (20 °C).
+© 2011 Nature America, Inc. All rights reserved.
+
+pixels. We performed the 3D segmentation and counting of the ERES spots as well as the nuclei volume measurements with Bitplane Imaris (version 6.2.0). For the complete workflow of supervised learning, SVM modeling, microscope communication, classifier prediction, on-the-fly five-dimensional browsing, we used the ‘Micropilot’ software. After training of the binary prophase SVM classifiers (radial base function (RBF) kernel, RBF width = 0.1, penalty parameter = 20, ratio of class weights = 1:5), we applied feature selection by recursive feature elimination (RFE)21 for the ERES assay using 200 features instead of 304 features (two channels = 2 × 152). The model based hierarchical clustering algorithm Mclust (R plugin)22 showed best Bayesian information criterion (BIC) value for three components for normal mixture modeling in case of the CENPE siRNA experiment. Calculation of the BIC values for CBX1 FRAP experiments showed the optimal value for two components (Supplementary Fig. 3b). Statistical significance was tested by Student’s t-test. Confocal microscopy. We seeded HeLa cells stably expressing EGFP–α-tubulin and H2B-mCherry (ref. 23) on ‘ready to transfect’ chambered cover glasses from Nunc and seeded 5,500 HeLa cells in 100 µl of medium per chamber. We replaced 8 h after seeding the culture medium (DMEM containing 10% heat-inactivated FCS, high glucose, 1% glutamine and 1% penicillin-streptomycin) by CO2-independent imaging medium (Invitrogen). We kept the chambered cover glasses for an additional 1 h in the preheated incubation chamber of a Leica SP5 confocal microscope. Nine hours after cell seeding, we used the Leica software Matrix Screener to image cells. We used Leica SP5 in combination with Micropilot for the ERES and the spindle length assay, which specifically allows efficient time-lapse acquisition of many locations in the complex imaging mode. The Matrix Screener provided autofocus, multigrid scanning, and as the communication channel Transmission Control Protocol or Internet Protocol (TCP/IP)-based computer-aided microscopy (CAM), available in Leica Application Software LAS (since version 2.2.0 build 4758). The CAM technology provides communication via network (TCP/IP) with many different computers or computer cluster for faster image processing or classification (filed patent application PCT/EP2007/059351/US20100103253: Leica Microsystems and European Molecular Biology Laboratory Heidelberg). We performed all Leica SP5 experiments with a 63× 1.40–0.60 numerical aperture (NA) oil λ objective. SP5 (system-a) has 405 nm (Coherent, 50 mW, type: 405-50C), 488 nm (Lasos, 20 mW, LGK 7872 ML05), 561 nm (Lasos, 20 mW, type: LGK YLK6120 T) laser lines. SP5 (system-b) has 405 nm (Coherent, 50 mW, type: Radius 405), 488 nm (Lasos, 20 mW, LGK 7872 ML05), 561 nm (Melles Griot, 10 mW, type: 85YCA) laser lines. We performed FRAP experiments on a Zeiss LSM 510 confocal microscope (software version 3.2 SP2) using a 63× PlanApo 1.4 oil DIC objective. The in house–programmed Visual Basic for Applications macro ‘AutofocusScreen’ (Zeiss VBA macro script enclosed in the software link) in combination with Micropilot commanded the overall experiment workflow. Reflection-based autofocus24 was carried out before each prescan acquisition (zoom 1.0). Communication channel with Micropilot was the Windows registry. We imaged 3T3 cells stably expressing CBX1EGFP (bacterial artificial chromosome transfection) and H2BmCherry. After the detection of one prophase cell, CBX1-EGFP was photobleached in six iterations of 100% transmission with
+nature methods
+
+‘Ready-to-transfect’ chambered coverglasses for live-cell imaging. We used the following siRNAs (Ambion) for the live-cell imaging experiments: antisense sequence scrambled (5′-ACGUGACACGUUCGGAGAATT-3′) and CENP-E (5′UGUAGUAUCUGAGUCAACCTT-3′). The detailed description of the protocol is available in reference 17. We prepared the siRNA-gelatin transfection solution: 5 µl of siRNA solution (3 µM), 3 µl Opti-MEM (Invitrogen) containing 0.4 M sucrose and 1.75 µl Lipofectamine 2000 (Invitrogen) mixed with 1.75 µl water and incubated for 20 min at room temperature. After incubation, 7.25 µl of 0.2% gelatin (Sigma-Aldrich) was added. We diluted the final siRNA transfection cocktails in water, coated the mix in eight-well LabTek cover glass live-cell imaging dishes (NalgeNunc), dried them and stored them in plastic boxes containing silica gel (Merck). Machine vision and statistical analysis. The software analyzed the prescanned images fully automatically online after segmentation and extraction of features by classification using an SVM algorithm18,19 (libsvm20). To identify the objects in each frame, we prefiltered the images (combination of smoothing, median, logarithmic or fast Fourier transformation filter and setting thresholds). For the offline supervised training procedure (true class assignments by human observer), the software provides an intuitive and fast cell labeling interface, monitors cross-validation, modeling of the SVM classifier and allows rapid exclusion of falsely classified cells for classifier remodeling of the classifier. The proportion of ‘normal’ objects can be substantially reduced using simple filter criteria (for example, area ranges) after segmentation to support training or classification. For each of the identified objects, we calculated 152–200 features describing the shape, intensity, granularity, moments and texture; a more detailed description of the feature categories is available in reference 2. The representation of each object as a feature vector allowed its classification by SVM into one out of six (spindle length assay) or two (ERES and FRAP assay) predefined morphological classes. A classifier based on training images of scrambled RNAi experiments recognized the prophases in the CENPE RNAi experiments. For the ERES assay, we additionally used the mean of the ERES objects for the anaphase or telophase recognition, segmenting ERES objects within the chromatin mask including dilation of ten
+doi:10.1038/nmeth.1558
+
+488 nm and 405 nm laser lines on the upper half of the acquisition frame. Fluorescence recovery was measured in user-defined cellular regions. Acquisition bleaching and background were corrected24. We normalized data points to the lowest and the average of the last ten data points. The t1/2 was estimated between the two data points flanking the half recovery of normalized intensity. The Micropilot software handles also online classification in PerkinElmer Ultraview ERS, Olympus ScanR and µManager (version 1.3.45) but required special software releases from the suppliers (Perkin Elmer 2.0.0.009_EMBL and ScanR 2.1.120_SAFI).
+
+Forster, R. et al. Curr. Biol. 6, 173–179 (2006). Erfle, H. et al. J. Biomol. Screen. , 575–580 (2008). Conrad, C. et al. Genome Res. , 1130–1136 (2004). Neumann, B. et al. Nat. Methods , 385–390 (2006). Fan, R.-F., Chen, P.-H. & Lin, C.-J. J. Mach. Learn. Res. 6, 1889–1918 (2005). Guyon, I., Weston, S., Barnhill, S. & Vapnik, V. Mach. Learn. 6, 389–422 (2002). 22. Fraley, C. & Raftery, A.E. J. Am. Stat. Assoc. 97, 611–631 (2002). 23. Neumann, B. et al. Nature 6, 721–727 (2010). 24. Rabut, G. & Ellenberg, J. in Live Cell Imaging: A Laboratory Manual (eds., R.D. Goldman & D.L. Spector) 101–127 (Cold Spring Harbor Laboratory Press, 2005). 16. 17. 18. 19. 20. 21.
+
+© 2011 Nature America, Inc. All rights reserved.
+nature methods
+
+doi:10.1038/nmeth.1558
+

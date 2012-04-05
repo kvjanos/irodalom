@@ -1,0 +1,109 @@
+Microscopic Imaging
+Nephron Exp Nephrol 2006;103:e50–e54 DOI: 10.1159/000090616
+Published online: March 10, 2006
+
+Image Processing Software for 3D Light Microscopy
+Jeffrey L. Clendenon a Jason M. Byars a Deborah P. Hyink b
+a
+
+Department of Medicine, Division of Nephrology and Indiana Center for Biological Microscopy, Indiana University School of Medicine, Indianapolis, Ind., and b Department of Medicine, Division of Nephrology, Mount Sinai School of Medicine, New York, N.Y., USA
+
+Key Words 3D Microscopy Software Image processing Image analysis
+
+Abstract Advances in microscopy now enable researchers to easily acquire multi-channel three-dimensional (3D) images and 3D time series (4D). However, processing, analyzing, and displaying this data can often be difﬁcult and timeconsuming. We discuss some of the software tools and techniques that are available to accomplish these tasks.
+Copyright © 2006 S. Karger AG, Basel
+
+Introduction
+
+these microscopes to be used to study a wide range of physiological parameters in ﬁxed and living cells, tissue sections, and even live animals [1–4]. But it is the availability of 3D image analysis software which runs on lowcost personal computers that makes 3D and 4D imagebased research practical. This review examines some of the software tools and techniques that are available to process, analyze, and display these images. Most 3D imaging software can be divided into ﬁve functional modules: image acquisition, processing, rendering, segmentation, and measurement (ﬁg. 1). The software will include one or more of these functional modules. Commercial software often consists of a base program, with additional modules that can be purchased as needed. Some programs can be customized by the user to perform additional tasks.
+
+Advances in light microscopy now enable researchers to easily acquire multi-channel three-dimensional (3D) images and 3D time series (4D). Conventional light microscopes produce two-dimensional (2D) images that provide a limited amount of information about the organization of cells and tissues in three dimensions. Several computer-controlled ﬂuorescence microscopy systems are available commercially which can collect a stack of closely-spaced 2D images, then use software to display and manipulate the stack as a single 3D image. The availability of a variety of speciﬁc ﬂuorescent probes allows
+
+Image Acquisition
+
+Image acquisition programs, which control microscopes and associated imaging hardware, are used to collect and store stacks of parallel planar (2D) images in ﬁles. These 3D ﬁles are then passed to other programs to be processed, displayed, and analyzed. Unfortunately, there is no standard ﬁle format for 3D images, so some microscope manufacturers have created their own formats, while others use TIFF or variants of TIFF.
+
+© 2006 S. Karger AG, Basel Fax +41 61 306 12 34 E-Mail karger@karger.ch www.karger.com
+
+Accessible online at: www.karger.com/nee
+
+Deborah P. Hyink Box 1243, Mount Sinai School of Medicine 1 Gustave L. Levy Place, New York, NY 10029-6574 (USA) Tel. +1 212 241 9431, Fax +1 212 987 0387 E-Mail deborah.hyink@mssm.edu
+
+Fig. 1. Data ﬂow diagram of the 3D imaging pipeline.
+
+quantitative studies [5, 6]. However, care should be taken when selecting a deconvolution algorithm, since some algorithms are not suitable for quantitative photometric studies. See the review by Wallace et al. [7] for a more detailed discussion of deconvolution. Most commercial microscopy-oriented imaging programs provide 3D deconvolution modules, including Huygens, Volocity, Imaris, analySIS, Amira, MetaMorph, and Image-Pro Plus. Some of them use the AutoDeblur software developed by AutoQuant. However, there are only a few free 3D deconvolution programs, notably XCOSM (www.omrfcosm.omrf. org/xcosm) and plug-ins for ImageJ [8] by Besson and Dougherty. Figure 2 shows an example of using deconvolution on an image of a fetal mouse kidney.
+
+Manufacturers often provide free image viewer programs for their ﬁles that permit you to display and print images. However, additional software is needed to perform sophisticated image processing, analysis, and volume rendering. When evaluating 3D imaging software, make sure that the software that you are considering fully supports the ﬁle formats used by your microscopy system(s). This is important because these ﬁles contain more than just images. They often include information on microscope conﬁguration and imaging parameters, and some of this information is used by 3D image processing, rendering, and measurement software. One project that is trying to standardize how microscopy data are stored and retrieved is the Open Microscopy Environment (www.openmicroscopy.org).
+
+Volume Rendering
+
+Image Processing
+
+Various image processing operations may need to be performed on 3D images before they are displayed or analyzed. Some operations attempt to correct for distortion introduced by microscope optics and tissue during image acquisition (e.g. deconvolution, spherical aberration correction), or spectral overlap of ﬂuorophores (e.g. linear unmixing), while ratiometric operators are used when studying ion concentration or pH, and various ﬁlters and intensity transformations may be used to improve the visibility of structures. The simpler image processing operations, such as intensity and color transformations, are often performed interactively during volume rendering. One particularly interesting image processing technique is deconvolution, which can improve the visibility of small structures in some images by increasing resolution and contrast. Deconvolution can also be useful in
+
+Volume rendering programs are used to create 2D projection images showing 3D stacks of cross-sectional images from various points of view. A few of these programs can also display sequences of 3D stacks collected over an extended period of time, which can be very useful in developmental studies [9]. Volume rendering programs can also usually perform simple image processing, including adjusting brightness, contrast, color, and opacity. Some volume rendering programs use the 3D graphics processor found on video boards in many personal computers to accelerate the rendering process, permitting the user to more quickly and easily manipulate 3D images. When selecting volume rendering software, it is crucial that your video board be equipped with one of the processors supported by the software, and that your computer has an appropriate amount of memory. Most of the major commercial imaging programs for microscopy include a volume rendering module. There are also several free volume rendering programs available, but only a few of them can import the 3D image ﬁles produced on microscopy systems. Voxx [10] and VisBio [11] are two such programs. Free volume rendering plugins are also available for ImageJ. Figure 3 shows an example of volume rendering of the ureteric tree of a fetal mouse kidney using Voxx.
+
+Image Segmentation and Analysis
+
+Segmentation is the process of separating an image into discrete regions. For example, DAPI-labeled nuclei can be segmented from an image of cultured cells. The
+
+Imaging Software for 3D Microscopy
+
+Nephron Exp Nephrol 2006;103:e50–e54
+
+e51
+
+Fig. 2. Confocal images showing increased resolution and contrast after deconvolution (B) of ureteric tree ampullae (green) and blood vessels (red) in fetal HoxB7-GFP mouse kidneys (A). The image stack was deconvolved using 25 iterations of the maximum entropy-based algorithm in the restoration module, then volume rendered using the visualization module, in Volocity. Scale bar = 20 m.
+
+Fig. 3. Volume rendering of the ureteric tree in a fetal HoxB7GFP mouse kidney using Voxx.
+
+Fig. 4. Image segmentation of a fetal HoxB7-GFP kidney using
+
+Amira. The dorsal aorta (red) and renal vasculature (orange) were isolated using a combination of active contours and manual segmentation.
+
+segmented nuclei can then be counted or measured. Segmentation software can use several properties to group pixels or voxels, including intensity, intensity gradients, color, shape, orientation, and connectivity. Automatic segmentation is the ideal, but tracing the boundaries of regions by hand is still commonly done, due to the complexity of many biological structures. Once structures
+
+have been segmented, morphometric and photometric measurements can be made in the segmented regions. For example, measuring colocalization of different ﬂuorophores is such a task. Figure 4 shows an example of segmentation of a fetal mouse kidney using Amira [for more information on segmentation, see 12–14].
+
+e52
+
+Nephron Exp Nephrol 2006;103:e50–e54
+
+Clendenon /Byars /Hyink
+
+Table 1. Microscopy-oriented programs to process 2D and 3D
+
+images Program Free ImageJ VisBio Voxx Commercial Amira analySIS AutoQuant X Huygens Image-Pro Plus Imaris MetaMorph Volocity Website
+
+scribing ImageJ and some of the plug-ins used in microscopy can be found at www.uhnresearch.ca/facilities/wcif/ imagej.
+
+http://rsb.info.nih.gov/ij www.loci.wisc.edu/visbio www.nephrology.iupui.edu/imaging/voxx www.amiravis.com www.soft-imaging.com www.aqi.com www.svi.nl www.mediacy.com www.bitplane.com www.moleculardevices.com www.improvision.com
+
+Conclusions
+
+Voxx and VisBio are volume rendering programs, while the other programs can be used to segment and measure images.
+
+Software
+
+There are many programs available for 3D image processing, but only a few of them can handle the multi-channel 3D and 4D images produced by confocal and twophoton microscopes. A list of several microscopy-oriented programs is included in table 1, along with website addresses where information on each program can be found. Commercial software developers usually provide free trial versions of programs that can be downloaded from their websites. These either provide limited-time access to all of the features in the program, or access to a subset of the features with no time limit. Most of the commercial imaging programs have a similar set of features, which makes it more difﬁcult to decide which software to purchase. You should always process some of your images using the trial version of the software, to make sure that it really can do the job. You should also consider ease of use. And ﬁnally, look at the total cost of ownership: the price of the base program, additional modules, multi-user licenses, and yearly software updates. Most commercial 3D imaging software is expensive, so limited funds may force individual researchers to use whatever program(s) their institution has already purchased. Consequently, many researchers use a combination of commercial software and free non-commercial software. ImageJ [8] is probably the most widely used of the noncommercial imaging programs, augmented by many user-developed plug-ins. An online manual de-
+
+There are many 3D imaging programs available, but only a few of them have been designed for 3D light microscopy. Before selecting such software, you should ask the following: (1) Will this software be able to import ﬁles from all of the microscopes that you use? (2) Does the software include all of the features that you need? For commercial packages, how many additional modules will you have to purchase to meet your analysis needs? (3) Will you need to use more than one program to analyze your images? If so, can image and data ﬁles created by each program be read by the other programs? (4) Do you have the required hardware (e.g. enough memory, suitable video board) to use the imaging software? Given the expense of commercial software, and the long learning curve associated with most imaging software, one should thoroughly examine the capabilities of the programs and applicability to both present and future projects before making a purchase.
+
+Acknowledgments
+The images in this paper were acquired using a Bio-Rad Radiance 2000 confocal laser scanning microscope at the MSSM-Microscopy Shared Resource Facility, which is supported with funding from NIH-NCI shared resources grant (R24 CA095823) and NSF Major Research Instrumentation grant (DBI-9724504). HoxB7-GFP was provided by Frank Constantini. This work was supported by grants R21 DK65836 to D.P.H., P50-DK061594 and P01-DK53465 to Bruce A. Molitoris, and a grant to Indiana University from the Eli Lilly Foundation (INGEN).
+
+Imaging Software for 3D Microscopy
+
+Nephron Exp Nephrol 2006;103:e50–e54
+
+e53
+
+References
+1 Bacallao RL, Yu W, Dunn KW, Phillips CL: Novel light microscopy imaging techniques in nephrology. Curr Opin Nephrol Hypertens 2003;12:455–461. 2 Prasad PN: Bioimaging: Principles and techniques; Introduction to Biophotonics, chapt 7. Hoboken/NJ, Wiley-Interscience, 2003. 3 Hell SW, Dyba M, Jakobs S: Concepts for nanoscale resolution in ﬂuorescence microscopy. Curr Opin Neurobiol 2004;14:599–609. 4 Egner A, Hell SW: Fluorescence microscopy with super-resolved optical sections. Trends Cell Biol 2005;15:207–215. 5 Difato F, Mazzone F, Scaglione S, Fato M, Beltrame F, Kubinova L, Janacek J, Ramoino P, Vicidomini G, Diaspro A: Improvement in volume estimation from confocal sections after image deconvolution. Microsc Res Tech 2004; 64:151–155. 6 Landmann L, Marbet P: Colocalization analysis yields superior results after image restoration. Microsc Res Tech 2004;64:103–112. 7 Wallace W, Schaefer LH, Swedlow JR: A workingperson’s guide to deconvolution in light microscopy. Biotechniques 2001;31:1076–1097. 8 Rasband WS: ImageJ. Bethesda, US National Institutes of Health, 1997–2005. http://rsb. info.nih.gov/ij/ 9 Gerlich D, Ellenberg J: 4D imaging to assay complex dynamics in live specimens. Nat Cell Biol 2003;5:S14–S19. 10 Clendenon JL, Phillips CL, Sandoval RM, Fang S, Dunn KW: Voxx: a PC-based, near real-time volume rendering system for biological microscopy. Am J Physiol 2002;282:C213– C218. 11 Rueden C, Eliceiri KW, White JG: VisBio: A computational tool for visualization of multidimensional biological image data. Trafﬁc 2004;5:411–417. 12 Russ JC. The Image Processing Handbook, ed 4. New York, CRC Press, 2002. 13 Dougherty ER, Lotufo RA: Hands-On Morphological Image Processing. Tutorial Texts in Optical Engineering, vol TT59. Bellingham/ WA, SPIE Press, 2003. 14 Yoo TS: Insight into Images: Principles and Practice for Segmentation, Registration, and Image Analysis. Wellesley, AK Peters, 2004.
+
+e54
+
+Nephron Exp Nephrol 2006;103:e50–e54
+
+Clendenon /Byars /Hyink
+

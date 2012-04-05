@@ -1,0 +1,1512 @@
+UNIVERSITY OF SOUTHAMPTON
+
+Support Vector Machines for Classiﬁcation and Regression
+
+by Steve R. Gunn
+
+Technical Report
+
+Faculty of Engineering, Science and Mathematics School of Electronics and Computer Science
+
+10 May 1998
+
+Contents
+Nomenclature 1 Introduction 1.1 Statistical Learning Theory . . . . . . . . . . . . . . . . . . . . . . . . . . 1.1.1 VC Dimension . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1.1.2 Structural Risk Minimisation . . . . . . . . . . . . . . . . . . . . . 2 Support Vector Classiﬁcation 2.1 The Optimal Separating Hyperplane . . . . . . . . 2.1.1 Linearly Separable Example . . . . . . . . . 2.2 The Generalised Optimal Separating Hyperplane . 2.2.1 Linearly Non-Separable Example . . . . . . 2.3 Generalisation in High Dimensional Feature Space 2.3.1 Polynomial Mapping Example . . . . . . . 2.4 Discussion . . . . . . . . . . . . . . . . . . . . . . . 3 Feature Space 3.1 Kernel Functions . . . . . . . . . . . . . . 3.1.1 Polynomial . . . . . . . . . . . . . 3.1.2 Gaussian Radial Basis Function . . 3.1.3 Exponential Radial Basis Function 3.1.4 Multi-Layer Perceptron . . . . . . 3.1.5 Fourier Series . . . . . . . . . . . . 3.1.6 Splines . . . . . . . . . . . . . . . . 3.1.7 B splines . . . . . . . . . . . . . . 3.1.8 Additive Kernels . . . . . . . . . . 3.1.9 Tensor Product . . . . . . . . . . . 3.2 Implicit vs. Explicit Bias . . . . . . . . . 3.3 Data Normalisation . . . . . . . . . . . . . 3.4 Kernel Selection . . . . . . . . . . . . . . xi 1 2 3 4 5 5 10 10 13 14 16 16 19 19 20 20 20 20 21 21 21 22 22 22 23 23
+
+. . . . . . .
+
+. . . . . . .
+
+. . . . . . .
+
+. . . . . . .
+
+. . . . . . .
+
+. . . . . . .
+
+. . . . . . .
+
+. . . . . . .
+
+. . . . . . .
+
+. . . . . . .
+
+. . . . . . .
+
+. . . . . . .
+
+. . . . . . .
+
+. . . . . . . . . . . . .
+
+. . . . . . . . . . . . .
+
+. . . . . . . . . . . . .
+
+. . . . . . . . . . . . .
+
+. . . . . . . . . . . . .
+
+. . . . . . . . . . . . .
+
+. . . . . . . . . . . . .
+
+. . . . . . . . . . . . .
+
+. . . . . . . . . . . . .
+
+. . . . . . . . . . . . .
+
+. . . . . . . . . . . . .
+
+. . . . . . . . . . . . .
+
+. . . . . . . . . . . . .
+
+. . . . . . . . . . . . .
+
+. . . . . . . . . . . . .
+
+. . . . . . . . . . . . .
+
+. . . . . . . . . . . . .
+
+. . . . . . . . . . . . .
+
+4 Classiﬁcation Example: IRIS data 25 4.1 Applications . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28 5 Support Vector Regression 29 5.1 Linear Regression . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30 5.1.1 -insensitive Loss Function . . . . . . . . . . . . . . . . . . . . . . 30 5.1.2 Quadratic Loss Function . . . . . . . . . . . . . . . . . . . . . . . . 31 iii
+
+iv 5.1.3 Huber Loss Function 5.1.4 Example . . . . . . . Non Linear Regression . . . 5.2.1 Examples . . . . . . 5.2.2 Comments . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+CONTENTS . . . . . . . . . . . . . . . . . . . . . . . . . 32 33 33 34 36
+
+5.2
+
+6 Regression Example: Titanium Data 39 6.1 Applications . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42 7 Conclusions 43
+
+A Implementation Issues 45 A.1 Support Vector Classiﬁcation . . . . . . . . . . . . . . . . . . . . . . . . . 45 A.2 Support Vector Regression . . . . . . . . . . . . . . . . . . . . . . . . . . . 47 B MATLAB SVM Toolbox Bibliography 51 53
+
+List of Figures
+1.1 1.2 2.1 2.2 2.3 2.4 2.5 2.6 2.7 2.8 2.9 2.10 3.1 4.1 4.2 4.3 4.4 4.5 4.6 4.7 5.1 5.2 5.3 5.4 5.5 5.6 5.7 6.1 6.2 6.3 6.4 6.5 6.6 6.7 Modelling Errors . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . VC Dimension Illustration . . . . . . . . . . . . . . . . . . . . . . . . . . . Optimal Separating Hyperplane . . . . . . . . . . . . . . . . . . . Canonical Hyperplanes . . . . . . . . . . . . . . . . . . . . . . . . Constraining the Canonical Hyperplanes . . . . . . . . . . . . . . Optimal Separating Hyperplane . . . . . . . . . . . . . . . . . . . Generalised Optimal Separating Hyperplane . . . . . . . . . . . . Generalised Optimal Separating Hyperplane Example (C = 1) . . Generalised Optimal Separating Hyperplane Example (C = 105 ) Generalised Optimal Separating Hyperplane Example (C = 10−8 ) Mapping the Input Space into a High Dimensional Feature Space Mapping input space into Polynomial Feature Space . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2 3 5 6 7 10 11 13 14 14 14 16
+
+Comparison between Implicit and Explicit bias for a linear kernel . . . . . 22 Iris data set . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Separating Setosa with a linear SVC (C = ∞) . . . . . . . . . . . . . . . . Separating Viginica with a polynomial SVM (degree 2,C = ∞) . . . . . . Separating Viginica with a polynomial SVM (degree 10, C = ∞) . . . . . Separating Viginica with a Radial Basis Function SVM (σ = 1.0, C = ∞) Separating Viginica with a polynomial SVM (degree 2, C = 10) . . . . . . The eﬀect of C on the separation of Versilcolor with a linear spline SVM . Loss Functions . . . . . . . . . . Linear regression . . . . . . . . . Polynomial Regression . . . . . . Radial Basis Function Regression Spline Regression . . . . . . . . . B-spline Regression . . . . . . . . Exponential RBF Regression . . Titanium Titanium Titanium Titanium Titanium Titanium Titanium . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25 26 26 26 27 27 28 29 33 35 35 36 36 36 39 40 40 40 41 41 42
+
+Linear Spline Regression ( = 0.05, C = ∞) . . . . . . . B-Spline Regression ( = 0.05, C = ∞) . . . . . . . . . . Gaussian RBF Regression ( = 0.05, σ = 1.0, C = ∞) . . Gaussian RBF Regression ( = 0.05, σ = 0.3, C = ∞) . . Exponential RBF Regression ( = 0.05, σ = 1.0, C = ∞) Fourier Regression ( = 0.05, degree 3, C = ∞) . . . . . Linear Spline Regression ( = 0.05, C = 10) . . . . . . . v
+
+vi 6.8
+
+LIST OF FIGURES Titanium B-Spline Regression ( = 0.05, C = 10) . . . . . . . . . . . . . . 42
+
+List of Tables
+2.1 2.2 5.1 Linearly Separable Classiﬁcation Data . . . . . . . . . . . . . . . . . . . . 10 Non-Linearly Separable Classiﬁcation Data . . . . . . . . . . . . . . . . . 13 Regression Data . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+
+vii
+
+Listings
+A.1 Support Vector Classiﬁcation MATLAB Code . . . . . . . . . . . . . . . . 46 A.2 Support Vector Regression MATLAB Code . . . . . . . . . . . . . . . . . 48
+
+ix
+
+Nomenclature
+0 (x)+ C D K(x, x ) R[f ] Remp [f ] Column vector of zeros The positive part of x SVM misclassiﬁcation tolerance parameter Dataset Kernel function Risk functional Empirical Risk functional
+
+xi
+
+Chapter 1
+
+Introduction
+The problem of empirical data modelling is germane to many engineering applications. In empirical data modelling a process of induction is used to build up a model of the system, from which it is hoped to deduce responses of the system that have yet to be observed. Ultimately the quantity and quality of the observations govern the performance of this empirical model. By its observational nature data obtained is ﬁnite and sampled; typically this sampling is non-uniform and due to the high dimensional nature of the problem the data will form only a sparse distribution in the input space. Consequently the problem is nearly always ill posed (Poggio et al., 1985) in the sense of Hadamard (Hadamard, 1923). Traditional neural network approaches have suﬀered diﬃculties with generalisation, producing models that can overﬁt the data. This is a consequence of the optimisation algorithms used for parameter selection and the statistical measures used to select the ’best’ model. The foundations of Support Vector Machines (SVM) have been developed by Vapnik (1995) and are gaining popularity due to many attractive features, and promising empirical performance. The formulation embodies the Structural Risk Minimisation (SRM) principle, which has been shown to be superior, (Gunn et al., 1997), to traditional Empirical Risk Minimisation (ERM) principle, employed by conventional neural networks. SRM minimises an upper bound on the expected risk, as opposed to ERM that minimises the error on the training data. It is this diﬀerence which equips SVM with a greater ability to generalise, which is the goal in statistical learning. SVMs were developed to solve the classiﬁcation problem, but recently they have been extended to the domain of regression problems (Vapnik et al., 1997). In the literature the terminology for SVMs can be slightly confusing. The term SVM is typically used to describe classiﬁcation with support vector methods and support vector regression is used to describe regression with support vector methods. In this report the term SVM will refer to both classiﬁcation and regression methods, and the terms Support Vector Classiﬁcation (SVC) and Support Vector Regression (SVR) will be used for speciﬁcation. This section continues with a brief introduction to the structural risk
+
+1
+
+2
+
+Chapter 1 Introduction
+
+minimisation principle. In Chapter 2 the SVM is introduced in the setting of classiﬁcation, being both historical and more accessible. This leads onto mapping the input into a higher dimensional feature space by a suitable choice of kernel function. The report then considers the problem of regression. Illustrative examples re given to show the properties of the techniques.
+
+1.1
+
+Statistical Learning Theory
+
+This section is a very brief introduction to statistical learning theory. For a much more in depth look at statistical learning theory, see (Vapnik, 1998).
+
+Figure 1.1: Modelling Errors
+
+The goal in modelling is to choose a model from the hypothesis space, which is closest (with respect to some error measure) to the underlying function in the target space. Errors in doing this arise from two cases: Approximation Error is a consequence of the hypothesis space being smaller than the target space, and hence the underlying function may lie outside the hypothesis space. A poor choice of the model space will result in a large approximation error, and is referred to as model mismatch. Estimation Error is the error due to the learning procedure which results in a technique selecting the non-optimal model from the hypothesis space.
+
+Chapter 1 Introduction
+
+3
+
+Together these errors form the generalisation error. Ultimately we would like to ﬁnd the function, f , which minimises the risk, R[f ] =
+X×Y
+
+L (y, f (x)) P (x, y)dxdy
+
+(1.1)
+
+However, P (x, y) is unknown. It is possible to ﬁnd an approximation according to the empirical risk minimisation principle, Remp [f ] = which minimises the empirical risk, fˆ (x) = arg min Remp [f ] n,l
+f ∈Hn
+
+1 l
+
+l
+
+L y i , f xi
+i=1
+
+(1.2)
+
+(1.3)
+
+Empirical risk minimisation makes sense only if, lim Remp [f ] = R[f ] (1.4)
+
+l→∞
+
+which is true from the law of large numbers. However, it must also satisfy, lim min Remp [f ] = min R[f ]
+f ∈Hn
+
+l→∞ f ∈Hn
+
+(1.5)
+
+which is only valid when Hn is ’small’ enough. This condition is less intuitive and requires that the minima also converge. The following bound holds with probability 1 − δ, R[f ] ≤ Remp [f ] + h ln
+2l h
+
++ 1 − ln l
+
+δ 4
+
+(1.6)
+
+Remarkably, this expression for the expected risk is independent of the probability distribution.
+
+1.1.1
+
+VC Dimension
+
+The VC dimension is a scalar value that measures the capacity of a set of functions.
+
+Figure 1.2: VC Dimension Illustration
+
+4
+
+Chapter 1 Introduction
+
+Deﬁnition 1.1 (Vapnik–Chervonenkis). The VC dimension of a set of functions is p if and only if there exists a set of points {xi }p such that these points can be separated i=1 in all 2p possible conﬁgurations, and that no set {xi }q exists where q > p satisfying i=1 this property. Figure 1.2 illustrates how three points in the plane can be shattered by the set of linear indicator functions whereas four points cannot. In this case the VC dimension is equal to the number of free parameters, but in general that is not the case; e.g. the function A sin(bx) has an inﬁnite VC dimension (Vapnik, 1995). The set of linear indicator functions in n dimensional space has a VC dimension equal to n + 1.
+
+1.1.2
+
+Structural Risk Minimisation
+
+Create a structure such that Sh is a hypothesis space of VC dimension h then, S1 ⊂ S2 ⊂ . . . ⊂ S∞ (1.7)
+
+SRM consists in solving the following problem h ln
+2l h
+
+min Remp [f ] +
+Sh
+
++ 1 − ln l
+
+δ 4
+
+(1.8)
+
+If the underlying process being modelled is not deterministic the modelling problem becomes more exacting and consequently this chapter is restricted to deterministic processes. Multiple output problems can usually be reduced to a set of single output problems that may be considered independent. Hence it is appropriate to consider processes with multiple inputs from which it is desired to predict a single output.
+
+Chapter 2
+
+Support Vector Classiﬁcation
+The classiﬁcation problem can be restricted to consideration of the two-class problem without loss of generality. In this problem the goal is to separate the two classes by a function which is induced from available examples. The goal is to produce a classiﬁer that will work well on unseen examples, i.e. it generalises well. Consider the example in Figure 2.1. Here there are many possible linear classiﬁers that can separate the data, but there is only one that maximises the margin (maximises the distance between it and the nearest data point of each class). This linear classiﬁer is termed the optimal separating hyperplane. Intuitively, we would expect this boundary to generalise well as opposed to the other possible boundaries.
+
+Figure 2.1: Optimal Separating Hyperplane
+
+2.1
+
+The Optimal Separating Hyperplane
+
+Consider the problem of separating the set of training vectors belonging to two separate classes, D = (x1 , y 1 ), . . . , (xl , y l ) , 5 x ∈ Rn , y ∈ {−1, 1}, (2.1)
+
+6 with a hyperplane,
+
+Chapter 2 Support Vector Classiﬁcation
+
+w, x + b = 0.
+
+(2.2)
+
+The set of vectors is said to be optimally separated by the hyperplane if it is separated without error and the distance between the closest vector to the hyperplane is maximal. There is some redundancy in Equation 2.2, and without loss of generality it is appropriate to consider a canonical hyperplane (Vapnik, 1995), where the parameters w, b are constrained by, min w, xi + b = 1.
+i
+
+(2.3)
+
+This incisive constraint on the parameterisation is preferable to alternatives in simplifying the formulation of the problem. In words it states that: the norm of the weight vector should be equal to the inverse of the distance, of the nearest point in the data set to the hyperplane. The idea is illustrated in Figure 2.2, where the distance from the nearest point to each hyperplane is shown.
+
+Figure 2.2: Canonical Hyperplanes
+
+A separating hyperplane in canonical form must satisfy the following constraints, yi w, xi + b ≥ 1, i = 1, . . . , l. (2.4)
+
+The distance d(w, b; x) of a point x from the hyperplane (w, b) is, d(w, b; x) = w, xi + b . w (2.5)
+
+Chapter 2 Support Vector Classiﬁcation
+
+7
+
+The optimal hyperplane is given by maximising the margin, ρ, subject to the constraints of Equation 2.4. The margin is given by, ρ(w, b) = = = = min d(w, b; xi ) + min d(w, b; xi )
+xi :y i =1
+
+xi :y i =−1
+
+xi :y i =−1
+
+min
+
+w, xi w min
+
++b
+
++ min
+
+xi :y i =1
+
+w, xi + b w
+xi :y i =1
+
+1 w 2 w
+
+xi :y i =−1
+
+w, xi + b + min
+
+w, xi + b (2.6)
+
+Hence the hyperplane that optimally separates the data is the one that minimises Φ(w) = 1 w 2. 2 (2.7)
+
+It is independent of b because provided Equation 2.4 is satisﬁed (i.e. it is a separating hyperplane) changing b will move it in the normal direction to itself. Accordingly the margin remains unchanged but the hyperplane is no longer optimal in that it will be nearer to one class than the other. To consider how minimising Equation 2.7 is equivalent to implementing the SRM principle, suppose that the following bound holds, w < A. Then from Equation 2.4 and 2.5, d(w, b; x) ≥ 1 . A
+1 A
+
+(2.8)
+
+(2.9) to any of the data points and
+
+Accordingly the hyperplanes cannot be nearer than hence the capacity.
+
+intuitively it can be seen in Figure 2.3 how this reduces the possible hyperplanes, and
+
+Figure 2.3: Constraining the Canonical Hyperplanes
+
+8
+
+Chapter 2 Support Vector Classiﬁcation
+
+The VC dimension, h, of the set of canonical hyperplanes in n dimensional space is bounded by, h ≤ min[R2 A2 , n] + 1, (2.10)
+
+where R is the radius of a hypersphere enclosing all the data points. Hence minimising Equation 2.7 is equivalent to minimising an upper bound on the VC dimension. The solution to the optimisation problem of Equation 2.7 under the constraints of Equation 2.4 is given by the saddle point of the Lagrange functional (Lagrangian) (Minoux, 1986),
+l 1 2 2
+
+Φ(w, b, α) =
+
+w
+
+−
+i=1
+
+αi y i
+
+w, xi + b − 1 ,
+
+(2.11)
+
+where α are the Lagrange multipliers. The Lagrangian has to be minimised with respect to w, b and maximised with respect to α ≥ 0. Classical Lagrangian duality enables the primal problem, Equation 2.11, to be transformed to its dual problem, which is easier to solve. The dual problem is given by, max W (α) = max min Φ(w, b, α) .
+α α w,b
+
+(2.12)
+
+The minimum with respect to w and b of the Lagrangian, Φ, is given by, ∂Φ =0 ⇒ ∂b
+l
+
+αi yi = 0
+i=1 l
+
+∂Φ =0 ⇒ w= ∂w
+
+αi yi xi .
+i=1
+
+(2.13)
+
+Hence from Equations 2.11, 2.12 and 2.13, the dual problem is,
+l l l
+
+max W (α) =
+α
+
+max − 1 2 α
+
+αi αj yi yj xi , xj +
+i=1 j=1 k=1
+
+αk ,
+
+(2.14)
+
+and hence the solution to the problem is given by,
+l l l
+
+α∗ = arg min 1 2
+α i=1 j=1
+
+αi αj yi yj xi , xj −
+k=1
+
+αk ,
+
+(2.15)
+
+with constraints, αi ≥ 0 i = 1, . . . , l
+l
+
+αj yj = 0.
+j=1
+
+(2.16)
+
+Chapter 2 Support Vector Classiﬁcation
+
+9
+
+Solving Equation 2.15 with constraints Equation 2.16 determines the Lagrange multipliers, and the optimal separating hyperplane is given by,
+l
+
+w =
+i=1
+
+∗
+
+αi yi xi (2.17)
+
+b∗ = −
+
+1 ∗ w , xr + xs . 2
+
+where xr and xs are any support vector from each class satisfying, αr , αs > 0, The hard classiﬁer is then, f (x) = sgn( w∗ , x + b) (2.19) yr = −1, ys = 1. (2.18)
+
+Alternatively, a soft classiﬁer may be used which linearly interpolates the margin,   −1 : z < −1  h(z) = z : −1 ≤ z ≤ 1   +1 : z > 1
+
+f (x) = h( w∗ , x + b)
+
+where
+
+(2.20)
+
+This may be more appropriate than the hard classiﬁer of Equation 2.19, because it produces a real valued output between −1 and 1 when the classiﬁer is queried within the margin, where no training data resides. From the Kuhn-Tucker conditions, αi y i w, xi + b − 1 = 0, i = 1, . . . , l, (2.21)
+
+and hence only the points xi which satisfy, yi w, xi + b = 1 (2.22)
+
+will have non-zero Lagrange multipliers. These points are termed Support Vectors (SV). If the data is linearly separable all the SV will lie on the margin and hence the number of SV can be very small. Consequently the hyperplane is determined by a small subset of the training set; the other points could be removed from the training set and recalculating the hyperplane would produce the same answer. Hence SVM can be used to summarise the information contained in a data set by the SV produced. If the data is linearly separable the following equality will hold,
+l
+
+w
+
+2
+
+=
+i=1
+
+αi =
+i∈SV s
+
+αi =
+i∈SV s j∈SV s
+
+αi αj yi yj xi , xj .
+
+(2.23)
+
+Hence from Equation 2.10 the VC dimension of the classiﬁer is bounded by, h ≤ min[R2
+i∈SV s
+
+, n] + 1,
+
+(2.24)
+
+10 x1 1 3 1 3 2 3 4 x2 1 3 3 1 2.5 2.5 3
+
+Chapter 2 Support Vector Classiﬁcation y -1 1 1 -1 1 -1 -1
+
+Table 2.1: Linearly Separable Classiﬁcation Data
+
+and if the training data, x, is normalised to lie in the unit hypersphere, h ≤ 1 + min[
+i∈SV s
+
+, n],
+
+(2.25)
+
+2.1.1
+
+Linearly Separable Example
+
+To illustrate the method consider the training set in Table 2.1. The SVC solution is shown in Figure 2.4, where the dotted lines describe the locus of the margin and the circled data points represent the SV, which all lie on the margin.
+
+Figure 2.4: Optimal Separating Hyperplane
+
+2.2
+
+The Generalised Optimal Separating Hyperplane
+
+So far the discussion has been restricted to the case where the training data is linearly separable. However, in general this will not be the case, Figure 2.5. There are two approaches to generalising the problem, which are dependent upon prior knowledge of the problem and an estimate of the noise on the data. In the case where it is expected (or possibly even known) that a hyperplane can correctly separate the data, a method of
+
+Chapter 2 Support Vector Classiﬁcation
+
+11
+
+Figure 2.5: Generalised Optimal Separating Hyperplane
+
+introducing an additional cost function associated with misclassiﬁcation is appropriate. Alternatively a more complex function can be used to describe the boundary, as discussed in Chapter 2.1. To enable the optimal separating hyperplane method to be generalised, Cortes and Vapnik (1995) introduced non-negative variables, ξi ≥ 0, and a penalty function, Fσ (ξ) =
+i σ ξi
+
+σ > 0,
+
+(2.26)
+
+where the ξi are a measure of the misclassiﬁcation errors. The optimisation problem is now posed so as to minimise the classiﬁcation error as well as minimising the bound on the VC dimension of the classiﬁer. The constraints of Equation 2.4 are modiﬁed for the non-separable case to, yi w, xi + b ≥ 1 − ξi , i = 1, . . . , l. (2.27)
+
+where ξi ≥ 0. The generalised optimal separating hyperplane is determined by the vector w, that minimises the functional, Φ(w, ξ) = 1 w 2
+2
+
++C
+i
+
+ξi ,
+
+(2.28)
+
+(where C is a given value) subject to the constraints of Equation 2.27. The solution to the optimisation problem of Equation 2.28 under the constraints of Equation 2.27 is given by the saddle point of the Lagrangian (Minoux, 1986),
+l l 1 2 2
+
+Φ(w, b, α, ξ, β) =
+
+w
+
++C
+i
+
+ξi −
+i=1
+
+αi y w x + b − 1 + ξi −
+j=1
+
+i
+
+T i
+
+βi ξi , (2.29)
+
+12
+
+Chapter 2 Support Vector Classiﬁcation
+
+where α, β are the Lagrange multipliers. The Lagrangian has to be minimised with respect to w, b, x and maximised with respect to α, β. As before, classical Lagrangian duality enables the primal problem, Equation 2.29, to be transformed to its dual problem. The dual problem is given by, max W (α, β) = max min Φ(w, b, α, ξ, β) .
+α α,β w,b,ξ
+
+(2.30)
+
+The minimum with respect to w, b and ξ of the Lagrangian, Φ, is given by, ∂Φ =0 ⇒ ∂b
+l
+
+αi yi = 0
+i=1 l
+
+∂Φ =0 ⇒ w= ∂w
+
+αi yi xi
+i=1
+
+∂Φ = 0 ⇒ αi + βi = C. ∂ξ Hence from Equations 2.29, 2.30 and 2.31, the dual problem is,
+l l l
+
+(2.31)
+
+max W (α) = max − 1 2
+α α i=1 j=1
+
+αi αj yi yj xi , xj +
+k=1
+
+αk ,
+
+(2.32)
+
+and hence the solution to the problem is given by,
+l l l
+
+α = arg min
+α
+
+∗
+
+1 2 i=1 j=1
+
+αi αj yi yj xi , xj −
+k=1
+
+αk ,
+
+(2.33)
+
+with constraints, 0 ≤ αi ≤ C
+l
+
+i = 1, . . . , l αj yj = 0.
+j=1
+
+(2.34)
+
+The solution to this minimisation problem is identical to the separable case except for a modiﬁcation of the bounds of the Lagrange multipliers. The uncertain part of Cortes’s approach is that the coeﬃcient C has to be determined. This parameter introduces additional capacity control within the classiﬁer. C can be directly related to a regularisation parameter (Girosi, 1997; Smola and Sch¨lkopf, 1998). Blanz et al. (1996) uses a o value of C = 5, but ultimately C must be chosen to reﬂect the knowledge of the noise on the data. This warrants further work, but a more practical discussion is given in Chapter 4.
+
+Chapter 2 Support Vector Classiﬁcation x1 1 3 1 3 2 3 4 1.5 1 x2 1 3 3 1 2.5 2.5 3 1.5 2 y -1 1 1 -1 1 -1 -1 1 -1
+
+13
+
+Table 2.2: Non-Linearly Separable Classiﬁcation Data
+
+2.2.1
+
+Linearly Non-Separable Example
+
+Two additional data points are added to the separable data of Table 2.1 to produce a linearly non-separable data set, Table 2.2. The resulting SVC is shown in Figure 2.6, for C = 1. The SV are no longer required to lie on the margin, as in Figure 2.4, and the orientation of the hyperplane and the width of the margin are diﬀerent.
+
+Figure 2.6: Generalised Optimal Separating Hyperplane Example (C = 1)
+
+In the limit, limC→∞ the solution converges towards the solution obtained by the optimal separating hyperplane (on this non-separable data), Figure 2.7. In the limit, limC→0 the solution converges to one where the margin maximisation term dominates, Figure 2.8. Beyond a certain point the Lagrange multipliers will all take on the value of C. There is now less emphasis on minimising the misclassiﬁcation error, but purely on maximising the margin, producing a large width margin. Consequently as C decreases the width of the margin increases. The useful range of C lies between the point where all the Lagrange Multipliers are equal to C and when only one of them is just bounded by C.
+
+14
+
+Chapter 2 Support Vector Classiﬁcation
+
+Figure 2.7: Generalised Optimal Separating Hyperplane Example (C = 105 )
+
+Figure 2.8: Generalised Optimal Separating Hyperplane Example (C = 10−8 )
+
+2.3
+
+Generalisation in High Dimensional Feature Space
+
+In the case where a linear boundary is inappropriate the SVM can map the input vector, x, into a high dimensional feature space, z. By choosing a non-linear mapping a priori, the SVM constructs an optimal separating hyperplane in this higher dimensional space, Figure 2.9. The idea exploits the method of Aizerman et al. (1964) which, enables the curse of dimensionality (Bellman, 1961) to be addressed.
+
+Figure 2.9: Mapping the Input Space into a High Dimensional Feature Space
+
+Chapter 2 Support Vector Classiﬁcation
+
+15
+
+There are some restrictions on the non-linear mapping that can be employed, see Chapter 3, but it turns out, surprisingly, that most commonly employed functions are acceptable. Among acceptable mappings are polynomials, radial basis functions and certain sigmoid functions. The optimisation problem of Equation 2.33 becomes,
+l l l
+
+α∗ = arg min 1 2
+α i=1 j=1
+
+αi αj yi yj K(xi , xj ) −
+k=1
+
+αk ,
+
+(2.35)
+
+where K(x, x ) is the kernel function performing the non-linear mapping into feature space, and the constraints are unchanged, 0 ≤ αi ≤ C
+l
+
+i = 1, . . . , l αj yj = 0.
+j=1
+
+(2.36)
+
+Solving Equation 2.35 with constraints Equation 2.36 determines the Lagrange multipliers, and a hard classiﬁer implementing the optimal separating hyperplane in the feature space is given by, f (x) = sgn(
+i∈SV s
+
+αi yi K(xi , x) + b)
+
+(2.37)
+
+where
+l
+
+w∗ , x =
+i=1
+
+αi yi K(xi , x)
+
+1 b =− 2
+∗
+
+l
+
+αi yi [K(xi , xr ) + K(xi , xr )] .
+i=1
+
+(2.38)
+
+The bias is computed here using two support vectors, but can be computed using all the SV on the margin for stability (Vapnik et al., 1997). If the Kernel contains a bias term, the bias can be accommodated within the Kernel, and hence the classiﬁer is simply, f (x) = sgn(
+i∈SV s
+
+αi K(xi , x))
+
+(2.39)
+
+Many employed kernels have a bias term and any ﬁnite Kernel can be made to have one (Girosi, 1997). This simpliﬁes the optimisation problem by removing the equality constraint of Equation 2.36. Chapter 3 discusses the necessary conditions that must be satisﬁed by valid kernel functions.
+
+16
+
+Chapter 2 Support Vector Classiﬁcation
+
+2.3.1
+
+Polynomial Mapping Example
+
+Consider a polynomial kernel of the form, K(x, x ) = ( x, x + 1)2 , (2.40)
+
+which maps a two dimensional input vector into a six dimensional feature space. Applying the non-linear SVC to the linearly non-separable training data of Table 2.2, produces the classiﬁcation illustrated in Figure 2.10 (C = ∞). The margin is no longer of constant width due to the non-linear projection into the input space. The solution is in contrast to Figure 2.7, in that the training data is now classiﬁed correctly. However, even though SVMs implement the SRM principle and hence can generalise well, a careful choice of the kernel function is necessary to produce a classiﬁcation boundary that is topologically appropriate. It is always possible to map the input space into a dimension greater than the number of training points and produce a classiﬁer with no classiﬁcation errors on the training set. However, this will generalise badly.
+
+Figure 2.10: Mapping input space into Polynomial Feature Space
+
+2.4
+
+Discussion
+
+Typically the data will only be linearly separable in some, possibly very high dimensional feature space. It may not make sense to try and separate the data exactly, particularly when only a ﬁnite amount of training data is available which is potentially corrupted by noise. Hence in practice it will be necessary to employ the non-separable approach which places an upper bound on the Lagrange multipliers. This raises the question of how to determine the parameter C. It is similar to the problem in regularisation where the regularisation coeﬃcient has to be determined, and it has been shown that the parameter C can be directly related to a regularisation parameter for certain kernels (Smola and Sch¨lkopf, 1998). A process of cross-validation can be used to determine this o
+
+Chapter 2 Support Vector Classiﬁcation
+
+17
+
+parameter, although more eﬃcient and potentially better methods are sought after. In removing the training patterns that are not support vectors, the solution is unchanged and hence a fast method for validation may be available when the support vectors are sparse.
+
+Chapter 3
+
+Feature Space
+This chapter discusses the method that can be used to construct a mapping into a high dimensional feature space by the use of reproducing kernels. The idea of the kernel function is to enable operations to be performed in the input space rather than the potentially high dimensional feature space. Hence the inner product does not need to be evaluated in the feature space. This provides a way of addressing the curse of dimensionality. However, the computation is still critically dependent upon the number of training patterns and to provide a good data distribution for a high dimensional problem will generally require a large training set.
+
+3.1
+
+Kernel Functions
+
+The following theory is based upon Reproducing Kernel Hilbert Spaces (RKHS) (Aronszajn, 1950; Girosi, 1997; Heckman, 1997; Wahba, 1990). An inner product in feature space has an equivalent kernel in input space, K(x, x ) = φ(x), φ(x ) , (3.1)
+
+provided certain conditions hold. If K is a symmetric positive deﬁnite function, which satisﬁes Mercer’s Conditions,
+∞
+
+K(x, x ) =
+m
+
+am φm (x)φm (x ),
+
+am ≥ 0,
+
+(3.2)
+
+K(x, x )g(x)g(x )dxdx > 0,
+
+g ∈ L2 ,
+
+(3.3)
+
+then the kernel represents a legitimate inner product in feature space. Valid functions that satisfy Mercer’s conditions are now given, which unless stated are valid for all real x and x . 19
+
+20
+
+Chapter 3 Feature Space
+
+3.1.1
+
+Polynomial
+
+A polynomial mapping is a popular method for non-linear modelling, K(x, x ) = x, x
+d
+
+.
+
+(3.4)
+
+K(x, x ) =
+
+x, x + 1
+
+d
+
+.
+
+(3.5)
+
+The second kernel is usually preferable as it avoids problems with the hessian becoming zero.
+
+3.1.2
+
+Gaussian Radial Basis Function
+
+Radial basis functions have received signiﬁcant attention, most commonly with a Gaussian of the form, K(x, x ) = exp − x−x 2σ 2
+2
+
+.
+
+(3.6)
+
+Classical techniques utilising radial basis functions employ some method of determining a subset of centres. Typically a method of clustering is ﬁrst employed to select a subset of centres. An attractive feature of the SVM is that this selection is implicit, with each support vectors contributing one local Gaussian function, centred at that data point. By further considerations it is possible to select the global basis function width, s, using the SRM principle (Vapnik, 1995).
+
+3.1.3
+
+Exponential Radial Basis Function
+
+A radial basis function of the form, K(x, x ) = exp − x−x 2σ 2 . (3.7)
+
+produces a piecewise linear solution which can be attractive when discontinuities are acceptable.
+
+3.1.4
+
+Multi-Layer Perceptron
+
+The long established MLP, with a single hidden layer, also has a valid kernel representation, K(x, x ) = tanh ρ x, x + (3.8)
+
+for certain values of the scale, ρ, and oﬀset, , parameters. Here the SV correspond to the ﬁrst layer and the Lagrange multipliers to the weights.
+
+Chapter 3 Feature Space
+
+21
+
+3.1.5
+
+Fourier Series
+
+A Fourier series can be considered an expansion in the following 2N + 1 dimensional feature space. The kernel is deﬁned on the interval [− π , π ], 2 2 K(x, x ) =
+1 sin(N + 2 )(x − x ) . sin( 1 (x − x )) 2
+
+(3.9)
+
+However, this kernel is probably not a good choice because its regularisation capability o is poor, which is evident by consideration of its Fourier transform (Smola and Sch¨lkopf, 1998).
+
+3.1.6
+
+Splines
+
+Splines are a popular choice for modelling due to their ﬂexibility. A ﬁnite spline, of order κ, with N knots located at τs is given by,
+κ N
+
+K(x, x ) =
+r=0
+
+xr x +
+s=1
+
+r
+
+(x − τs )κ (x − τs )κ . + +
+
+(3.10)
+
+An inﬁnite spline is deﬁned on the interval [0, 1) by,
+κ
+
+K(x, x ) =
+r=0
+
+xr x +
+0
+
+r
+
+1
+
+(x − τs )κ (x − τs )κ dτ. + +
+
+(3.11)
+
+∞ In the case when κ = 1, (S1 ), the kernel is given by,
+
+K(x, x ) = 1 + x, x +
+
+1 1 x, x min(x, x ) − min(x, x )3 , 2 6
+
+(3.12)
+
+where the solution is a piece-wise cubic.
+
+3.1.7
+
+B splines
+
+Bsplines are another popular spline formulation. The kernel is deﬁned on the interval [−1, 1], and has an attractive closed form, K(x, x ) = B2N +1 (x − x ). (3.13)
+
+22
+
+Chapter 3 Feature Space
+
+3.1.8
+
+Additive Kernels
+
+More complicated kernels can be obtained by forming summing kernels, since the sum of two positive deﬁnite functions is positive deﬁnite. K(x, x ) =
+i
+
+Ki (x, x )
+
+(3.14)
+
+3.1.9
+
+Tensor Product
+
+Kernels Multidimensional kernels can be obtained by forming tensor products of kernels (Aronszajn, 1950), K(x, x ) =
+i
+
+Ki (xi , xi )
+
+(3.15)
+
+This is particularly useful in the construction of multidimensional spline kernels, which are simply obtained from the product of the univariate kernels.
+
+3.2
+
+Implicit vs. Explicit Bias
+
+It was remarked in the previous chapter that kernels may or may not contain an implicit bias. The inclusion of a bias within the kernel function can lead to a slightly more eﬃcient method of implementation. However, the solutions obtained with an implicit and explicit bias are not the same, which may initially come as a surprise. This diﬀerence helps to highlight the diﬃculties with the interpretation of generalisation in high dimensional feature spaces. Figure 3.1 compares a linear kernel with explicit bias against polynomial of degree 1 with implicit bias. It is evident that the solutions are diﬀerent, although both solutions would seem to oﬀer good generalisation.
+
+(a) Explicit (linear)
+
+(b) Implicit (polynomial degree 1)
+
+Figure 3.1: Comparison between Implicit and Explicit bias for a linear kernel
+
+Chapter 3 Feature Space
+
+23
+
+3.3
+
+Data Normalisation
+
+Data normalisation is required for particular kernels due to their restricted domain, and may also be advantageous for unrestricted kernels. To determine if normalisation (isotropic or non-isotropic) of the data is necessary requires the consideration of the input features. Additionally, normalisation will improve the condition number of the hessian in the optimisation problem.
+
+3.4
+
+Kernel Selection
+
+The obvious question that arises is that with so many diﬀerent mappings to choose from, which is the best for a particular problem? This is not a new question, but with the inclusion of many mappings within one framework it is easier to make a comparison. The upper bound on the VC dimension, Equation 2.10, is a potential avenue to provide a means of comparing the kernels. However, it requires the estimation of the radius of the hypersphere enclosing the data in the non-linear feature space. As a ﬁnal caution, even if a strong theoretical method for selecting a kernel is developed, unless this can be validated using independent test sets on a large number of problems, methods such as bootstrapping and cross-validation will remain the preferred method for kernel selection.
+
+Chapter 4
+
+Classiﬁcation Example: IRIS data
+The iris data set is an established data set used for demonstrating the performance of classiﬁcation algorithms. The data set contains four attributes of an iris, and the goal is to classify the class of iris based on these four attributes. To visualise the problem we restrict ourselves to the two features that contain the most information about the class, namely the petal length and the petal width. The distribution of the data is illustrated in Figure 4.1.
+
+Figure 4.1: Iris data set
+
+The Setosa and Versilcolor classes are easily separated with a linear boundary and the SVC solution using an inner product kernel is illustrated in Figure 4.2, with the two support vectors circled. The two support vectors contain the important information about the classiﬁcation boundary and hence illustrate the potential of SVC for data selection. The separation of the class Viginica from the other two classes is not so trivial. In fact, two of the examples are identical in petal length and width, but correspond to diﬀerent classes. Figure 4.3 illustrates the SVC solution obtained using a degree 2 polynomial and it is clear that the area of input space where there is little data is classiﬁed as Viginica. 25
+
+26
+
+Chapter 4 Classiﬁcation Example: IRIS data
+
+Figure 4.2: Separating Setosa with a linear SVC (C = ∞)
+
+Figure 4.3: Separating Viginica with a polynomial SVM (degree 2,C = ∞)
+
+Figure 4.4 illustrates the use of a higher order polynomial to separate the Viginica, with no additional capacity control. This SVC determines a hyperplane in a 55 dimensional feature space. There is evidence of overﬁtting due to the high dimensional nature of the kernel function, which is emphasised by the disjoint region in the top of the illustration.
+
+Figure 4.4: Separating Viginica with a polynomial SVM (degree 10, C = ∞)
+
+Chapter 4 Classiﬁcation Example: IRIS data
+
+27
+
+Figure 4.5 illustrates a Gaussian radial basis function SVC using a pre-speciﬁed variance. The result is similar to that of the degree 2 polynomial.
+
+Figure 4.5: Separating Viginica with a Radial Basis Function SVM (σ = 1.0, C = ∞)
+
+Figure 4.6 illustrates the SVC solution obtained using the degree 2 polynomial with some tolerance to misclassiﬁcation errors (C = 10). This can be seen to produce a solution with good expected generalisation, emphasising the importance of tolerating misclassiﬁcation errors in this example. This is necessary due to the non-separable nature of the data using just two input features.
+
+Figure 4.6: Separating Viginica with a polynomial SVM (degree 2, C = 10)
+
+To visualise the eﬀect of the tolerance to misclassiﬁcation errors on the topology of the classiﬁer boundary, Figure 4.7 shows the results of a linear spline SVC for various degrees of misclassiﬁcation tolerance. Interestingly, the values of C = 1 and C = 100 seem to oﬀer good solutions, depending upon whether an open boundary, Figure 4.7(a) or a closed boundary, Figure 4.7(c) is more appropriate. This demonstrates that the parameter C may have more than one optimal value and prior knowledge about the problem under consideration may be required to select the ﬁnal solution.
+
+28
+
+Chapter 4 Classiﬁcation Example: IRIS data
+
+(a) C = ∞
+
+(b) C = 1000
+
+(c) C = 100
+
+(d) C = 10
+
+(e) C = 1
+
+(f) C = 0.1
+
+Figure 4.7: The eﬀect of C on the separation of Versilcolor with a linear spline SVM
+
+4.1
+
+Applications
+
+Larger and more complex classiﬁcation problems have been attacked with SVC. Notably, Osuna et al. (1997) has applied SVC to the exacting problem of face recognition, with encouraging results. In conclusion, SVC provides a robust method for pattern classiﬁcation by minimising overﬁtting problems by adopting the SRM principle. Use of a kernel function enables the curse of dimensionality to be addressed, and the solution implicitly contains support vectors that provide a description of the signiﬁcant data for classiﬁcation.
+
+Chapter 5
+
+Support Vector Regression
+SVMs can also be applied to regression problems by the introduction of an alternative loss function, (Smola, 1996). The loss function must be modiﬁed to include a distance measure. Figure 5.1 illustrates four possible loss functions.
+
+(a) Quadratic
+
+(b) Laplace
+
+(c) Huber
+
+(d) -insensitive
+
+Figure 5.1: Loss Functions
+
+The loss function in Figure 5.1(a) corresponds to the conventional least squares error criterion. The loss function in Figure 5.1(b) is a Laplacian loss function that is less sensitive to outliers than the quadratic loss function. Huber proposed the loss function in Figure 5.1(c) as a robust loss function that has optimal properties when the underlying 29
+
+30
+
+Chapter 5 Support Vector Regression
+
+distribution of the data is unknown. These three loss functions will produce no sparseness in the support vectors. To address this issue Vapnik proposed the loss function in Figure 5.1(d) as an approximation to Huber’s loss function that enables a sparse set of support vectors to be obtained.
+
+5.1
+
+Linear Regression
+
+Consider the problem of approximating the set of data, D = (x1 , y 1 ), . . . , (xl , y l ) , with a linear function, f (x) = w, x + b. the optimal regression function is given by the minimum of the functional, Φ(w, ξ) = 1 w 2
+2
+
+x ∈ Rn , y ∈ R,
+
+(5.1)
+
+(5.2)
+
++C
+i
+
+− + (ξi + ξi ),
+
+(5.3)
+
+where C is a pre-speciﬁed value, and ξ − , ξ + are slack variables representing upper and lower constraints on the outputs of the system.
+
+5.1.1
+
+-insensitive Loss Function
+
+Using an -insensitive loss function, Figure 5.1(d), L (y) = the solution is given by, 1 max W (α, α ) = max − ∗ ∗ α,α α,α 2
+∗ l l l
+
+0
+
+for
+
+|f (x) − y| < ε
+
+|f (x) − y| − ε otherwise
+
+.
+
+(5.4)
+
+(αi −
+i=1 j=1
+
+∗ αi )
+
+αj −
+
+∗ αj
+
+xi , xj +
+i=1
+
+∗ αi (yi − )−αi (yi + )
+
+(5.5) or alternatively, α, α∗ = arg min ¯ ¯ ∗
+α,α
+
+1 2
+
+l
+
+l ∗ ∗ (αi − αi ) αj − αj
+
+l
+
+l ∗ (αi − αi ) yi + ∗ (αi + αi ) i=1
+
+xi , xj −
+i=1
+
+i=1 j=1
+
+(5.6)
+
+Chapter 5 Support Vector Regression with constraints,
+∗ 0 ≤ αi , αi ≤ C, l ∗ (αi − αi ) = 0. i=1
+
+31
+
+i = 1, . . . , l
+
+(5.7)
+
+Solving Equation 5.5 with constraints Equation 5.7 determines the Lagrange multipliers, α, α∗ , and the regression function is given by Equation 5.2, where
+l
+
+w= ¯
+i=1
+
+∗ (αi − αi ) xi
+
+(5.8)
+
+¯ = − 1 w, (xr + xs ) . b ¯ 2 The Karush-Kuhn-Tucker (KKT) conditions that are satisﬁed by the solution are, αi αi = 0, ¯ ¯∗ i = 1, . . . , l. (5.9)
+
+Therefore the support vectors are points where exactly one of the Lagrange multipliers is greater than zero. When problem is simpliﬁed, 1 min β 2 with constraints, −C ≤ βi ≤ C,
+l l l l
+
+= 0, we get the L1 loss function and the optimisation
+
+βi βj xi , xj −
+i=1 j=1 i=1
+
+βi yi
+
+(5.10)
+
+i = 1, . . . , l
+
+(5.11)
+
+βi = 0,
+i=1
+
+and the regression function is given by Equation 5.2, where
+l
+
+w= ¯
+i=1
+
+βi xi
+
+(5.12)
+
+¯ = − 1 w, (xr + xs ) . b ¯ 2
+
+5.1.2
+
+Quadratic Loss Function
+
+Using a quadratic loss function, Figure 5.1(a), Lquad (f (x) − y) = (f (x) − y)2 . (5.13)
+
+32 the solution is given by, 1 max W (α, α ) = max − α,α∗ α,α∗ 2
+∗ l l l
+
+Chapter 5 Support Vector Regression
+
+∗ ∗ (αi − αi ) αj − αj i=1 j=1 ∗ αi ) yi l
+
+xi , xj
+
++
+i=1
+
+(αi −
+
+1 − 2C
+
+2 ∗ αi + (αi )2 . i=1
+
+(5.14)
+
+The corresponding optimisation can be simpliﬁed by exploiting the KKT conditions,
+∗ Equation 5.9 and noting that these imply βi = |βi |. The resultant optimisation problems
+
+is, 1 min β 2 with constraints,
+l l l l
+
+βi βj xi , xj −
+i=1 j=1 i=1
+
+1 βi yi + 2C
+
+l 2 βi i=1
+
+(5.15)
+
+βi = 0.
+i=1
+
+(5.16)
+
+and the regression function is given by Equations 5.2 and 5.12.
+
+5.1.3
+
+Huber Loss Function
+
+Using a Huber loss function, Figure 5.1(c), Lhuber (f (x) − y) = , the solution is given by, max W (α, α∗ ) = max − ∗ ∗
+α,α α,α l 1 2
+
+(f (x) − y)2
+µ2 2
+
+for otherwise
+
+|f (x) − y| < µ
+
+µ|f (x) − y| −
+
+(5.17)
+
+1 2
+
+l
+
+l ∗ ∗ (αi − αi ) αj − αj
+
+xi , xj
+
+i=1 j=1
+
++
+i=1
+
+∗ (αi − αi ) yi −
+
+1 2C
+
+l 2 ∗ αi + (αi )2 µ, i=1
+
+(5.18)
+
+The resultant optimisation problems is, min
+β
+
+1 2
+
+l
+
+l
+
+l
+
+βi βj xi , xj −
+i=1 j=1 i=1
+
+βi yi +
+
+1 2C
+
+l 2 βi µ i=1
+
+(5.19)
+
+with constraints, −C ≤ βi ≤ C,
+l
+
+i = 1, . . . , l
+
+(5.20)
+
+βi = 0,
+i=1
+
+Chapter 5 Support Vector Regression x 1.0 3.0 4.0 5.6 7.8 10.2 11.0 11.5 12.7 y -1.6 -1.8 -1.0 1.2 2.2 6.8 10.0 10.0 10.0
+
+33
+
+Table 5.1: Regression Data
+
+and the regression function is given by Equations (56) and (66).
+
+5.1.4
+
+Example
+
+Consider the example data set in Table 5.1. The SVR solution for a laplace loss function (Figure 5.1(b)) with no additional capacity control is shown in Figure 5.2.
+
+Figure 5.2: Linear regression
+
+5.2
+
+Non Linear Regression
+
+Similarly to classiﬁcation problems, a non-linear model is usually required to adequately model data. In the same manner as the non-linear SVC approach, a non-linear mapping can be used to map the data into a high dimensional feature space where linear regression is performed. The kernel approach is again employed to address the curse of dimensionality. The non-linear SVR solution, using an -insensitive loss function,
+
+34 Figure 5.1(d), is given by,
+l ∗ ∗ αi (yi i=1
+
+Chapter 5 Support Vector Regression
+
+max W (α, α ) = max ∗ ∗
+α,α α,α
+
+1 − )−αi (yi + )− 2
+
+l
+
+l ∗ ∗ (αi − αi ) αj − αj K (xi , xj )
+
+i=1 j=1
+
+(5.21) with constraints,
+∗ 0 ≤ αi , αi ≤ C, l ∗ (αi − αi ) = 0. i=1
+
+i = 1, . . . , l
+
+(5.22)
+
+Solving Equation 5.21 with constraints Equation 5.22 determines the Lagrange multi∗ pliers, αi , αi , and the regression function is given by,
+
+f (x) =
+SVs
+
+(¯ i − αi ) K (xi , x) + ¯ α ¯∗ b
+
+(5.23)
+
+where
+l
+
+w, x = ¯ ¯ = −1 b 2
+i=1 l
+
+∗ (αi − αi ) K (xi , xj )
+
+(5.24)
+
+∗ (αi − αi ) (K (xi , xr ) + K (xi , xs )) . i=1
+
+As with the SVC the equality constraint may be dropped if the Kernel contains a bias term, b being accommodated within the Kernel function, and the regression function is given by,
+l
+
+f (x) =
+i=1
+
+(¯ i − αi ) K (xi , x) . α ¯∗
+
+(5.25)
+
+The optimisation criteria for the other loss functions of Chapter 5.1 are similarly obtained by replacing the dot product with a kernel function. The -insensitive loss function is attractive because unlike the quadratic and Huber cost functions, where all the data points will be support vectors, the SV solution can be sparse. The quadratic loss function produces a solution which is equivalent to ridge regression, or zeroth order regularisation, where the regularisation parameter λ =
+1 2C .
+
+5.2.1
+
+Examples
+
+To illustrate some of the non-linear SVR solutions, various kernel functions were used to model the regression data in Table 5.1, with an -insensitive loss function ( = 0.5) and no additional capacity control. Figure 5.3 shows the SVR solution for a degree 2 polynomial, with the SV circled as before. The dotted line describes the -insensitive region around the solution (N.B. if all the data points lie within this region there will be
+
+Chapter 5 Support Vector Regression
+
+35
+
+zero error associated with the loss function). The result demonstrates that there are no support vectors within the -insensitive region. Figure 5.4 illustrates the SVR solution
+
+Figure 5.3: Polynomial Regression
+
+for a radial basis function with σ = 1.0. In this example the model is ﬂexible enough to model the function with zero error associated with the loss function, as is veriﬁed by the fact that all the data points lie on, or within, the -insensitive zone. Figure 5.5 shows the
+
+Figure 5.4: Radial Basis Function Regression
+
+SVR solution for a linear spline kernel. The resulting model is a piecewise cubic spline, and again due to the high capacity of this function it is able to model the data with zero loss function error, but notice that overﬁtting is controlled. Figure 5.6 shows the SVR solution for an inﬁnite B-spline kernel, which has a similar solution to the spline kernel except for the endpoints. Figure 5.7 shows the solution for an exponential RBF kernel, which is a piecewise linear spline. Although this model has a high capacity it shows sensible behaviour in the extremity regions.
+
+36
+
+Chapter 5 Support Vector Regression
+
+Figure 5.5: Spline Regression
+
+Figure 5.6: B-spline Regression
+
+Figure 5.7: Exponential RBF Regression
+
+5.2.2
+
+Comments
+
+In the regression method it is necessary to select both a representative loss function and any additional capacity control that may be required. These considerations must be based on prior knowledge of the problem and the distribution of the noise. In the
+
+Chapter 5 Support Vector Regression
+
+37
+
+absence of such information Huber’s robust loss function, Figure 5.1(c), has been shown to be a good alternative (Vapnik, 1995). Vapnik developed the -insensitive loss function as a trade-oﬀ between the robust loss function of Huber and one that enables sparsity within the SVs. However, its implementation is more computationally expensive and the -insensitive region can have drawbacks, as will be demonstrated in the next section.
+
+Chapter 6
+
+Regression Example: Titanium Data
+The example given here considers the titanium data (Dierckx, 1993) as an illustrative example of a one dimensional non-linear regression problem. There are three methods for controlling the regression model, the loss function, the kernel, and additional capacity control, C. The results shown in this chapter were obtained using an -insensitive loss function (e=0.05), with diﬀerent kernels and diﬀerent degrees of capacity control. Figure 6.1 illustrates the solution for a linear spline kernel and no additional capacity control. It is evident that the solution lies within the -insensitive region. Figure 6.2 illustrates
+
+Figure 6.1: Titanium Linear Spline Regression ( = 0.05, C = ∞)
+
+the solution for a B-spline kernel with no additional capacity control. This particular B-spline kernel would appear to be prone to oscillation when an -insensitive region is used, and hence the linear spline kernel, or an alternative loss function is to be preferred. Figure 6.3 illustrates the solution for a Gaussian RBF kernel (σ = 1.0) with no additional capacity control. It can be seen that the RBF is too wide to accurately model the data. Figure 6.4 illustrates the solution for a Gaussian RBF kernel (σ = 0.3) with no additional 39
+
+40
+
+Chapter 6 Regression Example: Titanium Data
+
+Figure 6.2: Titanium B-Spline Regression ( = 0.05, C = ∞)
+
+Figure 6.3: Titanium Gaussian RBF Regression ( = 0.05, σ = 1.0, C = ∞)
+
+capacity control. It can be seen that the RBF is now able to accurately model the data. However, this is at the expense of the introduction of oscillation, which is not penalised in the -insensitive region. Figure 6.5 illustrates the solution for an exponential RBF
+
+Figure 6.4: Titanium Gaussian RBF Regression ( = 0.05, σ = 0.3, C = ∞)
+
+kernel (σ = 0.3) with no additional capacity control. The corresponding solution is a piece-wise linear function and consequently oscillation is avoided. Figure 6.6 illustrates
+
+Chapter 6 Regression Example: Titanium Data
+
+41
+
+Figure 6.5: Titanium Exponential RBF Regression ( = 0.05, σ = 1.0, C = ∞)
+
+the solution for a degree 3 Fourier kernel with no additional capacity control. The solution suﬀers similar problems to the wide Gaussian RBF kernel in that the kernel cannot accurately model the data. Figure 6.7 illustrates the solution for a linear spline
+
+Figure 6.6: Titanium Fourier Regression ( = 0.05, degree 3, C = ∞)
+
+kernel, with additional capacity control, (C = 10). The extra capacity control renders the solution incapable of accurately modelling the peak in the data, in contrast to Figure 6.1. Figure 6.8 illustrates the solution for a B-spline kernel, with additional capacity control, (C = 10). The extra capacity control renders the solution incapable of accurately modelling the peak in the data, in contrast to Figure 6.2. The examples that have been shown here are not a representative set. The -insensitive region has been exaggerated for the purposes of illustration, and typically careful selection of additional capacity control with methods such as cross validation will be required. The -insensitive loss function may be an inappropriate choice for particular kernels causing the solution to oscillate within the -insensitive region.
+
+42
+
+Chapter 6 Regression Example: Titanium Data
+
+Figure 6.7: Titanium Linear Spline Regression ( = 0.05, C = 10)
+
+Figure 6.8: Titanium B-Spline Regression ( = 0.05, C = 10)
+
+6.1
+
+Applications
+
+SVR has been applied to some time series modelling problems (Mukherjee et al., 1997). Notably, (M¨ller et al., 1999) has achieved excellent results in applying SVR to one of u the data sets from the Santa Fe time series competition.
+
+Chapter 7
+
+Conclusions
+Support Vector Machines are an attractive approach to data modelling. They combine generalisation control with a technique to address the curse of dimensionality. The formulation results in a global quadratic optimisation problem with box constraints, which is readily solved by interior point methods. The kernel mapping provides a unifying framework for most of the commonly employed model architectures, enabling comparisons to be performed. In classiﬁcation problems generalisation control is obtained by maximising the margin, which corresponds to minimisation of the weight vector in a canonical framework. The solution is obtained as a set of support vectors that can be sparse. These lie on the boundary and as such summarise the information required to separate the data. The minimisation of the weight vector can be used as a criterion in regression problems, with a modiﬁed loss function. Future directions include: A technique for choosing the kernel function and additional capacity control; Development of kernels with invariances.
+
+43
+
+Appendix A
+
+Implementation Issues
+The resulting optimisation problems are dependent upon the number of training examples. As such, when this data is large methods have been proposed for speeding up the algorithm by decomposing the problem into smaller ones. Approximate (Stitson and Weston, 1996) and exact (Osuna et al., 1997) methods have been proposed. MATLAB implementations of the main support vector routines are shown below. Note that these routines are not optimised in any sense! Typically the quadratic matrix, H, is badly conditioned which can render quadratic program optimisers incapable of producing an accurate solution. To address this, a quick ﬁx of using zero order regularisation can be used, but too large a value will perturb the solution signiﬁcantly. (Note that this is the capacity control used in some of the SVR routines.)
+
+A.1
+
+Support Vector Classiﬁcation
+
+The optimisation problem can be expressed in matrix notation as, 1 min αT Hα + cT α x 2 where H = ZZ T , cT = (−1, . . . , −1) with constraints αT Y = 0, αi ≥ 0, i = 1, . . . , l. where   y1 x1 y1  .   . , Y =  . Z= .  .   . yl xl yl      (A.4) (A.3) (A.2) (A.1)
+
+The MATLAB implementation is given below: 45
+
+46
+
+Appendix A Implementation Issues
+
+function [ nsv , alpha , b0 ] = svc (X ,Y , ker , C ) % SVC Support Vector C l a s s i f i c a t i o n % % Usage : [ nsv alpha bias ] = svc (X ,Y , ker , C ) % % Parameters : X - Training inputs % Y - Training targets % ker - kernel functi o n % C - upper bound ( non - s e p a r a b l e case ) % nsv - number of support vectors % alpha - Lagrange M u l t i p l i e r s % b0 - bias term % % Author : Steve Gunn ( srg@ecs . soton . ac . uk ) if ( nargin <2 | nargin >4) % check correct number of a r g u m e n t s help svc else fprintf ( ’ Support Vector Classificat io n \ n ’) fprintf ( ’ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ n ’) n = size (X ,1); if ( nargin <4) C = Inf ; , end if ( nargin <3) ker = ’ linear ’; , end % C o n s t r u c t the Kernel matrix fprintf ( ’ Constructing ...\ n ’ ); H = zeros (n , n ); for i =1: n for j =1: n H (i , j ) = Y ( i )* Y ( j )* svkernel ( ker , X (i ,:) , X (j ,:)); end end c = - ones (n ,1); % Add small amount of zero order r e g u l a r i s a t i o n to % avoid problems when Hessian is badly c o n d i t i o n e d . H = H +1 e -10* eye ( size ( H )); % Set up the p a r a m e t e r s for the O p t i m i s a t i o n problem vlb = zeros (n ,1); vub = C * ones (n ,1); x0 = zeros (n ,1); neqcstr = nobias ( ker ); if neqcstr A = Y ’; , b = 0; else A = []; , b = []; end % Set the bounds : alphas >= 0 % alphas <= C % The star t i n g point is [ 0 0 0 0] % Set the number of e q u a l i t y c o n s t r a i n t s (1 or 0) % Set the c o n s t r a i n t Ax = b
+
+% Solve the O p t i m i s a t i o n Problem fprintf ( ’ Optimising ...\ n ’ ); st = cputime ; [ alpha lambda how ] = qp (H , c , A , b , vlb , vub , x0 , neqcstr );
+
+Appendix A Implementation Issues
+fprintf ( ’ Execution time : %4.1 f seconds \ n ’ , cputime - st ); fprintf ( ’ Status : % s \ n ’ , how ); w2 = alpha ’* H * alpha ; fprintf ( ’| w0 |^2 : % f \ n ’ , w2 ); fprintf ( ’ Margin : % f \ n ’ ,2/ sqrt ( w2 )); fprintf ( ’ Sum alpha : % f \ n ’ , sum ( alpha ));
+
+47
+
+% Compute the number of Support Vectors epsilon = svtol ( alpha ); svi = find ( alpha > epsilon ); nsv = length ( svi ); fprintf ( ’ Support Vectors : % d (%3.1 f %%)\ n ’ ,nsv ,100* nsv / n ); % Implicit bias , b0 b0 = 0; % Explicit bias , b0 if nobias ( ker ) ~= 0 % find b0 from average of support vectors on margin % SVs on margin have alphas : 0 < alpha < C svii = find ( alpha > epsilon & alpha < ( C - epsilon )); if length ( svii ) > 0 b0 = (1/ length ( svii ))* sum ( Y ( svii ) - H ( svii , svi )* alpha ( svi ).* Y ( svii )); else fprintf ( ’ No support vectors on margin - cannot compute bias .\ n ’ ); end end end
+
+Listing A.1: Support Vector Classiﬁcation MATLAB Code
+
+A.2
+
+Support Vector Regression
+
+The optimisation problem for an -insensitive loss function can be expressed in matrix notation as, 1 min xT Hx + cT x x 2 where H= with constraints
+∗ x · (1, . . . , 1, −1, . . . , −1) = 0, αi , αi ≥ 0, i = 1, . . . , l.
+
+(A.5) α α∗
+
+XX T −XX T
+
+−XX T XX T
+
+, c=
+
+ε+Y ε−Y
+
+, x=
+
+(A.6)
+
+(A.7)
+
+where
+
+  x1 y1  .   . X =  . , Y =  .  .   . xl yl
+
+
+
+    (A.8)
+
+48 The MATLAB implementation is given below:
+
+Appendix A Implementation Issues
+
+function [ nsv , beta , bias ] = svr (X ,Y , ker ,C , loss , e ) % SVR Support Vector R e g r e s s i o n % % Usage : [ nsv beta bias ] = svr (X ,Y , ker ,C , loss , e ) % % Parameters : X - Training inputs % Y - Training targets % ker - kernel functi o n % C - upper bound ( non - s e p a r a b l e case ) % loss - loss function % e - insensitivity % nsv - number of support vectors % beta - D i f f e r e n c e of L a g r a n g e M u l t i p l i e r s % bias - bias term % % Author : Steve Gunn ( srg@ecs . soton . ac . uk )
+
+if ( nargin < 3 | nargin > 6) % check correct number of a r g u m e n t s help svr else fprintf ( ’ Support Vector Regressing ....\ n ’) fprintf ( ’ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ n ’) n = size (X ,1); if ( nargin <6) e =0.0; , end if ( nargin <5) loss = ’ eInsensitive ’; , end if ( nargin <4) C = Inf ; , end if ( nargin <3) ker = ’ linear ’; , end % C o n s t r u c t the Kernel matrix fprintf ( ’ Constructing ...\ n ’ ); H = zeros (n , n ); for i =1: n for j =1: n H (i , j ) = svkernel ( ker , X (i ,:) , X (j ,:)); end end % Set up the p a r a m e t e r s for the O p t i m i s a t i o n problem switch lower ( loss ) case ’ einsensitive ’ , Hb = [ H - H ; - H H ]; c = [( e * ones (n ,1) - Y ); ( e * ones (n ,1) + Y )]; vlb = zeros (2* n ,1); % Set the bounds : alphas >= 0 vub = C * ones (2* n ,1); % alphas <= C x0 = zeros (2* n ,1); % The s t a r t i n g point is [ 0 0 0 0] neqcstr = nobias ( ker ); % Set the number of e q u a l i t y c o n s t r a i n t s (1 or 0) if neqcstr A = [ ones (1 , n ) - ones (1 , n )]; , b = 0; % Set the c o n s t r a i n t Ax = b else A = []; , b = []; end case ’ quadratic ’ , Hb = H + eye ( n )/(2* C ); c = -Y; vlb = -1 e30 * ones (n ,1);
+
+Appendix A Implementation Issues
+vub = 1 e30 * ones (n ,1); x0 = zeros (n ,1 ) ; neqcstr = nobias ( ker ); if neqcstr A = ones (1 , n ); , b = 0; else A = []; , b = []; end otherwise , disp ( ’ Error : Unknown end % % % % Add small amount of avoid problems when Rank is always less Note that adding to
+
+49
+
+% The s t a r t i n g point is [ 0 0 0 0] % Set the number of e q u a l i t y c o n s t r a i n t s (1 or 0) % Set the c o n s t r a i n t Ax = b
+
+Loss Function \ n ’ );
+
+zero order r e g u l a r i s a t i o n to Hessian is badly c o n d i t i o n e d . than or equal to n . much reg will peturb s o l u t i o n
+
+Hb = Hb +1 e -10* eye ( size ( Hb )); % Solve the O p t i m i s a t i o n Problem fprintf ( ’ Optimising ...\ n ’ ); st = cputime ; [ alpha lambda how ] = qp ( Hb , c , A , b , vlb , vub , x0 , neqcstr ); fprintf ( ’ Execution time : %4.1 f seconds \ n ’ , cputime - st ); fprintf ( ’ Status : % s \ n ’ , how ); switch lower ( loss ) case ’ einsensitive ’ , beta = alpha (1: n ) - alpha ( n +1:2* n ); case ’ quadratic ’ , beta = alpha ; end fprintf ( ’| w0 |^2 : % f \ n ’ , beta ’* H * beta ); fprintf ( ’ Sum beta : % f \ n ’ , sum ( beta )); % Compute the number of Support Vectors epsilon = svtol ( abs ( beta )); svi = find ( abs ( beta ) > epsilon ); nsv = length ( svi ); fprintf ( ’ Support Vectors : % d (%3.1 f %%)\ n ’ ,nsv ,100* nsv / n ); % Implicit bias , b0 bias = 0; % Explicit bias , b0 if nobias ( ker ) ~= 0 switch lower ( loss ) case ’ einsensitive ’ , % find bias from average of support vectors with i n t e r p o l a t i o n error e % SVs with i n t e r p o l a t i o n error e have alphas : 0 < alpha < C svii = find ( abs ( beta ) > epsilon & abs ( beta ) < ( C - epsilon )); if length ( svii ) > 0 bias = (1/ length ( svii ))* sum ( Y ( svii ) - e * sign ( beta ( svii )) - H ( svii , svi )* beta ( svi )); else fprintf ( ’ No support vectors with interpolation error e - cannot compute bias .\ n ’ ); bias = ( max ( Y )+ min ( Y ))/2; end
+
+50
+case ’ quadratic ’ , bias = mean ( Y - H * beta ); end end end
+
+Appendix A Implementation Issues
+
+Listing A.2: Support Vector Regression MATLAB Code
+
+Appendix B
+
+MATLAB SVM Toolbox
+A MATLAB toolbox implementing SVM is freely available for academic purposes:
+
+1. Download it from: http://www.isis.ecs.soton.ac.uk/resources/svminfo/ 2. Extract the tar ﬁle svm.tar under the matlab toolbox directory. 3. Add .../matlab/toolbox/svm to your MATLAB path. 4. Type help svm at the MATLAB prompt for help.
+
+The two main user interfaces are for 2D classiﬁcation and 1D regression (uiclass and uiregress respectively).
+
+51
+
+Bibliography
+M. A. Aizerman, E. M. Braverman, and L. I. Rozono´r. Theoretical foundations of the e potential function method in pattern recognition learning. Automation and Remote Control, 25:821–837, 1964. N. Aronszajn. Theory of reproducing kernels. Trans. Amer. Math. Soc., 686:337–404, 1950. R.E. Bellman. Adaptive Control Processes. Princeton University Press, Princeton, NJ, 1961. V. Blanz, B. Sch¨lkopf, H. B¨lthoﬀ, C. Burges, V. Vapnik, and T. Vetter. Comparison o u of view–based object recognition algorithms using realistic 3D models. In C. von der Malsburg, W. von Seelen, J. C. Vorbr¨ggen, and B. Sendhoﬀ, editors, Artiﬁcial Neural u Networks — ICANN’96, pages 251 – 256, Berlin, 1996. Springer Lecture Notes in Computer Science, Vol. 1112. C. Cortes and V. Vapnik. Support vector networks. Machine Learning, 20:273 – 297, 1995. P. Dierckx. Curve and Surface Fitting with Splines. Monographs on Numerical Analysis. Clarendon Press, Oxford, 1993. F. Girosi. An equivalence between sparse approximation and Support Vector Machines. A.I. Memo 1606, MIT Artiﬁcial Intelligence Laboratory, 1997. S.R. Gunn, M. Brown, and K.M. Bossley. Network performance assessment for neurofuzzy data modelling. In X. Liu, P. Cohen, and M. Berthold, editors, Intelligent Data Analysis, volume 1208 of Lecture Notes in Computer Science, pages 313–323, 1997. J. Hadamard. Lectures on the Cauchy Problem in Linear Partial Diﬀerential Equations. Yale University Press, 1923. N. Heckman. The theory and application of penalized least squares methods or reproducing kernel hilbert spaces made easy, 1997. M. Minoux. Mathematical Programming: Theory and Algorithms. John Wiley and Sons, 1986. 53
+
+54
+
+BIBLIOGRAPHY
+
+S. Mukherjee, E. Osuna, and F. Girosi. Nonlinear prediction of chaotic time series using a support vector machine. In J. Principe, L. Gile, N. Morgan, and E. Wilson, editors, Neural Networks for Signal Processing VII — Proceedings of the 1997 IEEE Workshop, New York, 1997. IEEE. K.-R. M¨ller, A. Smola, G. R¨tsch, B. Sch¨lkopf, J. Kohlmorgen, and V. Vapnik. Preu a o dicting time series with support vector machines. In B. Sch¨lkopf, C.J.C. Burges, and o A.J. Smola, editors, Advances in Kernel Methods — Support Vector Learning, pages 243–254, Cambridge, MA, 1999. MIT Press. Short version appeared in ICANN’97, Springer Lecture Notes in Computer Science. E. Osuna, R. Freund, and F. Girosi. An improved training algorithm for support vector machines. In J. Principe, L. Gile, N. Morgan, and E. Wilson, editors, Neural Networks for Signal Processing VII — Proceedings of the 1997 IEEE Workshop, pages 276 – 285, New York, 1997. IEEE. T. Poggio, V. Torre, and C. Koch. Computational vision and regularization theory. Nature, 317:314–319, 1985. A. J. Smola. Regression estimation with support vector learning machines. Master’s thesis, Technische Universit¨t M¨nchen, 1996. a u A. J. Smola and B. Sch¨lkopf. On a kernel–based method for pattern recognition, o regression, approximation and operator inversion. Algorithmica, 22:211–231, 1998. Technical Report 1064, GMD FIRST, April 1997. M. O. Stitson and J. A. E. Weston. Implementational issues of support vector machines. Technical Report CSD-TR-96-18, Computational Intelligence Group, Royal Holloway, University of London, 1996. V. Vapnik. The Nature of Statistical Learning Theory. Springer, N.Y., 1995. ISBN 0-387-94559-8. V. Vapnik. Statistical Learning Theory. Springer, N.Y., 1998. V. Vapnik, S. Golowich, and A. Smola. Support vector method for function approximation, regression estimation, and signal processing. In M. Mozer, M. Jordan, and T. Petsche, editors, Advances in Neural Information Processing Systems 9, pages 281– 287, Cambridge, MA, 1997. MIT Press. G. Wahba. Spline Models for Observational Data. Series in Applied Mathematics, Vol. 59, SIAM, Philadelphia, 1990.
+

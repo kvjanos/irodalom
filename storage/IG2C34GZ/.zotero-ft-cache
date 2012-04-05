@@ -1,0 +1,163 @@
+Chapter 21
+Image Correlation Spectroscopy to Deﬁne Membrane Dynamics
+Jeremy Bonor and Anja Nohe
+Abstract
+Fluorescent imaging techniques are powerful tools that aid in studying protein dynamics and membrane domains and allow for the visualization and data collection of such structures as caveolae and clathrincoated pits, key players in the regulation of cell communication and signaling. The family of image correlation spectroscopy (FICS) provides a unique way to determine details about aggregation, clustering, and dynamics of proteins on the plasma membrane. FICS consists of many imaging techniques which we will focus on including image correlation spectroscopy, image cross-correlation spectroscopy and dynamic image correlation spectroscopy. Image correlation spectroscopy is a tool used to calculate the cluster density, which is the average number of clusters per unit area along with data to determine the degree of aggregation of plasma membrane proteins. Image cross-correlation spectroscopy measures the colocalization of proteins of interest. Dynamic image correlation spectroscopy can be used to analyze protein aggregate dynamics on the cell surface during live-cell imaging in the millisecond to second range. Key words: Fluorescence, imaging, plasma membrane, caveolae, clathrin-coated pits, family of image correlation spectroscopy, confocal microscopy, protein dynamics.
+
+1. Introduction
+Cell membranes are structurally and dynamically quite heterogeneous (1–5). They are organized in domains in which certain proteins tend to exist as complexes or at higher concentrations. These domains include clathrin-coated pits, to which membrane proteins are thought to associate prior to internalization; caveolae, in which certain proteins are believed to exist prior to signaling;
+
+D.B. Papkovsky (ed.), Live Cell Imaging, Methods in Molecular Biology 591, DOI 10.1007/978-1-60761-404-3 21, © Humana Press, a part of Springer Science+Business Media, LLC 2010
+
+353
+
+354
+
+Bornor and Nohe
+
+and lipid rafts, where the lipid induced phase separation appears to selectively segregate speciﬁc signaling complexes. Current protein models predict that some proteins are trapped in domains where they can move rapidly in that area, but are released slower from the region. This data points toward the existence of membrane domains that are important for triggering speciﬁc event signaling. Signal transduction events depend on interactions of proteins in the membrane (6–13). It is crucial to understand what intermolecular interactions exist between proteins. Additionally, it is necessary to understand the aggregation and clustering of signaling molecules and receptors in these membrane domains. The family of image correlation spectroscopy (FICS) is a valuable powerful tool used to study these dynamics (14–19). The FICS consists of several imaging techniques, and in this chapter we will review three of them: image correlation spectroscopy (ICS), image cross-correlation spectroscopy (ICCS) and dynamic image correlation spectroscopy (DICS). ICS is a tool used to calculate the cluster density (CD), which is the average number of clusters per unit area. Additionally, ICS is used to determine the degree of aggregation (DA), which is the differential between cohesion within aggregates and adhesion between proteins of the plasma membrane proteins. ICCS allows one to measure colocalization of proteins of interest. DICS is used to analyze protein aggregate dynamics on the cell surface during live-cell imaging in the millisecond to second range. FICS relies on three basic principles described here. First is collection of a large number of high-quality, high-magniﬁed ﬂuorescent images from different cells or objects of interest in which cellular conditions are experimentally controlled (usually 40). To obtain statistically signiﬁcant data, each experiment should be performed at least three times for each experimental condition. Second, a computational analysis of the images is performed to extract the quantitative information. In this step, the two-dimensional (2D) correlation function is calculated. This function is subsequently ﬁt to a known function to extract the desired parameters. During this process, background noise, white noise, aperture, and image size must be accounted. In the third step, the results are statistically analyzed based on ﬁtted parameters, such as the correlation function amplitude and beam width, and derived parameters including the number density or fractions of associations. We use z scores, t-tests, and the F test to sort, evaluate, and compare each set of parameters. Then the data is evaluated and interpreted in the context of the biological system of interest (Fig. 21.1). This protocol describes the general method and process of FICS analysis. We also describe the protocol for analyzing the protein distribution of BRII receptor on the plasma membrane of C2C12 cells.
+
+Imaging Membrane Dynamics
+
+355
+
+Fig. 21.1. The basic outline of steps required to get the data that is needed.
+
+2. Materials
+2.1. Plasma Membrane Protein Labeling
+
+1. Blocking peptides against BRII (Santa Cruz). 2. Polyclonal murine primary antibodies directed against BRII (Santa Cruz). 3. Secondary antibody, donkey antibody to goat immunoglobulin G (anti-goat IgG) conjugated with Rhodamine Red-x (RRX) labeled or Alexa Fluor 488 (Molecular Probes). 4. Plasmid DNA containing the HA-BRII (P.K.’s laboratory) (Nohe et al., 2002; (20)).
+
+2.2. Cell Culture
+
+1. C2C12 cells (American Tissue Culture Collection). 2. Dulbecco’s modiﬁed Eagle’s medium with 4 mM Lglutamine, 1.5 g/L sodium bicarbonate, and 4.5 g/L glucose (DMEM) (Invitrogen).
+
+356
+
+Bornor and Nohe
+
+3. Fetal bovine serum (FBS) (Invitrogen). 4. Penicillin–streptomycin 100× (penicillin, 10,000 units/mL; streptomycin, 10,000 mg/mL) (Fisher Scientiﬁc). 5. Cell Culture Medium. Add 50 mL FBS and 5 mL of penicillin–streptomycin to 445 mL DMEM under sterile conditions, then sterile ﬁlter; store at 4◦ C. Warm media to 37◦ C before use.
+2.3. Fixation and Mounting
+
+1. Blocking Solution. Dissolve 0.3 g of bovine serum albumin (BSA) (Fisher) to 10 mL of phosphate-buffered saline (PBS, 8 g NaCl, 0.2 g KCl, 1.44 g Na2 HPO4 , 0.24 g KH2 PO4 ; ﬁll to 1 L and adjust pH to 7.2) for a ﬁnal concentration of 3% BSA in PBS. 2. Lipofectamine 2000 (Invitrogen). 3. Ice-cold PBS (PBS held on ice). 4. Methanol (Fisher) stored in –20◦ C freezer. 5. Acetone (Fisher) stored in –20◦ C freezer. 6. 4.4% paraformaldehyde. Dissolve 4.4 g paraformaldehyde (Fisher) in 100 mL ddH2 O and add concentrated NaOH until it dissolves. Aliquot 9 mL into 15-mL conical tubes then freeze. To use thaw tube, add 1 mL of 10× PBS and adjust pH to 7.2 with HCl (Fisher). 7. Primary Antibody Labeling Solution. Add the Polyclonal murine primary antibodies directed against BRII (Santa Cruz) to 100 μL of blocking solution to the desired concentration. 8. Secondary Antibody Labeling Solution. Add the secondary antibody donkey antibody to goat immunoglobulin G to blocking solution for the ﬁnal concentration desired. 9. Mounting Medium. Mix 20 g Gelvatol or Celvol 205 (Celanese Chemicals) in 80 mL of 140 mM NaCl (Fisher) and 20 mL of 10 mM sodium phosphate buffer (pH 7.2) and stir solution for 16 h at room temperature. Add 40 mL of glycerol (Fisher) and stir for an additional 16 h. Place solution in two 50-mL centrifuge tubes and centrifuge at 4000g. Remove the supernatant (pH between 6 and 7) and store in 10-mL aliquots in the freezer (–20◦ C).
+
+2.4. Equipment
+
+1. Confocal microscope (see Note 1). 2. ImageJ for image analysis (NIH, free download at http://rsb.info.nih.gov/ij/). 3. Incubator (set at 37◦ C, 5% CO2 ). 4. Laminar ﬂow culture hood.
+
+Imaging Membrane Dynamics
+
+357
+
+5. PC with software for Fourier transforms, ﬁtting, and plotting. 6. SigmaPlot (Systat Software Inc.) or Origin (OriginLab) (for plotting data).
+
+3. Methods
+3.1. Cell Culture and Preparation of Fixed Cells
+
+If data for short-term analysis of receptor dynamics are acquired in the time range from 1 to 2 h, live cells are used. For the purpose of short-term analysis, transfection allows for ﬂuorescently labeled proteins to be expressed in the membrane. For more long-term studies, it is far simpler to ﬁx cells at various time points of interest. Doing so allows for visualization by means of immunoﬂuorescence of the proteins of interest at a certain time point. For example, in monitoring of BRII on C2C12 cells, cells were ﬁrst ﬁxed with paraformaldehyde or acetone–methanol with a goat antibody against BRII and then ﬂuorescently labeled Alexa 488 donkey anti-goat IgG (see Note 2) (21, 22). The following directions are for culturing C2C12 cells and for ﬁxing these cells by acetone and methanol or with paraformaldehyde. 1. Place sterile glass coverslips in 60-mm dishes. 2. Suspend C2C12 cells in cell culture medium (∼5 × 105 cells per 2 mL of medium). 3. Place 2 mL of cell suspension into each dish (40% conﬂuence). 4. Grow the cells at 37◦ C in a humidiﬁed 5% CO2 to ∼60% conﬂuence (1–2 days).
+
+3.1.1. Cell Culture
+
+3.1.2. Fixation of Cells with Acetone and Methanol
+
+1. Aspirate medium and rinse plate with ice-cold PBS. 2. Add 2 mL of –20◦ C methanol. 3. Incubate for 5 min at –20◦ C. 4. Remove methanol. 5. Add 2 mL of –20◦ C acetone and incubate for 2 min on ice.
+
+3.1.3. Paraformaldehyde Fixation
+
+1. Remove media. 2. Wash three times with PBS. 3. Add 1 mL 4.4% paraformaldehyde ﬁxation solution and incubate for 30 min. 4. Wash three times with PBS.
+
+358
+
+Bornor and Nohe
+
+3.2. Labeling of Proteins on the Plasma Membrane
+
+1. Remove ﬁxative. 2. Add 1 mL of blocking solution. 3. Incubate for 30 min at room temperature. 4. Add 100 μL of primary antibody labeling solution to the coverslip. 5. Incubate cells with the solution for 30 min at room temperature. 6. Wash cells three times with PBS. 7. Add 100 μL of secondary antibody labeling solution to the coverslip. 8. Incubate cells with the solution for 30 min at room temperature. 9. Wash cells three times with PBS. 10. Mount coverslips on slides with mounting medium.
+
+3.3. Transfection
+
+1. Add DNA plasmid HA-BRII (∼2 μL depending on purity and concentration) to DMEM (250 μL). Flip to mix. 2. Mix lipofectamine (10 μL) with DMEM (250 μL) and set for 5 min (no more than 25 min). 3. Place 2 mL of media in each dish. 4. Mix the solutions, DNA from step 1 and the lipofectamine from step 2 set for 20 min (stable for up to 6 h). 5. Add mixture (500 μL) from step 4 to dish. 6. Incubate for ∼ 4 h (depending on cell survival rate).
+
+3.4. Labeling
+
+One must ensure that all proteins of interest on the plasma membrane are labeled (see Note 3). To minimize problems arising from insufﬁciently labeling the antibody, concentration must be optimized to ensure that all protein-binding sites are saturated with the antibodies directed against this site. The most reliable method of optimal antibody concentrations is determined by comparing the ﬂuorescence intensity as a function of concentration from the measured cluster density. The observed cluster density will level off to a constant value at the point of saturation; at higher concentrations the intensity may increase because of nonspeciﬁc binding (Fig. 21.2). We usually select cells that are spread out on the glass surface to allow for the collection of images of ﬂat regions of the plasma membrane that are far away from the cell nucleus and organelles. Additionally, we select cells that express various concentrations of our protein of interest and compare the data obtained by FICS analysis with the expression level of our protein. For bone
+
+3.5. Image Acquisition
+3.5.1. Determine Cells to Image
+
+Imaging Membrane Dynamics
+
+359
+
+Fig. 21.2. Sample graph of normalized expression levels verses the concentration of protein of interest. (1) Antibody concentration is too low to saturate all binding sites. (2) Optimal antibody concentration with all sites saturated showing the best expression. (3) Nonspeciﬁc binding of the antibody.
+
+morphogenetic proteins (BMP) receptors, our data showed no signiﬁcant differences between the expression level of the receptors and the cluster density. However, for new proteins histogram analysis should be performed. By plotting the results of the ICS analysis versus the expression level of receptors, the inﬂuence of overexpression or protein concentration can be determined.
+3.5.2. Image Collection
+
+1. Select cells with representative labeling. 2. Collect high magniﬁcation images from ﬂat regions of the cell membrane, far away from the nucleus or organelles (Fig. 21.3) and ensure that the membrane does not connect to neighboring cells. For the images to show contrast the size of each pixel should be matched to the size of the laser beam or the point spread function of the microscope. Typically images are collected at a magniﬁcation (or zoom factor) at which each pixel nominally has a resolution of ∼0.033 μm (see Note 4). 3. Acquire images at about 1 s per image to minimize photobleaching. DIC images can be collected as fast as needed. 4. In most cases a minimum of 40 images of different cells for each experimental condition is needed to obtain statistically signiﬁcant information. 5. Images that lack parts of the cell membrane or contain very high intensity clusters in only one part of the image are excluded from further analysis (see Note 5).
+
+360
+
+Bornor and Nohe
+
+Fig. 21.3. Image of C2C12 cell expressing BRII; membrane is ﬂat and the portion selected is far from the nucleus of the cell.
+
+6. Determine the background intensity by collecting an image with the shutter to the laser closed. This is a measure of the dark counts or noise of the system in the absence of the signal and is used for comparison to nonlabeled cells and for calculations of corrections. 7. Repeat each experiment at least three times.
+3.5.3. Image Analysis
+
+All the imaging techniques described have four basic processes. The ﬁrst is the calculation of the correlation function, the second involves using a 2D Gaussian function to ﬁt the correlation function, the third is ﬁnding the amplitude of the correlation function, and the fourth involves calculating the cluster density (ICS, DICS), percentage colocalization (ICCS), or diffusion and ﬂow coefﬁcients (DICS). Each of these techniques can be used to extract data after the images are analyzed by autocorrelation or cross-correlation functions. 1. Determine the autocorrelation function (in ImageJ click on FFT/FDMath). 2. Crop the correlation function around its highest amplitude to gain a 64 × 64 square. 3. Save this cropped image as “txt image” in ImageJ. 4. Import the “txt image” ﬁle into SigmaPlot (ﬁle import ∗.∗).
+
+Analysis of ICS Images by Autocorrelation Using ImageJ and SigmaPlot
+
+Imaging Membrane Dynamics
+
+361
+
+5. Edit the 3D Gaussian ﬁtting routine under statistics/regressionwizzard/3D/ Gaussian to match. 6. Perform Gaussian ﬁtting using Eq. [1] in SigmaPlot with the standard nonlinear regression routines that are available (see Notes 6 and 7). g(x, y) = g(0, 0) exp − x 2 + y2 w2 + g0 [1]
+
+7. Determine the amplitude of the autocorrelation function at the origin, g(0,0) (in SigmaPlot, scroll the plot until you ﬁnd the maximum in the center of the function). 8. Eliminate the contributions from white noise by subtracting the data from the three channels closest to zero, coordinates (0,0), (0,1), and (1,0) (in SigmaPlot, choose subtract) (see Note 8). 9. Calculate the cluster density per μm2 for individual images, according to the following equation (Eq. [2]): CD = Nc 1 ≈ 2 g(0, 0)πw μm2 [2]
+
+where Nc is an average measure of the number of clusters in the beam area (which is normalized to μm2 ).
+Analysis of ICCS and DICS Images by Cross-Correlation
+
+1. Open the image pairs in ImageJ. 2. Calculate the cross-correlation function of each pair separately. 3. Create the joint power spectrum of the images (in ImageJ click on the process heading and then choose FFT/FDMath), followed by a reverse transform to obtain the cross-correlation function. 4. Crop the correlation function around its highest amplitude to gain a 64 × 64 square. 5. Save this cropped image as “txt image” in ImageJ. 6. Import the “txt image” ﬁle into SigmaPlot (ﬁle import ∗.∗). 7. Search for the maximum of the function and ﬁt from there if the maximum is within about 10 pixels from the origin. If it is farther than that, reject the data. Perform Gaussian ﬁtting using Eq. [1] in SigmaPlot with the standard nonlinear regression routines that are available. 8. Determine the amplitude of the cross-correlation function at its maximum [called g(0,0)] (in SigmaPlot determine the maximum height).
+
+362
+
+Bornor and Nohe
+
+9. For ICCS and DICS experiments, calculate the density of clusters (per μm2 ) containing two different labeled proteins i and j, CDij , from a pair of images by dividing the amplitude of the cross-correlation function [gijt (0,0)] by the product of the amplitudes of the individual autocorrelation functions [git (0,0) and gjt (0,0)] according to the following equation:
+
+CDij =
+
+¯ gijt (0, 0; 0) Nijt = 2 2 git (0, 0; 0)gjt (0, 0; 0)πwi wi
+
+[3]
+
+10. For ICCS experiments, calculate the fraction of colocalization, F(i|j), from two pairs of images of the two proteins i and j according to the following equation:
+
+[F(i| j) =
+
+CDi jt gijt (0, 0; 0) = ] CDit g jt (0, 0; 0)πwi2
+
+[4]
+
+in which i and j are the two different proteins labeled and CDijt is the density of clusters of both molecules.
+3.6. Statistical Treatment of Obtained Data
+
+To ﬁnd the data that will hold signiﬁcance, we analyze as many images and correlation parameters as possible but at least 3 ∗ 40 images can reasonably be judged to be good quality. From one cell to another there can and will be signiﬁcant differences in membrane proteins, typically from about 20–30%. There are many cases in which one of the measured or ﬁtted parameters will signiﬁcantly skew data by artifacts, some of which include, for example, intracellular vesicles or antibody aggregates which may give rise to excessively bright or dark spots. To help eliminate such cases, we use a z score for each of the measured parameters [average intensity; correlation function amplitude, width, and offset]. ICS experiments allow us to apply the standard score [z score = (score – mean)/SD] to the calculated parameters (CD) and degree of aggregation. ICCS experiments data can be tested by means of F test. ICCS experiments test for the position of the maximum of the cross-correlation function and if it is within 10 pixels of the origin it is then acceptable. If the data from images have a maximum outside this region, the data from the image is rejected. If the maximum which arises from correlation of ﬂuctuations is separated by a distance greater than the average beam width the data from that image is also removed.
+
+Imaging Membrane Dynamics
+
+363
+
+4. Notes
+1. An inverted microscope conﬁguration allows measurements to be made on live cells grown on coverslips using oilimmersion microscope objectives from below. The numerical aperture will determine the optical resolution and the beam size, whereas the magniﬁcation of the objective will determine the ﬁeld of view. However, the image size or scan range of the laser can be controlled independently by the “zoom factor” of the confocal microscope. In our work, we used a zoom factor of 10 in the FluoView 300, which led to the parameters of laser beams of 0.35 μm radius, with pixel dimensions of 0.03 μm in images of 512 × 512 pixels. 2. The ﬁxation may interfere with membrane protein clustering. Therefore at least two different ﬁxatives should be used and compared to each other. 3. Labeling only a subtype of proteins will cause a difference in intensity from one cell to another that reﬂects the different concentrations of the proteins on the respective cell surfaces in different microenvironments. 4. This corresponds to oversampling of about tenfold and ensures that the intensities in neighboring pixels are correlated because they share contributions from some of the same molecules or clusters. This also ensures that the shape of the correlation function is reasonably accurate. 5. Images with varying topography will result in part of the cell to be out of focus or regions of the cell where there are contributions from cytoplasmic material rather than from cell surface receptors. 6. Information on ﬁtting can be obtained from the SigmaPlot Handbook. 7. Three ﬁtting variables are found. It is then possible to enter the function of choice and extract: g(0,0), w, and g0 . g(0,0) is the amplitude of the correlation function at the origin. The w is known to be the beam width, but serves as an indicator of the quality of the data. If w is within about 30% of the expected value in for our system it is 0.35 μm this data is valid. g0 is variable that measures the offset of the function. 8. Channel (0,0) should contain all the contributions from the white noise; we ﬁnd that data in all channels are also often affected. Data channel (1,1) is the least affected.
+
+364
+
+Bornor and Nohe
+
+References
+1. Abrami L, Fivaz M, van der Goot FG. (2000) Surface dynamics of aerolysin on the plasma membrane of living cells. Int J Med Microbiol. 290(4–5):363–7. 2. Abumrad NA, Sfeir Z, Connelly MA, Coburn C. (2000) Lipid transporters: membrane transport systems for cholesterol and fatty acids. Curr Opin Clin Nutr Metab Care. 3(4):255–62. 3. Barr FA, Shorter J. (2000) Membrane trafﬁc: do cones mark sites of ﬁssion? Curr Biol. 10(4):R141–4. 4. Basanez G. (2002) Membrane fusion: the process and its energy suppliers. Cell Mol Life Sci. 59(9):1478–90. 5. Bechinger B. (2000) Understanding peptide interactions with the lipid bilayer: a guide to membrane protein engineering. Curr Opin Chem Biol. 4(6):639–44. 6. Anderson RG, Jacobson K. (2002) A role for lipid shells in targeting proteins to caveolae, rafts, and other lipid domains. Science. 296(5574):1821–5. 7. Barnett-Norris J, Lynch D, Reggio PH. (2005) Lipids, lipid rafts and caveolae: their importance for GPCR signaling and their centrality to the endocannabinoid system. Life Sci. 77(14):1625–39. 8. Bathori G, Cervenak L, Karadi I. (2004) Caveolae -an alternative endocytotic pathway for targeted drug delivery. Crit Rev Ther Drug Carrier Syst. 21(2):67–95. 9. Brown DA, London E. (1998) Functions of lipid rafts in biological membranes. Annu Rev Cell Dev Biol. 14:111–36. 10. Cohen AW, Hnasko R, Schubert W, Lisanti MP. (2004) Role of caveolae and caveolins in health and disease. Physiol Rev. 84(4): 1341–79. 11. Dobrowsky RT. (2000) Sphingolipid signalling domains ﬂoating on rafts or buried in caves? Cell Signal. 12(2):81–90. 12. Fielding CJ, Fielding PE. (2004) Membrane cholesterol and the regulation of signal transduction. Biochem Soc Trans. 32(1):65–9. 13. Galbiati F, Razani B, Lisanti MP. (2001) Emerging themes in lipid rafts and caveolae. Cell. 106(4):403–11. 14. Brown CM, Roth MG, Henis YI, Petersen NO. (1999) An internalization-competent inﬂuenza hemagglutinin mutant causes the redistribution of AP-2 to existing coated pits and is colocalized with AP-2 in clathrin free clusters. Biochemistry.38(46): 15166–73. 15. Fire E, Brown CM, Roth MG, Henis YI, Petersen NO. (1997) Partitioning of proteins into plasma membrane microdomains. Clustering of mutant inﬂuenza virus hemagglutinins into coated pits depends on the strength of the internalization signal. J Biol Chem. 272(47):29538–45. 16. Nohe A, Petersen NO. (2004) Analyzing protein–protein interactions in cell membranes. Bioessays. 26(2):196–203. 17. Nohe A, Petersen NO. (2007) Image correlation spectroscopy. Sci STKE. 2007. DOI:10.1126/stke.4172007P17 417:l7. 18. Wiseman PW, Hoddelius P, Petersen NO, Magnusson KE. (1997) Aggregation of PDGF-beta receptors in human skin ﬁbroblasts: characterization by image correlation spectroscopy (ICS). FEBS Lett. 401(1): 43–8. 19. Wiseman PW, Petersen NO. (1999) Image correlation spectroscopy. II. Optimization for ultrasensitive detection of preexisting platelet-derived growth factor-beta receptor oligomers on intact cells. Biophys J. 76(2):963–77. 20. Nohe A, Hassel S, Ehrlich M, Neubauer F, Sebald W. and Knaus P. (2002). The mode of BMP receptor oligomerization determines different BMP-2 signaling pathways. J. Biol. Chem. 15:5330–8. 21. Nohe A, Keating E, Underhill TM, Knaus P, Petersen NO. (2003) Effect of the distribution and clustering of the type I A BMP receptor (ALK3) with the type II BMP receptor on the activation of signalling pathways. J Cell Sci. 116(16):3277–84. 22. Nohe A, Keating E, Underhill TM, Knaus P, Petersen NO. (2005) Dynamics and interaction of caveolin-1 isoforms with BMPreceptors. J Cell Sci. 118(3):643–50.
+

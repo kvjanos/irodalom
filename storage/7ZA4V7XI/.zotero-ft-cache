@@ -1,0 +1,215 @@
+REVIEWS
+84. Denk, W., Piston, D. W. & Webb, W. W. in Handbook of Biological Confocal Microscopy (ed. Pawley, J. B.) 445–458 (Plenum Press, New York, 1995). 85. Steyer, J. A. & Almers, W. A real-time view of life within 100 nm of the plasma membrane. Nature Rev. Mol. Cell Biol. 2, 268–275 (2001). 86. Levin, M. H., Haggie, P. M., Vetrivel, L. & Verkman, A. S. Diffusion in the endoplasmic reticulum of an aquaporin-2 mutant causing human nephrogenic diabetes insipidus. J. Biol. Chem. 276, 21331–21336 (2001). 87. Lippincott–Schwartz, J. et al. in Green Fluorescent Proteins (eds Sullivan, K. F. & Kay, S. A.) 261–281 (Academic Press, San Diego, 1999).
+
+Online links
+DATABASES The following terms in this article are linked online to: LocusLink: http://www.ncbi.nlm.nih.gov/LocusLink/ Arf1 | HMG17 | lamin-B receptor | MAPK | Sar1 | Sec13 | Sec23 | Sec24 | SF2 | TBP Protein Data Bank: http://www.rcsb.org/pdb/ DsRed | GFP | YFP Saccharomyces Genome Database: http://www.yeastgenome.org/ Fus3 | Ste5 Access to this interactive links box is free online.
+
+REVIEW
+
+4D imaging to assay complex dynamics in live specimens
+Daniel Gerlich and Jan Ellenberg
+A full understanding of cellular dynamics is often difficult to obtain from time-lapse microscopy of single optical sections. New microscopes and image-processing software are now making it possible to rapidly record three-dimensional images over time. This four-dimensional imaging allows precise quantitative analysis and enhances visual exploration of data by allowing cellular structures to be interactively displayed from many angles. It has become a key tool for understanding the complex organization of biological processes in live specimens.
+
+Following the advent of indirect immunofluorescence during the 1960s, fluorescence microscopy has become an indispensable tool for localizing proteins in fixed specimens, and it often complements in vitro analyses of molecular mechanisms. The recent availability of a wealth of new vital markers for fluorescence microscopy1 also allows defined molecular species to be conveniently labelled and, therefore, molecular assays to be carried out in live cells. In particular, green fluorescent protein (GFP) can be used to visualize virtually any protein in live cells2, and a large number of GFP variants are now available, which have different spectral properties 3 and allow simultaneous detection of multiple tagged proteins4 (see also the review on page S1 of this supplement). When highly dynamic and spatially complex structures, such as live cells and organisms, are imaged, a more complete representation is achieved by recording the data in three spatial dimensions over time (four-dimensional (4D) imaging)5–10. This generates complex data, typically consisting of thousands of individual image slices, which can occupy several gigabytes of storage space per experiment.
+| SEPTEMBER 2003
+
+Such data require dedicated computational tools for their quantitative analysis. Here, we review typical 4D acquisition systems, important considerations for 4D experiments, and image-processing procedures for visualization and quantitation; in addition, we highlight the applications of this emerging approach in cell biology.
+Acquiring 4D sequences
+
+General considerations for 4D imaging. The fundamental consideration for any 4D live-cell imaging device is to keep the specimen alive during the acquisition of 100–10,000 images over a long period. A suitable and stable environment has to be provided, ensuring a constant temperature and a stably buffered culture medium. After this, the other significant concern in 4D imaging is the limited number of photons available to acquire fluorescence images from each cell. This is due to the limited number of fluorescent molecules that can be introduced into a cell at physiological concentrations and the limited photon yield before oxidation — which terminates fluorescence — for each fluorophore. Excessive illumination will lead to loss of
+
+signal by photobleaching and is toxic for cells (see PHOTOTOXICITY). Therefore, excitation light is typically kept to a minimum in 4D experiments, which frequently results in a suboptimal signal-to-noise ratio and a lower spatial resolution when compared with images of fixed specimens. So, for each biological application, it is crucial to find a suitable compromise between sufficient, but not toxic, illumination, spatial resolution in the x, y and z axes, temporal resolution and the signal-to-noise ratio, so that the maximum number of acceptable images can be acquired before the specimen is completely photobleached or damaged. In some cases, a single z slice (2D time-lapse recording) can yield the best results — for example, when the structure of interest is flat and when there are no marked deformations along the z axis during the experiment. In this case, the lower number of frames in 2D time-lapse imaging would yield a better signal-to-noise ratio and a better time resolution, making it favourable to 4D imaging. Furthermore, when imaging dynamic processes in 4D, each of these parameters might change during the experiment and should be adjusted interactively. A good illustration of this is 4D imaging of chromosome dynamics in mitotic cells (FIG. 1). For such an experiment, the time lapse would need to be shortened during more dynamic phases, such as congression — the rapid movement of chromosomes to the spindle equator in prometaphase — and then prolonged during the stable metaphase orientation. The number of z slices necessary is low in prophase, when the cell is still flatly attached to the substrate, and is increased when it rounds up in metaphase (see the side view in FIG. 1d,e). In addition, 4D experiments often run for hours or days to record a biological process such as one cell cycle. Therefore, automatic 4D recording with application protocols on 4D microscopes that can autofocus, track cell movements and revisit multiple-stage locations to follow several cells in parallel can markedly increase throughput and reproducibility of 4D imaging. Fluorescence microscopes for 4D imaging. The main difference to conventional epifluorescence microscopy is that 4D imaging requires rapid and reproducible sectioning along the optical axis (z axis). Ideally, the acquisition time for each z stack should be small compared with the time lapse between the acquisition of individual stacks to avoid movements within each 3D data set. In addition, the z positions have to be highly reproducible over time, through many stacks, to avoid drifts. Z stepping (the movement
+
+S14
+
+www.nature.com/focus/cellbioimaging
+
+REVIEWS
+from one optical section to the next) is achieved by either moving the specimen with a z-scanning stage, or by moving the microscope objective with a high-precision motor (piezo-stepper). To use the limited number of photons most efficiently, it is crucial to maximize efficiency of light collection and the sensitivity on 4D-imaging systems. This means that all optical components should be optimized to transmit the emission wavelengths of the desired fluorophores. Another important aspect of 4D imaging is the resolution along the z axis, which, in light microscopes, is about threefold lower than resolution along the x and y axes; this causes anisotropy in the recorded 3D image. Two alternative microscopy techniques are routinely used for the acquisition of 4D images with optimized z resolution. First, widefield fluorescence deconvolution microscopes homogeneously illuminate the whole specimen and grab the entire image simultaneously on a charge-coupled device (CCD) camera. Image stacks are then processed using iterative algorithms that assign out-offocus light back to the fluorescent object it came from in the correct focal plane. In this manner, deconvolution can yield high-resolution 3D information from widefield images9,11. By contrast, confocal laser-scanning microscopes excite the fluorophore by moving a focused laser beam line-by-line over the specimen and record each image pixel sequentially on a point detector — the photomultiplier tube. A confocal aperture in front of the detector rejects out-of-focus light before it reaches the detector and confocal stacks therefore immediately yield 3D images with good axial resolution 12. Deconvolution and confocal microscopes both have their specific advantages and disadvantages, which depend on the specific biological application (TABLE 1).
+Revealing hidden structure
+
+which would obscure the vesicle with its bright signal14. In both situations, the undesired signal can be removed specifically before the start of a time-lapse experiment on a confocal microscope by using a technique that is referred to as selective photobleaching15. By exposing selected sample regions to very
+a
+z y x
+
+high laser intensity, undesired background fluorescence can be removed13,14. This technique works only when the marker is bound stably to the structure of interest over the time course of the experiment, so that equilibration with the bleached region is prevented.
+
+Time
+
+b
+Raw image Filtered
+
+z
+
+Time
+
+c
+
+Projection Maximum intensity Mean intensity
+
+Time
+
+Time
+
+d
+
+Volume rendering Top view Side view
+
+y z x
+
+y z
+
+Time
+
+x
+
+Time
+
+e
+
+Surface reconstruction Top view Side view
+
+GFP-fusion proteins are commonly used as markers to highlight cellular structures. However, in the steady-state situation of a live cell, proteins are generally not restricted entirely to their target compartment (for example, the kinetochore, a protein complex that mediates binding of microtubules to chromosomes during mitosis) but a significant fraction can be present as an unbound pool (for example, in the cytoplasm)13. This might result in a diffuse background that can entirely mask the structure of interest. Alternatively, the same protein that marks a small structure of interest, such as a vesicle, can also localize predominantly to larger structures such as the Golgi apparatus,
+
+y z x
+
+y z
+
+Time
+
+x
+
+Time
+
+Figure 1 | Acquisition and processing of four-dimensional image data. a | Schematic of 4D image acquisition. A normal rat kidney (NRK) cell, which is expressing histone 2B (H2B) tagged with cyanfluorescent protein (CFP) to allow visualization of chromatin, was imaged during mitosis. Selected stacks are shown at prophase, prometaphase and metaphase (from left to right). The original 4D image size was 512*512*18*36*3*12 (x, y, z, time, channels, bit depth; size units are in pixels), which corresponds to 764 megabytes and 1944 slices. b | The gallery shows a subset (8%) of all of the image slices from a. Raw images are filtered by using anisotropic-diffusion filtering to selectively remove background noise without degrading the image. c | Maximum and mean intensity projections of filtered image stacks from a. d | Volume rendering from different viewing angles. Rendering was performed on stacks with 72 z-slices, which were interpolated from the 18 z-slices of the original stacks. e | Rendered surface reconstructions. For animated display, see Movie 1 online.
+
+IMAGING IN CELL BIOLOGY
+
+SEPTEMBER 2003 | S 1 5
+
+REVIEWS
+bias quantification of 4D images need to be considered. A first step in 4D image analysis is the removal of any signal that does not originate from the specimen (‘noise’). Noise is generated by fluctuations in illumination (laser/arc-lamp intensity) and, to a lesser degree, by thermal fluctuations inside CCD cameras or photomultiplier tubes (‘dark/shot noise’). Any noise source leads to increased unspecific signal and makes the identification of specific fluorescent structures more difficult. Many noise-reducing image processing filters are now available that efficiently reduce shot noise, which typically occurs in random single pixels across the image 21. For example, ANISOTROPIC-DIFFUSION FILTERS take into account local image characteristics and therefore selectively remove shot noise without degrading the image (FIG. 1b). In addition to noise, unspecific background signal — for example, from autofluorescence of the culture medium — impairs image analysis. So, even after noise filtering, the background of the image at regions outside the fluorescent structure is generally not zero. To quantitatively relate pixel intensity to fluorophore concentration, the background signal has to be removed from the image. This can be achieved by subtracting the mean background intensity, determined in a region outside the fluorescent structure, from all pixels. Qualitative and quantitative visualization. The principle aim of 4D visualization is to display the full information from thousands of individual image slices in an intuitive and interactive way. Early studies visualized 4D data by arranging all image slices in an ‘image gallery’, which allowed the browsing and highlighting of selected structures7 (FIG. 1b). Although this guarantees that no information is lost, it is not intuitive and requires a well-trained observer to imagine the 3D structure. Alternatively, 4D data can be projected in the x–y plane, neglecting the z dimension22–24 (FIG. 1c). Although this allows a more intuitive access to the data by viewing it as a simple 2D movie, it sacrifices spatial information. Different algorithms are available for such PROJECTIONS: for example, maximum intensity projection produces images that have a particularly high contrast of small structures (FIG. 1c). However, it does not quantitatively represent fluorescence concentrations and cannot be used for further analysis. Instead, mean-intensity projection should be used for quantification, although it does not produce such crisp images (FIG. 1c). Meanintensity projections can be useful to measure relative fluorophore concentrations and their
+
+Table 1 | Comparison between deconvolution and confocal microscopes*
+Deconvolution microscope Lateral (x,y) resolution Axial (z) resolution Acquisition speed ∼250 nm ∼700 nm Dependent on fluorescence intensity; up to ∼50 frames/s Higher than confocal microscope Difficult; full-resolution images only available after off-line computational image restoration Can appear with inappropriate deconvolution algorithm parameters or too low signalto-noise ratio of raw data ∼40 µm Sequential acquisition of different channels by framewise filter switching Full flexibility Not possible except in specialized systems, in which lasers have been incorporated into the light path for this purpose Cajal body movements23, centromere dynamics24, biogenesis of nucleoli33, interphase chromosome dynamics40 Confocal microscope ∼250 nm ∼700 nm Dependent on fluorescence intensity and pixel number; up to ∼20 frames/s with low-resolution images Lower than deconvolution microscope Immediate access to fullresolution images Unprocessed images serve as raw data
+
+Photon efficiency Evaluation of images during experiment Image-processing artefacts
+
+Maximum thickness of specimen Multi-colour imaging
+
+∼150 µm Simultaneous and pseudosimultaneous recording in multiple channels by using linewise switching of laser wavelength Limited by available laser wavelengths Possible in interactively defined regions
+
+Flexibility in excitation wavelength Selective photobleaching
+
+Recent applications
+
+Nuclear envelope breakdown16,55 and assembly25, mitotic chromosome dynamics18,42
+
+*Values are approximate for standard applications in cell biology.
+
+Cellular structures frequently have amorphous shapes, vary from cell to cell and undergo dynamic changes, all factors that make quantitative structural measurements extremely difficult or impossible. To circumvent this problem, spatially controlled photobleaching on a confocal microscope can also be used to introduce artificial landmarks in homogeneously fluorescent structures in an approach called PATTERN PHOTOBLEACHING. Again, this is possible when the fluorescent marker tightly binds to the structure of interest. A good example is in nuclear lamins, which dissociate from the nuclear lamina only over a time course of many hours. So, a pattern, such as a grid, can be bleached into the homogeneously fluorescent nuclear envelope that is labelled with GFP-lamin B16. Using high-numerical aperture objectives, the bleaching is restricted to an axial section of about 2–3 µm thickness, which even allows the bleaching of 3D patterns at different optical sections, albeit with relatively low axial resolution16 (FIG. 2a). The resolution of the bleach can be improved by using two-photon excitation that is restricted to a smaller volume17.
+| SEPTEMBER 2003
+
+A refinement of labelling with bleachmarks involves co-expression of two different spectral variants of GFP that are fused to the same cellular marker protein. When different regions are selectively photobleached in one channel only, a combinatorial labelling scheme can discriminate up to three differently labelled structures in cellular regions that would otherwise be homogeneously labelled by these markers18,19 (FIG. 2b). An inverse alternative to labelling with bleachmarks is photoactivation in selected regions: a recently generated variant of GFP can have its fluorescence properties altered such that it emits fluorescent light under 488 nm excitation only after previous exposure to strong 413 nm light20. Although labelling methods that are based on selective bleaching are not unique to 4D-imaging applications, they can markedly enhance the ability to track and quantify dynamic structural changes in time-resolved 3D data sets.
+Image visualization and quantitation
+
+The problem of noise. As for any digital fluorescence microscope image, potential error sources that might impair visualization and
+
+S16
+
+www.nature.com/focus/cellbioimaging
+
+REVIEWS
+dynamic changes over time. This can be used as an approximation of the real concentration of fluorescently labelled molecules, which can only be derived from 3D analysis (see below and REF. 25). Changes of protein concentration over time are important for many cell-biological processes, and recent work has measured such changes during organelle morphogenesis25, protein targeting26 and transport27,28, changes in cell shape and signal-transduction events29. A realistic view of animated 3D-image sequences from interactively defined viewing directions can be achieved by using computer rendering and display in virtualreality viewers10,25,30,31 (FIG. 1d,e). Two alternative rendering methods are VOLUME RENDERING and SURFACE RECONSTRUCTION21. Volume rendering is a technique for visualizing 3D images without explicitly defining the boundary of fluorescently labelled structures (FIG. 1d). In the simplest case, each optical section is expanded to its real height and these flat layers are then stacked on top of each other to generate a spatial view. As a result of the lower resolution along the optical axis in 4D live-cell recordings, side views that are rendered in this way are frequently of poor quality. Their resolution can be enhanced by insertion of virtual z-slices between subsequent optical sections based on interpolation between these two images (FIG. 1d, side view). Although volume-rendering techniques achieve a satisfactory display of biological structures, these methods are limited to pure visualization and do not deliver any quantitative information. Surface reconstruction visualizes 3D structures after the definition of boundaries of fluorescent structures by surface polygons. The most commonly used isosurface reconstruction defines the 3D structure by thresholding the whole 4D data set. In this way, every voxel — the volume element of the 3D image — below the threshold grey value is defined as outside the structure and every voxel above the threshold value is defined as inside the structure, creating clearly defined object boundaries32 (FIG. 1e and 2b). The drawback of this method is that the surface of many biological structures is not well represented by a single-intensity value. An example is the nuclear envelope, which is typically labelled by fluorescently tagged membrane proteins that also localize to the endoplasmic reticulum (ER). In this case, some regions of the nuclear envelope can have similar levels of brightness as the ER, making their separation by a single threshold impossible. Therefore, an alternative approach for surface reconstruction is to detect object boundaries in each 2D optical section separately and to reconstruct 3D models from these outlines. In contrast to 3D data sets, many different SEGMENTATION techniques are available for 2D images 21 that achieve better definition of biological objects than simple thresholding.After object contours have been defined in 2D, interpolation algorithms can then be used to reconstruct 3D surfaces from them with high resolution25 (FIG. 1e). Generally, surface reconstruction achieves a more detailed display of small structures than volume rendering, but it often requires much more user interaction during image processing to avoid artefacts. Importantly, only the object definition of reconstructed surfaces can be used to generate absolute quantitative data, such as the volume of a structure or the concentration of the fluorophore
+
+a
+
+–9:00
+
+–5:00
+
+–3:00
+
+–1:00
+
+0:00
+
+b H2B–CFP
+
+H2B–YFP pre-bleach
+
+H2B–YFP post-bleach
+
+Merge
+
+Segmented
+
+3D reconstructed
+
+c Projection
+
+Projection + Segmentation
+
+Projection + Segmentation + Trajectories
+
+Figure 2 | Applications of four-dimensional imaging. a | Nuclear-envelope breakdown. Prophase was imaged in a normal rat kidney (NRK) cell expressing lamin B tagged with green-fluorescent protein (GFP) and histone 2B (H2B) expressing cyan-fluorescent protein (CFP) (not shown). Grids were bleached on the top and bottom of the lamina to provide artificial landmarks. Only the top (upper) and bottom (lower) slices from the full 4D data set are shown to demonstrate lateral deformations of the nuclear envelope during breakdown. The red crosses highlight sites of maximal stretching 2 minutes before nuclear-envelope breakdown and later hole formation (arrowheads). Stretching of the lamina occurs between the red crosses, whereas infolding occurs between the green crosses. See also Movie 2 online. Time is in minutes. Reproduced with permission from REF. 16 © (2002) Elsevier Science. b | Combinatorial labelling of chromatin regions in a prophase nucleus. An NRK cell coexpressing H2B fused to either yellow-fluorescent protein (YFP) or CFP was photobleached at selected regions (dashed line) in the YFP channel only. The combinatorial labelling scheme was resolved by channel subtraction18 and was graphically reconstructed from the 3D stack. This allows chromosome subsets to be tracked through mitosis in 4D imaging experiments18 (see Movie 3 online). c | Motion analysis of Cajal bodies in HeLa cells that are expressing GFP–coilin to mark Cajal bodies. 4D tracking was used to quantitatively characterize Cajal-body motion in control cells and ATP-depleted cells23. 3D stacks were collected on a DeltaVision Restoration microscope with a 3-minute time lapse. An intensity- and size-based segmentation was used to identify and subsequently track Cajal bodies using Volocity 2.0. Projection, an individual time point from a 90 minute time-lapse image is shown; Projection + Segmentation, objects were found using an intensity- and size-based segmentation in Volocity 2.0; Projection + Segmentation + Trajectories, as in the Projection + Segmentation, but with trajectories from all the time-points shown.
+
+IMAGING IN CELL BIOLOGY
+
+SEPTEMBER 2003 | S 1 7
+
+REVIEWS
+inside the structure. Such data allows changes in volume and/or concentration for specific cellular structures over time to be measured, which can be very useful to study organelle morphogenesis 25,33. Quantitative evaluation of dynamic 3D structures: volumes and concentrations. Measuring the volume of cellular compartments and the absolute concentration of molecules within these compartments over time in live cells would be ideally suited for analysis of many biological processes by kinetic modelling. So far, the processes to which this has been applied include membrane trafficking 27, nuclear transport 34, transcription 35 and nuclear assembly25. Traditionally, the volume of cellular structures is often inferred from area measurements in single optical sections or in projections of image stacks. However, this does not take into account the shape or orientation of a given structure. Moreover, when movies are analysed, flattening or expansion along the optical axis during the experiment can impair volume measurements. As an example, expansion of daughter nuclei will be strongly overestimated when measured in 2D image sequences because of the significant flattening of the nuclei that occurs during attachment to the culture dish after mitotic division25. Volume measurements require boundary detection of cellular structures21,36. When combined with surface reconstruction, the volume of visualized cellular structures can be measured directly. Grey values in digital images can be directly converted to fluorophore concentrations after appropriate calibration27,37–39, which makes 4D imaging suitable for quantitative assays that monitor changes in molecular concentrations in live cells. In defined cellular compartments, 4D measurements of fluorescent protein concentrations are carried out by dividing the sum of the intensities by the volume of the segmented structures. Similar to volume measurements, this produces more precise results than measurements of 2D movies, particularly when there is an inhomogeneous background from a soluble fraction of the labelled protein that is outside the structure of interest. For instance, surface measurements of membrane-bound organelles, such as the nucleus or the plasma membrane, are more problematic than volume- or fluorescenceconcentration measurements because light microscopes generally do not resolve smallmembrane invaginations or protrusions. Therefore, surface measurements in lightmicroscopy images, although possible using reconstructed surface models, will generally underestimate the real surface size.
+| SEPTEMBER 2003
+
+Motion analysis by single-particle tracking. Insight into many dynamic processes has been derived from tracking the movement of fluorescently labelled structures. Such studies have, for instance, measured the motion of chromosomes18,24, 40–42, nuclear bodies23,43 (FIG. 2c), membrane vesicles along microtubules14, dendritic spines in pyramidal neurons44 and migrating neuronal precursor cells45. To quantitate the motion patterns of a set of distinct structures, single-particle tracking methods are appropriate. Tracking can be done by manually identifying and tracing moving objects in 4D data sets46, but it is often very time-consuming to gather and analyse enough data to obtain statistically significant results in this way. Automated single-particle tracking of cellular structures involves three steps of image processing. First, objects have to be identified by using segmentation algorithms. Second, the corresponding objects are detected in successive frames by using a tracking algorithm, which produces trajectories that can be graphically visualized23,47 (FIG. 2c). Finally, the trajectories can be further analysed to determine properties such as the mean and maximum velocities, the accelerations, and the mean square displacement or diffusion coefficients 23,47,48. A difficulty in quantitative motion analysis of cellular structures is caused by global movements or deformations of the whole specimen during the acquisition period. Such global movements must be separated from the specific local movements of the structures of interest. This can be achieved by measuring only the relative movements of individual objects46. A more refined correction for global movements uses registration algorithms that can correct for translation, rotation and even global deformations49.
+Future directions
+
+4D imaging has come of age as a powerful imaging technology for cell and developmental biology, but it is still restricted to a relatively small number of specialized labs. Historically, 4D imaging required highly specialized equipment and image-processing capabilities, but this situation is changing quite rapidly. Hardware that can acquire 4D sequences is now available ‘off the shelf ’ and is becoming more widespread (see 4D microscope hardware in supplementary information online). In addition, some of the basic image-processing routines for 4D data are now available in several commercial software packages (see 4D software tools in supplementary information online). There remain three challenges today to make the powerful approach of 4D imaging more
+
+widely used. First, less expensive hardware is required. Fast and sensitive 4D imaging systems are still very expensive, and start at around US $125,000 for deconvolution microscopes and around US $300,000 for confocal microscopes. As a consequence, such equipment is often only available at specialized imaging facilities and not to most cell-biology labs. Second, flexible acquisition software is needed. On all existing systems, the parameter flexibility during acquisition needs to be improved. In addition, online deconvolution algorithms to, at least preliminarily, evaluate widefield data during the experiment are largely missing. Third, userfriendly and flexible 4D processing, rendering and quantification software is essentially lacking at this point. To achieve complete analysis of a 4D data sequence, users typically have to use several software packages to achieve optimal results from each of the processing steps. A single software package that integrates the full set of recurring tools that are required for typical 4D applications in a user-friendly interface and, at the same time, allows the advanced user to define his/her own processing routines, is still not available. It is worth noting here that software development for 3 or 4D images is not a domain of cell biology alone. Frequently, more advanced tools are already developed for engineering and medical applications, such as dynamic magnetic resonance imaging of organs (see review on page SS10 of this supplement), as well as for serial reconstruction and tomography by electron microscopy (see review on page SS6 of this supplement). By integrating these tools rapidly into a flexible software environment, cellbiological applications stand to benefit from developments in other disciplines. As with traditional video microscopy, 4D imaging can be combined with other new imaging techniques to address specific questions. In addition to pattern photobleaching, these can include speckle imaging 50, fluorescence resonance energy transfer (FRET)51 and 17 MULTI-PHOTON MICROSCOPY . Furthermore, 4D imaging will directly benefit from techniques that aim to improve the optical resolution in live specimens. Several powerful approaches, which are based on illumination through multiple objectives (Theta, 4Pi, I5M) or increased contrast by using structured illumination52, have been developed, but most of them are not yet compatible with the speed and sensitivity that is required for live-cell imaging. 4D imaging gives us access to new worlds of dynamic function in live cells. By taking both space and time into account, processes that involve, for example, changes in structure, compartmentalization, fluxes, directed
+
+S18
+
+www.nature.com/focus/cellbioimaging
+
+REVIEWS
+transport and signal-mediated localization, can be studied quantitatively in real time. With appropriate fluorescent molecular reporters, quantitative and kinetic in vivo assays for almost any biological process of interest can be designed in the laboratory. The ultimate goal will be to make these assays sufficiently rapid and robust to use them to perform gain- and loss-of-function studies in live cells53,54. To understand complex living systems, we will have to get used to thinking routinely in four dimensions.
+Gene Expression and Cell Biology/Biophysics Programmes, European Molecular Biology Laboratory, Meyerhofstrasse 1, D-69117 Heidelberg, Germany. Correspondence to J.E. e-mail: jan.ellenberg@embl-heidelberg.de Please cite this article as a supplement to volume 5 of Nature Cell Biology, pages S14–S19.
+doi:10.1038/ncb1033
+1. Zhang, J., Campbell, R. E., Ting, A. Y. & Tsien, R. Y. Creating new fluorescent probes for cell biology. Nature Rev. Mol. Cell Biol. 3, 906–918 (2002). Chalfie, M., Tu, Y., Euskirchen, G., Ward, W. W. & Prasher, D. C. Green fluorescent protein as a marker for gene expression. Science 263, 802–805 (1994). Patterson, G., Day, R. N. & Piston, D. Fluorescent protein spectra. J. Cell Sci. 114, 837–838 (2001). Ellenberg, J., Lippincott-Schwartz, J. & Presley, J. F. Dual-colour imaging with GFP variants. Trends Cell Biol. 9, 52–56 (1999). Hiraoka, Y., Minden, J. S., Swedlow, J. R., Sedat, J. W. & Agard, D. A. Focal points for chromosome condensation and decondensation revealed by three-dimensional in vivo time-lapse microscopy. Nature 342, 293–296 (1989). Swedlow, J. R., Sedat, J. W. & Agard, D. A. Multiple chromosomal populations of topoisomerase II detected in vivo by time-lapse, three-dimensional wide-field microscopy. Cell 73, 97–108 (1993). Thomas, C., DeVries, P., Hardin, J. & White, J. Four-dimensional imaging: computer visualization of 3D movements in living specimens. Science 273, 603–607 (1996). Rizzuto, R., Carrington, W. & Tuft, R. A. Digital imaging microscopy of living cells. Trends Cell Biol. 8, 288–292 (1998). Swedlow, J. R. & Platani, M. Live cell imaging using widefield microscopy and deconvolution. Cell Struct. Funct. 27, 335–341 (2002). Mohler, W. A. Visual reality: using computer reconstruction and animation to magnify the microscopist’s perception. Mol. Biol. Cell 10, 3061–3065 (1999). McNally, J. G., Karpova, T., Cooper, J. & Conchello, J. A. Three-dimensional imaging by deconvolution microscopy. Methods 19, 373–385 (1999). Inoue, S. in Handbook of Biological Confocal Microscopy (ed. Pawley, J. B.) 1–14 (Plenum Press, New York, 1995). Belgareh, N. et al. An evolutionarily conserved NPC subcomplex, which redistributes in part to kinetochores in mammalian cells. J. Cell Biol. 154, 1147–1160 (2001). Presley, J. F. et al. ER-to-Golgi transport visualized in living cells. Nature 389, 81–85 (1997). Lippincott-Schwartz, J., Snapp, E. & Kenworthy, A. Studying protein dynamics in living cells. Nature Rev. Mol. Cell Biol. 2, 444–456 (2001). Beaudouin, J., Gerlich, D., Daigle, N., Eils, R. & Ellenberg, J. Nuclear envelope breakdown proceeds by microtubuleinduced tearing of the lamina. Cell 108, 83–96 (2002). 17. Helmchen, F. & Denk, W. New developments in multiphoton microscopy. Curr. Opin. Neurobiol. 12, 593–601 (2002). 18. Gerlich, D. et al. Global chromosome positions are transmitted through mitosis in mammalian cells. Cell 112, 751–764 (2003). 19. Zicha, D. et al. Rapid actin transport during cell protrusion. Science 300, 142–145 (2003). 20. Patterson, G. H. & Lippincott-Schwartz, J. A photoactivatable GFP for selective photolabeling of proteins and cells. Science 297, 1873–1877 (2002). 21. Gerlich, D., Mattes, J. & Eils, R. Quantitative motion analysis and visualization of cellular structures. Methods 29, 3–13 (2003). 22. Manders, E. M., Kimura, H. & Cook, P. R. Direct imaging of DNA in living cells reveals the dynamics of chromosome formation. J. Cell Biol. 144, 813–821 (1999). 23. Platani, M., Goldberg, I., Lamond, A. I. & Swedlow, J. R. Cajal Body dynamics and association with chromatin are ATP-dependent. Nature Cell Biol. 4, 502–508 (2002). 24. He, X., Asthana, S. & Sorger, P. K. Transient sister chromatid separation and elastic deformation of chromosomes during mitosis in budding yeast. Cell 101, 763–775 (2000). 25. Gerlich, D., Beaudouin, J., Gebhard, M., Ellenberg, J. & Eils, R. Four-dimensional imaging and quantitative reconstruction to analyse complex spatiotemporal processes in live cells. Nature Cell Biol. 3, 852–855 (2001). 26. Ellenberg, J. et al. Nuclear membrane dynamics and reassembly in living cells: targeting of an inner nuclear membrane protein in interphase and mitosis. J. Cell Biol. 138, 1193–1206 (1997). 27. Hirschberg, K. et al. Kinetic analysis of secretory protein traffic and characterization of golgi to plasma membrane transport intermediates in living cells. J. Cell Biol. 143, 1485–1503 (1998). 28. Ribbeck, K. & Gorlich, D. Kinetic analysis of translocation through nuclear pore complexes. EMBO J. 20, 1320–1330 (2001). 29. Meyer, T. & Teruel, M. N. Fluorescence imaging of signaling networks. Trends Cell Biol. 13, 101–106 (2003). 30. Thomas, C. F. & White, J. G. Four-dimensional imaging: the exploration of space and time. Trends Biotechnol. 16, 175–182 (1998). 31. Marshall, W. F., Marko, J. F., Agard, D. A. & Sedat, J. W. Chromosome elasticity and mitotic polar ejection force measured in living Drosophila embryos by fourdimensional microscopy-based motion analysis. Curr. Biol. 11, 569–578 (2001). 32. Cline, H. E., Lorensen, W. E., Ludke, S., Crawford, C. R. & Teeter, B. C. Two algorithms for the three-dimensional reconstruction of tomograms. Med. Phys. 15, 320–327 (1988). 33. Savino, T. M., Gebrane-Younes, J., De Mey, J., Sibarita, J. B. & Hernandez-Verdun, D. Nucleolar assembly of the rRNA processing machinery in living cells. J. Cell Biol. 153, 1097–1110 (2001). 34. Smith, A. E., Slepchenko, B. M., Schaff, J. C., Loew, L. M. & Macara, I. G. Systems analysis of Ran transport. Science 295, 488–491 (2002). 35. Dundr, M. et al. A kinetic framework for a mammalian RNA polymerase in vivo. Science 298, 1623–1626 (2002). 36. Monier, K., Armas, J. C., Etteldorf, S., Ghazal, P. & Sullivan, K. F. Annexation of the interchromosomal space during viral infection. Nature Cell Biol. 2, 661–665 (2000). 37. Fink, C., Morgan, F. & Loew, L. M. Intracellular fluorescent probe concentrations by confocal microscopy. Biophys. J. 75, 1648–1658 (1998). 38. Niswender, K. D., Blackman, S. M., Rohde, L., Magnuson, M. A. & Piston, D. W. Quantitative imaging of green fluorescent protein in cultured cells: comparison of microscopic techniques, use in fusion proteins and detection limits. J. Microsc. 180, 109–116 (1995). 39. Dundr, M., McNally, J. G., Cohen, J. & Misteli, T. Quantitation of GFP-fusion proteins in single living cells. J. Struct. Biol. 140, 92–99 (2002). 40. Vazquez, J., Belmont, A. S. & Sedat, J. W. Multiple regimes of constrained chromosome motion are regulated in the interphase Drosophila nucleus. Curr. Biol. 11, 1227–1239 (2001). 41. Heun, P., Laroche, T., Shimada, K., Furrer, P. & Gasser, S. Chromosome dynamics in the yeast interphase nucleus. Science 7, 2181–2186 (2001). 42. Walter, J., Schermelleh, L., Cremer, M., Tashiro, S. & Cremer, T. Chromosome order in HeLa cells changes during mitosis and early G1, but is stably maintained during subsequent interphase stages. J. Cell Biol. 160, 685–697 (2003). 43. Muratani, M. et al. Metabolic-energy-dependent movement of PML bodies within the mammalian cell nucleus. Nature Cell Biol. 4, 106–110 (2002). 44. Trachtenberg, J. T. et al. Long-term in vivo imaging of experience-dependent synaptic plasticity in adult cortex. Nature 420, 788–794 (2002). 45. Koster, R. W. & Fraser, S. E. Direct imaging of in vivo neuronal migration in the developing cerebellum. Curr. Biol. 11, 1858–1863 (2001). 46. Marshall, W. F. et al. Interphase chromosomes undergo constrained diffusional motion in living cells. Curr. Biol. 7, 930–939 (1997). 47. Tvaruskó, W. et al. Time-resolved analysis and visualization of dynamic processes in living cells. Proc. Natl Acad. Sci. USA 96, 7950–7955 (1999). 48. Thomann, D., Rines, D. R., Sorger, P. K. & Danuser, G. Automatic fluorescent tag detection in 3D with superresolution: application to the analysis of chromosome movement. J. Microsc. 208, 49–64 (2002). 49. Fieres, J., Mattes, J. & Eils, R. in Pattern Recognition, Lecture Notes in Computer Science Vol. 2191. (eds Radig, B. & Florczyk, S.) 76–83 (Springer Verlag, 2001). 50. Waterman-Storer, C. M. & Danuser, G. New directions for fluorescent speckle microscopy. Curr. Biol. 12, R633–R640 (2002). 51. Wouters, F. S., Verveer, P. J. & Bastiaens, P. I. Imaging biochemistry inside cells. Trends Cell Biol. 11, 203–211 (2001). 52. Gustafsson, M. G. Extended resolution fluorescence microscopy. Curr. Opin. Struct. Biol. 9, 627–634 (1999). 53. Elbashir, S. M., Harborth, J., Weber, K. & Tuschl, T. Analysis of gene function in somatic mammalian cells using small interfering RNAs. Methods 26, 199–213 (2002). 54. Wu, R. Z., Bailey, S. N. & Sabatini, D. M. Cell-biological applications of transfected-cell microarrays. Trends Cell Biol. 12, 485–488 (2002). 55. Lenart, P. et al. Nuclear envelope breakdown in starfish oocytes proceeds by partial NPC disassembly followed by a rapidly spreading fenestration of nuclear membranes. J. Cell Biol. 160, 1055–1068 (2003).
+
+2.
+
+3. 4.
+
+5.
+
+6.
+
+7.
+
+Acknowledgments
+The authors thank J. R. Swedlow, P. Lénart, J. Beaudouin and F. Mora-Bermúdez for helpful comments on the manuscript. J. R. S. is also acknowledged for providing figure 2c. D. G. is supported by a European Molecular Biology Organization long-term fellowship. J. E. acknowledges support from the Human Frontiers Science Programme.
+
+8.
+
+9.
+
+10.
+
+Online links
+DATABASES The following terms in this article are linked online to: LocusLink: http://www.ncbi.nlm.nih.gov/LocusLink/ lamins FURTHER INFORMATION Confocal Laser Light Microscopy: http://www.els.net/els/ FDA/default.asp?id=3889ABA5-A770-41B7-851DC5CAAA93504F Deconvolution Fluorescence Light Microscopy: http://www.els.net/els/FDA/default.asp?id=4DDDEF12-A77D4DCF-9F55-A0BE1A18027E Jan Ellenberg’s web site: http://www.embl-heidelberg.de/externalinfo/ellenberg/ Access to this interactive links box is free online.
+
+11.
+
+12. 13.
+
+14. 15.
+
+16.
+
+IMAGING IN CELL BIOLOGY
+
+SEPTEMBER 2003 | S 1 9
+

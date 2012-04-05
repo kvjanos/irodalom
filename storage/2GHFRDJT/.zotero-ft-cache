@@ -1,0 +1,336 @@
+Mathematical and Computational Issues on Medial Axis Transform
+Sung Woo Choi
+swchoi@kias.re.kr
+
+School of Computational Sciences Korea Institute for Advanced Study
+
+Contents
+Introduction Shape Algorithm Instability Directions & Applications
+
+What is Medial Axis Transform?
+MAT(Ω) = {(p, r) ∈ Rn × R | Br (p) is a maximal ball in Ω} MA(Ω) = {p ∈ Rn | ∃r ≥ 0 s.t. (p, r) ∈ MAT(Ω)}
+
+¢
+
+¥
+
+ 
+
+¡
+
+¦
+
+£
+
+¤
+
+§
+
+¡
+
+Other Deﬁnitions
+Grass Fire Model points where wave starting from the boundary meet Cut Locus points where the distance to the boundary stop minimizing Set of Singularities points where the distance function to the boundary is not differentiable
+
+Relation with Voronoi Diagram
+
+N. Amenta, et al.
+
+Examples
+
+More Examples
+
+Good & Bad Aspects
+Homotopy equivalence: Preserves topological structure of domains. Compact representation (graph structure): Easy to store and process in computer. Wide range of applications (Shape Analysis) pattern recognition, computer vision, computer graphics, CAGD, mechanical engineering, biological/medical applications Problems: Difﬁcult to compute Sensitive to noise Poor mathematical analyses so far
+
+¡
+
+Pathological Shapes
+MA (MAT) can exhibit pathological behaviours even for domains with C ∞ boundary.
+α δ
+.
+
+... . ...
+
+δ(0)
+
+p Ω
+
+.
+
+. . . . . . . .
+
+β
+
+..... ......
+
+.....
+
+Ω
+Medial Axis
+
+γ
+Medial Axis
+
+¡
+
+Normal Domain
+Ω: compact & connected in R2 is a normal domain, if ∂Ω: ﬁnite number of simple closed curves each boundary component: ﬁnite number of real analytic curve pieces. (Paciﬁc. J. Math. 1997) Ω: a normal domain. =⇒
+Theorem
+
+MA(Ω) and MAT(Ω) have ﬁnite graph structures. MA(Ω) is a strong deformation retract of Ω. ♣ Almost every domain in applications is normal.
+
+Generic Points – 2D
+G(Ω): the set of MA points with two contact points MA(Ω) except for ﬁnitely many points
+p1 ∂Ω θ(p) MA(Ω) ∂Ω p2 0 < θ(p) ≤
+π 2
+
+r θ(p) p
+
+θΩ
+
+= inf {θ(p) : p ∈ G(Ω)} π (0 ≤ θΩ ≤ ) 2
+
+Deﬁnition:
+
+Ω is weakly injective, if θΩ > 0.
+
+Three Types of 1-Prong Points – 2D
+
+(a)
+
+(b)
+
+(c)
+
+θΩ = 0 ⇐⇒ MA(Ω) has a 1-prong point of type (c). Ω is weakly injective ⇐⇒ only (a) and (b)
+
+Examples
+
+weakly injective
+
+not weakly injective (normal)
+
+Generic Points – 3D
+0 < θ(p) ≤
+π 2
+
+r θ(p) p θ(p) p r θ(p)
+
+θΩ = inf {θ(p) : p ∈ G(Ω)}
+Deﬁnition:
+
+Ω is weakly injective, if θΩ > 0.
+
+Types of 1-Prong Points – 3D
+
+(a2)
+
+(b2)
+
+(c2)
+
+(a1)
+
+(b1)
+
+(c1)
+
+Examples
+
+weakly injective
+
+not weakly injective (pseudonormal)
+
+¡
+
+Algorithm
+⇒
+
+⇒
+
+Essentially the ﬁrst for domains with free-form boundary and non-trivial homology (GMIP 1997) approximation/interpolation (transcendental curves) domain decomposition (fast) updating tree data structure (topologically correct) ♣ 3D extension – need extensive theoretical analysis
+
+¡
+
+Example
+
+6
+
+a 1 b
+
+7
+
+4 5
+
+2 3
+
+8
+
+1,a 6 4 5 V 3
+
+1,b V 2 8 7
+
+Example
+
+¡
+
+Instability of MAT
+Very sensitive to boundary perturbation.
+
+Introduces hairy prongs.
+
+many
+
+No explicit and quantitative error analyses before.
+
+¡
+
+One-sided Hausdorff Distance
+A, B: compact sets in Rn H(A|B) = max d(p, B)
+p∈A
+
+B A
+
+-neighborhood -neighborhood of A of B
+
+H(A|B) measures how much A is contained in B.
+
+(Two-sided) Hausdorff Distance
+A, B : compact sets in Rn . H(A, B) = max {max d(p, B), max {max d(q, A)}}
+p∈A q∈B
+
+= max {H(A|B), H(B|A)}.
+B A
+
+-neighborhood of B
+
+-neighborhood of A
+
+H(A, B) measures how similar A and B are.
+
+One-sided Stability of MAT
+Theorem (ICPR 2000, DAGM 2001, ACM Symp. Solid Modeling
+2002, J. Math. Imaging & Vision 2002) Let Ω be a weakly injective domain (2D & 3D). Then we have H(MAT(Ω)|MAT(Ω )) H(MA(Ω)|MA(Ω )) max {H(Ω, Ω ), H(∂Ω, ∂Ω )} ≤ . ≤ g(θΩ ) · + o( ), ≤ g(θΩ ) · + o( ),
+
+for every pseudonormal domain Ω such that
+
+g(θ)
+
+=
+
+3
+
+√ 2 1 + cos2 θ 1+ 1 − cos θ
+
+∼
+
+1 1 ∼ 2 1 − cos θ θ
+
+(0 < θ ≤ π/2)
+
+Examples
+θΩ θΩ
+
+θΩ
+
+θΩ
+
+θΩ = 45◦ , g(θΩ ) = 28.089243 . . .
+
+θΩ = 45◦ , g(θΩ ) = 28.089243 . . .
+
+θΩ θΩ
+
+θΩ
+
+θΩ = 54.73561 . . .◦ , g(θΩ ) = 19.3923 . . .
+
+θΩ = 90◦ , g(θΩ ) = 9
+
+θΩ and the Level of Detail
+
+Level of Detail
+
+θΩ
+
+Pruning Scheme
+θΩ (a) (b)
+
+(c)
+
+(d)
+
+no need to compute the whole complex noisy MAT precise error analysis
+
+Independence of Approximations
+Corollary
+Let Ω be a pseudonormal 3D domain, and let Ω1 and Ω2 be two weakly injective 3D domains such that max {H(Ωi , Ω), H(∂Ωi , ∂Ω)} ≤ for i = 1, 2. Let θ = min {θΩ1 , θΩ2 }. Then we have H (MAT(Ω1 ), MAT(Ω2 )) ≤ H (MA(Ω1 ), MA(Ω2 )) ≤ 2g(θ) · + o( ), 2g(θ) · + o( ).
+
+General Case of Normal Domains
+(VMV 2001) Let Ω be a normal domain (2D) which is not weakly injective. Then we have H(MA(Ω)|MA(Ω ))
+Theorem
+
+≤
+
+KΩ ·
+
+NΩ −1 NΩ +1
+
++o
+
+NΩ −1 NΩ +1
+
+,
+
+H(MAT(Ω)|MAT(Ω )) ≤ KΩ ·
+NΩ −1 NΩ +1
+
++o
+
+NΩ −1 NΩ +1
+
+,
+
+for every normal domain Ω such that max {H(Ω, Ω ), H(∂Ω, ∂Ω )} ≤ . nonlinear bound:
+NΩ −1 NΩ +1
+
+= 1, 1, 3, · · · 3 2 5
+
+1, NΩ = 2, 3, 4, · · ·
+
+KΩ , NΩ can be explicitly calculated from the boundary.
+
+Asymptotic Constants
+P = (p, r) ∈ MAT(Ω): non-degenerate 1-prong point 1 f (t) = n=2 an tn , a2 = 2r = k . 2 n−1 Qn − an , n = 2, 3, · · · . An = k NP : the largest integer such that A2 = A3 = · · · = ANP = 0. =⇒ NP ≥ 2 and ANP +1 > 0. NΩ = min {NP : P is a non-degenerate 1-prong of MAT(Ω)}.  N −1  √2·12 NP +1 (NP +1) 2 NP2+1 P   · r ANP +1 , P : type (i)  NP −1  NP +1 (NP −1) 2NP KP = 3NP −1 NP −1 √ 2 NP +1  2·2 NP +1 ·6 NP +1 ·N  NP +1 P  · r2 ANP +1 , P : type (ii), (iii)  2(NP −1)  N +1
+(NP −1)
+P
+
+KΩ = max {KP : P is a non-degenerate
+
+1-prong point of MAT(Ω) s.t. NP = NΩ } .
+
+Conclusions – Instability
+Analyzed quantitatively the effect of boundary perturbation on MAT (weakly injective). Proved the stability of MAT under one-sided Hausdorff distance. Introduced the indicators θΩ , KΩ , NΩ for level of detail. Suggested a new pruning strategy with error analysis.
+Problems:
+
+Systematic method for approximation Too large bounds : bounds for speciﬁc applications, introduction of probability measure Other distances : topological information, normal information
+
+¡
+
+Directions
+Extension to 3D shape, algorithm, instability need deeper mathematics : differential geometry, (real) algegraic/analytic geometry, differential topology, singularity theory, etc. Relation with Subdivision Real-world applications
+
+¡
+
+Surface Reconstruction
+
+“Power Crust”, N. Amenta, et al.
+
+MAT and Feature Extraction
+
+“Ridges & Ravines” A. G. Belyaev, et al.
+
+Global Shape Deformation
+
+¡
+

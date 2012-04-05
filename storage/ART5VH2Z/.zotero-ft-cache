@@ -1,0 +1,2205 @@
+Image Processing
+Principles and Applications
+
+Avisere, Inc. Tucson, Arizona and Department of Electrical Engineering Arizona State University Tempe, Arizona
+
+Tinku Acharya
+
+Avisere, Inc. Tucson, Arizona and Electronics and Electrical CommunicationEngineering Department Indian Institute of Technology Kharagpur, India
+
+Ajoy K. Ray
+
+@ZEiCIENCE
+A JOHN WILEY & SONS, MC., PUBLICATION
+
+Image Processing
+
+This Page Intentionally Left Blank
+
+Image Processing
+Principles and Applications
+
+Avisere, Inc. Tucson, Arizona and Department of Electrical Engineering Arizona State University Tempe, Arizona
+
+Tinku Acharya
+
+Avisere, Inc. Tucson, Arizona and Electronics and Electrical CommunicationEngineering Department Indian Institute of Technology Kharagpur, India
+
+Ajoy K. Ray
+
+@ZEiCIENCE
+A JOHN WILEY & SONS, MC., PUBLICATION
+
+Copyright 02005 by John Wiley & Sons, Inc. All rights reserved. Published by John Wiley & Sons, Inc., Hoboken, New Jersey. Published simultaneously in Canada.
+No part of this publication may be reproduced, stored in a retrieval system, or transmitted in any form or by any means, electronic, mechanical, photocopying, recording, scanning, or otherwise, except as permitted under Section 107 or 108 of the 1976 United States Copyright Act, without either the prior written permission of the Publisher, or authorization through payment of the appropriate per-copy fee to the Copyright Clearance Center, Inc., 222 Rosewood Drive, Danvers, MA 01923, (978) 750-8400, fax (978) 750-4470, or on the web at www.copyright.com. Requests to the Publisher for permission should be addressed to the Permissions Department, John Wiley & Sons, lnc., 111 River Street, Hoboken, NJ 07030, (201) 748-601 1, fax (201) 748-6008, or online at http://www.wiley.com/go/permission.
+
+Limit of Liability/Disclaimer of Warranty: While the publisher and author have used their best efforts in preparing this book, they make no representations or warranties with respect to the accuracy or completeness of the contents of this book and specifically disclaim any implied warranties of merchantability or fitness for a particular purpose. No warranty may be created or extended by sales representatives or written sales materials. The advice and strategies contained herein may not be suitable for your situation. You should consult with a professional where appropriate. Neither the publisher nor author shall be liable for any loss of profit or any other commercial damages, including but not limited to special, incidental, consequential, or other damages. For general information on our other products and services or for technical support, please contact our Customer Care Department within the United States at (800) 762-2974, outside the United States at (317) 572-3993 or fax (317) 572-4002. Wiley also publishes its books in a variety of electronic formats. Some content that appears in print may not be available in electronic format. For information about Wiley products, visit our web site at www.wiley.com.
+Librury of Congress Cataloging-in-PublicutionDutu:
+
+Acharya, Tinku. Image processing : principles and applications / Tinku Acharya, Ajoy K.Ray. p. cm. “A Wiley-Interscience Publication.” Includes bibliographical references and index. ISBN-13 978-0-471-71998-4 (cloth : alk. paper) ISBN-10 0-471-71998-6 (cloth : alk. paper) 1. Image processing. I. Ray, Ajoy K., 1954- 11. Title. TA1637.A3 2005 621.36‘74~22 2005005170 Printed in the United States of America I 0 9 8 7 6 5 4 3 2 1
+
+In memory of my father, Prohlad C. Acharya
+-Tinku
+
+In memories of my mother, father, and uncle -Ajoy
+
+This Page Intentionally Left Blank
+
+Contents
+
+Preface
+1 Introduction 1.1 Fundamentals of Image Processing 1.2 Applications of Image Processing 1.2.1 Automatic Visual Inspection System 1.2.2 Remotely Sensed Scene Interpretation 1.2.3 Biomedical Imaging Techniques 1.2.4 Defense surveillance 1.2.5 Content-Based Image Retrieval 1.2.6 Moving-Object Tracking 1.2.7 Image and Video Compression 1.3 Human Visual Perception 1.3.1 Human Eyes 1.3.2 Neural Aspects of the Visual Sense 1.4 Components of an Image Processing System 1.4.1 Digital Camera 1.5 Organization of the book 1.6 How is this book different? 1.7 Summary
+
+xix
+
+1 1 3 3 4 4 5 6 6 7 7 8 9 9 10 12 14 15
+Vii
+
+viii
+
+CONTENTS
+
+References
+2
+
+15 17 17 17 17 19 20 22 23 25 26 27 29 31 31 32 33 34 35 36
+37 37 38
+
+Image Formation and Representation 2.1 Introduction 2.2 Image formation 2.2.1 Illumination 2.2.2 Reflectance Models 2.2.3 Point Spread Function 2.3 Sampling and Quantization 2.3.1 Image Sampling 2.3.2 Image Quantization 2.4 Binary Image 2.4.1 Geometric Properties 2.4.2 Chain code representation of a binary object 2.5 Three-Dimensional Imaging 2.5.1 Stereo Images 2.5.2 Range Image Aquisition 2.6 Image file formats 2.7 Some Important Notes 2.8 Summary References Color and Color Imagery 3.1 Introduction 3.2 Perception of Colors 3.3 Color Space Quantization and Just Noticeable Difference
+
+3
+
+(JND)
+3.4
+
+Color Space and Transformation 3.4.1 ChlYK space 3.4.2 NTSC or YIQ Color Space 3.4.3 YCbCr Color Space 3.4.4 Perceptually Uniform Color Space 3.4.5 CIELAB color Space 3.5 Color Interpolation or Demosaicing 3.5.1 Sonadaptive Color Interpolation Algorithms 3.5.2 Adaptive algorithms 3.5.3 A Novel Adaptive Color Interpolation Algorithm 3.5.4 Experimental Results 3.6 Summary
+
+39 40 40 41 41 41 44 45 46 48 53 57 59
+
+CONTENTS
+
+ix
+
+References
+4
+
+59 61 61 62 62 63 64 64 65 67 68 70 72 73 75 75 76 76 78 78 79 79 80 82 83 85 87 89 90 92 93 94 96 102 103 103
+
+Image Transformation 4.1 Introduction 4.2 Fourier Transforms 4.2.1 One-Dimensional Fourier Transform 4.2.2 Two-Dimensional Fourier Transform 4.2.3 Discrete Fourier Transform (DFT) 4.2.4 Transformation Kernels 4.2.5 Matrix Form Representation 4.2.6 Properties 4.2.7 Fast Fourier Transform 4.3 Discrete Cosine Transform 4.4 Walsh-Hadamard Transform (WHT) 4.5 Karhaunen-Loeve Transform or Principal Component Analysis 4.5.1 Covariance Matrix 4.5.2 Eigenvectors and Eigenvalues 4.5.3 Principal Component Analysis 4.5.4 Singular Value Decomposition 4.6 Summary References Discrete Wavelet Transform 5.1 Introduction 5.2 Wavelet Transforms 5.2.1 Discrete Wavelet Transforms 5.2.2 Gabor filtering 5.2.3 Concept of Multiresolution Analysis 5.2.4 Implementation by Filters and the Pyramid Algorithm 5.3 Extension to Two-Dimensional Signals 5.4 Lifting Implementation of the DWT 5.4.1 Finite Impulse Response Filter and Z-transform 5.4.2 Euclidean Algorithm for Laurent Polynomials 5.4.3 Perfect Reconstruction and Polyphase Representation of Filters 5.4.4 Lifting 5.4.5 Data Dependency Diagram for Lifting Computation 5.5 Advantages of Lifting-Based DWT 5.6 Summary
+
+5
+
+x
+
+CONTENTS
+
+References
+6 Image Enhancement and Restoration 6.1 Introduction 6.2 Distinction between image enhancement and restoration 6.3 Spatial Image Enhancement Techniques 6.3.1 Spatial Low-Pass and High-Pass Filtering 6.3.2 Averaging and Spatial Low-Pass Filtering 6.3.3 Unsharp Masking and Crisping 6.3.4 Directional Smoothing 6.4 Histrogram-based Contrast Enhancement 6.4.1 Image Histogram 6.4.2 Histogram Equalization 6.4.3 Local Area Histogram Equalization 6.4.4 Histogram Specificat ion 6.4.5 Histogram Hyperbolization 6.4.6 Median Filtering 6.5 Frequency Domain Methods of Image Enhancement 6.5.1 Homomorphic Filter 6.6 Noise Modeling 6.6.1 Types of Noise in An Image and Their Characteristics 6.7 Image Restoration 6.7.1 Image Restoration of Impulse Noise Embedded Images 6.7.2 Restoration of Blurred Image 6.7.3 Inverse Filtering 6.7.4 Wiener Filter 6.8 Image Reconstruction by Other Methods 6.8.1 Image Restoration by Bispectrum 6.8.2 Tomographic Reconstruct ion 6.9 Summary References 7 Image Segmentation 7.1 Preliminaries 7.2 Edge, Line, and Point Detection 7.3 Edge Detector 7.3.1 Robert Operator-Based Edge Detector 7.3.2 Sobel Operator-Based Edge Detector
+
+104 105 105 106 107 107 108 109 109 110 110 111 113 113 114 114 115 117 118 120 121 122 123 123 124 127 127 128 128 128 131 131 132 135 135 135
+
+CONTENTS
+
+xi
+
+7.4
+
+7.5
+
+7.6 7.7 7.8 7.9
+
+7.3.3 Prewitt Operator-Based Edge Detector 7.3.4 Kirsch Operator 7.3.5 Canny’s Edge Detector 7.3.6 Operators-Based on Second Derivative 7.3.7 Limitations of Edge-Based Segmentation Image Thresholding Techniques 7.4.1 Bi-level Thresholding 7.4.2 Multilevel Thresholding 7.4.3 Entropy-Based Thresholding 7.4.4 Problems Encountered and Possible Solutions Region Growing 7.5.1 Region Adjacency Graph 7.5.2 Region Merging and Splitting 7.5.3 Clustering Based Segmentation Waterfall algorithm for segmentation Connected component labeling Document Image segmentation Summary References
+
+136 136 137 140 143 143 144 145 146 147 148 148 149 150 151 152 152 154 155 157 157 158 159 160 160 162 162 163 164 165 166 166 166 167 168 169 169
+
+8 Recognition of Image Patterns 8.1 Introduction 8.2 Decision Theoretic Pattern Classification 8.3 Bayesian Decision Theory 8.3.1 Parameter Estimation 8.3.2 Minimum Distance Classification 8.4 Nonparametric Classification 8.4.1 K-Nearest-Neighbor Classification 8.5 Linear Discriminant Analysis 8.6 Unsupervised Classification Strategies - clustering 8.6.1 Single Linkage Clustering 8.6.2 Complete Linkage Clustering 8.6.3 Average Linkage Clustering 8.7 K-Means Clustering Algorithm 8.8 Syntactic Pattern Classification 8.8.1 Primitive selection Strategies 8.8.2 High-Dimensional Pattern Grammars 8.9 Syntactic Inference
+
+8.10 Symbolic Projection Method 8.11 Artificial Neural Networks 8.11.1 Evolution of Neural Networks 8.11.2 Multilayer Perceptron 8.11.3 Kohonen’s Self-organizing Feature Map 8.11.4 Counterpropagation Neural Network 8.11.5 Global Features of Networks 8.12 Summary References 9 Texture and Shape Analysis 9.1 Introduction 9.1.1 Primitives in Textures 9.1.2 Classification of textures 9.2 Gray Level Cooccurrence Matrix 9.2.1 Spatial Relationship of Primitives 9.2.2 Generalized Cooccurrence 9.3 Texture Spectrum 9.4 Texture Classification using Fractals 9.4.1 Fractal Lines and Shapes 9.4.2 Fractals in Texture Classification 9.4.3 Computing Fractal Diniension Using Covering Blanket method 9.5 Shape Analysis 9.5.1 Landmark Points 9.5.2 Polygon as Shape Descriptor 9.5.3 Dominant points in Shape Description 9.5.4 Curvature and Its Role in Shape Determination 9.5.5 Polygonal Approximation for Shape Analysis 9.6 Active Contour Model 9.6.1 Deformable Template 9.7 Shape Distortion and Normalization 9.7.1 Shape Dispersion Matrix 9.7.2 Shifting and Rotating the Coordinate Axes 9.7.3 Changing the scales of the bases 9.8 Contour-Based Shape Descriptor 9.8.1 Fourier based shape descriptor 9.9 Region Based Shape Descriptors 9.9.1 Zernike moments
+
+170 171 172 172 175 176 178 178 179 181 181 182 182 183 185 186 186 187 188 189 189 191 192 192 193 193 194 194 196 198 198 199 200 201 20 1 203 203
+
+CONTENTS
+
+xi;;
+
+9.9.2 Radial Chebyshev Moments (RCM) 9.10 Gestalt Theory of Perception 9.11 Summary References 10 Fuzzy Set Theory in Image Processing 10.1 Introduction to Fuzzy Set Theory 10.2 Why Fuzzy Image? 10.3 Introduction to Fuzzy Set Theory 10.4 Preliminaries and Background 10.4.1 Fuzzification 10.4.2 Basic Terms and Operations 10.5 Image as a Fuzzy Set 10.5.1 Selection of the Membership Function 10.6 Fuzzy Methods of Contrast Enhancement 10.6.1 Contrast Enhancement Using Fuzzifier 10.6.2 Fuzzy Spatial Filter for Noise Removal 10.6.3 Smoothing Algorithm 10.7 Image Segmentation using Fuzzy Methods 10.8 Fuzzy Approaches to Pixel Classification 10.9 Fuzzy c-Means Algorithm 10.10 Fusion of fuzzy logic with neural networks 10.10.1Fuzzy Self Organising Feature Map 10.11 Summary References
+11 Image Mining and Content-Based Image Retrieval
+
+204 204 204 205 209 209 209 210 211 211 212 213 214 215 216 217 218 219 221 221 223 224 225 225 227 227 228 231 231 234 235 237 239 241 242 245
+
+11.1 Introduction 11.2 Image Mining 11.3 Image Features for Retrieval and Mining 11.3.1 Color Features 11.3.2 Texture Features 11.3.3 Shape features 11.3.4 Topology 11.3.5 Multidimensional Indexing 11.3.6 Results of a Simple CBIR System 11.4 Fuzzy Similarity Measure in an Image Retrieval System 11.5 Video Mining
+
+xiv
+
+CONTENTS
+
+11.5.1 MPEG7: Multimedia Content Description Interface 11.5.2 Content-Based Video Retrieval System 11.6 Summary References 1 2 Biometric And Biomedical Image Processing 12.1 Introduction 12.2 Biometric Pattern Recognition 12.2.1 Feature Selection 12.2.2 Extraction of Front Facial Features 12.2.3 Extraction of side facial features 12.2.4 Face Identification 12.3 Face Recognition Using Eigenfaces 12.3.1 Face Recognition Using Fisherfaces 12.4 Signature Verification 12.5 Preprocessing of Signature Patterns 12.5.1 Feature Extraction 12.6 Biomedical Image Analysis 12.6.1 Microscopic Image Analysis 12.6.2 Macroscopic Image Analysis 12.7 Biomedical Imaging Modalities 12.7.1 Magnetic Resonance Imaging (MRI) 12.7.2 Computed Axial Tomography 12.7.3 Nuclear and Ultrasound Imaging 12.8 X-Ray Imaging 12.8.1 X-Ray Images for Lung Disease Identification 12.8.2 Enhancement of Chest X-Ray 12.8.3 CT-scan for Lung Nodule Detection 12.8.4 X-Ray Images for Heart Disease Identification 12.8.5 X-Ray Images for Congenital Heart Disease 12.8.6 Enhancement of Chest Radiographs Using Gradient Operators 12.8.7 Bone Disease Identification 12.8.8 Rib-cage Identification 12.9 Dental X-Ray Image Analysis 12.10 Classification of Dental Caries 12.10.1Classification of Dental Caries 12.11 Mammogram Image Analysis 12.11.1Breast Ultrasound
+
+246 248 249 250 253 253 254 254 254 256 257 257 258 259 260 262 263 263 264 264 264 265 266 267 267 267 268 268 269 2 70 271 271 272 272 273 2 74 2 75
+
+CONTENTS
+
+xv
+
+12.11.2 Steps in Mammogram Image Analysis 12.11.3Enhancement of Mammograms 12.11.4 Suspicious Area Detection 12.11.5 LESION SEGMENTATION 12.11.6 Feature Selection and Extraction 12.11.7 Wavelet Analysis of Mammogram Image 12.12 Summary References 13 Remotely Sensed Multispectral Scene Analysis 13.1 Introduction 13.2 Satellite sensors and imageries 13.2.1 LANDSAT Satellite Images 13.2.2 Indian Remote Sensing Satellite Imageries 13.2.3 Moderate Resolution Imaging Spectroradiometer (MODIS) 13.2.4 Synthetic Aperture Radar (SAR) 13.3 Features of Multispectral Images 13.3.1 Data Formats for Digital Satellite Imagery 13.3.2 Distortions and Corrections 13.4 Spectral reflectance of various earth objects 13.4.1 Water Re,'wions 13.4.2 Vegetation Regions 13.4.3 Soil 13.4.4 Man-made/Artificial Objects 13.5 Scene Classification Strategies 13.5.1 Neural Network-Based Classifier Using Error Backpropagation 13.5.2 Counterpropagation network 13.5.3 Experiments and Results 13.5.4 Classification Accuracy 13.6 Spectral classification-A knowledge-Based Approach 13.6.1 Spectral Information of Natural/Man-Made Objects 13.6.2 Training Site Selection and Feature Extraction 13.6.3 System Implement ation 13.6.4 Rule Creation 13.6.5 Rule-Base Development 13.7 Spatial Reasoning 13.7.1 Evidence Accumulation
+
+2 75 275 276 277 2 79 280 281 282
+285 285 286 286 287 287 288 289 289 289 291 291 291 292 292 293 293 294 294 295 296 297 297 297 298 299 300 301
+
+xvi
+
+CONTENTS
+
+13.7.2 Spatial Rule Generation 13.8 Other Applications of Remote Sensing 13.8.1 Change Detection using SAR Imageries 13.9 Summary References 14 Dynamic Scene Analysis: Moving Object Detection and Tracking 14.1 Introduction 14.2 Problem Definition 14.3 Adaptive Background Modeling 14.3.1 Basic Background Modeling Strategy 14.3.2 A Robust Method of Background Modeling 14.4 Connected Component Labeling 14.5 Shadow Detection 14.6 Principles of Object Tracking 14.7 Model of Tracker System 14.8 Discrete Kalman Filtering 14.8.1 Discrete Kalman Filter Algorithm 14.9 Extended Kalman Filtering 14.10 Particle Filter Based object Tracking 14.10.1 Particle Attributes 14.10.2 Particle Filter Algorithm 14.10.3Results of Object Tracking 14.11 Condensation Algorithm 14.12 Summary References 15 Introduction t o Image Compression 15.1 Introduction 15.2 Information Theory Concepts 15.2.1 Discrete Memoryless Model and Entropy 15.2.2 Noiseless Source Coding Theorem 15.2.3 Unique Decipherability 15.3 Classification of Compression algorithms 15.4 Source Coding Algorithms 15.4.1 Run-Length Coding 15.5 Huffman Coding 15.6 Arithmetic Coding
+
+303 303 303 305 305 307 307 307 308 309 309 311 312 313 314 314 316 317 320 322 323 324 324 326 326 329 329 330 331 332 333 335 336 337 338 340
+
+CONTENTS
+
+xvii
+
+15.6.1 Encoding Algorithm 15.6.2 Decoding Algorithm 15.6.3 The QM-Coder 15.7 Summary References 16 JPEG: Still Image Compression Standard 16.1 Introduction 16.2 The JPEG Lossless Coding Algorithm 16.3 Baseline J P E G Compression 16.3.1 Color Space Conversion 16.3.2 Source Image Data Arrangement 16.3.3 The Baseline Compression Algorithm 16.3.4 Coding the DCT Coefficients 16.4 Summary References 17 JPEG2000 Standard For Image Compression 17.1 Introduction 17.2 Why JPEG2000? 17.3 Parts of the JPEG2000 Standard 17.4 Overview of the JPEG2000 Part 1 Encoding System 17.5 Image Preprocessing 17.5.1 Tiling 17.5.2 DC Level Shiking 17.5.3 Multicomponent Transformations 17.6 Compression 17.6.1 Discrete Wavelet Transformation 17.6.2 Quantization 17.6.3 Region of Interest Coding 17.6.4 Rate Control 17.6.5 Entropy Encoding 17.7 Tier-2 Coding and Bitstream Formation 17.8 Summary References
+18 Coding Algorithms in JPEG2000 Standard 18.1 Introduction
+
+341 343 344 348 349 351 351 352 356 356 357 358 359 367 368 369 369 370 373 374 374 375 375 375 377 378 380 381 385 385 386 386 387 391 391
+
+xvii
+
+CONTENTS
+
+18.2 Partitioning Data for Coding 18.3 Tier-1 Coding in JPEG2000 18.3.1 Fractional Bit-Plane Coding 18.3.2 Examples of BPC Encoder 18.3.3 Binary Arithmetic Coding--MQ-Coder 18.4 Tier-2 Coding in JPEG2000 18.4.1 Bitstream Formation 18.4.2 Packet Header Information Coding 18.5 Summary References
+
+391 392 392 405 413 413 415 418 419 420
+
+Index
+About the Authors
+
+42 1
+427
+
+Preface
+
+There is a growing demand of image processing in diverse application areas, such as multimedia computing, secured image data communication, biomedical imaging, biometrics, remote sensing, texture understanding, pattern recognition, content-based image retrieval, compression, and so on. As a result, it has become extremely important to provide a fresh look at the contents of an introductory book on image processing. We attempted to introduce some of these recent developments, while retaining the classical ones. The first chapter introduces the fundamentals of the image processing techniques, and also provides a window t o the overall organization of the book. The second chapter deals with the principles of digital image formation and representation. The third chapter has been devoted t o color and color imagery. In addition to the principles behind the perception of color and color space transforation, we have introduced the concept of color interpolation or demosaicing, which is today an integrated part of any color imaging device. We have described various image transformation techniques in Chapter 4. Wavelet transformation has become very popular in recent times for its many salient features. Chapter 5 has been devoted t o wavelet transformation. The importance of understanding the nature of noise prevalent in various types of images cannot be overemphasized. The issues of image enhancement and restoration including noise modeling and filtering have been detailed in Chapter 6. Image segmentation is an important task in image processing and pattern recognition. Various segmentation schemes have been elaborated in Chapter 7. Once an image is appropriately segmented, the next important
+xix
+
+xx
+
+PREFACE
+
+task involves classification and recognition of the objects in the image. Various pattern classification and object recognition techniques have been presented in Chapter 8. Texture and shape play very important roles in image understanding. A number of texture and shape analysis techniques have been detailed in Chapter 9. In sharp contrast with the classical crisp image analysis, fuzzy set theoretic approaches provide elegant methodologies for many image processing tasks. Chapter 10 deals with a number of fuzzy set theoretic approaches. We introduce content-based image retrieval and image mining in Chapter 11. Biomedical images like x-Ray, ultrasonography, and CT-Scan images provide sufficient information for medical diagnostics in biomedical engineering. We devote Chapter 12 t o biomedical image analysis and interpretation. In this chapter, we also describe some of the biometric algorithms, particularly face recognition, signature verification, etc. In Chapter 13, we present techniques for remotely sensed images and their applications. In Chapter 14, we describe principles and applications of dynamic scene analysis, moving-object detection, and tracking. Image compression plays an important role for image storage and transmission. We devote Chapter 15 to fundamentals of image compression. We describe the J P E G standard for image compression in Chapter 16. In Chapters 17 and 18, we describe the new JPEG2000 standard. The audience of this book will be undergraduate and graduate students in universities all over the world, as well as the teachers, scientists, engineers and professionals in R&D and research labs, for their ready reference. We sincerely thank Mr. Chittabrata Mazumdar who was instrumental to bring us together to collaborate in this project. We are indebted to him for his continuous support and encouragement in our endeavors. We thank our Editor, Val hloliere, and her staff at Wiley, for their assistance in this project. We thank all our colleagues in Avisere and Indian Institute of Technology, Kharagpur, particularly Mr. Roger Undhagen, Dr. Andrew Griffis, Prof. G. S. Sanyal, Prof. N. B. Chakrabarti, and Prof. Arun hlajumdar for their continuous support and encouragement. We specially thank Odala Nagaraju, Shyama P. Choudhury, Brojeswar Bhowmick, Ananda Datta, Pawan Baheti, Milind Mushrif, Vinu Thomas, Arindam Samanta, Abhik Das, Abha Jain, Arnab Chakraborti, Sangram Ganguly, Tamalika Chaira, Anindya Moitra, Kaushik hlallick and others who have directly or indirectly helped us in the preparation of this manuscript in different ways. We thank anonymous reviewers of this book for their constructive suggestions. Finally, we are indebted to our families for their active support throughout this project. Especially, hilrs. Baishali Acharya and hdrs. Supriya Ray stood strongly behind us in all possible ways. We would like to express our sincere appreciation to our children, Arita and Arani, and Aniruddha and Ananya, who were always excited about this work and made us proud. Tinku Acharya Ajoy K. Ray
+
+Introduction
+1.1 FUNDAMENTALS OF IMAGE PROCESSING
+
+We are in the midst of a visually enchanting world, which manifests itself with a variety of forms and shapes, colors and textures, motion and tranquility. The human perception has the capability t o acquire, integrate, arid interpret all this abundant visual information around us. It is challenging to impart such capabilities to a machine in order to interpret the visual information embedded in still images, graphics, and video or moving images in our sensory world. It is thus important t o understand the techniques of storage, processing, transmission, recognition, and finally interpretation of such visual scenes. In this book we attempt t o provide glimpses of the diverse areas of visual information analysis techniques. The first step towards designing an image analysis system is digital image acquisition using sensors in optical or thermal wavelengths. A twodimensional image that is recorded by these sensors is the mapping of the three-dimensional visual world. The captured two dimensional signals are sampled and quantized to yield digital images. Sometimes we receive noisy images that are degraded by some degrading mechanism. One common source of image degradation is the optical lens system in a digital camera that acquires the visual information. If the camera is not appropriately focused then we get blurred images. Here the blurring mechanism is the defocused camera. Very often one may come across images of outdoor scenes that were procured in a foggy environment. Thus any outdoor scene captured on a foggy winter morning could invariably result
+1
+
+into a blurred image. In this case the degradation is due t o the fog and mist in the atmosphere, and this type of degradation is known as atmospheric degradation. In some other cases there may be a relative motion between the object and the camera. Thus if the camera is given an impulsive displacement during the image capturing interval while the object is static, the resulting image will invariably be blurred and noisy. In some of the above cases, we need appropriate techniques of refining the images so that the resultant images are of better visual quality, free from aberrations and noises. Image enhancement, filtering, and restoration have been some of the important applications of image processing since the early days of the field [1]-[4]. Segmentation is the process that subdivides an image into a number of uniformly homogeneous regions. Each homogeneous region is a constituent part or object in the entire scene. In other words, segmentation of an image is defined by a set of regions that are connected and nonoverlapping, so that each pixel in a segment in the image acquires a unique region label that indicates the region it belongs to. Segmentation is one of the most important elements in automated image analysis, mainly because a t this step the objects or other entities of interest are extracted from an image for subsequent processing, such as description and recognition. For example, in case of an aerial image containing the ocean and land, the problem is to segment the image initially into two parts-land segment and water body or ocean segment. Thereafter the objects on the land part of the scene need to be appropriately segmented and subsequently classified. After extracting each segment; the next task is t o extract a set of meaningful features such as texture, color, and shape. These are important measurable entities which give measures of various properties of image segments. Some of the texture properties are coarseness, smoothness, regularity, etc., while the common shape descriptors are length, breadth, aspect ratio, area, location, perimeter, compactness, etc. Each segmented region in a scene may be characterized by a set of such features. Finally based on the set of these extracted features, each segmented object is classified t o one of a set of meaningful classes. In a digital image of ocean, these classes may be ships or small boats or even naval vessels and a large class of water body. The problems of scene segmentation and object classification are two integrated areas of studies in machine vision. Expert systems, semantic networks, and neural network-based systems have been found to perform such higher-level vision tasks quite efficiently. Another aspect of image processing involves compression and coding of the visual information. With growing demand of various imaging applications, storage requirements of digital imagery are growing explosively. Compact representation of image data and their storage and transmission through communication bandwidth is a crucial and active area of development today. Interestingly enough, image data generally contain a significant amount of superfluous and redundant information in their canonical representation. Image
+
+APPLlCATlONS OF /MAG€ PROCESSlNG
+
+3
+
+compression techniques helps t o reduce the redundancies in raw image data in order to reduce the storage and communication bandwidth.
+
+1.2
+
+APPLICATIONS OF IMAGE PROCESSING
+
+There are a large number of applications of image processing in diverse spectrum of human activities-from remotely sensed scene interpretation to biomedical image interpretation. In this section we provide only a cursory glance in some of these applications.
+
+1.2.1
+
+Automatic Visual Inspection System
+
+Automated visual inspection systems are essential to improve the productivity and the quality of the product in manufacturing and allied industries [5]. We briefly present few visual inspection systems here.
+0
+
+Automatic inspection of incandescent lamp filaments: An interesting application of automatic visual inspection involves inspection of the bulb manufacturing process. Often the filament of the bulbs get fused after short duration due t o erroneous geometry of the filament, e.g., nonuniformity in the pitch of the wiring in the lamp. Manual inspection is not efficient t o detect such aberrations.
+In an automated vision-based inspection system, a binary image slice of the filament is generated, from which the silhouette of the filament is produced. This silhouette is analyzed t o identify the non-uniformities in the pitch of the filament geometry inside the bulb. Such a system has been designed and installed by the General Electric Corporation.
+
+0
+
+Faulty component identification: Automated visual inspection may also be used t o identify faulty components in an electronic or electromechanical systems. The faulty components usually generate more thermal energy. The infra-red (IR) images can be generated from the distribution of thermal energies in the assembly. By analyzing these IR images, we can identify the faulty components in the assembly. Automatic surface inspection systems: Detection of flaws on the surfaces is important requirement in many metal industries. For example, in the hot or cold rolling mills in a steel plant, it is required to detect any aberration on the rolled metal surface. This can be accomplished by using image processing techniques like edge detection, texture identification, fractal analysis, and so on.
+
+0
+
+4
+
+INTRODUCTION
+
+1.2.2
+
+Remotely Sensed Scene Interpretation
+
+Information regarding the natural resources, such as agricultural, hydrological, mineral, forest, geological resources, etc., can be extracted based on remotely sensed image analysis. For remotely sensed scene analysis, images of the earth’s surface are captured by sensors in remote sensing satellites or by a multi-spectral scanner housed in an aircraft and then transmitted to the Earth Station for further processing [6, 71. We show examples of two remotely sensed images in Figure 1.1 whose color version has been presented in the color figure pages. Figure l . l ( a ) shows the delta of river Ganges in India. The light blue segment represents the sediments in the delta region of the river, the deep blue segment represents the water body, and the deep red regions are mangrove swamps of the adjacent islands. Figure l . l ( b ) is the glacier flow in Bhutan Himalayas. The white region shows the stagnated ice with lower basal velocity.
+
+(4
+
+(b)
+
+fig. 1.1 Example of a remotely sensed image of (a) delta of river Ganges, (b) Glacier flow in Bhutan Himalayas. Courtesy: NASA/GSFC/METI/ERSDAC/JAROS, and U.S./Japan ASTER Science Team.
+
+Techniques of interpreting the regions and objects in satellite images are used in city planning, resource mobilization, flood control, agricultural production monitoring, etc. 1.2.3
+Biomedical Imaging Techniques
+
+Various types of imaging devices like X-ray, computer aided tomographic (CT) images, ultrasound, etc., are used extensively for the purpose of medical diagnosis [8]-[lo]. Examples of biomedical images captured by different image formation modalities such as CT-scan, X-ray, and MRI are shown in Figure 1.2. (i) localizing the objects of interest, i.e. different organs
+(ii) taking the measurements of the extracted objects, e.g. tumors in the
+
+image
+
+APPLICATIONS OF IMAGE PROCESSING
+
+5
+
+Fig. 1.2 Examples of (a) CT-scan image of brain, (b) X-ray image of wrist, ( c ) MRI image of brain.
+
+(iii) interpreting the objects for diagnosis. Some of the biomedical imaging applications are presented below.
+
+(A) Lung disease identification: In chest X-rays, the structures containing
+air appear as dark, while the solid tissues appear lighter. Bones are more radio opaque than soft tissue. The anatomical structures clearly visible on a normal chest X-ray film are the ribs, the thoracic spine, the heart, and the diaphragm separating the chest cavity from the abdominal cavity. These regions in the chest radiographs are examined for abnormality by analyzing the corresponding segments. (B) Heart disease zdentification: Quantitative measurements such as heart size and shape are important diagnostic features to classify heart diseases. Image analysis techniques may be employed to radiographic images for improved diagnosis of heart diseases.
+
+( C ) Dzgital mammograms: Digital mammograms are very useful in detecting features (such as micro-calcification) in order to diagnose breast tumor. Image processing techniques such as contrast enhancement, segmentation, feature extraction, shape analysis, etc. are used to analyze mammograms. The regularity of the shape of the tumor determines whether the tumor is benign or malignant.
+1.2.4
+Defense surveillance
+
+Application of image processing techniques in defense surveillance is an important area of study. There is a continuous need for monitoring the land and oceans using aerial surveillance techniques. Suppose we are interested in locating the types and formation of Naval vessels in an aerial image of ocean surface. The primary task here is to segment different objects in the water body part of the image. After extracting the
+
+6
+
+INTRODUCTION
+
+segments, the parameters like area, location, perimeter, compactness, shape, length, breadth, and aspect ratio are found, to classify each of the segmented objects. These objects may range from small boats to massive naval ships. Using the above features it is possible t o recognize and localize these objects. To describe all possible formations of the vessels, it is required that we should be able t o identify the distribution of these objects in the eight possible directions, namely, north, south, east, west, northeast, northwest, southeast and southwest. From the spatial distribution of these objects it is possible t o interpret the entire oceanic scene, which is important for ocean surveillance.
+1.2.5 Content-Based Image Retrieval
+
+Retrieval of a query image from a large image archive is an important application in image processing. The advent of large multimedia collection and digital libraries has led to an important requirement for development of search tools for indexing and retrieving information from them. A number of good search engines are available today for retrieving the text in machine readable form, but there are not many fast tools t o retrieve intensity and color images. The traditional approaches to searching and indexing images are slow and expensive. Thus there is urgent need for development of algorithms for retrieving the image using the embedded content in them. The features of a digital image (such as shape, texture, color, topology of the objects, etc.) can be used as index keys for search and retrieval of pictorial information from large image database. Retrieval of images based on such image contents is popularly called the content-based image retrieval [ll,la].
+1.2.6 Moving- 0bject Tracking
+
+Tracking of moving objects, for measuring motion parameters and obtaining a visual record of the moving object, is an important area of application in image processing [13, 141. In general there are two different approaches t o object tracking: 1. Recognition-based tracking 2 . Motion-based tracking.
+
+A system for tracking fast targets (e.g., a military aircraft, missile, etc.) is developed based on motion-based predictive techniques such as Kalman filtering, extended Kalman filtering, particle filtering, etc. In automated image processing based object tracking systems, the target objects entering the sensor field of view are acquired automatically without human intervention. In recognition-based tracking, the object pattern is recognized in successive image-frames and tracking is carried-out using its positional information.
+
+HUMAN VISUAL PERCEPTION
+
+7
+
+1.2.7
+
+Image and Video Compression
+
+Image and video compression is an active application area in image processing [12, 151. Development of compression technologies for image and video continues t o play an important role for success of multimedia communication and applications. Although the cost of storage has decreased significantly over the last two decades, the requirement of image and video data storage is also growing exponentially. A digitized 36 cm x 44 cm radiograph scanned at 70 p m requires approximately 45 Megabytes of storage. Similarly, the storage requirement of high-definition television of resolution 1280 x 720 at 60 frames per second is more than 1250 Megabits per second. Direct transmission of these video images without any compression through today’s communication channels in real-time is a difficult proposition. Interestingly, both the still and video images have significant amount of visually redundant information in their canonical representation. The redundancy lies in the fact that the neighboring pixels in a smooth homogeneous region of a natural image have very little variation in their values which are not noticeable by a human observer. Similarly, the consecutive frames in a slow moving video sequence are quite similar and have redundancy embedded in them temporally. Image and video compression techniques essentially reduce such visual redundancies in data representation in order to represent the image frames with significantly smaller number of bits and hence reduces the requirements for storage and effective communication bandwidth.
+
+1.3
+
+H U M A N VISUAL PERCEPTION
+
+Electromagnetic radiation in the optical band generated from our visual environment enters the visual system through eyes and are incident upon the sensitive cells of the retina. The activities start in the retina, where the signals from neighboring receivers are compared and a coded message dispatched on the optic nerves to the cortex, behind our ears. An excellent account of human visual perception may be found in [16]. The spatial characteristics of our visual system have been proposed as a nonlinear model in [17, 181. Although the eyes can detect tranquility and static images, they are essentially motion detectors. The eyes are capable of identification of static objects and can establish spatial relationships among the various objects and regions in a static scene. Their basic functioning depends on comparison of stimuli from neighboring cells, which results in interpretation of motion. When observing a static scene, the eyes perform small repetitive motions called saccades that move edges past receptors. The perceptual recognition and interpretation aspects of our vision, however, take place in our brain. The objects and different regions in a scene are recognized in our brain from the edges or boundaries that encapsulate the objects or the regions inside the scene. The maximum information about the object is embedded along these edges
+
+8
+
+INTRODUCTION
+
+or boundaries. The process of recognition is a result of learning that takes place in our neural organization. The orientation of lines and the directions of movements are also used in the process of object recognition.
+
+fig. 1.3 Structure of human eye.
+
+1.3.1 Human Eyes
+The structure of an eye is shown in Figure 1.3. The transportation of the visual signal from the retina of the eye to the brain takes place through approximately one and a half million neurons via optic nerves. The retina contains a large number of photo-receptors, compactly located in a more or less regular, hexagonal array. The retinal array contains three types of color sensors, known as cones in the central part of the retina named as fovea centralis. The cones are distributed in such a way that they are densely populated near the central part of the retina and the density reduces near the peripheral part of the fovea. There are three different types of cones, namely red, green and blue cones which are responsible for color vision. The three distinct classes of cones contain different photosensitive pigments. The three pigments have maximum absorptions at about 430 nm (violet), 530 nm (blue-green) and 560 nm (yellow-green). Another type of small receptors fill in the space between the cones. These receptors are called rods which are responsible for gray vision. These receptors are more in number than the cones. Rods are sensitive to very low-levels of illumination and are responsible for our ability t o see in dim light (scotopic vision). The cone or photopic system, on the other hand, operates at high illumination levels when lots of photons are available, and maximizes resolution at the cost of reduced sensitivity.
+
+COMPONENTS OF AN IMAGE PROCESSING SYSTEM
+
+9
+
+1.3.2 Neural Aspects of the Visual Sense
+The optic nerve in our visual system enters the eyeball and connects with rods and cones located a t the back of the eye. The neurons contain dendrites (inputs), and a long axon with an arborization a t the end (outputs). The neurons communicate through synapses. The transmission of signals is associated with the diffusion of the chemicals across the interface and the receiving neurons are either stimulated or inhibited by these chemicals, diffusing across the interface. The optic nerves begin as bundles of axons from the ganglion cells on one side of the retina. The rods and cones, on the other side, are connected t o the ganglion cells by bipolar cells, and there are also horizontal nerve cells making lateral connections. The signals from neighboring receptors in the retina are grouped by the horizontal cells t o form a receptive field of opposing responses in the center and the periphery, so that a uniform illumination of the field results in no net stimulus. In case of nonuniform illumination, a difference in illumination at the center and the periphery creates stimulations. Some receptive fields use color differences, such as red-green or yellow-blue, so the differencing of stimuli applies to color as well as t o brightness. There is further grouping of receptive field responses in the lateral geniculate bodies and the visual cortex for directional edge detection and eye dominance. This is low-level processing preceding the high-level interpretation whose mechanisms are unclear. Nevertheless, it demonstrates the important role of differencing in the senses, which lies at the root of contrast phenomena. If the retina is illuminated evenly in brightness and color, very little nerve activity occurs. There are 6 to 7 million cones, and 110 to 130 million rods in a normal human retina. Transmission of the optical signals from rods and cones takes place through the fibers in the optic nerves. The optic nerves cross a t the optic chiasma, where all signals from the right sides of the two retinas are sent t o the right half of the brain, and all signals from the left, to the left half of the brain. Each half of the brain gets half a picture. This ensures that loss of an eye does not disable the visual system. The optical nerves end at the lateral geniculate bodies, halfway back through the brain, and the signals are distributed to the visual cortex from there. The visual cortex still has the topology of the retina, and is merely the first stage in perception, where information is made available. Visual regions in two cerebral hemispheres are connected in the corpus callosum, which unites the halves of the visual field.
+
+1.4 C O M P O N E N T S OF A N IMAGE PROCESSING SYSTEM
+There are several components of an image processing system. The first major component of an image processing system is a camera that captures the images of a three-dimensional object.
+
+1.4.1 Digital Camera
+The sensors which are used in most of the cameras are either charge coupled device (CCD) or CMOS sensors. The CCD camera comprises a very large number of very small photo diodes, called photosites. The electric charges which are accumulated a t each cell in the image are transported and are recorded after appropriate analog to digital conversion. In CMOS sensors, on the other hand, a number of transistors are used for amplification of the signal at each pixel location. The resultant signal at each pixel location is read individually. Since several transistors are used the light sensitivity is lower. This is because of the fact that some of the photons are incident on these transistors (used for signal amplification), located adjacent t o the photo-sensors. The current state-of-the-art CMOS sensors are more noisy compared t o the CCD sensors. However, they consume low power and they are less expensive. In case of bright sunlight the aperture, located behind the camera lens, need not be large since we do not require much light, while on cloudy days when we need more light t o create an image the aperture should be enlarged. This is identical to the functioning of our eyes. Thc shutter speed gives a measure of the amount of time during which the light passes through the aperture. The shutter opens and closes for a time duration which depends on the requirement of light. The focal length of a digital camera is the distance between the focal plane of the lens and the surface of the sensor array. Focal length is the critical information in selecting the amount of required magnification which is desired from the camera.
+
+Fig. 1.4 Top and bottom fields in interlace scan.
+
+In an interlaced video camera, each image frame is divided in two fields. Each field contains either the even (top field) or odd (bottom field) horizontal video lines. These two fields are assembled by the video display device. The mode of assembling the top and bottom fields in an interlace camera is shown in Fig. 1.4. In progressive scan cameras on the other hand, the entire frame is output as a single frame. When a moving scene is imaged, such as in robotic vision, it is captured using strobe pulse t o illuminate the object in the scene. In such cases of imaging applications, progressive scan cameras are preferable.
+
+COMPONENTS OF AN IMAGE PROCESS/NG SYSTEM
+
+11
+
+Interlaced cameras are not used in such applications because the illumination time may be shorter than the frame time and only one field will be illuminated and captured if interlaced scanning is used. A digital camera can capture images in various resolutions, e.g., 320 x 240, or 352 x 288, or 640 x 480 pixels on the low t o medium resolution range t o 1216 x 912 or 1600 x 1200 pixels on the high resolution size. The cameras that we normally use can produce about 16 million colors, i.e., a t each pixel we can have one of 16 million colors. The spatial resolution of an image refers t o the image size in pixels, which corresponds t o the size of the CCD array in the camera. The process of zooming an image involves performing interpolation between pixels to produce a zoomed or expanded form of the image. Zooming does not increase the information content in addition t o what the imaging system provides. The resolution, however, may be decreased by subsampling which may be useful when system bandwidth is limited. Sensor resolution depends on the smallest feature size of the objects in a scene that we need our imaging system t o distinguish, which is a measure of the object resolution. For example in an OCR system, the minimum object detail that needs t o be discerned is the minimum width of line segments that constitute the pattern. In case of a line drawing, the minimum feature size may be chosen as two pixels wide. The sensor resolution of a camera is the number of rows and columns of the CCD array, while the field of view FOV is the area of the scene that the camera can capture. The FOV is chosen as the horizontal dimension of the inspection region that includes all the objects of interest. The sensor resolution of the camera = 2FOV/object resolution. The sensor resolution or sensor size is thus inversely proportional to the object resolution. The resolution of quantization refers t o the number of quantization levels used in analog t o digital (A/D) conversions. Higher resolution in this sense implies improved capability of analyzing low-contrast images. Line scan cameras use a sensor that has just a row of CCD elements. An image may be captured by either moving the camera or by moving the image being captured by the camera. The number of elements in a line scan camera ranges from 32 to 8096. Even a single detector moved in a scanning pattern over an area can also be used t o produce a video signal. A number of features, such as shutter control, focus control, exposure time control along with various triggering features are supported in cameras.
+1.4.1.1 Capturing colors in a digital camera There are several ways in which a digital camera can capture colors. In one approach, one uses red, green, and blue filters and spins them in front of each single sensor sequentially one after another and records three separate images in three colors at a very fast rate. Thus the camera captures all the three color components at each pixel location. While using this strategy an automatic assumption is that during the process of spinning the three filters, the colors in the image must not
+
+12
+
+INTRODUCTION
+
+change (i.e., they must remain stationary). This may not be a very practical solution. A practical solution is based on the concept of color interpolation or demosaicing, which is a more economical way t o record the three primary colors of an image. In this method, we permanently place only one type of filter over each individual photo-site. Usually the sensor placements are carried out in accordance to a pattern. The most popular pattern is called the Bayer's pattern [19], where each pixel is indicated by only one color-red, blue, or green pixel. It is possible to make very accurate guesses about the missing color component in each pixel location by a method called color interpolation or demosaicing [20, 211. We cover different methods of color interpolation in Chapter 3. In high-quality cameras, however, three different sensors with the three filters are used and light is directed to the different sensors by using a beam splitter. Each sensor responds only t o small wavelength band of color. Thus the camera captures each of the three colors at each pixel location. These cameras will have more weight and they are costly.
+
+1.5
+
+ORGANIZATION OF THE BOOK
+
+In this chapter, we introduced some fundamental concepts and a brief introduction to digital image processing. We have also presented few interesting applications of image processing in this chapter. Chapter 2 deals with the principles of image formation and their digital representation in order t o process the images by a digital computer. In this chapter, we also review the concepts of sampling and quantization, as well as the various image representation and formatting techniques. In Chapter 3 , we present the basics of color imagery. the color spaces and their transformation techniques. In this chapter, we also present a novel concept of color interpolation t o reconstruct full color imagery from sub-sampled colors prevalent in low-cost digital camera type image processing devices. Chapter 4 has been devoted to discuss various image transformation techniques and their underlying theory. Some of the popular image transformation techniques such as Discrete Fourier Transform, Discrete Cosine Transform. Karhaunen-Loeve Transform, Singular Value decomposition, WalshHadamard transform and their salient properties are discussed here. M'avelet transformation has become very popular in image processing applications in recent times for its many salient features. Chapter 5 has been devoted to wavelet transformation. We discuss both the convolution and lifting based algorithms for implementation of the DWT. The importance of understanding the nature of noise and imprecision prevalent in various types of images cannot be overemphasized. This issue has been detailed in Chapter 6. We present a number of algorithms for enhancement, restoration, and filtering of images in this chapter.
+
+ORGANIZATION OF THE BOOK
+
+13
+
+Image segmentation is possibly one of the most important tasks in image processing. Various edge detection schemes have been elaborated in Chapter 7. Region based segmentation strategies such as thresholding, region growing, and clustering strategies have been discussed in this chapter. Once an image is appropriately segmented, the next important task involves classification and recognition of the objects in the image. The various supervised and unsupervised pattern classification and object recognition techniques have been presented in Chapter 8. Several neural network architectures namely multilayer perceptron, Kohonen’s Self Organizing feature map, and counterpropagation networks have been discussed in this chapter. Texture and shape of objects play a very important role in image understanding. A number of different texture representation and analysis techniques have been detailed in Chapter 9. In this chapter, we have also discussed various shape discrimination strategies with examples. In sharp contrast with the classical crisp image analysis techniques, fuzzy set theoretic approaches provide elegant methodologies which yield better results in many image processing tasks. We describe a number of image processing algorithms based on fuzzy set theoretic approaches in Chapter 10. In today’s world dealing with Internet, the application on content based image retrieval became important because of image search and other multimedia applications. We introduce the concepts of content-based image retrieval and image miningin Chapter 11. Biomedical images like x-Ray, ultrasonography, and CT-scan images provide sufficient information for medical diagnostics in biomedical engineering. We devote Chapter 12 t o biomedical image analysis and interpretation. In this chapter, we also describe two important applications of biometric recognition, viz., face recognition and signature verification. Remote sensing is one of the most important applications in image processing. We discuss various satellite based remotely sensed image processing applications in Chapter 13. In Chapter 14, we describe principles and applications of dynamic scene analysis, moving-object detection, and tracking. We also included recent developments such as condensation algorithm and particle filtering for object tracking . Image Compression plays an important role for image storage and transmission. We devote Chapter 15 t o describe the fundamentals of image compression and principles behind it. There are many image compression techniques in the literature. However, adhering t o image compression standards is important for interoperability and exchange of image data in today’s networked world. The international standard organization, defined the algorithms and formats for image compression towards this goal. We describe the JPEG standard for image compression in Chapter 16. In this era of internet and multimedia communication, it is necessary to incorporate new features and functionalities in image compression standards in order to serve diverse application requirements in the market place.
+
+14
+
+INTRODUCTION
+
+JPEG2000 is the new image compression standard t o achieve this goal. In Chapters 17 and 18, we elaborate on the JPEG2000 standard, its applications and implementation issues.
+
+1.6 HOW IS THIS BOOK DIFFERENT?
+With the growth of diverse applications, it became a necessity to provide a fresh look at the contents of an introductory image processing book. In our knowledge there is no other book that covers the following aspects in detail. We present a set of advanced topics, in this book, retaining the classical ones. We cover several applications such as biomedical and biometric image processing, Content based image retrieval, remote sensing, dynamic scene analysis, pattern recognition, shape and texture analysis, etc. We include new concepts in color interpolation to produce full color from sub-sampled Bayer pattern color prevalent in today's digital camera and other imaging devices [21]. The concepts of Discrete Wavelet Transform and its efficient implementation by lifting approach have been presented in great detail. In this era of internet and multimedia communication, there is necessity to incorporate many new features and functionalities in image compression standards to serve diverse application. JPEG2000 is the new image compression standard to achieve this goal [15]. We devote two chapters on the JPEG2000 standard in great detail. We present the concepts and techniques of Content based image retrieval and image mining [ll]. The principles of moving-object detection and tracking, including recent developments such as condensation algorithm and particle filtering for object tracking [14] have been discussed in this book. Applications of dental and mammogram image analysis in biomedical image processing [9, 101 have been presented here. Both the soft and hard computing approaches have been dealt in greater length with respect t o the major image processing tasks [ll]. The fuzzy set theoretic approaches are rich to solve many image processing tasks, but not much discussions are present in the classical image processing books [22, 231.
+
+REFERENCES
+
+15
+
+We present the direction and development of current research in certain areas of image processing. We have provided extensive bibliography in the unified framework of this book.
+
+1.7
+
+SUMMARY
+
+In this chapter, we have introduced the concepts, underlying principles, and applications of image processing. We have visited the role of eyes as the most important visual sensor in the human and animal world. The components constituting a computer vision system are presented briefly here. The organization of book and how this book is different from other image processing books currently in the market have also been discussed.
+
+REFERENCES
+
+1. A. Rosenfeld and A. C. Kak, Digital Picture Processing, Second Edition, Volume 1, Academic Press, 1982. 2. W. K. Pratt, Digital Image Processing, Second Edition, Wiley, New York, 1991.
+
+3. R. C. Gonzalez and R. E. Woods, Digital Image Processing, AddisonWesley, Reading, MA, 1992.
+4. R. N. Bracewell, Two-Dimensional Imaging, Prentice Hall, Englewood Cliffs, NJ, 1995.
+
+5. D. T. Pham and R. Alcock, Smart Inspection Systems: Technicuqes and Applications of Intelligent Vision, Academic Press, Oxford, 2003.
+6. T. M. Lissesand and R. W. Kiefer, Remote Sensing and Image Interpretation, 4th Edition, John Wiley and Sons, 1999.
+7. J. R. Jensen, Remote Sensing of the Environment: An Earth Resource
+
+Perspective, Prentice Hall, 2000.
+
+8. P. Suetens, Fundamentals of Medical Imaging Cambridge University Press, 2002. 9. P. F. Van Der stelt and Qwil G.M.Geraets, “Computer aided interpretation and quantication of angular periodontal Bone defects on dental radiographs”, IEEE Transactions o n Biomedical engineering, 38(4), April 1998. 334-338.
+
+10. At. A. Kupinski and h4. Giger, “Automated Seeded Lesion Segmentation on Digital Mammograms,” IEEE Trans. Med. Imag., Vol. 17, 1998, 510-51 7.
+11. S. Mitra and T. Acharya, Data Mining: Multimedia, Soft Computing, and Bioinformatics, Wiley, Hoboken, NJ, 2003. 12. A. K. Ray and T . Acharya. Information Technology: Principles and Applications. prentice Hall of India, New Delhi, India, 2004.
+
+13. D. Reid, “An algorithm for tracking multiple targets,” IEEE Trans. on Automation and Control, Vol. AC-24, December 1979, 84-90, 14. R. Cucchiara: C. Grana, G. Neri, M. Piccardi, and A. Prati, “The Sakbot System for Moving Object Detection and Tracking,” Video-Based Surveillance Systems- Computer Vision and Distributed Processing, 2001, 145157. 15. T. Acharya and P. S. Tsai. JPEG2UUU Standard for Image Compression: Concepts, Algorithms, and VLSI Architectures, Wiley, Hoboken, NJ, 2004. 16. G. Wyszecki and W. S. Stiles, Color Science, Second Edition, McGrawHill, NY, 1982. 17. T. G. Stockham, Jr., “Image Processing in the context of a Visual Model,” Proceedings of IEEE, 60(7), July 1972, 828-842. 18. C. F. Hall, and E. L. Hall, “A Nonlinear Model for the Spatial Characteristics of the Human Visual System,” IEEE Trans. Systems, Man, and Cybernetics, SMC-7(3), March 1977, 161-170. 19. B. E. Bayer, “Color Imaging Array,” US Patent 3,971,065, Eastman Kodak Company, 1976. 20. T. Sakamoto, C. Nakanishi, and T. Hase, “Software Pixel Interpolation for Digital Still Cameras Suitable for A 32-bit MCU,” IEEE Transactions on Consumer Electronics, 44(4), November 1998, 1342-1352. 21. P. Tsai, T. Acharya, and A. K. Ray, “Adaptive Fuzzy Color Interpolation?” Journal of Electronic Imaging, 11(3), July 2002, 293-305. 22. L. A. Zadeh, “Fuzzy Sets,” Information and Control, 8 , 1965, 338-353. 23. C. V. Jawahar and A. K. Ray, “Fuzzy Statistics of Digital Images,” IEEE Signal Processing Letter, 3, 1996, 225-227.
+
+Image Formation and Representation
+2.1 INTRODUCTION
+
+There are three basic components of image formation, i.e. , the illumination, the reflectance models of surfaces which are imaged, and the process of image formation at the retina of human eyes or at the sensor plane of the camera. Once the images are formed (which is a two-dimensional analog signal), the next process involves sampling and digitization of the analog image. The digital images so formed after all these processes need t o be represented in appropriate format so that they may be processed and manipulated by a digital computer for various applications. In this chapter, we discuss the principles of image formation and the various representation schemes. 2.2
+IMAGE FORMATION
+
+Understanding of physics of illumination is the first step of understanding of image formation. We start our discussion with the physics of illumination.
+
+2.2.1
+
+Illumination
+
+Illumination is a fundamental component in the image formation process, which generates sense in our visual organ. Light produces the psychological sensation when it impinges on our eyes and excites our visual sense. The strength of this sensation, which is the sensation of brightness, can be quan17
+
+18
+
+/MAG€ FORMATION AND REPRESENTATlON
+
+tified by averaging the responses of many human observers. The average response, i.e., the psychovisual sensation is determined at different spectral wavelengths. The peak spectral sensitivity of a human observer happens a t 555 nm wavelength. If this sensitivity is normalized t o one, then the sensitivity drops down to 0.0004 a t the two ends of the optical spectrum (i.e., a t 400 ‘nmand 735 nm). It may be noted here that equal amounts of luminous flux produce equal brightness, which is proportional t o the logarithm of the luminous flux. Fechner’s Law defines the brightness by the relation
+
+F B = klog(-),
+
+F O
+
+where Fo is a reference luminous flux, measured in lumane (Im). The above relation shows that doubling the luminous flux does not double the apparent brightness.
+
+fig. 2.1
+
+Differential solid angle formation.
+
+Let us consider a point source which emits luminous flux along radial lines. This point source of illumination may be anisotropic. A finite amount of radiation is emitted from the anisotropic point source in a finite cone. This cone has its vertex at the point source 0, and its base of area dA a t a distance T from the point source 0, the normal to dA making an angle 0 with the radius. Then, this cone is measured by the differential solid angle
+
+dA cos B r2 measured in steradians as shown in Figure 2.1. It is positive or negative as the normal t o dA points outwards or inwards.
+
+dR =
+
+~
+
+IMAGE FORMATION
+
+19
+
+It is clear that the total solid angle surrounding a point is 47r. The luminous intensity I of a point source is the ratio $, where F is the luminance flux. The luminous intensity is in general a function of direction and it is measured in candela (cd). If 1 lm (lumane) is emitted per steradian, the intensity is 1 cd. An isotropic point source of intensity I candela emits 47rI lumane. The luminous flux incident on area dA from a source of intensity I is
+
+dF
+
+= I-
+
+dA cos 6 '
+r2
+
+'
+
+as shown in Figure 2.1. This follows directly from the definition of I as luminous flux per unit solid angle and the definition of solid angle. If the source is an extended one, then this must be integrated over the source area. The luminous flux per unit area falling on a surface is called the illumination E of the surface, and is measured in lm/m2 (lumane per square meter), which is called a lux.For a point source,
+
+dF E = -=I-. dA
+
+COSQ
+
+r2
+
+When a surface is illuminated, the response to incident light differs quite significantly, depending upon the nature of the surface. There are different types of surfaces with different characteristics. Some surfaces may be perfectly absorbing (e.g., black absorbing surfaces), which absorb the entire incident luminous flux and do not reflect any light. Other surfaces reflect the light incident on them.
+
+2.2.2
+
+Reflectance Models
+
+Depending on the nature of reflection we group them in three categoriesLambertian, Specular, and Hybrid surfaces.
+0
+
+Lambertian Reflectance: The Lambertian surfaces are those surfaces from which light is reflected in all directions. The nature of such reflectance is a diffused one. The reflection from the wall painted with flat paints, papers, fabrics, ground surfaces are some of the examples of Lambertian reflection. The illuminated region of the surface emits the entire incident light in all directions covering solid angle 27r radians. The Lambertian surface appears equally bright from all directions (i.e., equal projected areas radiate equal amounts of luminous flux). Many real surfaces approach t o be nearly Lambertian. The reflectance map of the Lambertian surface may be modelled as
+
+I~
+
+=E
+
+~ cos e, A
+
+where Eo is the strength of the incident light source, A is the surface area of the Lambertian patch and Q is the angle of incidence. Such a
+
+20
+
+IMAGE FORMATlON AND REPRESENTATlON
+
+model applies better when the angle of incidence as well as the angle of reflection are both small.
+
+Specular Reflectance: A specularly reflecting surface, such as that of a metal or mirror reflects the light according to the laws of reflection (i.e., the angle of reflection is equal t o the angle of incidence). The reflectance from such a surface is known as specular reflection.
+0
+
+Hybrid Reflectance Model: There exists another type of reflection, which are mostly found in display devices. These are known as Hazes. In the real world most of the surfaces we come across are neither Lambertian nor specular. They possess the combination of both the properties and are termed as h y b n d surfaces. For example, the cathode-ray oscilloscopes may be considered as having considerable specular reflection and very low to moderate Lambertian reflection. The specular components of reflection from these surfaces may be reduced by using antireflection coatings on these surfaces. The reflectance models from such surfaces may be described as I = W I S (1 - W ) I L ,
+
++
+
+where w is the weight of thp specular component of the hybrid surface, and I s and I L are the specular and Lambertian intensities of the hybrid surface. The problem of sun glint and glare assumes importance while working with optical imagery of water, snow, or even roads. This problem increases as the sun angle increases. This is due to the specular reflection of light from the object surface. In scenes containing water body the glint increases at high sun angle. At high sun angle much of the sunlight reaches the bottom of the water body and as a result the bottom of the water body gets illuminated and the potential for glint increases. The effect of glint depends on the sun angle, and also on the focal length and the field of view of the imaging devices. The glare is much more common over water, which has a much higher natural reflectance than vegetation. This can be seen on the waters. where the glare appears grayish-silver.
+
+2.2.3 Point Spread Function
+The basis of image formation can be explained by the p0in.t spread function (PSF). The PSF indicates how a point source of light results in a spread image in the spatial dimension. Let us assume that we want to find the image of a single point at (x, y). If the imaging system is perfectly focused and without any stochastic disturbance, then all the photons from the point source will strike the detector focal plane at the same point and will produce a point image. However, the resultant image of this point source will interestingly not be a point, or a
+
+IMAGE FORMATION
+
+21
+
+perfect copy of the point; but a blurred version of it. Usually the intensity at the center will be maximum and it will progressively reduce away from the center, resulting in a Gaussian distribution function. The blurring results from several factors - the blurring may be due t o inappropriate focusing, imperfection of the lens, scatter of photons or the interaction of photons with the detector array. The resultant image is described in terms of its point spread function (PSF), as defined below
+L e s ( z , Y) = L d z ,Y) @
+
+P ( z ,Y)
+
+where @ is the convolution operation, and I,,, is the resultant image when the input image Iid is convolved with the point spread function P ( z , y ) a t location (2, y). The width of the PSF decides the nature of the resultant image.
+
+Fig. 2.2 Example of point spread function.
+
+Thus if we know the point spread function, it is possible t o restore the image by deconvolution. We know that the convolution in the time domain is analogous to the multiplication in the frequency domain. In the Fourier Transform domain
+
+or where F (f(z, represents the Fourier transform of the two-dimensional imy)) age function f(z,) . Thus given the Fourier transform of the resultant image y along with the Fourier transform of the point spread function, we can reconstruct the original point object by taking the inverse transform of F (Iid(z,y)). Figure 2.2 shows the PSF of a typical imaging device. The width within which the PSF drops to half on both the sides of the center point is known as full width half maximum (FWHM). If now there are two points which are separated by a distance of FWHM or more, then the two points can be
+
+22
+
+IMAGE FORMATION AND REPRESENTATION
+
+distinguished in the image. Otherwise the points will be indistinguishable in the image plane. This is shown in Figure 2.3. The PSF is not necessarily symmetrical and it may have different spreads in different directions.
+
+Fig. 2.3 Indistinguishability of point sources.
+
+Often it is difficult to produce a perfect point source t o measure the point spread function. In this case a line or edge is often used instead, giving the line spread function (LSF), or edge response function (ERF). The line spread function is a simple extension of the concept of PSF. As in case of a PSF, profiles can be generated orthogonally through the line image! and as in case of PSF, FWHM is used for defining the resolution.
+2.3
+
+SAMPLING A N D Q U A N T I Z A T I O N
+
+Understanding the process of sampling and quantization is one of the key areas in image processing. A comprehensive and detailed description of the theory may be found in [l,21. The phenomenal research of Shannon on the diverse aspects of communications in a noisy environment has led to the understanding of the process of sampling continuous signals [ 3 ] .The theories of image sampling and quantization have been investigated from two viewpoints. The two-dimensional images may be viewed as deterministic systems, where a continuous-valued image, representing the intensity or luminance at each point of the image, is sampled by an array of Dirac-Delta functions of infinite size. The results of sampling and reconstruction of such a deterministic image field may be found in (41. In an alternative view images have been considered as samples of two-dimensional random processes. In this approach an image is viewed as a two-dimensional stationary random process with a certain mean and autocorrelation function. The practical images may always be viewed
+
+SAMPLING AND QUANTIZATION
+
+23
+
+as the ideal image with additive noise, which is modelled as a random field. Sampling of such a two-dimensional random field model of images has been discussed in [5].
+
+Fig. 2.4 Two-dimensional sampling array.
+
+Let f(x,y) be a continuous-valued intensity image and let s(x, y) be a two-dimensional sampling function of the form
+
+The two-dimensional sampling function is an infinite array of dirac delta functions as shown in Figure 2.4. The sampling function, also known as a comb function, is arranged in a regular grid of spacing Ax and A y along X-and Y axes respectively. The sampled image may be represented as
+fs(x,y)
+=
+
+f(x,Y)S(X, Y)
+
+The sampled image fs(z,y) is an array of image intensity values a t the sample points (jAx, ICAy) in a regular two-dimensional grid. Images may be sampled using rectangular and hexagonal lattice structures as shown in Figure 2.5. One of the important questions is how small Ax and A y should be, so that we will be able to reconstruct the original image from the sampled image. The answer t o this question lies in the Nyquist theorem, which states t h a t a time varying signal should be sampled a t a frequency which is at least twice of the maximum frequency component present in the signal. Comprehensive discussions may be found in [l,2, 4, 61.
+
+2.3.1 Image Sampling
+A static image is a two-dimensional spatially varying signal. The sampling period, according t o Nyquist criterion, should be smaller than or at the most
+
+24
+
+/MAG€ FORMATlON AND REPRESENTATlON
+
+*
+
+’
+
+I I
+
+@
+
+I)
+
+I)
+
+fig. 2.5
+
+(a) Rectangular and (b) hexagonal lattice structure of the sampling grid
+
+equal to half of the period of the finest detail present within an image. This implies that the sampling frequency along x axis ul,, 2 2wk and along y axis wys 2 2w,”, where . and wy”are the limiting factors of sampling along x I , “ and y directions. Since we have chosen sampling of Ax along X-axis and Ay along Y-axis, Ax 5 and Ay 5 The values of Ax and Ay should wr be chosen in such a way that the image is sampled at Nyquist frequency. If Ax and Ay values are smaller, the image is called oversampled, while if we choose large values of Ax and Ay the image will be undersampled. If the image is oversampled or exactly sampled, it is possible to reconstruct the bandlimited image. If the image is undersampled, then there will be spectral overlapping, which results in alaaszng effect. We have shown images sampled at different spatial resolutions in Figure 2.6 t o demonstrate that the aliasing effect increases as the sampling resolution decreases.
+
++
+
+-+.
+
+fig. 2.6 Images sampled at 256 x 256, 128 x 128 , 64 x 64, 32 x 32, and 16 x 16 rectangular sampling grids.
+
+SAMPLlNG AND QUANTlZATlON
+
+25
+
+If the original image is bandlimited in Fourier domain, and if the sampling is performed at the Nyquist rate, then it is possible to reconstruct the original image using appropriate sample interpolation. This property is valid in both the cases (i.e., for deterministic and random image fields). The theory of sampling in a lattice of two or more dimensions has been well documented in [7]. The aliasing errors caused by undersampling of the image has been discussed in [ 6 ] . The aliasing error can be reduced substantially by using a presampling filter. Thus by choosing a filter which attenuates the high spatial frequencies, the errors get reduced. However, if there is any attenuation in the pass band of the reconstruction filter, it results in a loss of resolution of the sampled image [2]. Reports on the results of sampling errors using Fourier and optimal sampling have been presented in [8]. 2.3.2
+Image Quantization
+
+Conversion of the sampled analog pixel intensities to discrete valued integer numbers is the process of quantization. Quantization involves assigning a single value t o each sample in such a way that the image reconstructed from the quantized sample values are of good quality and the error introduced because of quantization is small. The dynamic range of values that the samples of the image can assume is divided into a finite number of intervals, and each interval is assigned a single level. Early work on quantization may be found in [9]-[11]. Some of the interesting questions are as follows:
+0 0
+
+How many quantized levels are sufficient t o represent each sample? How do we choose the quantization levels?
+
+As the number of quantization levels increases, obviously the quantized image will approximate the original continuous-valued image in a better way with less quantization error. When the quantization levels are chosen equally spaced at equal interval, it is known as uniform quantization. When the sample intensity values are equally likely to occur at different intervals, uniform quantization is always preferred. In many situations, however, the image samples assume values in a small range quite frequently and other values infrequently. In such a situation, it is preferable to use nonuniform quantization. The quantization in such cases should be such that they will be finely spaced in the small regions in which the sample values occur frequently, and coarsely spaced in other regions. The uniform and nonuniform quantization levels are shown in Figures 2.7(a) and 2.7(b) respectively. The process of nonuniform quantization is implemented by the process of companding, in which each sample is first processed by a nonlinear compressor, then quantized uniformly and finally again processed by an expander before reconstruction of the original image [ll].
+
+26
+
+IMAGE FORMATION AND REPRESENTATION
+
+output
+
+(4
+
+(b)
+
+Fig. 2.7 Two-dimensional (a) uniform quantization (b) nonuniform quantization.
+
+2.3.2.1 Monochrome and Color Image Quantization In monochrome image quantization, we assign uniform length code to each image sample. If n is the number of code-bits assigned t o each sample, then the number of amplitude quantization levels M = 2n. This kind of code assignment is known as pulse code modulation (PCM) coding. The number of levels M is so chosen that the resultant image quality is acceptable to the human observers. The eye is able to discriminate the absolute brightness of only around 15 shades of gray values, however, it is more sensitive t o the difference in the brightness of adjacent gray shades. If we choose a reduced number of gray levels, the noticeable artifacts is a gray scale contouring. This contouring artifact occurs in an image where in some regions, the analog change in brightness is very slow. In the quantized image, however, this change in brightness appears as a step jump. This is shown in Figure 2.8, where the effect of reduction of the number of quantized levels is prominently observed, specially in those regions of the image where the brightness changes very slowly. A color image, represented by red, green, and blue components, is quantized in individual color bands. When each color component is linearly quantized over a maximum range into 2n levels, then each color sampled pixel is quantized in 3n bits, because it requires n bits for each color component.
+
+2.4
+
+BINARY IMAGE
+
+In light of the above discussion we may consider that images may be binary, gray or color. The pixels in a binary image can assume only two values, 0 or 1; a gray image may be quantized t o a number of intensity levels, depending on the application, while a color image may be quantized in different color bands. As the number of intensity levels increases, the image is represented to a better approximation, although the storage requirements also grow propor-
+
+BINARY IMAGE
+
+27
+
+fig. 2.8 Image quantization: results of finer to coarser quantization.
+
+tionately. The binary images are thus least expensive, since the storage and also processing requirement is the least in case of binary images. Examples of binary images are line drawings, printed text on a white page, or silhouette. These images contain enough information about the objects in the image and we can recognize them easily. There are a number of applications in computer vision where binary images are used for object recognition, tracking, and so on. The applicability of binary images is, however, limited because the overall information content in such images is limited. A gray level image may be converted t o a binary image by thresholding process. In the next section we will review some of the interesting properties and operations of a binary image [12].
+2.4.1
+Geometric Properties
+
+Geometric properties of a binary image such a connectivity, projection, area, s and perimeter are important components in binary image processing. An object in a binary image is a connected set of 1 pixels. The following definitions related t o connectivity of pixels in a binary image are important.
+
+28
+
+IMAGE FORMATION AND REPRESENTATlON
+
+ooo0oooo00ooooooo00
+
+oo00oooo0ooo00ooooo
+
+00000000 1 1I o000000 0000111111110000000 001 11 1 q111110o000 oo00111 1111000000 o o m 1 1 1 1oO0oooo0o o o m o 11ooooo 000000000000~i
+
+0
+
+Connected Pixels: A pixel POat (i0,jo)is connected to another pixel P, at (i,,jn) if and only if there exists a path from POto P,, which is
+, ... a sequence of points ( i ~ , j o ) (i~,jl), , (i,,jn), such that the pixel at ( i k , j k ) is a neighbor of the pixel at (ik+l,jk+l) and P = Pk+1 for all k k , 0 < k < n - 1.
+
+0
+
+4-connected: When a pixel at location ( i , j )has four immediate neighbors at ( i l , j ) ,(i - l , j ) ,( i , j l ) ,and ( i , j - l ) , they are known as ,$-connected. Two four connected pixels share a common boundary as shown in Figure 2.9(a).
+
++
+
++
+
+0
+
+8-connected: When the pixel a t location ( i , j )has. in addition to above four immediate neighbors, a set of four corner neighbors at (i 1,j l), (i 1 , j - l ) , ( i - 1 , j l ) , and (i - 1 , j - l ) , they are known as 8connected. Thus two pixels are eight neighbors if they share a common corner. This is shown in Figure 2.9(b).
+
++
+
++
+
++ +
+
+0
+
+Connected component: A set of connected pixels (4 or 8 connected) forms a connected component. Such a connected component represents an object in a scene as shown in Figure 2.9(c). Background: The set of connected components of 0 pixels forms the background as shown in Figure 2.9(c).
+
+0
+
+Once an object is identified, some of the attributes of the object may be defined as follows.
+0
+
+Area of a n object: The area of a binary object is given by A
+=
+a 3
+
+O[i,jl>
+
+where O [ i , j ]represents the object pixels (binary 1). The area is thus computed as the total number of object pixels in the object.
+
+BINARY IMAGE
+
+29
+
+Location of object: The location of the object is usually given by the center of mass and is given as
+
+where x, and yc are the coordinates of the centroid of the object and A is the area of the object. In effect thus the location of the object is given by the first-order moment.
+
+Orientation of a n object: When the objects have elongated shape, the axis of elongation is the orientation of the object. The axis of elongation is a straight line so that the sum of the squared distances of all the object points from this straight line is minimum. The distance here implies the perpendicular distance from the object point t o the line. Perimeter of a n object: To compute the perimeter of an object, we identify the boundary object pixels covering an area. Perimeter is defined by the sum of these boundary object pixels. Projection of an object onto a line: The projections of a binary image provide good information about the image. T h e projections may be computed along horizontal, vertical, or diagonal lines. The horizontal projection is obtained by counting the number of object pixels in each column of the binary image, while the total number of object pixels in each row yields the vertical projection as follows:
+
+In Figure 2.10, we show the histograms of the binary object along the horizontal and vertical axes in terms of number of object pixels projected in the corresponding axis. Each square in the grid in the object represents an object pixel. Sum of the counts of projected pixels in either axis gives the area of the binary object. From Figure 2.10, it can be validated that Phor = Pv,,= 59 which is the area of the object. If there exists only one object in the scene, either of Phor or P,,, yields the area of the object.
+It should be noted that different images may have the same projection and hence the projection is not a unique attribute of an object.
+2.4.2
+Chain code representation of a binary object
+
+One efficient way to represent an object in a binary image is by chain codes. Each boundary pixel of an object has at least one adjacent neighboring boundary pixel such that the direction of the next boundary pixel from the current
+
+30
+
+IMAGE FORMATION AND REPRESENTATION
+
+24 22 20 -
+
+-
+
+An Object
+
+-
+
+'8:72 1614 -
+
+18
+
+-
+
+111
+
+I 6 4 ; 10. . . . . . . . . . . . . .. . . . . . . . . . ... . . . . .. . . . . . . . . . . . . . . . . . . . . . . . 8 ............... ... . . ............................. . ..,. ... . . . . .6 . .. . . . . . ... . . . . ... . . . . . . . . . . . . . . . . . . . . . . .................... . . . . . . . . . . . . ..,... . . . . . . . . . . .. . . . , . .......................... . . . . . . 4.' . . . . . . . . . . ... . . . . . ... . . . . . . . . . . . . . ... . . . . . ... . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .. . . . . ... . . . . . . .......... . . . . .z. . . . . .
+
+12
+
+13
+
+I
+
+L
+
+j . . .
+
+4
+
+...... ........... "..:"..' :.... . . - - .......................... . . . . ..,.......... . . . ... ................. . . . . . . .
+.. . .
+
+1
+
+4
+
+. .
+
+. .
+
+...I
+
+' 2 ' 4 ' 6 '8'10'12'14'16'18'20'22
+fig. 2.10
+
+24
+
+26'28'30'32)
+
+Histogram of a binary object along horizontal and vertical axes.
+
+one is specified by a unique number between 1 and 8. Each number represents one of eight possible directions as shown in Fig 2.11(a). The representation is efficient because each direction can be encoded by only 3 bits. The partial chain code of the boundary for the head-and-shoulder binary image in Fig 2.11(b) is ".......7 7 7 7 7 7 8 7 7 7 8 77 77 7 7 7 8 7 7 8 7 7 7 7 7 7 7 7 8 7 7 88787888188818818181818181818881188181818177 1 7 1 7 7 7 7 7 7 7 7 7 7 6 7 6 6 6 7 6 6 7 7 7 7 ......... 7 . Figure 2.11(c) shows the 7 dominant vertices along the head-and-shoulder contour of the binary image.
+
+7
+
+(a)
+
+(b)
+
+(c)
+
+fig. 2.11 (a) chain code, (b) binary image, (c) dominant vertices along the contour.
+
+THREE-DIMENSIONAL IMAGING
+
+31
+
+Now given two shape patterns of two objects in a binary image and their chain codes, we can get a similarity measure t o determine similarity in shape and orientation between the objects. Let C' and C" be two chain codes of length m and n respectively and m 5 n, the cross correlation between the two chain codes is given by
+. 7 l
+
+The value of j at which R c ~ p ( j ) assumes maximum value, yields the chain code segment of C" that best matches C' It is easy t o note that when C' and C" are exactly identical the cross correlation between them is 1. There are other interesting features which provide adequate information about a binary image. Some of these are moments, compactness, Euler number, medial axis and so on. Also a number of interesting operations, known as morphological operations provide rich information about the shape of a binary image. These find number of applications in image processing as discussed in Chapters 7 and 9. 2.5
+
+TH R EE- DIMENSIONA L IM A G ING
+
+Three-dimensional imaging using stereo vision finds a number of applications (e.g., industrial inspection of three-dimensional objects, biomedical imaging, creating three-dimensional database of city, regional planning, image based rendering, etc.). 2.5.1
+Stereo Images
+
+The human eye has a remarkable property of three-dimensional perception of the world around us. We use two images of the same object captured by both our eyes and combine them to get a three-dimensional perception. There are several techniques t o extract three-dimensional information using various sensors like radar sensors, acoustic sensors, laser range finders, etc. In the use of stereo vision, we can use two images of the object using two cameras and combine them to get the depth perception as in case of human vision. There exist a number of algorithms which yield the depth information from such stereo images. The principle involved in these algorithms is that of finding the same feature from both the images captured from left and right cameras and then measuring the depth using triangulation technique. The process of triangulation involves intersecting the lines of sight from each camera t o the object. As a matter of fact, identifying the same point in the original image from two stereo images (i.e., establishing correspondence between two image points), which are the projections of the same point in the original image is an interesting problem in computer vision. Figure 2.12 shows
+
+32
+
+IMAGE FORMATlON A N D REPRESENTATION
+
+Fig. 2.12 Stereo image pair (a) from left camera and (b) from right camera.
+
+Fig. 2.13 The depth map image from a range camera
+
+the pair of a stereo image (left and right). Once we determine the distance maps of the scene, a number of shape features or volumetric features can be extracted from the object.
+
+2.5.2
+
+Range Image Aquisition
+
+In contrast to the intensity capturing cameras, e.g., CCD or CMOS sensor based cameras that we have described so far, there is a distinctly different type of camera known as the range camera, which captures a raster image of depth information about a three-dimensional object. Using the range camera we do not record the intensity or the color information of the object to be imaged. On the contrary, a range camera yields an image, where each image location gives a measure of the range or depth or distance of the object point from the camera plane. As in the case of quantization of intensity images here also the range or depth values are quantized in say 256 levels. The quantized distance or the range values are displayed as a gray scale image, such that each intensity value gives a measure of the distance. These cameras provide two-and-a-half-dimensional image, in contrast t o the three-dimensional one, which provides complete three-dimensional information of the image. It may
+
+IMAGE FILE FORMATS
+
+33
+
+be noted here that MRI images yield complete three-dimensional information. The range cameras are again of several types. The laser range finder uses a single optical beam and computes the depth information from the time delay between the incident and the reflected pulse of laser beam. In continuous scan case, the phase shift is measured. The laser beam sweeps across the entire field of view in equiangular increments, say 60 degree x 60 degree, and for achieving this objective two mirrors are used. In another version of range cameras, using structured lights, two optical paths are used. The depth information is computed in such scanners using the method of triangulation. The example of depth map image (depth map of the image in Figure 2.12) from a range camera is shown in Figure 2.13. The color version of this figure is provided in the color pages to show different segments in distinct colors.
+2.6 IMAGE FILE FORMATS
+
+There are a number of file formats in which one may store the images in files and retrieve them from files. These are known as image file format standards. Here we will present some of the most popularly used Image file format standards.
+
+Tagged Image Format (.tif, .tiff): The .tif format is a very broad format, which can handle anything from bitmaps to compressed color palette images. The t o format supports several compression schemes, but is z often used for uncompressed images as well. This format is popular, relatively simple, and allows color. Portable Network Graphics (.png): This is an extensible file format that provides lossless, well-compressed storage of raster images. This simple format covers the major functionalities of .tiff. Gray scale, color palette, and full-color (true-color) images are supported by this file format. It supports an optional alpha channel, and depths from 1 to 16 bits per channel.
+
+JPEG (.jpg): It is the most widely used standard for transmission of pictorial information and includes a variable lossy encoding as part of the standard, set by a quality parameter.
+MPEG (.mpg): This format is extensively used throughout the Web and is used only for motion images. This uses compression, yielding only lossy videos. Graphics Interchange Format (.gif): This format supports 8-bit color palette images and is not very popular among the image processing researchers.
+
+RGB (.rgb): This is an image file standard from Silicon Graphics for color
+images.
+
+34
+
+IMAGE FORMATION A N D REPRESENTATION
+
+RAS (.ras) This is an uncompressed scan-out of three color bands for Sun
+Raster images.
+
+Postscript (.ps, .eps, .epsf): This image format is mainly used while introducing images or figures in a book or note and for printing. In postscript format, gray level images are represented by decimal or hex numerals encoded in ASCII. Portable Image File Formats: Some of the most commonly used image file formats are Portable Image Formats, which include Portable Bitmap, Portable Graymap, Portable Pixmap, and Portable network map. The default suffixes for these formats are .pbm, .pgm, .ppm, and .pnm. These formats are a convenient method of saving and reading the image data. These are some of the image formats which support all kinds of images of increasing complexity-from bits to gray levels t o color pixmaps of various sorts. PPM: A PPM file consists of two parts, a header and the image data. The header consists of a t least three parts. The first part is a magic P P M identifier. The P P M identifier can be either P3 (for ASCII format image data) or P6 (data in binary format). The next part consists of the width and height of the image as ASCII numbers. The last part of the header gives the maximum value of the color components for the pixels. In addition to the above, a comment can be placed anywhere with a # character; the comment extends t o the end of the line. PGM: This format is identical to the above except it stores gray scale information, that is, one value per pixel instead of three (r, g, b). The only difference in the header section is the magic identifiers which are P2 and P5; these correspond to the ASCII and binary form of the data respectively. PBM: PBM stores single-bit pixel image as a series of ASCII 0 or 1’s. Traditionally 0 refers t o white while 1 refers to black. The header is identical to P P h l and PGM format except there is no third header line (the maximum pixel value doesn’t have any meaning). The magic identifier for PBhI is P1.
+2.7
+
+SOME IMPORTANT NOTES
+
+There are some important notes which need to be remembered while designing an image processing system. It is important to ensure that the appropriate imaging system is set up before capturing an image. If the illumination level is low, it may lead t o underexposure of the sensor while too much illumination can lead to overexposure. Both under and overexposed images need preprocessing for detecting objects in a scene. It is also important to choose correct
+
+SUMMARY
+
+35
+
+sensor resolution so that the captured images have adequate object resolution which help in automated recognition. An image is represented by a two-dimensional matrix of size M x N . It is convenient to choose the topmost and leftmost point as the origin (0, 0) and coordinates of all other pixels are assigned accordingly. Quite frequently, we perform local operation inside a 3 x 3 or sometimes larger neighborhoods. Every pixel in an image, except those at the borders has two horizontal two vertical and four diagonal neighbors, totaling 8 neighbors. Only the pixels on the borders have five neighbors. In such situations, there are three possible options: 1. We may pad up the entire image on all the sides with zero gray value pixels, making it a (Ad 1) x ( N 1) image.
+
++
+
++
+
+2. We may ignore the pixels on the boundary and perform the operations on the inner pixels only.
+3. The image may be considered as cyclically closed, which means that the last column is adjacent to the first column and last row is adjacent to the first row.
+We categorize the low level image processing operations into following three different types. 1. Type 0 operation: If the output intensity level at a certain pixel is strictly dependent on only the input intensity level at that point, such an operation is known as type 0 or a point operation. Point operations are quite frequently used in image segmentation, pixel classification, image summing, differencing, etc.
+
+2. Type 1 Operations: If the output intensity level at a pixel depends on the input intensity levels of the neighboring pixels as well, then such operations are termed type 1 or local operations. Examples of local operations are Edge detection, image filtering, etc.
+3. Type 2 operations: If the operations are such that the output level at a point is dependent on some geometrical transformation, these operations are termed type 2 or Geometrical operations. 2.8
+SUMMARY
+
+In this chapter we have discussed the theory of digital Image formation, their representation and various image formats in which the digital images can be stored in the computer. We have discussed the role of illumination and the different reflectance models, which are the two most important components of image formation. The principal ideas behind formation of digital images
+
+36
+
+/MAG€ FORMATlON AND REPRESENTATlON
+
+are based on the concepts of sampling and quantization. We have discussed these concepts in this chapter. Some of the important properties of binary images have also been discussed here.
+
+REFERENCES
+1. A. Rosenfeld and A. C. Kak. Digital Picture Processing, 2nd Ed., Vol. 1, Academic Press, 1982. 2. W. K. Pratt. Digital Image Processing, 2nd Ed., Wiley, New York, 1991. 3. C. E. Shannon, “Communications in the Presence of Noise,” Proceedings Of IRE, 37(1), 10-21, 1949. 4. H. J. Landa, “Sampling, Data Transmission, and the Nyquist rate,” Proceedings of IEEE, 55(10), 1701-1706, 1967.
+
+5. H. S. Shapiro and R. A. Siverman, “Alias Free Sampling of Random Noise,” Journal of SIAM, 8(2), 225-248, 1960.
+6. D. G. Childers. “Study and Experimental Investigation of Sampling Rate and Aliasing in Time Division Telemetry Systems,” IRE Trans. Space Electronics and Telemetry, SET-8, 267-283, 1962.
+
+7. D. P. Peterson and D. Middleton, “Sampling and Reconstruction of Wave number Limited functions in N-Dimensional Eucledian Space,” Infomna3 tion 6 Control, Vo1.5, 279-323, 1962. 8. A. Habibi and P. A. Wintz, “Image Coding by Linear Transformation & Block Quantization,” IEEE Trans Communications, Com-19, 1971, 50-62. 9. L. H. Harper, “PCM Picture Transmission,” IEEE Spectrum, 3(6), 1966. 10. J. Max, “Quantizing for Minimum Distortion,” IRE Trans. Information Theory, IT-6(1) 1960, 7-12.
+11. B. Smith, “Instantaneous Companding of Quantized Signals,” BSTJ36, 1957, 653-709.
+
+12. R. Jain, R. Kasturi, and B. G. Schunk, Machine Vision, McGraw-Hill, New York, 1995.
+
+3
+Color and Color Imagery
+3.1
+
+INTRODUCTION
+
+Color is important visual information which keeps humans fascinated since birth. Light (chromatic information) reflected from an object is absorbed by the cone cells of our visual system and ultimately leads t o a perception of color. There are three cone classes in the human vision system t o perceive color. The light reflected from the object leads to different amounts of absorptions in these three classes of cones in the human eye. The interpretation of these cone absorptions by our nervous system is the basis of our color perception. So color is a perceptual representation of the surface reflectance of an object. In addition to shape, texture, and other low-level image features color information is an important feature which has been successfully used in many image processing applications such as object recognition, image matching, content-based image retrieval, computer vision, color image compression, etc. Color science still remains a challenging field of study in the computer vision and digital image processing community today [1]-[3]. In this chapter, we briefly describe the principles behind the perception of colors by the human visual system and then describe the important color space transformation techniques suitable for digital image processing. We describe the interpolation of color t o restore full color from subsampled color information that is common in most of the color digital cameras and other imaging devices.
+
+37
+
+38
+
+COLOR AND COLOR IMAGERY
+
+3.2
+
+PERCEPTION OF COLORS
+
+The human eyc is sensitive t o electromagnetic radiation in wavelengths ranging from 400 nm (violet) to 770 nm (red) [2]. The spectral response of the human eye is shown in Figure 3.1. It may be seen from Figure 3.1 that the eye responds to only a small spectral wavelength in the optical band of the entire electromagnetic spectrum. The machine vision systems today, however, can respond to a much larger extended spectrum ranging, from 780 nm to 1400 nm in the near-infrared range, 1400 nm to 3300 nm in mid-infrared, 3 t o 10 pm in far-infrared and also 100 nm t o 380 nm in ultraviolet light range. This has been possible because of the availability of a large range of special sensors available for recording these signals.
+1.o
+
+T
+
+fig. 3.1
+
+Spectral response of human eye.
+
+A color image can be represented as a function C(z, y, t , A). It is thus a function of the location (z,y), wavelength X of the reflected light, and also of time in case of a dynamic image. When an image is captured in a fked wavelength A, it is called a monochromatic image. The existence of three spectral sensitivity functions VR(X), VG(A), and VB(X) provides a basis for color vision. In fact the monochromatic lights at 430, 530, and 560 nm at which the eye responses are maximum are not exactly blue, green, and red respectively, and some researchers prefer to use the nomenclature of short-, medium-, and long-wavelength cones instead of R, G , and B cones. The cones provide us with color vision (photopic vision) that can distinguish remarkably fine wavelength changes. The relative spectral sensitivity of the eye has been measured as the function of the wavelength. The measurements reveal that human eyes have peak scotopic spectral sensitivity at wavelength 507 nm and peak photopic spectral sensitivity at wavelength 555 nm as shown in Figure 3.1. The object in the scene as perceived by human eyes or the camera system is characterized by its radiance R(A, x,y, t ) ,where X is the wavelength of the electromagnetic radiation a t position (2, y) and at time t for a particular color. There exists a direct relationship between the physical stimulii from the object, say the luminance of a display device, and the subjective human
+
+COLOR SPACE QUANTIZATION AND JUST NOTICEABLE DIFFERENCE (JND)
+
+39
+
+perception, say the response of a human being. The relationship was first formulated by Weber in his law, which states that
+
+-WLk = L
+where WLis the just noticeable difference in the brightness or luminance which is required to perceive a difference between L and L WL. The constant k assumes an approximate value 0.015. It is obvious that as the brightness L increases, WL also increases, for k t o be constant. This implies that for large values of luminance L , a larger increase in luminance WL is required for distinguishing two objects of luminance L and L W L respectively. The just noticeable difference is, however, much smaller a t the lower values of luminance. The relationship between the stimulus and the observer’s perception is not linear. Experimental investigations show that Weber’s law is valid only for intermediate luminance values and not for very high or low luminance Values. The relationship between the perceived brightness B and the luminance L is logarithmic (i.e., B 0 log L ) . :
+
++
+
++
+
+3.3 COLOR SPACE Q U A N T I Z A T I O N A N D JUST NOTICEABLE
+DIFFERENCE (JND)
+
+The availability of a large number of colors in the images causes problems in many image processing applications. Large redundancy, nonlinearity, and huge color space dimensionality in the real-life color image data reduces the efficiency of color image processing, coding, and analysis algorithms. Reduction in the number of colors reduces the search space and hence improves the convergence time considerably. After removing the redundancy and reducing the number of colors in a digital color image, the efficiency of the algorithms may considerably increase. The process of representing the complete color space using a comparatively few representative colors without compromising much on the image quality is widely known as quantization or sampling the RGB color space. The RGB color space may be nonlinearly sampled t o reduce the redundancy in colors and t o reduce the color space dimensionality [4, 51. The modern computer graphics systems may be able to generate millions of colors while a sound vision observer (as defined by CIE) can respond t o only 17,000 colors at the maximum intensity. Thus the huge space containing millions of colors may be mapped on t o a new space containing approximately 17,000 colors by maintaining the same perceptual quality of the image, simulating the human color vision performance. The red color cones have minimum spectral sensitivity, green color cones have the maximum sensitivity, while blue color cones have moderate but near to green sensitivity. One may use 24 samples in each basic color shade for color rendition experiments. Taking into consideration the spectral sensitivity of the color cones, nonuniform sampling of the color space yields better results for accommodating approxi-
+
+40
+
+COLOR AND COLOR IMAGERY
+
+mately 17,000 colors in the RGB space. Thus 24 quantization levels on R-axis, 26 levels on B-axis and 28 levels on G-axis yields better sampling. Use of a sampling theorem in this direction has not yet been fully explored. New approaches have been suggested which modifies the color space itself considering the physiological limitations of human color vision. Thus the RGB space is transformed into a new color space with much less dimensionality. According to the three color theory of Thomas Young, all the colors are perceived by our visual system as linear combination of the basic colors. The response curves of the three cones (i.e., red, green, and blue cones) against the wavelength are presented in (41. A human eye can discriminate between two colors if they are at least one just noticeable difference away from each other. Actual value of the just noticeable difference (JND) in terms of coordinates may not be constant over the RGB space due t o nonlinearity of human vision and the nonuniformity of the RGB space. At higher illumination, the color sensing power of the eye is more if it has not been saturated. The constants in Buchsbaum's nonlinearity equation take care of the eye adaptation conditions and the illumination conditions. Buchsbaum started his work with the findings of Weber and analytically derived the visual nonlinearity in the logarithmic form. Though his predicted logarithmic behavior is supported by physiological literature, it does not consider the saturation behavior shown by the human vision at high intensities [5, 61.
+3.4 COLOR SPACE A N D TRANSFORMATION
+
+A number of color spaces or color models have been suggested and each one of them has a specific color coordinate system and each point in the color space represents only one specific color [ 2 , 3, 71. Each color model may be useful for specific applications. Typical color images, particularly those generated by a digital imaging system, are represent,ed as red, green, blue and are normally called RGB images. They are useful for color monitors, and video cameras. An RGB color image, represented by 8 bits of R, G, and B pixels has 2563 or 16,777,216 colors. There are a number of such color spaces like CMYK, HSV, HIS, or LUV, etc.
+3.4.1 C M Y K space
+
+Another interesting color model utilizes CMYK (cyan, magenta, yellow, and black) and this model finds utility in color printers. Most of the output devices including color printers or copiers use CMY color model. Just as the primary additive colors are red, green and blue, the primary colors of pigments on the other hand are magenta, cyan and yellow and the corresponding secondary colors are red, green and blue. The conversion from RGB t o CMY may be
+
+Derformed as
+
+where R , G, B represent the normalized color values in the range 0 t o 1. It may be easily verified from the above that a cyan coated surface does not contain red, or a surface pigmented by magenta is devoid of green. It may also be noted that equal amounts of pigments primaries (e.g. cyan, magenta, and yellow) produces black. Thus a four-color system cyan ( C ) , magenta ( M ) , yellow ( Y ) , and black ( B )forms a four-color model.
+3.4.2 NTSC or YlQ Color Space
+
+[:]=!-I.
+
+COLOR SPACE AND TRANSFORMATION
+
+41
+
+In this color space (also known as YIQ color space), the luminance information Y represents the gray scale information, while hue ( I )and saturation (Q) carry the color information. The conversion from RGB to YIQ is
+
+[ 31 [
+=
+
+.299 .596 .211
+
+.587 -.274 -.523
+
+.114 -.322 .312
+
+] [ i]
+
+.
+
+(3.2)
+
+The elements of the first row when added become unity and the elements in the second and third row sum to 0. Thus in a gray scale image, where R = G = B , the color components I and Q are zero. The NTSC color space is used in television.
+3.4.3
+
+YCbCr Cotor
+
+Space
+
+In this color space, Y is the luminous component while Cb and C, provide the color information. The color information is stored as two color difference components Cb and C,. This color space is used in digital video. The information from RGB t o YCbC, is as follows:
+
+[ g] [ :2"h] [
+=
+
+128
+
++
+
+65.481 -37.797 112.00
+
+128.553 -74.203 -93.786
+
+24.966 112.00 -18.214
+
+] [ i]
+
+.
+
+(3.3)
+
+3.4.4
+
+Perceptually Uniform Color Space
+
+Although both RGB and CMYK color models are extremely useful for color representation, color processing, and also for development of hardware, these models are in no way similar t o the human vision model. One of the major limitations of the RGB color space is that it is a nonuniform one. Uniform color space is one in which the Euclidean color distance between two color points at any part of the color space corresponds to the
+
+42
+
+COLOR AND COLOR IMAGERY
+
+perceptual difference between the two colors by the human vision system. In nonuniform color spaces, on the other hand, two different colors at a distance d apart in one part of the color space does not exhibit the same degree of perceptual difference as two other colors a t the same distance apart in another part of the color space. In imaging applications, perceptually uniform color spaces are of great importance. Based on the physiological knowledge of human vision, the nonuniform RGB space needs t o be mapped into new perceptually uniform spaces.
+3.4.4.1 Colors and Hues Color is an attribute of visual perception and can be described by many color names like red, green, yellow, white, gray, black, and so on. Like colors, hue is also an attribute of human perception and can be described as red, green, blue, purple, and yellow a primary hues or s any intermediate combinations of the primary hues. Interestingly, although black, white, and gray are considered as colors, according to CIE (Commission International de 1’Eclairage) they are not hues. From the above discussions thus we can consider there are two classes of perceived colors: (1) chromatic colors (i.e., the hues which do not include black, white and gray) and (2) achromatic colors, which are not hues (i.e., black, white, and gray). 3.4.4.2 HSV Color Space HSL or HSI is one color space, which describes colors as perceived by human beings. HSI (or HSV) stands for hue (H), saturation (S) and intensity (I) (or value V). Hue has been already mentioned as a color property of light. It may also be conceived as a property of the surface reflecting or transmitting the light. For example, a blue car reflects blue hue. Moreover it is also an attribute of the human perception. The hue which is essentially the chromatic component of our perception may again be considered as weak hue or strong hue. The colorfulness of a color is described by the saturation component. For example, the color from a single monochromatic source of light, which produces colors of a single wavelength only, is highly saturated, while the the colors comprising hues of different wavelengths have little chroma and have less saturation. The gray colors do not have any hues and hence they are zero saturation or unsaturated. Saturation is thus a measure of colorfulness or whiteness in the color perceived. The lightness ( L ) or intensity ( I ) or value ( V )essentially provides a measure of the brightness of colors. This gives a measure of how much light is reflected from the object or how much light is emitted from a region. It is proportional to the electromagnetic energy radiated by the object. The luminosity (or intensity) essentially helps human eye to perceive color. A colorful object in dark doesn’t appear colorful at all. Another method of expressing the colors in an image is Principal Gomponent Transform (PCT), which examines all the RGB vectors of an image and finds the linear transformation that aligns the coordinate axes, so that most of the information is along one axis, called the principal axis. PCT
+
+COLOR SPACE AND TRANSFORMATION
+
+43
+
+color spaces help in image compression as we can get about 90% or more of the information into one band. However, in computer vision applications, the images obtained by the systems are readily in RGB form. Thus one may use either RGB format or any other formats, so that the work can be easily ported t o other color representation systems using appropriate mathematical transformations.
+
+3.4.4.3 RGB to HSV Color Space Transformation The HSV image may be computed from RGB using different forms of transformations. Some of them are as follows:
+0
+
+The simplest form of HSV transformation is
+
+H
+
+= tan
+
+3(G - B ) min( R, G , B ) , s= 1, v =R + G + B V 3 ( R - G ) ( R- B )
+
++
+
+1
+
+However, the hue ( H ) becomes undefined when saturation S = 0.
+0
+
+The most popular form of HSV transformation is shown next, where the T , g, b values are first obtained by normalizing each pixel such that
+
+r=
+
+R R+G+B
+
+g
+
+=
+
+G ~ +
+
+~
+
+, b=
+
+B + R~ G + B ’ +
+
+Accordingly, the H , S , and V values can be computed as
+
+s=
+
+{
+
+0
+V
+min(r,g.b)
+
+ifV=0 7 ifV>0, ifS=O ifV=r
+
+(3.5)
+
+H=\
+
+I “I
+60* 4
+=
+
+60* 2 + =
++ s
+
+[
+
+1
+if H
+
+ifV=g i f V = b,
+
+H
+
+H+360
+
+< 0.
+
+(3.7)
+
+The results obtained by using either of the above transformations yield reasonably good results.
+
+44
+
+COLOR AND COLOR IMAGERY
+
+V
+A
+
+Fig. 3.2 Perceptual representation of HSV color space.
+
+The perceptual representation of the HSV color space has a conical shape, as shown in Figure 3.2. The Value ( V )varies along the vertical axis of the cone, the Hue ( H ) varies along the periphery of the circle of the cone and is represented as an angle about the vertical axis, and the Saturation ( S ) varies along the radial distance as shown in Figure 3.2. We have shown the vertices a hexagon on the periphery of the circle in Figure 3.2 to show six colors separated by GO" angles. Red is at 0" (coincides with 300"), Yellow at 60", Green at 120", Cyan at 180°, Blue at 240". and Magenta at 300". The complementary colors are 180" apart. For example, Blue and Yellow are the complementary colors. Apex of the cone (V = 0) represents Black. Again. V = 1 and S = 0 represents White. The colors have their maximum luminosity (V = 1) at the periphery of the circle. V = 1 and S = 1 represent the pure hues for any color.
+3.4.5
+CIELAB color Space
+
+The CIELAB color space, which was adopted as an international standard in the 1 9 7 0 ~ ~ CIE is indeed a perceptually uniform space. The Euclidean by distance between two color points in the CIELAB color space corresponds to the perceptual difference between the two colors by the human vision system. This property of the CIELAB color space has made it particularly attractive and useful for color analysis, and the superiority of the CIELAB color space over other color spaces has been demonstrated in many color image applica-
+
+COLOR /NT€RPOLAT/ON OR DEMOSAlClNG
+
+45
+
+tions. For example the CIELAB color space has been successfully used for color clustering. In this approach the color difference in the CIELAB color space has been used in the computation of the dissimilarities between colors and this has been used for color clustering. The color difference formula in the CIELAB color space is used in the computation of the dissimilarities between colors and the formulation of the color membership function.
+3.4.5.1 RGB to CIELAB Color Space Transformation RGB t o CIELAB is as follows [2, 71:
+
+The transformation from
+
+X Y
+2
+
+0.412453R = 0.212G71R = 0.019334R
+=
+
++ 0.357580G + 0.180423B + 0.715160G + 0.0721G9B + 0.119193G + 0.950227B
+-
+
+Based on this definition, L*a*b* is defined as
+
+L*
+a* b*
+where
+=
+
+= =
+
+llGf(Y/Yn)
+
+16
+
+=
+
+500[f(X/Xn) - f(Y/KJI 200[f(Y/Yn) - .f(Z/zn)]
+if q > 0.008856 otherwise
+
+X,,Y,, and 2 represent a reference white as defined by a CIE standard , illuminant, DG5 in this case, and are obtained by setting R = G = B = 100 ( 4 E {$, &I).
+
+{
+
+g'/s
+
+7.787q + 16/116
+
+g,
+
+3.5
+
+COLOR INTERPOLATION OR DEMOSAICING
+
+Due to the cost and packaging consideration, in digital imaging devices such as a digital camera, the image color is captured in a subsampled pattern. Typically each pixel in the captured raw image contains only one of the three primary color components, R (Red), G (Green), or B (Blue). This subsampled color image is generated using certain pattern of a Color Filter Array (CFA). This CFA is realized by coating the surface of the electronic sensor array using some optical material that acts as a band-pass filter. This coating allows the photons corresponding to only one color component to be transmitted to the sensor. A typical and widely used CFA pattern is called Bayer Pattern [S]. In Figure 3.3, we have shown a Bayer pattern image of dimension 8 x 8. Each cell in Figure 3.3 represents a pixel with only one color component as indicated by either R or G or B. A full-color image needs the information of all the three colors in each pixel location. As a result, it is essential t o interpolate the missing two colors in each pixel location using the information of the neighboring pixels.
+
+46
+
+COLOR AND COLOR IMAGERY
+
+Fig. 3.3 Bayer pattern.
+
+The methodology t o recover or interpolate these missing color components is known as color interpolation or color demosaicing [9]-(111. Color interpolation algorithms can be broadly classified into two categories: 1. Nonadaptive algorithms: In nonadaptive color interpolation algorithms, a fixed pattern of computation is applied in every pixel location in the subsampled color image t o recover the missing two color components.
+
+2. Adaptive algorithms: In adaptive color interpolation algorithms, intelligent processing is applied in every pixel location based on the characteristics of the image in order to recover the missing color components. This type of algorithm yields better results in terms of visual image quality as compared with the nonadaptive algorithms. 3.5.1
+Nonadaptive Color lnterpolation Algorithms
+
+In this section, we review some nonadaptive color interpolation algorithms reported in the literature. These algorithms are simple to implement and their computational requirements are much lower than the nonadaptive algorithms.
+
+3.5.1.1 Nearest Neighbor Replication In this simple method [ll, 121, each missing color is approximated by nearest pixel representing that color in the input image. The nearest neighbor can be any one of the upper, lower, left, and right pixels. The only advantage of this approach is that the computational requirement is very small and suitable for applications where speed is very crucial. However, the significant color errors make it unacceptable for a still imaging system, such as high-resolution digital cameras.
+3.5.1.2 Bilinear lnterpolation In this algorithm [ll],a missing color component is interpolated by linear average of the adjacent pixels representing
+
+COLOR lNTERPOLAT1ON OR DfMOSAlClNG
+
+47
+
+the missing color. As an example, the pixel coordinate (4, 7 ) in Figure 3.3 contains BLUE component only. Hence the missing GREEN component at pixel coordinate (4,7 ) can be estimated as average of the left, right, top, and bottom GREEN pixels at pixel coordinates (4,S), (4, 8), (3, 7 ) , and (5, 7 ) respectively. The missing RED component can be estimated as average of the four diagonally adjacent corner RED pixels at coordinates (3, 6), (3, 8), (5, 6), and (5, 8) respectively. This method is very simple, but the results suffer from pixel artifacts (e.g., zipper effect) introduced in the neighborhood of the interpolated pixels. This may be acceptable in a moderate quality video application because the artifact may not be immediately visible by the human eye due to the effect of motion blur, but is not acceptable in still imaging applications.
+
+3.5.1.3 Median lnterpolation Median interpolation [13] allocates the missing color component with the “median” value of the color components in the adjacent pixels, as opposed to the linear average used in bilinear interpolation. This provides a slightly better result in terms of visual quality as compared with the bilinear interpolation. However, the resulting images are still blurry and not acceptable for high-quality imagery.
+3.5.1.4 Smooth Hue Transition lnterpolation The key problem in both bilinear and median interpolation is that the hue values of adjacent pixels change suddenly because of the nature of these algorithms. On the other hand, the Bayer pattern can be considered as a combination of a luminance channel (green pixels, because it green contains mostly luminous information) and two chrominance channels (red and blue pixels). The smooth hue transition interpolation algorithm [14] treats these channels differently. The missing GREEN component in every RED and BLUE pixel in the Bayer pattern can first be interpolated using bilinear interpolation. The idea of chrominance channel interpolation is to impose a smooth transition in hue value from pixel to pixel. In order to do so, it defines “blue hue” as B/G, and “red hue” as R/G. To interpolate the missing BLUE component Bm,n in pixel location (m, n ) in the Bayer pattern, the following three cases may arise:
+
+Case 1: The pixel at location (m, n ) is GREEN and the adjacent left and right pixels are BLUE color. Pixel at location (2, 2) in Figure 3.3 is such an example. The missing BLUE component in location ( m ,n ) can be estimated as
+
+Case 2: The pixel at ( m , n ) is GREEN and the adjacent top and bottom pixels are BLUE. The pixel at (3, 3) in Figure 3.3 is such an example.
+
+48
+
+COLOR AND COLOR IMAGERY
+
+The missing BLUE component can be estimated as
+
+Bm,n
+
+Gm,n Bm-1.n -~ Bm+l,n
+2
+
+[
+
+Gm-l,n
+
+’G]
+‘
+
+Case 3: The pixel at ( m ,n ) is RED and four diagonally neighboring corner pixels are BLUE. The pixel at location (3, 2) in Figure 3.3 is such an example. The missing BLUE component in location (m, n ) can be estimated as
+Bm,n
+=
+Bm-1,n-1 Gm-1,n-1
+
++ Bm-l.n+l + Bm+1,n-1 + B m + ~ , n + l Gm-l,n+l Grnf1,n-l Gm+l,n+l
+
+1-
+
+We can interpolate the missing RED component in each location in a similar fashion. In any color image processing system, after the raw image is captured by an electronic sensor it goes through several image processing steps before it can be displayed or stored for usage. As explained in [ll] if the captured , image is transformed into logarithmic exposure space from linear space before interpolation, instead of BIG or RIG, one can now define the “hue value” as B - G or R - G, because of the logarithmic property log(X/Y) = log(X) log(Y) = X’ - Y’, where X’ = log(X) and Y’ = log(Y). Since all the division for calculating hue value is replaced by subtraction, this helps reduce computational complexity for implementation.
+
+3.5.2 Adaptive algorithms
+3.5.2.1 Pattern Matching-Based Interpolation Algorithm In the Bayer pattern, a BLUE or RED pixel has four neighboring GREEN pixels. A simple pattern matching technique for reconstructing the missing color components based on the pixel contexts was proposed in [15]. This pattern matching algorithm defines a green pattern for the pixel at location (m, n ) containing a non-GREEN color component as a four-dimensional integer-valued vector:
+
+gm.n = (Gm-l,n,Gm+l.n, Gm,n-l, Gm.n+l).
+
+The similarity (or difference) between two green patterns 91 and as the vector 1-norm
+1 9 - 9211 11
+
+g2
+
+is defined
+
+=
+
+When the difference between two green patterns is small, it is likely that the two pixel locations where the two green patterns are defined will have similar RED and BLUE color components. A weighted average proportional t o degree of similarity of the green patterns is used t o calculate the missing color component. For example if the
+
+c
+3
+
+z=o
+
+191% 9211. -
+
+COLOR lNTERPOLATlON OR DEMOSAICING
+
+49
+
+pixel a t location (m, n) is RED, the missing BLUE component Bm,nis estimated by comparing the green pattern gm.n with the four neighboring green patterns gm-i,n-i, gm+l,n-l, gm-i.n+i, and gm+l.n+l- If the difference between gm.n and each of the four neighboring green patterns is uniformly small (below a certain threshold), then a simple average is used t o estimated the missing BLUE color component,
+
+Otherwise, only the top two best-matched green pattern information items are used. For example, if 11g(m, n )- g (m - 1,n - 1)I I and 11 g (m, n) -g ( m 1,n - 1)I I are the two smallest differences, then the missing BLUE color is estimated as
+
++
+
+Bm,n =
+
+Brn-l.n-lA1-t Bm+1,,-1A2
+
+A1 + A 2
+
+1
+
+whereA1 = ( 1 g ( m , n ) - g ( m + l , n - l ) I I and A2 = 11g(m,n)-g(m-l,n-l).II The missing RED components can be interpolated in a similar fashion.
+3.5.2.2 A Block Matching Algorithm Acharya, et al. [9] defined a block matching algorithm for color interpolation based on a concept of Color Block. The color block of a non-green pixel is defined as a set x = ( x 1 , 5 2 , ~ 3 , 5 4 ) formed by the four neighboring green pixels, say, 21, 5 2 , 23, and 5 4 . We define a new metric Color Gravity as the mean 3 = ( X I 2 2 5 3 54)/4. The similarity between two color blocks is defined as the absolute difference of their color gravities. The block matching algorithm is developed based on the selection of a neighboring color block whose color gravity is closest t o the color gravity of the color block under consideration. For any non-green pixel in the Bayer pattern image, there are four neighboring green pixels GN (the North neighbor), G s (South), GE (East), and Grv (the West neighbor), which form the color block g = ( G N G s ,G E ,G w ) , and its color gravity is ij = (GN Gs GE G w ) / 4 . The missing GREEN value is simply computed by the median of G N , Gs, G E , and G w . If the pixel a t ( m , n) is BLUE, it will have four diagonally RED pixels R N E (the Northeast neighbor), R S E (the Southeast neighbor), Rsw (the Southwest neighbor), and R N W (the Northwest neighbor) whose color blocks are gNE, gSE, gsw, and gNiv and the corresponding color gravities are ~ N E ~, S Egsw, , and ~ N W respectively. The missing RED component is assumed to be one of these four diagonal red pixels based on best match of their color gravities. The best match (or minimal difference Amin)is the minimum of A1 = Iij - O N E / , A2 = 1 - GsEI, A3 = Iij - i j s ~ j and A4 = Itj - ~ N w I . 0 , Similarly, we can estimate the missing BLUE component in a RED pixel location due to the symmetry of red and blue sampling position in a Bayer pattern image. For the green pixel location, only two color blocks (either up-bottom or left-right positions) are considered for the missing RED or BLUE color. The algorithm can be described as:
+
++ + +
+
++
+
++
+
++
+
+50
+
+COLOR AND COLOR IMAGERY
+
+Begin for each pixel in the Bayer pattern image do
+
+if the pixel at location (m,n)is not GREEN then { Gm?n m e d i a n { G ~ , s , GE,Gw}; G A1 = 1 - G N E I ; 3 A2 = Ig - SSEI; A3 = 1 - Sswl; 9 A4 = 1 - SNWI; 3
++
+
+if the pixel a t location (m,n ) is RED then
+
+1
+
+I
+
+if if if if
+
+(Amin= A, (Amin= A2 (Amin= A3 (Amin= A4
+
+) ) ) )
+
+then then then then
+
+Bm,n + B N E ; Bm,n +- B S E ; Bm,, t Bsw; Bm,n + B N W ;
+
+if the pixel a t location (m,n)is BLUE then { if (A,,, = A , ) then Rm,n + R N E ; if (A,,, = A2 ) then Rm>n R S E ; + if (Am,, = A3 ) then Rm,n +- Rsw; if (Amzn = A4 ) then Rm>n R N W ; +
+
+1
+
+1
+
+if the pixel at location ( m , n ) is GREEN then
+
+End.
+
+1
+
+1
+
+if (A, < Ab) then B,,, +- Bu else Bm.n + Bb; if (A1 < AT)then Rm,n+ RI else Rm,n+- R,;
+
+This algorithm provides a much sharper image as compared t o the median, or bilinear interpolation, or the simple pattern matching. However, since it does not consider smooth hue transition, the color bleeding artifacts still remains a problem for some images containing sharp edges, such as the image of a Zebra.
+
+COLOR INTERPOLATION OR DEMOSAICING
+
+51
+
+3.5.2.3 Edge Sensing Interpolation In this algorithm, different predictors are used for the missing GREEN values depending on the luminance gradients [ll,161. For each pixel containing only the RED or the BLUE component, two gradients (one in the horizontal direction, the other in the vertical direction) are defined as
+
+6H = /Gm,n-l - Gm,n+l/ and 6V = 1Gm-1,n - Gm+l,nJ,
+where 1x1 denotes absolute value of z. Based on these gradients and a certain threshold ( T ) ,the interpolation algorithm can be described as follows:
+
+begin
+
+if 6H < T and 6V > T (i.e. smoother in horizontal direction) then Gm,n (Gm,n-l+ Gm,n+1)/2;
++
+
+else if 6H > T and 6V < T (i.e. smoother in vertical direction) then Gm,n (Gm-l,n + Gm+l,n)/2;
++
+
+A slightly different edge sensing interpolation algorithm is described in [17]. Instead of luminance gradients, chrominance gradients are used. For a pixel location containing only the BLUE component, the two gradients are
+6H
+=
+
++ Bm.n - Bm,n-~ Bm,n+2 2
+
+and 6V
+
+=
+
+Bm,n -
+
+Bm-2,n
+
++ Bm+2.n
+2
+
+Similar treatment can be done for the RED pixels as well.
+3.5.2.4 Linear Interpolation with Laplacian Second-Order Corrections This algorithm [IS] was developed with the goal of enhanced visual quality of the interpolated image when applied on images with sharp edges. Missing color components are estimated by the following steps.
+
+Estimation of GREEN component: Consider estimating the missing GREEN component (Gm,n) a BLUE pixel (Bm.n)at location ( m , n ) , as at an example. Interpolation at a RED pixel location can be done in the similar fashion. We define horizontal and vertical gradients in this pixel location as follows:
+
+and
+
+52
+
+COLOR AND COLOR IMAGERY
+
+Intuitively, we can consider SH and SV as combination of the luminance gradient and the chrominance gradient as described in the edge sensing interpolation algorithm in the previous section. In the expression of S H , the first term \Gm,n-l - Gm,n+lj is thc first-order difference of the neighboring green pixels, considered to be the luminance gradient and the second term - Bm,n)l is the second-order derivative of the - Bm.n-2) neighboring blue pixels, considered as the chrominance gradient. Using these two gradients, the missing green component Gm,nat location (m, n ) is estimated as follows.
+
+Hence, the interpolation for missing GREEN component has two parts. The first part is the linear average of the neighboring green values, and the second part can be considered as a second-order correction term based on the neighboring blue (red) components.
+
+Estimation of RED (or BLUE) component: The missing RED (or BLUE) color components are estimated in every pixel location after estimation of the missing green components is complete. Depending on the position, we have three cases:
+1. Estimate the missing RED (BLUE) coniponent at a GREEN pixel (Gm.n), where nearest neighbors of RED (BLUE) pixels are in the same column, e.g., pixel location ( 4 , 4) as shown in Figure 3.3. The missing RED (BLUE) component is estimated as
+
+2. Estimate the missing RED (BLUE) component at a GREEN pixel (Gm,n), where nearest neighbors of RED (BLUE) pixels are in the same row, e.g., pixel location ( 3 , 3 ) as shown in Figure 3.3. The missing RED (BLUE) component is estimated as
+
+COLOR INTERPOLATION OR DEMOSAlClNG
+
+53
+
+3. Estimate RED (BLUE) color component a t a BLUE (RED) pixel, e.g. the RED pixel at (3, 4) as shown in Figure 3.3. Here we first define two diagonal gradients as
+6D1 = IEm-1,n-1
+- Rm+l,n+1I+l(Grn,n G m - 1 , n - I ) -
+
++ (Gm,n - G m + l , n + l ) / , + (Gm,n
+- Gm+l,n-1)1
+
+and
+~ D z /Rm-l,n+l - Rm+l.n-1/
+1
+
++ I(Gm,n
+
+- Gm-l,n+l)
+
+Using these diagonal gradients, the algorithm for estimating the missing color components is described as :
+
+if SD1 < 6 0 2 then
+
+else if SD1 > 6
+
+0 2
+
+then
+
+Rm,n
+
++
+
+This algorithm provides much better visual quality of the reconstructed image containing a lot of sharp edges. However, the second-order derivative for calculating the gradients makes the algorithm quite sensitive t o noise. Since only the color information in the same direction (vertical, horizontal, or one of the diagonal directions based on the gradient information) is used for interpolation, we believe that it is still possible t o further improve the visual quality of the reconstructed image.
+
+3.5.3 A Novel Adaptive Color Interpolation Algorithm
+In fuzzy membership assignment strategy, we assign different membership values t o members of a set to reflect their degrees of belongingness within that set [19]. Depending upon the correlation among the surrounding pixels, a fuzzy membership assignment to the surrounding horizontal and vertical pixels has been formulated in [lo]. The membership grades have been experimentally derived through exhaustive subjective visual inspection, taking into consideration the exhaustive set of images having possible edges in the horizontal and vertical directions.
+
+54
+
+COLOR AND COLOR IMAGERY
+
+Let us now consider the estimation of the GREEN component (Gm,n)a t the pixel location ( m , n ) containing the RED component (f&) only. The following four cases may arise, where there is a possible edge along the horizontal direction: 1. /Gm.n-l - Gm,,+ll is small while /Gm-l,n - Gm+l,,l is arbitrarily large. Here we can assume existence of a horizontal edge.
+
+2. lGm,n-l - Gm,n+l/ is small and lGm-l,n - Gm+l,,/ is arbitrary and G l m , n - 1 Gm,,+l NN Gm+l,,. In this case, there is clearly a possible edge at the pixel location R,,,, and the intensity of this edge depends on the surrounding pixel values Gm-l,n and Gm+l.n.
+3. This case is similar t o case 2 with a difference G l m , n - 1 M Gm,n+l = Gm- 1.n.
+
+4. In this case we consider all the four connecting neighboring pixels Gm.n-l, Gm,n+l, Gm-1,n and Gm+l,n that are all different subject t o the condition lGm-l,n - Gm+l,nI - IGm,n-l - Gm,n+11 0. In each of these cases, the fuzzy membership value of 0.5 has been assigned to the horizontal green pixels Gm,n-l and Gm,n+l and 0.1 has been assigned to vertical green pixels Gm-l,n and Gm+l.n. Based on this strategy, the missing green component (Gm.n) can be interpolated as follows:
+
+that is
+
+Gm,n = 0.8333Gm,n-I
+
++ Gm.n+l + 0.1667 Gm-l,n + Gm+l,n
+2 2
+
+Using this fuzzy membership assignment as a weighted-average tool for missing color interpolation, we can fully utilize all the neighboring information for estimating the missing color information.
+3.5.3.1 Three Steps of the Interpolation Algorithm The proposed interpolation algorithm is a three-step algorithm as summarized here:
+
+1. Estimation of all missing GREEN components. After completion of this step, each and every pixel location has a green component.
+
+2. Estimation of missing BLUE (or RED) component a t each RED (or BLUE) pixel. The GREEN components estimated in the previous step are used in this step. The decision is based on the change of hue values.
+3. Estimation of missing RED and BLUE at GREEN pixels in the Bayer pattern. The estimated RED (or BLUE) at BLUE (or RED) pixels in step 2 have been utilized for interpolation.
+
+COLOR INTERPOLATION OR DEMOSAICING
+
+55
+
+Estimation of all missing GREEN components: Let us consider estimation of the missing GREEN component (Gm,n)at a RED pixel (Rm,n) location ( m ,n ) ,e.g., pixel coordinate (3, 4) in Figure 3.3. First, we estimate two parameters in terms of changes in the Hue values, one in the horizontal direction and the other in the vertical direction. The change in hue value in the horizontal direction can be estimated as
+Char
+
+(Rm.n+I - Gm.n+I) - (Rm.n-1
+
+-
+
+Gm,n-l).
+
+Since the RED components Rrn,,+1 and Rm.n-l are missing in pixel coordinates (m,n 1) and ( m ,n - l),we approximate them as
+
++
+
+R m , n + ~Z F
+
+Rm,n + Rm,n+2 , and Rm.n-l 2
+
+= Rm3n+2Rm,n-2
+
+Hence tho, can be approximated as
+
+and hence
+
+In a similar fashion the change in hue value in the vertical direction can be estimated as
+Cue,
+
+5 ( p R m - 2 , n + 2Gm-1,n
+
+1
+
+-
+
+2Gm+1,n + Rm+2,n).
+
+Depending on the values of c h o T and Cue,, different fuzzy membership numbers are used as weighting factors to estimate the missing GREEN components as described here:
+
+if
+
+(Ichorl
+
+< ICverI) then
+Gm>n 0.8333 XhoT =
+
++ 0.1667 Xu,,;
++ 0.8333XUer;
+
+Gm,n= 0.1667Xhor
+
+endif
+where
+
+56
+
+COLOR AND COLOR IMAGERY
+
+It should be noted that Xhor and Xu,, above are estimated based on the assumption of smooth hue transition a discussed earlier with a weighting s factor (0.5) in the second term to reduce the sensitivity of noise in the image. The similar strategy can be applied for interpolation of the missing GREEN component at the pixel coordinates containing the BLUE component only. E s t i m a t i o n of B L U E / R E D components at the R E D / B L U E pixels: Let us consider estimation of the missing BLUE component (Bm,n) RED at pixel (Rm.n), e.g., coordinate ( 3 , 4) in Figure 3.3. Since the green components have already been interpolated in step 1, the hue values of the four corner BLUE pixels a t ( m- 1, n l),( m 1, n + l), ( m+ 1, n - l ) , ( m 1, n 1) are
+~ ~
+
++
+
++
+
+Hnw Hne
+
+= Bm-1,n-1 =
+
+-
+
+Gm-l,n-l,
+
+Hsw
+
+Bm+l,n-~ Gm+1.n-1. -
+
+Bm-l,n+l - Gm-l,n+l, Hse = Bm+l,n+l- Gm+~,n+l respectively and the differences of the hues along the diagonals are
+AH1 = H,,
+-
+
+H s e , and AH2
+
+= Hne - H s ,
+
+The procedure for estimation of the missing BLUE component in the RED pixel location in the Bayer pattern is as follows. if ( l A H I / < /AH21)then Bm,n + Gm3n O-8333XDzagl $- 0.1667X~zag2; else Bm,n + Gm.n 0.1667X~zagl 0.8333XDzag2; endif
+
++ +
+
++
+
+where
+
+XDzagl
+
+=
+
+Bm-1,n-1 - Gm-l,n-1+ Bm+l.n+l - Gm+l.n+~
+2
+
+The RED component a t a BLUE pixel location is interpolated similarly. E s t i m a t i o n of missing B L U E / R E D components at GREEN pixels: Let us now consider estimation of the missing BLUE component (Bm.n)at GREEN pixel (Gm.n), e.g., at coordinate ( 3 , 3) in Figure 3.3. We already interpolated the BLUE components in the pixel coordinates containing the RED component only and vice versa. The blue hue of the north, south, east, and west neighbors of the GREEN pixel a t ( m , n ) are
+
+Hn
+
+= Bm-1)n - Gm-~,n> Hs =
+
+Bm+l,n - Gm+l.n,
+
+COLOR /NT€RPOLAT/ON OR DEMOSAlClNG
+
+57
+
+respectively. Difference of the hues in horizontal and vertical directions are
+
+AH,,,
+
+= He
+
+-
+
+H w , and AH,,, = Hn
+
+-
+
+H,
+
+The procedure t o interpolate the missing BLUE component at the pixel coordinate containing only the GREEN component in the Bayer pattern is as follows:
+
+The missing RED component can be interpolated in a similar fashion. 3.5.4
+Experimental Results
+
+To show the effectiveness of the above color interpolation algorithm, we can synthetically generate the Bayer pattern from a full-color RGB image by simply dropping two color components in each pixel coordinate (if the original Bayer pattern image cannot be grabbed from a digital camera directly). We show the results of the above color interpolation in Figure 3.4. the color version of the figure is provided in the color pages section. Figure 3.4(a) is a full color image. The image contains lots of high-frequency patterns in the form of black-and-white sharp edges in different angles. We generated the Bayer pattern image from the original image in Figure 3.4(a) by simply dropping two color components in each pixel t o show the results. This synthetically generated Bayer pattern image is then interpolated t o the full-color image using the adaptive algorithm discussed above. The interpolated result is shown in Figure 3.4(b). We have chosen this particular image because of its high-frequency nature and other interesting image characteristics. The comparative studies of different color interpolation algorithms with number of different adaptive and non-adaptive color interpolation algorithms have been presented in [ l o ] . In all different types of images, the adaptive algorithm discussed here provides better image quality compared t o others.
+
+58
+
+COLOR AND COLOR IMAGERY
+
+fig. 3.4 (a) Original Image and (b) result. of fuzzy assignment-based adaptive interpolation.
+
+SUMMARY
+
+59
+
+3.6
+
+SUMMARY
+
+In this chapter, we have presented a concise description of the human color perception. The need for color space transformation has been explained and some of the popular color spaces such as RGB, HSV, CIELAB, etc. and the formulation for their transformations have been presented. Due t o the cost and packaging consideration, in digital imaging devices such as a digital camera, only a single electronic sensor is used and the need for color interpolation or demosaicing will remain critical until other technologies such as multi-channel color moir free sensor is mature. In this chapter, we have introduced the concept of color interpolation, defined the problem and reviewed different types of color interpolation algorithms proposed in the literature. We discussed an interesting technique based on fuzzy membership assignment strategy along with the concept of smooth hue transition for estimating the missing colors in each pixel. This algorithm significantly improves the overall visual quality of the reconstructed color images.
+
+REFERENCES
+
+1. E. H. Land, “Color vision and the natural image,” Part I, Proceedings of the National Academy of Sciences, USA, 45, 1959, 116-129.
+2. G. Wyszecki and W. S. Stiles, Color Science, 2nd ed., McGraw-Hill, New York, 1982.
+
+3. B. A. Wandell, Foundations of Vision, Sinauer Associates, Inc., Sunderland, MA, 1995. 4. G. Buchsbaum, “An analytical derivation of visual nonlinearity,” IEEE Transactions on biomedical engineering. vol-BME-27, 5, 237-242, May 1980.
+
+5. K. M. Bhurchandi, A. K. Ray and P. M. Nawghare, “An Analytical Approach for Sampling the RGB Color Space Considering Physiological Limitations of Human Vision and its Application for Color Image Analysis,” Proc. Indian Conference o n Computer Vision, Graphics and Image Processing, Bangalore, December 2000, 44-49.
+6. G. Sharma, “Digital color imaging,” IEEE Transactions o n image processing, 6(7), July 1997, 901-932. 7. H. R. Kang, Color Technology for Electronic Imaging Devices, SPIE Optical Engineering Press, 1997.
+8. B. E. Bayer, “Color Imaging Array,” US Patent 3,971,065, Eastman Kodak Company, 1976.
+
+60
+
+COLOR AND COLOR IMAGERY
+
+9. T. Acharya and P. Tsai, “A New Block Matching Based Color Interpolation Algorithm,” Proceedings of the SPIE Electronic Imaging Conference, Color Imaging: Device-Independent Color, Color Hardcopy, and Graphic Arts IV, Vol. 3648, January 1999, 60-65. 10. P. Tsai, T. Acharya, and A. K. Ray, “Adaptive Fuzzy Color Interpolation,” Journal of Electronic Imaging, 11(3), July 2002, 293-305. 11. J. E. Adams, Jr., “Interactions between color plane interpolation and other image processing functions in electronic photography,” Proceedings of the SPIE Electronic Imaging Conference, Vol. 2416, 144-151, 1995.
+12. T. Sakamoto, C. Nakanishi, and T . Hase, “Software Pixel Interpolation for Digital Still Cameras Suitable for A 32-bit MCU,” IEEE Transactions on Consumer Electronics, 44(4), November 1998, 1342-1352.
+
+13. Wr. T . Freeman, “Method and apparatus for reconstructing missing color samples,” U.S. Patent 4,663,655, Polaroid Corporation, 1987. 14. D. R. Cok, “Signal processing method and apparatus for producing interpolated chrominance values in a sampled color image signal,” U.S. Patent 4,642,678, Eastman Kodak Company, 1987. 15. X. Wu, W. K. Choi, and P. Bao, “Color Restoration from Digital Camera Data by Pattern Matching,” Proceedings of the SPIE’s Electronic Imaging
+
+Conference, Color Imaging: Device-Independent Color, Color Hardcopy, and Graphic Arts 11, Vol. 3018, 12-17, 1997.
+16. R. H. Hibbard, “Apparatus and method for adaptively interpolating a full color image utilize luminance gradients,” U.S. Patent 5,382,976, Eastman Kodak Company, 1995. 17. G. A. Laroche and M. A. Prescott, “Apparatus and method for adaptively interpolating a full color image utilize chrominance gradients,” U.S. Patent 5,373,322, Eastman Kodak Company, 1994.
+18. J. F. Hamilton, Jr. and J. E. Adams, Jr., “Adaptive color plan interpolation in single sensor color electronic camera,” U.S. Patent 5,629,734, Eastman Kodak Company, 1997.
+
+19. L. A. Zadeh, “Fuzzy Sets,” Information and Control, 8, 1965, 338-353.
+
+Image Transformation
+4.1
+INTRODUCTION
+
+Two-dimensional image transforms are extremely important areas of study in image processing [l,21. The image output in the transformed space may be analyzed, interpreted, and further processed for implementing diverse image processing tasks. These transformations are widely used, since by using these transformations, it is possible t o express an image as a combination of a set of basic signals, known as the basis functions. In case of Fourier transform of an image these basis signals are sinusoidal signals with different periods which describe the spatial frequencies in an image. This implies that an image is decomposed into its constituent sinusoids, using the Fourier transform, and the amplitudes of various frequencies constitute the frequency spectrum of the image. The process of inverse Fourier transform operation involves synthesizing the image by adding up its constituent frequencies. The notion of frequency, more specifically spatial frequency, is not a mere mathematical abstraction. On the other hand, interestingly the human vision system, which is a biological system, essentially performs the frequency analysis of the image incident on the retina of our eyes. Thus such transforms, such as the Fourier transform, reveal spectral structures embedded in the image that may be used t o characterize the image.
+
+61
+
+62
+
+IMAGE TRANSFORMATION
+
+4.2
+
+FOURIER TRANSFORMS
+
+The understanding of the formation and analysis of two-dimensional signals, viz., images, has been possible because of the advent of various orthogonal transforms. Fourier transform is one of the most important tools which have been extensively used not only for understanding the nature of an image and its formation but also for processing the image. We have already mentioned that an image is a two-dimensional signal and can be viewed as a surface in two-dimensional space. Using Fourier transform, it has been possible to analyze an image as a set of spatial sinusoids in various directions, each sinusoid having a precise frequency. But before we venture into understanding Fourier transform on an image, let us first look into the Fourier transform of a continuous valued one-dimensional signal.
+4.2.1 One-Dimensional Fourier Transform
+
+The one-dimensional continuous Fourier transform, (CFT) of a continuous function f ( x ) is
+
+F(w)=
+
+J--03
+
+/'"
+--03
+
+f ( x )exp [ - j 27rwzI dx.
+
+(4.1)
+
+The corresponding inverse Fourier transform is
+
+Eq. 4.1 can be decomposed into a real component R ( w ) and an imaginary component I ( w ) as
+
+F ( w ) = R(w) j I ( w ) .
+
+The magnitude function IF(w)(is called the Fourier Spectrum of the function f ( x ) and is denoted as
+
+\ F ( u ) )= J R 2 ( w )
+
+The multiplication of a function f ( z ) with exp [ - j 27rwx] d x and integrating the product over the entire z results in a function of the parameter w. The phase angle @(w) of the function f(x) is denoted by (4.5)
+
+Example: Let us consider a simple one-dimensional rectangular function
+
+f(z) rect =
+
+m+/
+
+f(z)=
+
+F ( w )exp [ j 2.rr wz]dw .
+
+(4.2)
+
++
+
+(4.3)
+
++ P(w).
+
+(4.4)
+
+(z)
+
+=
+
+{0
+
+1 when x = 0 otherwise
+
+'
+
+FOURIER TRANSFORMS
+
+63
+
+The Fourier transform of the above signal (rectangular function) may be computed from Eq. 4.1 as
++m
+
+5 sin(u) rect(-)exp[-j27rwx] dx = -,
+
+U
+
+U
+
+which is popularly known as a Sync function.
+
+4.2.2
+
+Two-Dimensional Fourier Transform
+
+Extending the concept of one-dimensional Fourier transform, the two-dimensional Fourier transform of a continuous function f(x,y) is denoted by
+
+F ( w , $)
+
+=
+
+-m
+
+-02
+
+f(x, exp [ - j 27r (ux y)
+
++ $y)] dy dx.
+
+(4.6)
+
+The operation of multiplication of a two-dimensional function f ( x , y) with exp [ - j 27r (wx $y)] results in some interesting observations. Using Euler's formula the exponential function can be decomposed as
+
++
+
+This implies that the function f (x, is essentially multiplied by the terms y) cos (2 7r wx) (2 7r $y), sin (2 7r w x ) sin ( 2 7r $y), sin (2 7r wx) cos (2 7r +y), and cos sin (2 T U X ) sin (2 7r $y). If the function f(x, is a doubly symmetric function y) along both the X and Y directions, then the Fourier transform of f ( x , y ) involves only the multiplication of the cos (2 7r ux)cos (2 7r $y) term. For a general nonsymmetric two-dimensional function f (x, as in most of the realy) life images: the multiplication will involve all four terms. The integral F ( w ,$) thus yields the results of limit summation of an infinite number of sin and cos terms. The variable w in Eq. 4.6 indicates the frequency, i.e., the number of waves per unit length in X direction, and $ indicates the number of waves along the Y direction. For a certain pair of values of these frequency components the integral yields just the amplitude of the chosen component. Accordingly, the magnitude spectrum and phase angle of the two-dimensional function f ( 5 ,y) are
+IF(w,
+
+$11
+
+=
+
+J R 2 ( w ,$1
+
++ I 2 ( W , $)
+
+(4.7)
+
+and
+
+respectively. It should be noted that the power spectrum of f ( x , y ) may be denoted as P(W, Icl) = +)I2 = R2(W,+) + 12(w,Icl). (4.9)
+
+64
+
+IMAGE TRANSFORMATION
+
+The corresponding inverse two-dimensional Fourier transform is
+
+f ( x ,y) =
+4.2.3
+
+1'"
+-m
+
+/+m
+
+-cc
+
+F ( w , $1 exp [ j 27r (wx +y)l ct$ ctu.
+
++
+
+(4.10)
+
+Discrete Fourier Transform (DFT)
+
+When the function or signal is represented in discrete form using a sequence of discrete samples such a f ( z ) = {f(0),f ( l ) , . . , f ( N - l)},the corresponds . ing Fourier Transform of the discrete signal is the Discrete Fourier Transform (DFT). Since the signal is discretized, the operation of integration in continuous Fourier trunsfomn (CFT) is replaced by summation operations in DFT. We present the one-dimensional DFT and also the two-dimensional DFT in the following subsections.
+4.2.3.1 One-Dimensional D F T The one-dimensional discrete Fourier transform of a function f(x)of size N with integer index x running from 0 to N - 1, is represented by
+
+(4.11)
+I .
+
+y=o
+
+L
+
+J
+
+The corresponding one-dimensional inverse DFT is
+N-1
+
+(4.12)
+u=o
+
+4.2.3.2 Two-Dimensional DFT The two-dimensional discrete Fourier transform of a two-dimensional signal f ( z , y ) of dimension M x N with integer indices x and y running from 0 to M - 1 and 0 to N - 1, is represented by
+
+The equivalent two-dimensional inverse DFT is
+M-1 N-1
+
+f(z, y)
+4.2.4
+
+=
+
+u=o v=o
+
+C C ~ ( uu),exp [ j 27r (E+)!$ I
+
+.
+
+(4.14)
+
+Transformation Kernels
+
+As we have already noted the general forward and inverse Fourier transformation can be expressed as
+
+FOURlER TRANSFORMS
+
+65
+
+and
+
+In the above equations g(z,y , u, u)is known as forward transformation kernel and h(z, u , v) is the inverse transformation kernel. Here u and v assume y, values in the range ( 0 , 1 , . . . ,N - 1). As can be further observed, these kernels are dependent only on the spatial positions and frequencies along X and Y directions, and are independent of either f ( z ,y) or F ( u ,w). These kernels are like a set of basis functions. If the kernel g ( z , y , u , v ) = g1(z,u)gz(y,v), we say that the kernel is separable. If in addition the functional forms of g1 and gz are identical, then the kernel is said to be symmetric. It easy to show that the kernel g(z, y, u , v) is separable and symmetric sincc
+
+g(z, y, u, u)= exp - j 27r
+
+[
+
+(X + T)]
+
+= exp [ - j 27r
+
+In a likewise fashion it may be easily proved that the inverse kernel g(z, y, u, v) is also symmetric and separable.
+
+(X)] [ I)$(
+exp - j 27r
+
+4.2.5
+
+Matrix Form Representation
+
+In case the kernel is observed t o be symmetric and separable it may be expressed as F =Af(z,y)A (4.17) where f(z,y) is an image matrix of dimension N x N and A is a symmetric transformation matrix of dimension N x N with elements = g(i,j). Multiplying both the sides of Eq. 4.17 by a matrix B , we get
+
+BFB =B[Af(z,y)A]B.
+
+(4.18)
+
+To recover the original image f(z,y), we need to choose B = A-' = g - ' ( z , j ) . In that case, Eq. 4.18 reduces to
+
+BFB=B[Af(z,y)A]B=A-'Af(z,y)AA-l=f(z,y).
+Thus the original image f ( z ,y) can be reconstructed. The Figure 4.1 shows the results of two-dimensional DFT. Figure 4.l(a) is a two-dimensional sync function which is the result of D F T of the square image shown in Figure 4.l(a). Similarly, Figure 4.l(d) is the DFT of the two-dimensional DC function shown in Figure 4.l(c).
+
+66
+
+IMAGE TRANSFORMATlON
+
+Fig. 4.1 Examples: (a) square image, (b) DFT magnitude of the square image, (c) two-dimensional DC signal, (d) DFT magnitude of the DC signal, (e) two-dimensional exponential function, ( f ) DFT magnitude of the exponential function.
+
+FOURER TRANSFORMS
+
+67
+
+4.2.6
+0
+
+Properties
+
+Translation: The translation of a Fourier transform pair is
+
+The above implication indicates the correspondence between a twodimensional image function and its Fourier transform.
+0
+
+Rotation: Assuming that the function f ( z ,y) undergoes a rotation of a , the corresponding function f ( s ,y) in polar coordinates will then be represented as f ( r , a ) , where z = rcoscr and y = rsincr. The corresponding DFT F ( u , w ) in polar coordinates will be represented as F ( P , y ) , where u = p c o s y and u = p s i n y .
+The above implies that if f ( z ,y ) is rotated by cro, then F ( u ,w) will be rotated by the same angle (YO and hence we can imply that f ( r ,cr ( Y O ) corresponds to F ( P ,y QO) in the DFT domain and vice versa.
+
++
+
++
+
+0
+
+Separability: The separability property of a two-dimensional transform and its inverse ensures that such computations can be performed by decomposing the two-dimensional transforms into two one-dimensional transforms. From Eqs. 4.13 and 4.14 describing the DFT and inverse D F T of a two-dimensional function f ( z , we can express them in sepy), arable form as follows.
+
+Hence the two-dimensional DFT (as well as the inverse DFT) can be computed by the taking the one-dimensional DFT row-wise in the twodimensional image and the result is again transformed column-wise by the same one-dimensional DFT.
+0
+
+where F{f(z,y)} is the DFT of f ~ ( z , y ) .It should be noted that the distributive property for product of two functions does not hold, i.e.,
+
+Distributive property: The DFT of sum of two functions f l ( z ,y ) and f i ( z , y ) is identical to the sum of the DFT of these two functions, i.e., F{fl(z,Y)+ f 2 ( z ,Y > > = F{fl(Z,Y)) + F { f z ( z ,Y)),
+
+F{fl(z,Y ) . f 2 ( 5 , Y)) # F{fl(z,Y ) ) . F { f i ( G Y)).
+
+68
+0
+
+IMAGE TRANSFORMATION
+
+Scaling property: The D F T of a function f ( z , y ) multiplied by a scalar(k) is identical to the multiplication of the scalar with the DFT of the function f(z, i.e., y),
+
+F { k f ( T Y) = k F ( u ,.). )
+0
+
+Convolution: The DFT of convolution of two functions is equal to the product of the DFT of these two functions, i.e.,
+
+F{fl(zly)(23 fl(zl?/)) F1(u17J).Wu,'u). =
+0
+
+Correlation: The correlation between two functions fi in continuous domain is denoted as
+f l ( G Y)
+f2(z, y)
+
+(2, y)
+
+and f 2 ( l ~y) ,
+
+=
+
+-a
+
+s'-m fl*(Q,
+--m
+
+P)f2(.
+
++ a , Y + P)da.dP,
+
+whereas the correlation in the discrete domain is denoted as
+M-1 N - 1
+
+The DFT of the correlation of two functions fl (z, y) and f2(z,y) is the product of the complex conjugate of the DFT of the first function and the DFT of the second function, i.e.,
+
+0
+
+Periodicity: The DFT of a two-dimensional function f ( z , y ) and its inverse are both periodic with period r , i.e.,
+
+F(u,'u)=F(u+7,.) = F ( u , v + r ) = F ( u + - r , v + - r )
+All the properties presented in this section are valid for continuous Fourier transform (CFT) cases as well.
+4.2.7
+Fast Fourier Transform
+
+The number of complex multiplications and additions t o compute Eq. 4.11 for DFT is O ( N 2 ) .However, we can adopt a divide-and-conquer approach t o reduce the computational complexity of the algorithm t o O ( N log, N ) . This algorithm is popularly known as the Fast Fourier Transform (FFT). There are many implementations of the FFT proposed in the literature. Here we present a general idea of the divide-and-conquer approach toward implementation of the FFT. The general principles is based on successive division method using divide-and-conquer approach as explained below.
+
+FOURIER TRANSFORMS
+
+69
+
+As shown in Eq. 4.11, the one-dimensional D F T of a onedimensional signal f(x) is computed
+F ( u )= N x=o
+where
+KN
+
+. N-1 1
+
+c
+
+f(Z)KT
+
+(4.20)
+
+= exp [ - j
+
+g]
+
+.
+
+(4.21)
+
+For ease of explanation, we assume that N is a power of 2 and hence N can be expressed as M = 2n = 2 M , where n is a positive integer. Hence, Eq. 4.20 can be written as
+
+=5
+
+1
+
+{ -& EEi' f(22)K;p) 4-& EX=o
+M-1
+K;:;
+
+As per Eq. 4.21,
+
+= KF and hence Eq. 4.22 can be written as
+
+(4.22)
+
+and Let us define the first component in Eq. 4.23 as Feven(u) the second component as Fodd(u). Hence,
+
+F ( u ) = - { Fe v e n ( u ) + ~ i ~ f F o d d ( u ) ) . 2
+
+1
+
+(4.24)
+
+It may be pointed out that Feven(u)the D F T of the sequence composed is of the even samples f(22) (i.e., f ( O ) , f ( 2 ) , f ( 4 ) , . . . ,f ( 2 M - 2)) of the original discrete signal f(x),whereas Fodd(u)is the DFT of the sequence composed of all the odd samples f ( 2 z 1) (i.e., f ( l ) f ( 3 ) ,f ( 5 ) , . . . , f ( 2 h l - 1))of the , original discrete signal f(x). Size of both the even and odd sequences f ( 2 z ) and f ( 2 z + 1) is $. Hence computation of both Feven(u) Fodd(u) are and essentially $-point D F T each. As a result, the N-point DFT F ( u ) can be computed as two $-point D F T operations Feven(u) Fodd(u) followed by and addition of Feuen with F o d d scaled by K ; ~ ~In the similar fashion, the . point DFT computations of each of Feven(u) Fodd(u) may further be and decomposed into two point D F T computations for each as shown in Figure 4.2. We can continue this in log, N iterations until each become a 1-point computation as shown in Figure 4.2. Thus in the algorithm discussed above, each N point transform has been computed as two N/2 point transforms. The algorithm for computation of
+
++
+
+2
+
+70
+
+IMAGE TRANSFORMATION N-point D l T
+
+f(N/2-2)
+
+f( N/2- 1)
+
+f(N-2)
+
+f(N-1)
+
+F;g. 4.2 FFT computation by Successive Decomposition.
+
+the N point FFT using successive division approach is shown in Figure 4.2. The computational complexity of the algorithm is O ( N log, N ) .
+4.3 DISCRETE COSINE TRANSFORM
+
+Discrete Cosine Transform (DCT) is the basis for many image and video compression algorithms, especially the baseline JPEG and MPEG standards for compression of still and video images respectively. The one-dimensional forward discrete Cosine transform (1D FDCT) of N samples is formulated by
+F ( u )=
+for u = O , l , . . . , N
+-
+
+N
+
+y
+x=o
+
+f (x) COS
+
+[
+
+T(2Z
+
+2N
+
++ 1).
+
+]
+
+1, where
+
+C ( u )=
+
+1
+
+for u = o otherwise.
+
+The function f ( z ) represents the value of the x t h sample of the input signal. F ( u ) represents a DCT coefficient for u = O , l , . . . , N - 1. The one-dimensional inverse discrete Cosine trunsfomn (1D IDCT) is formulated in a similar fashion as follows,
+
+f (x)=
+
+gy
+u=o
+
+C(u)F(u) COS
+
+"; ' :
+
+"I
+
+DlSCRETE COSINE TRANSFORM
+
+71
+
+for z = 0,1, . . . , N - 1. The two-dimensional DCT can be computed using the one-dimensional DCT horizontally and then vertically across the signal because DCT is a separable function. The two-dimensional forward discrete Cosine transform (2D FDCT) of a block of M x N samples of a two-dimensional signal F ( z ,y) is formulated as
+
+F ( u ,w) = c(u)c(w)
+
+m
+
+2
+
+N-1 M-1
+
+z=o
+
+y=o
+
+f(z,?/)cos
+
+[
+
+r(2z 1). 2N
+
++
+
+] [
+'OS
+
+r ( 2 y 1)" 2M
+
++
+
+]
+
+for u = O , l , . . . , N
+
+-
+
+1 and w = 0,1, . . . , A - 1, where 4
+
+C ( k )=
+
+1
+
+for k = o otherwise.
+
+The function f ( z , y ) represents the value of the z t h sample in the y t h row of a two-dimensional signal. F ( u ,w) is a two-dimensional transformed coefficient for u = 0 , 1 , . . . , N - 1 and 2, = 0 , 1 , . . . ,M - 1. The above expression for 2D FDCT is clearly a separable function because we can express the formula as follows:
+
+As a result we can accomplish the 2D FDCT of a two-dimensional signal by applying 1D FDCT first row-wise followed by 1D FDCT column-wise in two steps. First, the 1D FDCT is applied row-wise in all the rows independently to obtain F ( u ,y), where
+
+for u = O , l , . . . , N - 1. In the second step, the same 1D FDCT is applied column-wise in all the columns of F ( u ,y ) to obtain the result F ( u ,u), where
+
+for u = O , l , . . . , M - 1. The two-dimensional inuerse discrete Cosine transform (2D IDCT) is computed in a similar fashion. The 2D IDCT of F ( u ,w) is formulated as
+
+72
+
+IMAGE TRANSFORMATION
+
+for z = O , l , . .. , N - 1 and y = 0 , 1 , . . . , M - 1. The above function is again a separable function similar t o what we have shown for the 2D FDCT. As a result, the 2D IDCT can be computed in exactly the opposite way of the 2D FDCT. The 2D IDCT is computed in two steps: by first applying 1D IDCT column-wise followed by the 1D IDCT row-wise. After column-wise computation of 1D IDCT in every column of the input signal F ( u ,v), we obtain F ( u ,y), where
+
+for v = 0 , 1 , . . . , M - 1. In the second step, the same 1D IDCT is applied row-wise in all the rows of F ( u , y) to obtain the two-dimensional signal f ( s y), where ,
+
+f o r u = 0 , 1 , ..., N - 1 . The two-dimensional DCT kernel is a separable function and hence the 2D DCT computation can be done in two steps, by applying one-dimensional DCT row-wise and then column-wise instead of the direct computation. Since DCT belongs t o the family of DFT, there are fast DCT algorithms of computational complexity O ( N log, N ) similar t o the Fast Fourier Transform (FFT). There are many fast DCT algorithms proposed in the literature [3].
+4.4
+
+WALSH-HADAMARD TRANSFORM (WHT)
+
+Like the Fourier transform, the discrete Wulsh Hudamurd Transform (WHT) also has a separable symmetric kernel. The discrete Vl'alsh Hadamard transform of a function f ( z ) is denoted by
+
+2 ,
+
+N-l
+
+(4.25)
+x=o
+
+where
+
+is the kernel of WHT, where n = logzN and b,(z) is the ith bit in binary representation of z . The WHT kernel g(x, ) is a symmetric matrix having a u set of N orthogonal rows and columns. The symmetric WHT kernel for N = 1, 2, 4 and 8 are shown in Eqs. 4.26-4.29 respectively:
+H = 1
+
+[I]
+
+(4.26)
+
+KARHAUNEN-LOEVE TRANSFORM OR PRlNClPAL COMPONENT ANALYSIS
+
+73
+
+(4.27)
+
+=_I J? ;
+1
+
+1 -1 1 -1 1 1 -1 -1 1 1 -1 -1 1 1 1 -1 -1 1 1 -1 -1 1 -1 -1 1 1 -1 -1 1 1 1 1 1 -1 -1 -1 -1 1 -1 1 -1 -1 1 -1 1 1 1 -1 -1 -1 -1 1 1
+
+(4.28)
+
+1 -1 -1 1 -1 1 1 -1 (4. 9) Hence the recursive relation t o generate a Walsh-Hadamard Transform kernel can be represented as
+
+1 1 1 1 1 1 1 1
+
+1 -1 1 -1 1 -1 1 -1
+
+(4.30) The advantage of using the WHT is the simplicity in its computation in view of the binary nature of the transform kernel. The WHT has been used for shape analysis, and other signal and image processing applications. 4.5 KARHAUNEN-LOEVE TRANSFORM OR PRINCIPAL C O M P O N E N T ANALYSIS
+
+Karhaunen.-Loeve Transform, or Principal Component Analysis (PCA) has been a popular technique for many image processing and pattern recognition applications. This transform which is also known as Hotelling Transform is based on the concepts of statistical properties of image pixels or pattern features [I, 21. Principal component analysis (PCA) forms the baiis of the KarhunenLoeve (KL) transform for compact representation of data [ l ] . The KL transform and the theory behind the principal component analysis are of fundamental importance in signal and image processing. The principle has also found its place in data mining for reduction of large-dimensional datasets. It has been successfully applied to text analysis and retrieval for text mining as well [4].
+
+74
+
+IMAGE TRANSFORMATION
+
+One of the major problems in pattern recognition and image processing is the dimensionality reduction. In practical pattern recognition problems, quite often the features that we choose are correlated with each other and a number of them are useless so far as their discriminability is concerned. If we can reduce the number of features, i.e., reduce the dimensionality of the feature space, then we will achieve better accuracy with lesser storage and computational complexities.
+
+X'
+
+Fig. 4.3 Dimensionality Reduction.
+
+In Figure 4.3 there are a number of twedimensional pattern points, belonging to two different pattern classes (shown by X and 0 symbols), where each pattern is described by only two features X and Y . It may be observed that the projection of the pattern points both on X and Y axis are overlapping. As a result, the two features X and Y do not exhibit good discriminability. It is possible t o find a reduced set of features that may result in better discrimination between the two classes. This is shown by the nonoverlapping projections of the patterns belonging t o two classes on the new feature axis ( X ' ) as shown in Figure 4.3. PCA is one such tool which yields an extremely powerful technique for dimensionality reduction and many image processing applications such as compression, classification, feature selection, etc. Before describing the PCA, we would briefly present the concepts of covariance matrix.
+
+KARHAUNEN-LOEVE TRANSFORM OR PRlNClPAL COMPONENT ANALYSlS
+
+75
+
+4.5.1
+
+Covariance Matrix
+
+In practical pattern recognition problems there are usually more than one feature. During the process of statistical analysis of these data, we have t o find out whether these features are independent of one another. Otherwise there exists a relationship between each pair of features. For example, while extracting the features of human face, one may choose two features such as (1) X to denote the distance between the centers of the two irises, and (2) Y t o denote the distance between the centers of the left and right eyebrows. From a large set of human faces, we can determine the mean and the standard deviation of the above two features. The standard deviation for each of the above two dimensions of the face data set may be computed independently of each other. To understand whether there exists any relationship between these two features, we have t o compute how much the first feature X of each of the patterns in our data set varies from the mean of the second feature Y . This measure, which is computed similar to variance, is always measured between two features. The covariance is computed as follows:
+
+where n is the number of facial patterns, and and Y are the mean of feature X and Y respectively. If the covariance value is positive, it implies that when one feature ( X ) increases, the other feature ( Y ) also increases. If the value of C o v ( X , Y ) is negative, then as one feature increases, the other one decreases. In case where there is no correlation between the two features X and Y the covariance becomes zero, indicating that the two features are independent of each other. In the problem of face feature selection then one may find that the features have positive covariance, meaning that if X increases the other feature Y also increases. In case of a multi-dimensional feature vector, the covariance is measured between each pair of features. In practical pattern recognition problems, we compute a covariance matrix, where each element of the matrix gives a measure of the covariance between two features.
+4.5.2
+Eigenvectors and Eigenvalues
+
+x
+
+Before we discuss principal component analysis, we will briefly explain the concept of eigenvectors and eigenvalues of a matrix. Let us assume that we have a square matrix A of dimension n x n, which when multiplied by a vector X of dimension n x 1 yields another vector Y of dimension n x 1, which is essentially the same as the original vector X that was chosen initially. Such a vector X is called an eigenvector which transforms a square matrix A into a vector, which is either the same vector X or a multiple of X (i.e., a scaled version of the vector X). The matrix A is called a transformation matrix,
+
+76
+
+IMAGE TRANSFORMATION
+
+while the vector X is called an eigenvector. As is well known, any integer multiplication of the vector results in the same vector pointing to the same direction, with only its magnitude being scaled up (i.e., the vector is only elongated). It is interesting to note here that eigenvectors can be determined only from the square matrices, while every square matrix does not necessarily yield an eigenvector. Also an n x n square transformation matrix may have only n number of eigenvectors. All these eigenvectors are perpendicular or orthogonal t o each other. Every eigenvector is associated with a corresponding eigenvalue. The concept of an eigenvalue is that of a scale which when multiplied by the eigenvector yields the same scaled vector in the same direction.
+4.5.3 Principal Component Analysis
+
+While computing the principal component analysis, we represent an N x N image as a one-dimensional vector of N * N elements, by placing the rows of the image one after another. Then we compute the covariance matrix of the entire data set. Next we compute the eigenvalues of this covariance matrix. The eigenvectors corresponding t o the most significant eigenvalues will yield the principal components. To get the original data back we have t o consider all the eigenvectors in our transformation. If we discard some of the less significant eigenvectors in the final transformation, then the retrieved data will lose some information. However, if we choose all the eigenvectors, we can retrieve the original data.
+4.5.4 Singular Value Decomposition
+
+The principal component analysis has also been developed based on the matrix theory for Singular Value Decomposition (SVD). According to singular value decomposition (SVD) theory, for any arbitrary A 1 x N matrix F of rank L there exists an Ad x A l unitary matrix U and an N x N unitary matrix V so that
+
+U T F V = A;.
+where
+
+(4.32)
+
+X i(L) 0 0
+
+KARHAUNEN-LOEVE TRANSFORM OR PRINCIPAL COMPONENT ANALYSIS
+
+77
+
+is an M x N diagonal matrix and the first L diagonal elements X b ( i ) , for i = 1, 2, . . . , L , are called the singular values of input matrix F . Since U and V are unitary matrices, we have
+
+UUT = I M , VVT = I N ,
+where I M and I N are the identity matrices of dimension M and N , respectively. As a result, the input matrix F can be decomposed as
+
+F = UAiVT.
+
+(4.33)
+
+The columns of U are chosen as the eigenvectors u, of the symmetric matrix F F T so that
+
+U ~ ( F F ~= U )
+
+1
+
+(4.34)
+
+0
+
+where X ( i ) , i = 1, 2, . . . , L , are the nonzero eigenvalues of F F T . Similarly, the columns of matrix V are eigenvectors un of the symmetric matrix F T F as defined by
+
+V ~ ( F ~ F= V )
+
+1
+
+(4.35)
+
+where X ( i ) , i = 1, 2, . . . , L are the corresponding nonzero eigenvalues of F T F . The input matrix can be represented in series form by these eigenvalues and eigenvectors as
+(4.36)
+a= 1
+
+If the eigenvalues X ( i ) , for i = 1, 2, . . . , L are sorted in decreasing order and only first K from the sorted list are significant ( K < L ) , then we can approximate the input matrix F by a smaller-dimensional matrix F using these first K eigenvalues and corresponding eigenvectors only.
+

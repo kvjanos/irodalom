@@ -1,0 +1,100 @@
+Proceedings of the 26th Annual International Conference of the IEEE EMBS San Francisco, CA, USA • September 1-5, 2004
+
+Robust Classification of Subcellular Location Patterns in High Resolution 3D Fluorescence Microscope Images
+Departments of Biological Sciences and Biomedical Engineering, and Center for Automated Learning and Discovery, Carnegie Mellon University, PA, USA
+
+Xiang Chen and Robert F. Murphy
+
+Abstract—Knowledge of a protein’s subcellular location is essential to a complete understanding of its functions. Automated interpretation methods for protein location patterns are needed for proteomics projects, and we have previously described systems for classifying the major subcellular patterns in cultured mammalian cells. We describe here the calculation of improved 3D Haralick texture features, which yielded a near-perfect classification accuracy when combined with 3D morphological and edge features. In particular, a set of 7 features achieved 98% overall accuracy for classifying 10 major subcellular location patterns in HeLa 1 cells. Keywords—Fluorescence microscopy, protein subcellular location, subcellular location features
+
+in 2D versions. Consequently, location patterns that may be difficult or impossible to distinguish in 2D images may possibly be separated based on the information encoded in the additional dimension. It is also true that 2D images can not capture sufficient information for cell types that exhibit differences in protein distribution along the top-bottom axis (e.g. polarized cells). Encouraged by the success of using features to represent location patterns in 2D images, we constructed a 3D high resolution image dataset, representing most major subcellular location patterns in HeLa cells (termed 3DHeLa dataset). Using a set of 3D morphological features computed from this dataset, a back-propagation neural network (BPNN) achieved an overall accuracy of 91% [6]. We report here an improved 3D feature set that achieves near-perfect performance in this dataset. II. METHODOLOGY The 3DHeLa dataset has been described previously [6]. To create it, fluorescent probes were used for 9 different proteins found in 8 subcellular organelles and compartments: ER (endoplasmic reticulum), Golgi (giantin and gpp130), lysosomes (LAMP2), endosomes (transferrin receptor), mitochondria, nucleoli (nucleolin), microfilaments (actin) and microtubules (tubulin). DNA was labeled using another fluorescent probe and used to represent the nuclear location pattern. Example images are shown in Fig. 1. Two Golgi proteins (giantin and gpp130) were included in the image dataset to test the ability of any classification system to separate protein location patterns which we have shown are essentially indistinguishable to visual inspection [3]. Feature calculation, feature reduction and implementation of BPNN were carried out as described in [6, 7] with the following modifications: the 3D Haralick texture features were calculated at three different pixel resolutions (0.2, 0.4 and 1.0 µm) and 3 different numbers of gray levels (256, 64 and 16). The images were first downsized to the desired pixel resolution (by linearly combining pixel values in the original images to get the desired resolution) and rebinned to the desired number of gray levels before the texture feature calculation. Stepwise discriminant analysis (SDA) was performed on the feature sets before presenting them to the classifiers. Features were ranked in decreasing order by their discriminatory power (their ability to distinguish classes), a neural network (with a single hidden layer of 20 nodes) was trained using
+
+I. INTRODUCTION Subcellular location is an important aspect of all biological macromolecules, and fluorescence microscopy imaging is the current method of choice for determining subcellular location patterns in proteomics projects. Consequently, automated, systematic annotation of location patterns is preferred over conventional visual inspection because it is objective, time and cost efficient, and has the potential for handling highly complex subcellular location patterns that are beyond the capability of text-based descriptions. We have previously developed sets of Subcellular Location Features (SLF), that provide numerical descriptions of location patterns in fluorescence microscope images. Automated classifiers trained on these numerical features can assign a location pattern to previously unseen images with high accuracy, demonstrating that these features are capable of representing complex location patterns [1-3]. Other applications that validate the use of SLFs include statistical comparison of two image sets [4] and the objective selection of representative images [5]. In recent years, 3D fluorescence imaging using optical sectioning techniques (e.g. laser confocal microscopy) has become increasingly common. It provides opportunities to further improve the accuracy of automated classifiers since in general more information is contained in 3D images than
+This work was supported in part by NIH grant GM068845-01, NSF grant EF-0331657 and a research grant from the Commonwealth of Pennsylvania Tobacco Settlement Fund. X.C. was supported by a Graduate Fellowship from the Merck Computational Biology and Chemistry Program at Carnegie Mellon University established by the Merck Company Foundation.
+
+0-7803-8439-3/04/$20.00©2004 IEEE
+
+1632
+
+Fig. 1. Typical images from 10-class 3DHeLa image dataset Red, blue and green colors represent DNA staining, total protein staining and target protein fluorescence. Projections on the X-Y (top) and the X-Z (bottom) planes are shown. Reprinted by permission of Carnegie Mellon University.
+
+increasing numbers of the SDA selected features, and performance was evaluated using 10 fold cross validation. III. RESULTS AND DISCUSSIONS A. 3D Haralick Texture Features Haralick texture features [8, 9] are based on a gray level co-occurrence matrix that measures the frequency that a particular gray level is found adjacent to another gray level. They were initially designed for 2D images and have been used in biomedical imaging analysis (mammograms, ultrasonic liver images, microscopic images of tissue sections) for a number of years. They have also been included in the 2D version of SLFs [2]. Our initial work on classification of 3D images utilized only features derived from 3D morphological image processing [6]. For a subsequent study involving clustering of a set of randomly tagged proteins based on their location patterns, we subsequently extended the Haralick texture features to 3D in order to provide additional descriptive power [7] and added two edge features as well (this set is referred to as SLF11). However, these 3D texture features were calculated at the pixel spacing of the original images and using rebinning to 256 gray levels [7]. Our previous experience with 2D images indicated that the generalizability of texture features
+
+can be adversely affected when the number of gray levels used is significantly larger than the maximum gray level in an image [10]. Therefore, we explored using 3D Haralick texture feature calculated at 3 different pixel resolutions (0.2, 0.4 and 1.0 µm) and 3 different numbers of gray levels (16, 64, and 256). This gave 9 alternative texture feature sets for each image. B. Classification with 3D Haralick texture features Previously, we achieved 91% overall classification accuracy on the 10 major subcellular location classes using 3D-SLF9, a set of 28 morphological features [6]. However, 3D-SLF9 requires a parallel DNA image for each protein image, which may not be available in some imaging protocols. Consequently, a feature set that does not require a parallel DNA image is preferable for general purposes, especially when comparing images of different origins. We therefore explored classification accuracy on single-color 3D images using morphological, edge and texture features in various combinations. SDA was used to rank the features in each combination, and then classification was carried out using various numbers of the ranked features. When the 14 DNA related features were removed from 3D-SLF9, the best classification accuracy achieved with the remaining 14 morphological features was 86% (Figure 2). The addition of two edge features (3D-SLF11.15, 16) permitted a significant improvement of the classifier network performance (90%
+
+1633
+
+Figure 2: Classification accuracy over 10 major classes in 3DHeLa dataset using 5 different subsets of 3D-SLF11 Performance of the classifiers trained with following feature sets were shown: morphological features (●), morphological and edge features (■), morphological , edge and texture features computed at 256 gray levels and various pixel resolutions: 0.2 µM (◆), 0.4 µM (*) and 1.0 µM (▲).
+
+vs. 86%, p = 0.025). This accuracy was achieved using 10 morphological and 2 edge features. Table 1 summarizes the contribution of each variation on the 3D Haralick texture features to the overall classification accuracy (in combination with the morphological and edge features). The results indicated that 256 grey levels consistently yielded better classification performance on the 3DHeLa dataset, consistent with our finding for 2D texture features [10]. Compared to the grey levels, the pixel resolution played a less essential role. The net benefits contributed by texture features were comparable when the features were calculated at 0.2 or 0.4 µm pixel
+TABLE 1 NET BENEFITS OF 3D HARALICK TEXTURE FEATURE The contents of each cell in the table are the net increase in percent accuracy over a classifier using no texture features, the number of features in the subset that achieves this improvement, and the p value in Students’ t test comparing the performance with and without the additional features. Pixel Number of gray levels resolution (µm) 256 64 16 7.7 (16) 5.5 (22) 4.7 (15) 0.2 p < 0.0001 p = 0.0007 p = 0.0029 7.5 (7) 5.3 (18) 3.8 (34) 0.4 p < 0.0001 p = 0.0017 p = 0.028 3.8 (28) 2.6 (23) 0.1 (10) 1.0 p = 0.012 p = 0.060 p = 0.47
+
+resolution under all 3 gray level conditions. The performance of classifiers trained with and without texture features at 256 gray levels is shown in Fig. 2 as a function of the number of features used. When texture features calculated at 256 grey levels and 0.4 µm were combined with morphological and edge features and subjected to SDA, a subset with only 7 features (which we define as 3D-SLF17) was found to provide 98% overall classification accuracy. Table 2 shows a confusion matrix for this case. SLF17 contains 1 morphological feature (3D-SLF9.4, the standard deviation of object volumes), 1 edge feature (3D-SLF11.16, the fraction of fluorescence in object pixels that are along an edge) and 5 texture features (3D-SLF11.21, the average inverse difference moment; 3D-SLF11.27, the average difference entropy; 3D-SLF11.28, the first average information measure of correlation; 3D-SLF11.40, the range of the first information measure of correlation; and 3D-SLF11.42, the range of the second information measure of correlation). The results suggest that SLF17 is a near optimal feature set for capturing all major subcellular location patterns in HeLa cells. Although the best pixel resolution and number of gray levels for different protein datasets may be different and need to be determined individually, the great performance improvement in the HeLa dataset achieved by incorporating
+
+1634
+
+TABLE 2 CONFUSION MATRIX FOR CLASSIFICATION OF 3DHELA SET USING
+3D-SLF17 The average classification accuracy was 98%. Sum of all columns for each row are not necessary 100 due to rounding errors. The 3D-SLF17 feature set was selected by SDA from 3D-SLF11 feature set at 0.4 µM resolution and 256 gray levels. It contained 7 features: 3D-SLF9.4, 3D-SLF11.16, 3D-SLF11.21, 3D-SLF11.27, 3DSLF11.28, 3D-SLF11.40 and 3D-SLF11.42
+
+[2]
+
+[3]
+
+True Class
+DNA ER Giantin Gpp130 LAMP2 Mitochondria Nucleolin Actin TfR Tubulin
+
+DN
+98 0 0 0 0
+0
+0 0 0 0
+
+ER
+
+Gia
+
+2 0 0 100 0 100 0 0 0 0
+0
+0 0 0 2
+
+Output of the classifier Gp LA Mit Nuc Act p 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 0 0 0 96 4 0 0 0 95
+0
+0 0 0 0
+
+TfR Tub
+0 0 0 0 0
+0
+0 0 96 0
+
+0 0 0 0 2
+0
+0 0 2 98
+
+[4] [5]
+
+2
+0 0 0 0
+
+0
+0 0 2 0
+
+96
+0 0 0 0
+
+0
+100 0 0 0
+
+2
+0 100 0 0
+
+[6]
+
+3D texture features suggests its likely value for other protein sets. IV. CONCLUSION We have shown previously that subcellular location patterns can be determined with relatively high accuracy using numerical features derived from 2D fluorescence images. Initial work indicated that classification performance could be improved using features derived from 3D images. We show here that after implementation of the 3D Haralick texture features and 3D edge features we obtained a feature set (SLF17) with only 7 features that can achieve a near-perfect classification accuracy on 3D images without the requirement of parallel DNA images. It should be also noted that most of SLF17 features are texture and edge features, which are insensitive to the number of cells in the image. This suggests that it is possible to extend the automated interpretation methods for protein location patterns from single cell images to tissue images. ACKNOWLEDGMENT We thank Dr. Meel Velliste and Kai Huang for helpful discussions. REFERENCES [1] M. V. Boland, M. K. Markey, and R. F. Murphy, "Classification of Protein Localization Patterns Obtained via Fluorescence Light Microscopy," in 19th Annual International Conference of the IEEE Engineering in Medicine and Biology Society, Chicago, IL, USA, pp. 594-597, 1997. [7]
+
+[8]
+
+[9] [10]
+
+M. V. Boland and R. F. Murphy, "A Neural Network Classifier Capable of Recognizing the Patterns of all Major Subcellular Structures in Fluorescence Microscope Images of HeLa Cells," Bioinformatics, vol. 17, pp. 1213-1223, 2001. R. F. Murphy, M. Velliste, and G. Porreca, "Robust Numerical Features for Description and Classification of Subcellular Location Patterns in Fluorescence Microscope Images," J VLSI Sig Proc, vol. 35, pp. 311-321, 2003. E. J. S. Roques and R. F. Murphy, "Objective Evaluation of Differences in Protein Subcellular Distribution," Traffic, vol. 3, pp. 61-65, 2002. M. K. Markey, M. V. Boland, and R. F. Murphy, "Towards objective selection of representative microscope images," Biophys. J., vol. 76, pp. 22302237, 1999. M. Velliste and R. F. Murphy, "Automated Determination of Protein Subcellular Locations from 3D Fluorescence Microscope Images," in 2002 IEEE International Symposium on Biomedical Imaging (ISBI-2002), Bethesda, MD, USA, pp. 867-870, 2002. X. Chen, M. Velliste, S. Weinstein, J. W. Jarvik, and R. F. Murphy, "Location proteomics - Building subcellular location trees from high resolution 3D fluorescence microscope images of randomlytagged proteins," in Proc. SPIE 4962, San Jose, CA., pp. 298-306, 2003. R. Haralick, K. Shanmugam, and I. Dinstein, "Textural features for image classification," IEEE Trans Systems Man Cybernetics, vol. SMC-3, pp. 610-621, 1973. R. M. Haralick, "Statistical and structural approaches to texture," Proc. IEEE, vol. 67, pp. 786-804, 1979. R. F. Murphy, M. Velliste, and G. Porreca, "Robust Classification of Subcellular Location Patterns in Fluorescence Microscope Images," in 2002 IEEE International Workshop on Neural Networks for Signal Processing (NNSP 12), pp. 67-76, 2002.
+
+1635
+

@@ -1,0 +1,111 @@
+Supplementary Proceedings of PRIB 2007
+
+1
+
+3D multi-object segmentation, tracking and visualization in fluorescence microscopy using Active Meshes
+Alexandre C. Dufour, Nicole Vincent, and Auguste Genovesio, Member, IEEE
+these two tasks as distinct problems. The objects are segmented separately on each time frame of a sequence, then, data association methods are employed to match each object’s position from a frame to the next one. Association methods range from simple nearest-neighbor [3] to complex models [4][5][6] combining objects properties such as position, shape, size, intensity etc.. A slightly different approach is suggested for isolated cells in [7] where each cell is tracked by a window that surrounds its maximum estimated displacement. Each window is then readjusted from a frame to another using the result of the subsequent segmentation step. Although the tracking and window adjustment is performed on 3D Z-stacks, the segmentation is done in 2D on the focused plane of the stack. Another range of methods considers segmentation and tracking as a whole. Such methods rely on deformable models, also known as active contours [8]. The general idea is to deform an initial contour under the influence of various image-based and model-based forces until it fits the required image structure. For tracking purposes, the resulting contour on each frame is used to initialize the segmentation of the following frame and so on. Nonetheless, since no association method is employed, such methods require that an overlap exist between the positions of the object on each pair of successive frames. Deformable models have shown to be an alternative of choice to classical methods for 2D and 3D biological applications (see [2] for a review). The literature on deformable models is divided into two families of approaches, depending on the mathematical formulation of the model. Implicit or level set methods [9] express the contour implicitly through a higher-dimensional scalar function. Their two main advantages are the ease of implementation in any dimension and the implicit handling of topology changes (contour splitting and merging). They are thus very well suited to segment separated objects with a single initial contour. Explicit or parametric methods express the contour directly by means of a parametric function [10]. They have a lighter data structure and hence perform faster, however topology changes are not handled. To overcome this limitation, more and more models working directly with the discrete representation of the contour have been proposed. In 3D, these methods are known as deformable mesh models (the surface being represented by a closed polygonal manifold). The discrete representation allows the
+
+Abstract—Segmenting and tracking multiple deformable objects automatically is a topic of growing interest in 3D biological imaging. This task comprises three main steps. First, objects must be segmented automatically within 3D images acquired under challenging imaging conditions. Second, objects must be tracked through time without losing association in case some objects come into contact. Finally, there is a growing request of fast and accurate 3D visualization of the moving objects to improve understanding biological phenomena. Yet, combination of those three aspects is currently a challenging task. In this paper, we propose a fully-integrated and automated framework based on deformable mesh models able to segment and track multiple objects simultaneously while providing precise 3D visualization of the model during its evolution. Evaluation is performed on simulated sequences and shows promising results toward real biological applications. Index Terms—3D deformable models, biological object segmentation and tracking, fluorescence microscopy, real-time rendering.
+
+ULTI-OBJECT segmentation and tracking is an important research field in digital image analysis research and has more and more applications in cellular and molecular biology [1][2]. Recent advances in microscopy systems now allow to image living cells over time in three dimensions with high precision, offering new insights on cellular and intra-cellular activity. The need for quantitative analysis and the growing amount of data produced have led to a wide range of applications requiring adapted methodologies to track cells structures over time in an automated manner. Also, the progressive migration from two- to three-dimensional acquisition systems yields a growing demand for fast and efficient methods to visualize the scene in 3D, eventually during its analysis. The problem of segmenting and tracking multiple objects can be seen from many different angles. Most methods consider
+A.C. Dufour is with the Image Mining group, Institut Pasteur Korea, Seoul, South Korea and with the Intelligent Perception Systems team, Paris Descartes University, Paris, France. N. Vincent is head of the Intelligent Perception Systems team, Paris Descartes University, Paris, France. A. Genovesio is head of the Image Mining group, Institut Pasteur Korea, 136-791 Seoul, South Korea. Correspondance: { alexandre.dufour , agenoves }@ip-korea.org
+
+M
+
+I. INTRODUCTION & RELATED EFFORTS
+
+Supplementary Proceedings of PRIB 2007 incorporation of geometrical rules that can detect and handle topological changes in a fast and efficient way [11]. Mesh models are hence more flexible since these rules can be enabled or disabled at any time. In a tracking context, implicit models have a drawback: since topology is implicitly handled, if two objects move into contact, the corresponding contours will automatically merge and the model loses identity of the objects. A solution was brought in 2D by [12] and extended to 3D in [13] where each object is tracked by an individual level set, while a “coupling” term is added in the energy functional to avoid overlaps between different contours. Mesh models suffer from a somewhat similar problem. Disabling topology handling would avoid merging, nonetheless the meshes would still inter penetrate until they both absorb the touching objects (see Fig. 1-left). To avoid object confusion, a 2D parametric model involving the coupling term mentioned above has been proposed in [14], but yet no extension has been done in 3D. In addition to quantitative measurements, visual observation is also a key aspect of scene interpretation and understanding. Yet, visualizing a 3D scene during its analysis remains a challenging task. Most methods (including level set approaches) usually produce a labeled image on which a 3D reconstruction algorithm must be applied to produce an intuitive view of the scene. Such algorithms (e.g. the popular Marching Cubes algorithm [15]) are particularly time-consuming for high resolution reconstructions and suffer from surface approximation errors. Although many efforts have been carried out to optimize the reconstruction efficiency, a substantial trade-off remains between precision and computation time, making those algorithms not suitable for real-time visualization. Deformable mesh models also offer an appealing property in this context. Indeed, mesh models share the same data structure as conventional computer graphic cards. Hence, real-time 3D rendering is permanently available during the evolution; therefore the reconstruction step is no longer necessary. In this paper, we adapt the “active mesh” framework we proposed in [16] to multi-object tracking by incorporating the coupling term suggested in [12]. We first describe the method in section II, then present experimental results in section III and conclude in IV by discussing further perspectives. II. PROPOSED METHOD In this section we briefly review the characteristics of our active mesh framework and describe how this model can be applied to multiple object tracking. A. Description of the active mesh framework An active mesh M is a three-dimensional discrete deformable surface defined by a list of vertices forming a closed set of oriented triangles, such that the mesh boundary represents at all times the contour of a volumetric object. Each mesh deformation is driven by that of its vertices, evolving in a without coupling with coupling
+
+2 real domain bounded by the image. To avoid excessive complexity in the mesh structure, a regular sampling is imposed, such that all connected vertices remain within an arbitrary distance interval [dmin, dmax] from each other. Therefore, as the mesh grows (resp. shrinks), vertices are automatically added (resp. deleted) to maintain homogeneous edge lengths over the surface. To speed up computation, a multi-resolution approach is chosen, such that the distance interval varies during the evolution: the initial surface has a coarse resolution (vertices are far from each other). Then, as the surface approaches to the solution, dmin and dmax are progressively reduced, causing a global refinement of the mesh, and so until a suitable resolution is reached. This scheme allows fast and efficient sub-resolution segmentation. B. Multiple coupled active meshes In [17], we segment multiple isolated objects by minimizing the piecewise constant (or reduced) Mumford-Shah functional. This functional reads:
+
+λ∫
+
+Rout n
+
+u 0 − c out dω +
+2 Ri
+
+2
+
+F1 (M 1..n , c out , c1..n ) = λ ∑ ∫ u 0 − c i dω + (1)
+i =1 n
+
+µ∑ ∫
+i =1
+
+Mi
+
+ds.
+
+dω and ds are the elementary image and surface element respectively, λ and µ are weighting parameters, Rout denotes the background component of the image u0 with mean intensity cout, and ci is the mean intensity inside the mesh Mi segmenting the object i. The two first terms aim at finding the optimal frontier between the objects and the background, while the latter is a regularization term that minimizes the surface of all meshes, which is well adapted for roughly convex objects such as nuclei
+
+Fig. 1. Tracking 2 objects touching over time. On the first frame (top) both models perform good segmentation. On the second frame, uncoupled contours inter penetrate (middle-left) whereas coupled contours stop when they touch each other (middle-right). On the last frame (bottom), both contours split and confuse the objects, while coupled contours track their own object correctly.
+
+Supplementary Proceedings of PRIB 2007 or compact cells. The minimization is then done using a steepest gradient-descent method. This model is sufficient to track objects in time as long as they remain separated from each other. Nonetheless, if two objects of same intensity come into contact, the corresponding meshes will no longer distinguish the objects and thus will absorb each other (cf. Fig. 1-left). To handle touching objects, we modify our active mesh framework by incorporating in Eq. 1 a coupling term that penalizes overlaps between meshes, yielding:
+
+3 filtering. This initialization is fast and efficient, but is only valid if all objects are separated in the first frame. Then, the segmentation result of each frame is used to initialize the model for the next frame. The drawback of this scheme is that objects that are already touching in the first sequence frame are considered as a single object. Care should therefore be taken during the acquisition process to start the sequence when all visible objects are well separated. III. EXPERIMENTS AND RESULTS Segmentation performance has been evaluated on real biological data in [17]. While real biological sequences are not yet available, we evaluate the tracking performance on simulated sequences of moving objects. We have thus generated several sequences of 200 frames in which one or more objects move at different speeds and location within the image domain. A. Volume conservation We validate the volume conservation constraint by measuring the evolution of the mesh volume during its deformation. We assume that the mesh has detected a spherical object at t = 0, yielding a reference volume V0. The mesh volume is then measured for all iterations of the energy minimization process on every subsequent frame, with and without volume conservation. The percentage of volume difference in each case is averaged over the sequence and plotted in Fig. 2.
+
+F2 (M 1..n , cout , c1..n ) = F1 (M 1..n , cout , c1..n ) + γ ∑ ∑
+
+n
+
+n
+
+i =1 j =i +1 i IV j V
+
+∫ dv,
+
+(2)
+
+where dv is the elementary volume element, is a nonnegative weight and Vi and Vj represent the volumetric regions inside meshes Mi and Mj respectively. With this additional term, active meshes tracking two touching objects will move close to each other without ever penetrating each other (cf. Fig. 1-right). C. Volume conservation The coupling term introduced in Eq. 2 expresses the overlap between mesh pairs, but does not involve the image data, which may yield unwanted behavior of the surfaces. For applications where it is known that the objects volume does not change through time, a special term that maintains a constant volume from each frame to the next is added to the energy functional (similarly to [13]). This term is used for all frames but the first, from which a reference volume VR is computed for each mesh as V R (i ) = dv . The new energy functional for t > 0 thus
+
+∫
+
+Vi
+
+reads:
+F3 (M 1..n , cout , c1..n ) = F2 (M 1..n , cout , c1..n ) + ν ∑ VR (i ) − ∫ dv , (3)
+i =1 Vi n
+
+where ν is a non-negative weight. This new term gives robustness to the coupling term by linking the mesh surfaces to prior knowledge on the objects. However, there is still no relation with the image data, therefore there is no guarantee on the preciseness of the boundary location between touching meshes. This term is further discussed in section III. D. Volume conservation It is well known that when initialized close from the solution, deformable models convergence faster, with less risk of falling into local energy minima due to the gradient descent method. In order to perform automated analysis, we initialize our model following the same scheme we suggested in [17]. This scheme comprises the following steps: • a. Gaussian filtering, • b. 2-class K-Means thresholding, • c. Connected components extraction (number and size), • d. Elimination of objects touching the image edge, • e. Coarse 3D reconstruction of each component. Note that the filtered data is used during the pre-processing step only. The model then works directly on the raw data to reduce risks of contour mislocalization due to the Gaussian
+
+Fig. 2. Average measured-to-reference volume ratio throughout the energy minimization process. Without volume conservation, the mesh shrinks faster than it grows, yielding a decrease of the mesh volume in the early stage of the evolution. With volume conservation, shrinking and growing are simultaneous, therefore the mesh volume remains constant during its deformation.
+
+In order to move toward the new sphere location, he mesh must grow in the direction of the sphere movement while shrinking on the opposite side. Since the curvature minimization term in Eq. 1 favors shrinking over growing, the mesh shrinks more rapidly on one side than it grows on the other. Using volume conservation, shrinking and growing are constrained, yielding a constant volume. Note that the minimum volume in the non-constrained case depends on the displacement length of the object from a frame to another,
+
+Supplementary Proceedings of PRIB 2007 therefore average values were plotted for easier reading. B. Mesh coupling Here we evaluate the robustness of the coupling term for multiple object tracking, with and without volume conservation. To do so we have measured the variation of mesh volumes for 100 contact situations between objects of different size (see example in Fig. 3). Results are presented in Table I. Volume error (%) without with 0.15 0.03 3.55 0.05 0.21 0.04
+
+4 analysis. A coupling term and a volume conservation constraint have been introduced into the energy functional to prevent object confusion. The method has been evaluated on synthetic data and shows encouraging results toward its application to real biological problems. Yet, we need to apply our method on real sequences for stronger validation purposes, and also focus on separating objects already touching in the first frame, which are currently considered as a unique object during the initialization step. REFERENCES
+[1] [2] [3] E. Meijering, I. Smal, and G. Danuser, “Tracking in molecular bioimaging,” Signal Processing Magazine, vol. 23, no. 3, pp. 46–53, May 2006. C. Zimmer, B. Zhang, A. Dufour, A. Thebaud, S. Berlemont, V. MeasYedid, and J.-C. Olivo-Marin, “On the digital trail of mobile cells,” Signal Processing Magazine, vol. 23, no. 3, pp. 54–62, May 2006. J. Apgar, Y. Tseng, E. Federov, M. Herwig, S. Almo, and D. Wirtz, “Multiple-particle tracking measurements of heterogeneities in solutions of actin filaments and actin bundles,” Biophysical Journal, vol. 79, pp. 1095–1106, 2000. W. Tvarusko, M. Bentele, T. Misteli, R. Rudolf, C. Kaether, D.L. Spector, H.H. Gerdes, and R. Eils, “Time-resolved analysis and visualization of dynamic processes in living cells,” Cell Biology, vol. 96, pp. 7950 – 7955, July 1999. A. Bahnson, C. Athanassiou, D. Koebler, L. Qian, T. Shun, D. Shields, H. Yu, H. Wang, J. Goff, T. Cheng, R. Houck, and L. Cowsert, “Automated measurement of cell motility and proliferation,” BMC Cell Biology, vol. 6, no. 19, pp. 1–27, 2005. N. Arhel, A. Genovesio, K.A. Kim, S. Miko, E. Perret, J.-C. Olivo-Marin, S. Shorte, and P. Charneau, “Quantitative four-dimensional tracking of cytoplasmic and nuclear HIV-1 complexes.,” Nature Methods, vol. 3, pp. 817–24, 2006. K. Wu, D. Gauthier, and M.D. Levine, “Live cell image segmentation,” IEEE Transactions on Biomedical Engineering, vol. 42, no. 1, pp. 1–12, January 1995. A. Blake and M. Isard, Active Contours, Springer, 2000, available online at http://research.microsoft.com/~ablake/contours/. J. A. Sethian, Level set methods and fast marching methods, Cambridge University Press, 2nd edition edition, 1999. M. Kass, A. Witkin, and D. Terzopoulos, “Snakes : Active contour models,” International Journal of Computer Vision, vol. 1, pp. 321–331, 1988. J.-O. Lachaud and B. Taton, “Deformable model with adaptive mesh and automated topology changes,” in 4th International Conference on 3-D Digital Imaging and Modeling, Banff, October 2003, pp. 12–19, IEEE Computer Society Press. B. Zhang, C. Zimmer, and J.-C. Olivo-Marin, “Tracking fluorescent cells with coupled geometric active contours,” in International Symposium on Biomedical Imaging, Arlington, April 2004, pp. 476–479. A. Dufour, V. Shinin, S. Tajbaksh, N. Guillen, J.C. Olivo-Marin, and C. Zimmer, “Segmenting and tracking fluorescent cells in dynamic 3d microscopy with coupled active surfaces,” IEEE Transactions on Image Processing, vol. 14, no. 9, pp. 1396–1410, September 2005. C. Zimmer and J.-C. Olivo-Marin, “Coupled Parametric Active Contours,” IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. 27, no. 11, pp. 1838–1842, November 2005. W.E. Lorensen and H.E. Cline, “Marching cubes: a high resolution 3D surface construction algorithm,” in SIGGRAPH’87: 14th annual conference on Computer graphics and interactive techniques, New York, July 1987, pp. 163–169, ACM press. A. Dufour, N. Vincent, and A. Genovesio, “3D Mumford-Shah based active mesh,” in 11th Iberoamrican Congress on Pattern Recognition, Cancun, October 2006, vol. 4225 of Lecture Notes in Computer Science, pp. 208–217, Springer. A. Dufour, N. Vincent, and A. Genovesio, “3D automated nuclear morphometric analysis using Active Meshes,” in 2nd International Workshop on Pattern Recognition in Bioinformatics, Singapore, October 2007, To appear in Lecture Notes on Bioinformatics, Springer
+
+Volume constraint Before contact During contact After contact
+
+TABLE I. VOLUME MEASUREMENT ERROR BEFORE, DURING AND AFTER
+CONTACT (CF. FIG. 3). VALUES ARE AVERAGED OVER 100 CONTACTS.
+
+The first and third rows confirm the results presented in section III-A, being that the volume conservation indeed maintains a constant volume for each mesh over time. This statement is emphasized during a contact situation, where the volume remains constant, while the model without volume conservation mislocalizes the objects frontier, yielding wrong mesh volumes.
+
+[4]
+
+[5]
+
+[6]
+
+[7] [8] [9] [10] [11]
+
+[12] [13]
+
+without conservation
+
+with conservation
+
+[14] [15]
+
+Fig. 3. Tracking 2 objects moving at different speeds. Without constraint, the right-hand mesh absorbs a portion of the other object. Volume conservation prevents this situation by forbidding the meshes to grow bigger than their original volume (as measured on the first frame).
+
+[16]
+
+IV. CONCLUSION AND PERSPECTIVES We have presented a multi-object tracking framework based on deformable mesh models, allowing precise simultaneous segmentation, tracking and 3D rendering of the scene during its
+[17]
+

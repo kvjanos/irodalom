@@ -1,0 +1,144 @@
+ARTICLE IN PRESS
+
+Signal Processing 87 (2007) 1559–1568 www.elsevier.com/locate/sigpro
+
+Automatic detection of clustered microcalciﬁcations in digital mammograms using mathematical morphology and neural networks
+Stelios Halkiotisa,Ã, Taxiarchis Botsisa, Maria Rangoussib
+a b
+
+Health Informatics Laboratory, Faculty of Nursing, University of Athens, Greece Department of Electronics, Technological Educational Institute of Piraeus, Greece
+
+Received 2 October 2005; received in revised form 7 November 2006; accepted 2 January 2007 Available online 17 January 2007
+
+Abstract In this paper we propose a new algorithm for the detection of clustered microcalciﬁcations using mathematical morphology and artiﬁcial neural networks. Mathematical morphology provides tools for the extraction of microcalciﬁcations even if the microcalciﬁcations are located on a non-uniform background. Considering each mammogram as a topographic representation, each microcalciﬁcation appears as an elevation constituting a regional maximum. Morphological ﬁlters are applied, in order to remove: (a) noise and (b) regional maxima that do not correspond to calciﬁcations. Each candidate object is marked as such, using a binary image. The original mammogram is used for the ﬁnal feature extraction step. For the classiﬁcation step we employ neural network classiﬁers. We review the performance of two multi-layer perceptrons (MLP) and two radial basis function neural networks (RBFNN) with different number of hidden nodes. The MLP with ten hidden nodes achieved the best classiﬁcation score with a true positive detection rate of 94.7% and 0.27 false positives per image. r 2007 Elsevier B.V. All rights reserved.
+Keywords: Microcalciﬁcations; Mammography; Mathematical morphology; Dynamics; Neural networks; Radial basis function networks; Multi-layer perceptron
+
+1. Introduction Mammography continues to be regarded as a very useful diagnostic tool for detection and diagnosis of breast lesions. About 10% of all women develop breast cancer and about 25% of all cancers diagnosed in women are breast cancers [1]. The interpretation of a mammogram is often difﬁcult and depends on the expertise and experiÃCorresponding author. Tel.: +302 104 930 957.
+
+E-mail address: shalkio@nurs.uoa.gr (S. Halkiotis).
+
+ence of the radiologist. A meta-analysis showed that the sensitivity of screening mammography ranged from 83% to 95% with a false positive rate of 0.9% to 6.5%, respectively [2]. Retrospective studies have revealed that approximately 9% of a series of cancers detected at a screening examination were visible on screening mammograms obtained 2 years earlier. Moreover, in another 48% of the cases, a minimal sign was already visible on a prior mammogram [3]. Between 30% and 50% of breast carcinomas demonstrate microcalciﬁcations on mammograms and between 60% and 80% of the
+
+0165-1684/$ - see front matter r 2007 Elsevier B.V. All rights reserved. doi:10.1016/j.sigpro.2007.01.004
+
+ARTICLE IN PRESS
+1560 S. Halkiotis et al. / Signal Processing 87 (2007) 1559–1568
+
+carcinomas reveal microcalciﬁcations upon histological examination [4]. Microcalciﬁcations are tiny granular deposits of calcium that appear on the mammogram as small bright spots. A radiologist must carefully examine the mammogram with a magniﬁer to locate calciﬁcations, which may be embedded in dense tissue. In the past several years there has been a considerable interest in developing methods for automatic detection of microcalciﬁcations in mammograms [5]. Several methods have been proposed in the literature for their segmentation [6]. In this paper we present a new method for automatic segmentation and classiﬁcation of microcalciﬁcations using morphological reconstruction. Microcalciﬁcations were extracted from their background and segmented through evaluation of their topographic representation. The novelty of our approach lies in the exploitation of mathematical morphology properties. Indeed, mathematical morphology provides tools for the extraction of microcalciﬁcations even if they are located on a non-uniform background. After extraction of the microcalciﬁcation from its background, a set of characteristic features was extracted for classiﬁcation purposes. The extracted features were classiﬁed using Artiﬁcial Neural Network classiﬁers. We evaluated the performance of two different neural network architectures: the multi-layer perceptron and the radial basis function neural network, on the basis of a set of real ﬁeld mammograms of a standard database. 2. The proposed feature extraction method Mathematical morphology can be described as a theory for the analysis of spatial structures [7]. It is called morphology because it aims at analyzing the shape and form of objects. The basic tools of mathematical morphology are the morphological operations. A morphological operation P transforms an image A by means of a structuring element B (which can be chosen by the user) into a new image P (A; B). The basic morphological operations are dilation and erosion [8]. Based on the notion of geodesic distance, we can deﬁne geodesic dilation and geodesic erosion. A geodesic dilation involves two images: a marker image and a mask image. Both images must have the same deﬁnition domain. Given a mask X, the geodesic dilation of size nX0 of Y within X is the set of pixels of X whose geodesic distance to Y is
+
+smaller or equal to n: dðnÞ ðY Þ ¼ fp 2 X jd X ðp; Y Þpng, X (1)
+
+where X is a discrete subset of Z2, XCZ2 and Y is a subset of X, YDX. Applying the threshold decomposition principle [9], we can deﬁne the grayscale geodesic dilation. d1 ðjÞ of grayscale image JpI ‘‘under’’ I: i d1 ðjÞ ¼ dB ðJÞ ^ I, i (2)
+
+where the operand ‘‘^’’ denotes the point-wise minimum operator. Geodesic dilations and erosions, when iterated up to stability, allow the deﬁnition of morphological reconstruction. Grayscale morphological reconstruction is a geodesic transformation and is deﬁned as follows: The grayscale reconstruction [10] rI(J) of I from J is obtained by iterating grayscale geodesic dilations of J ‘‘under’’ I, until stability is reached, i.e. rI ðJÞ ¼ _ dðnÞ ðJÞ, I
+nX1
+
+(3)
+
+where the operand ‘‘_’’ denotes point-wise maximum operation and ‘‘dI(n)’’ denotes the n-fold dilation on image J, using a certain structuring element. Stopping point n is reached when a single pixel of the dilated image J becomes equal (in gray level value) to a pixel in I. A grayscale image can be seen as a topographical relief or landscape, where each pixel is represented as an elevation proportional to its intensity or gray level value. Therefore, the dark and light structures of the image correspond to the valleys and the domes of this relief, respectively. A plateau located at the top of such domes, constitutes a regional maximum. Microcalciﬁcations appear on digitized mammograms as bright spots. These spots are small regions with intensity values higher than their surroundings or background. Each microcalciﬁcation constitutes a regional maximum. Fig. 1 shows a cluster of microcalciﬁcations and Fig. 2 the topographic representation of this region, where microcalciﬁcations appear as domes with higher intensity values than the surrounding tissue. Image maxima constitute an important morphological feature, because they can mark image objects with speciﬁc characteristics. Mammograms are complex images with a large number of regional maxima. In order to detect microcalciﬁcations we have to evaluate the dynamics of each regional maximum. The notion of dynamics
+
+ARTICLE IN PRESS
+S. Halkiotis et al. / Signal Processing 87 (2007) 1559–1568 1561
+
+was introduced by Grimaud as a method for the evaluation of the regional maxima and minima of an image [11]. This method does not take into account the size or shape of the evaluated structures (valleys, domes); unfortunately, it is very sensitive to noise. A regional maximum [7,10] is a connected set of pixels with constant gray level value, from which it is impossible to reach a point with higher elevation without ﬁst having to descend. The minimum height of this descent is the dynamic of the regional maximum:
+
+Let Mt be a regional maximum of an image f at level t and let P be any path linking a pixel p of Mt to a pixel q of a regional maximum Mt0 higher than Mt. The dynamic of Mt is   DynðMtÞ ¼ min max½ f ðpÞ À f ðsÞ , (4)
+p2Mt; P¼fp;:::qg q2Mt0 ; t0 4t
+
+s2P
+
+where s is an arbitrary point along the path P. The dynamic of a maximum Mt is the difference between the value of Mt and the value of the lowest point of the path, which has the minimum dynamic among all the possible paths between Mt and another maximum Mt0 strictly higher than Mt. A simple algorithm to extract all regional maxima in a given mammogram is based on the h-maxima transform [7]. The h-maxima transform suppresses all regional maxima whose dynamic is less than a given threshold h. This can be achieved by using reconstruction by dilation of image I from image (IÀh). Let us denote by rI the reconstructed image. Then rI ðI À hÞ ¼ _ dðnÞ ðI À hÞ. I
+nX1
+
+(5)
+
+Fig. 1. A cluster of microcalciﬁcations.
+
+By subtraction of the reconstructed image from the original image, we get all the regional maxima of
+
+Fig. 2. Topographic relief.
+
+ARTICLE IN PRESS
+1562 S. Halkiotis et al. / Signal Processing 87 (2007) 1559–1568
+
+the mammogram (h-convex or h-dome transformation). The choice of h turns out not to be critical, since a wide range of values yields correct results [10]. A study about microcalciﬁcations and their imaging properties [12] showed that region offset average i.e. the difference between average intensity values of every calciﬁcation and their surrounding tissue, were similar for all calciﬁcations and only few statistically signiﬁcant differences were found between benign and malignant offsets. Indeed, in the experimental part of this work, all microcalciﬁcations that were used at the testing phase of the algorithm were extracted with a threshold of intensity value greater than 20. The new image contains all the microcalciﬁcations along with many other elevations, which do not correspond to calciﬁcations. In order to suppress noise and to reduce the number of the extracted domes, the image is ‘‘opened’’ using a disk shaped structuring element of radius of two pixels. The size of the structuring element is chosen experimentally, so as not to eliminate any microcalciﬁcations. By use of grayscale opening, we can remove regional maxima that cannot contain the structuring element, but we cannot
+
+remove regional maxima of size greater or equal to the structuring element, whose dynamics are very low. This problem can be solved by applying a grayscale reconstruction. The computation of the grayscale reconstruction is achieved by employing the ‘‘fast hybrid grayscale reconstruction’’ algorithm as proposed by Vincent [10]. Subtraction of a very low constant from the original mammogram produces the marker image. The image reconstructed from the marker image contains all regional maxima with no intensity ﬂuctuations. The combination of grayscale opening followed by a grayscale reconstruction provides a way to remove at the same time (a) noise and (b) domes whose dynamics are very low. Fig. 3 shows the topographic relief of the opened image, Fig. 4 shows the image after having removed the most important domes, while Fig. 5 is the same image after subtraction from the original image and, ﬁnally, Fig. 6 is the result after reconstruction. After morphological reconstruction, every mammogram is thresholded using the extended maxima transformation [7]. The extended maxima transformation is the regional maxima computation of the
+
+Fig. 3. Topographic relief of the opened image.
+
+ARTICLE IN PRESS
+S. Halkiotis et al. / Signal Processing 87 (2007) 1559–1568 1563
+
+Fig. 4. The image after removing the most important domes.
+
+Fig. 5. Image after subtraction from the original image.
+
+corresponding h-maxima transformation. As a result, we get a binary image. A connectedcomponent labeling operation is performed, in order to evaluate the characteristics and the location
+
+of every object. Since the mammograms are digitized to a spatial resolution of 0.05 mm pixel size, we can discard objects smaller than 0.1 mm. Also, objects bigger than 2 cm in diameter are
+
+ARTICLE IN PRESS
+1564 S. Halkiotis et al. / Signal Processing 87 (2007) 1559–1568
+
+Fig. 6. The ﬁnal image after reconstruction.
+
+discarded. As a second object reduction step, objects not located within a 1 cm radius region of another object, are also discarded, since malignant microcalciﬁcations are typically clustered. The binary image is used only for the extraction of the exact location and area of every object. However, the original image is used for feature extraction, using the binary image as a mask for each object (Fig. 7). 3. Experimental part—results For the experimental part of this work the MIAS database, provided by the Mammographic Image Analysis Society (MIAS), was used. The mammograms were digitized at a resolution of 50 Â 50 mm. We used ten mammograms with benign microcalciﬁcations, thirteen with malignant microcalciﬁcations and thirty normal ones. The MIAS database provided ground-truth for each abnormality in the form of circles; an approximation of the center and the radius of each cluster of calciﬁcations. The smallest cluster of microcalciﬁcations extended to 23 pixels in radius, while the largest one extended to 348 pixels. In three mammograms, calciﬁcations were widely distributed throughout the image rather than concentrated in a small area (Table 1).
+
+The implemented feature extraction procedure relied on the exploitation of the textural characteristics of the extracted objects. One of the simplest approaches for describing texture was to use moments of the gray-level histogram of an image or region [13,14]. Considering the gray level histogram {hi, i ¼ 0,1, y, GÀ1}, if N is the total number of pixels and G is the number of distinct gray levels in the image, then the normalized histogram of the image is the set {Hi, i ¼ 0,1, y, GÀ1}, where Hi ¼ hi/N. The ﬁrst four central moments, namely the mean, variance, skewness and kurtosis, were estimated for each object, as proposed in [15]. Taken also into account was the number of objects found in a region of 2 cm radius around a given object. Mean gray level: m¼
+G À1 X i¼0
+
+iH i .
+
+(6)
+
+Variance: s2 ¼
+GÀ1 X ði À mÞ2 H i , i¼0
+
+(7)
+
+where s is the standard deviation.
+
+ARTICLE IN PRESS
+S. Halkiotis et al. / Signal Processing 87 (2007) 1559–1568 1565
+
+Fig. 7. Schematic representation of the algorithm.
+
+Table 1 Distribution of microcalciﬁcations One cluster Mammograms 16 Two clusters 3 Three clusters 1 Wide distribution 3
+
+Skewness: g1 ¼
+GÀ1 1X ði À mÞ3 H i . s3 i¼0
+
+(8)
+
+Kurtosis: g2 ¼
+GÀ1 1X ði À mÞ4 H i À 3. s4 i¼0
+
+(9)
+
+objects extracted from six randomly selected mammograms. The training set was composed of three mammograms with one cluster, one mammogram with two clusters and two normal mammograms. The rest of the mammograms containing microcalciﬁcations and thirty normal mammograms were used in the testing phase. None of the mammograms was used both in the training and testing phase. The performance of the system was evaluated using the free response receiver operating characteristic (FROC) curve, where the true positive fraction was plotted as a function of the average number of false positives per image [17]. The FROC curve is applicable to situations such as diagnostic imaging that involve multiple detections on a single image. We considered a detection of a cluster as true positive, if 75% of the microcalciﬁcations are correctly detected. 3.1. MLP performance For the case of the MLP network, we tested two networks with ﬁve input neurons, one output neuron and one hidden layer. More than one hidden layer may be beneﬁcial for some applications; however, one hidden layer is proved to be sufﬁcient if enough hidden neurons are used [18]. We evaluated the performance of MLP using two different topologies, one with ﬁve and one with ten hidden nodes, respectively. In the training process, the weights between the neurons were adjusted iteratively so that the differences between the output values and the target
+
+The features extracted from the original mammograms were classiﬁed using artiﬁcial neural network (ANN) classiﬁers. ANNs are non-parametric pattern recognition systems that can generalize by learning from examples. We evaluated the classiﬁcation capabilities of two different networks (multi layer perceptron—MLP and radial basis function network-RBFN) with a varied number of hidden nodes (nodes in the hidden layers). RBF networks and MLP networks are both universal approximators; therefore, there always exists an RBF network capable of ‘‘mimicking’’ the performance of a given MLP and vice versa [16]. In the present work, the number of hidden neurons was estimated experimentally. The neural networks were trained using 107
+
+ARTICLE IN PRESS
+1566 S. Halkiotis et al. / Signal Processing 87 (2007) 1559–1568
+
+Fig. 9. FROC curve of the RBF network. Fig. 8. FROC curve of the MLP.
+
+values were minimized. The networks were trained using a back-propagation adaptive learning rate training function, so the learning rate changed during the training process, as the algorithm moved across the performance surface. The learning step size was kept as large as possible while keeping learning stable. The MLP with ten hidden nodes achieved the best classiﬁcation rate. The system misclassiﬁed one mammogram as normal, achieving a sensitivity of 94.7% with an average of 0.27 false positive ﬁndings (FPF) per image. The misclassiﬁed image was a mammogram with a single benign calciﬁcation. Using the MLP with ﬁve hidden nodes, two mammograms were misclassiﬁed as normal, achieving a sensitivity of 84.2% with an average of 0.26 false positive ﬁndings (FPF) per image (Fig. 8). 3.2. RBF network performance The RBF network is composed of one hidden layer and one output linear layer. We evaluated the performance of the RBF network using two different topologies, with ﬁve and ten hidden nodes, respectively. The hidden nodes were radial basis function neurons and the network output was simply the linear summation of the weighted basis functions. The centers and the widths of the radial basis functions were optimized employing the k-means algorithm. The weights in the output layer are computed using the least-mean-squares algorithm [16]. The network was trained using the same training sample that was used for the MLP. Both networks achieved the same true positive rate. The system misclassiﬁed one mammogram as normal, achieving
+
+Fig. 10. A detected cluster of microcalciﬁcations.
+
+a sensitivity of 94.7% with an average of 0.41 FPF/ image using the RBFN with ten hidden nodes and 0.52 FPF/image using the RBFN with ﬁve hidden nodes (Fig. 9). Fig. 10 demonstrates a region containing a detected cluster of microcalciﬁcations. 4. Conclusions—further research It is well known that mammogram interpretation is a very difﬁcult task even for experienced radiologists. Mathematical morphology proves to be a useful tool for the detection of microcalciﬁcations in digital mammograms. In this work we have proposed a new algorithm for the detection of microcalciﬁcations on mammograms. The basic idea was to evaluate the dynamics of microcalciﬁcations, since each calciﬁcation appears as an elevation if we view each mammogram as a topographic map. Every suspicious object was marked using a binary image, which was used as a mask for object extraction from the original image. The features of the extracted objects were classiﬁed using neural networks. Two different neural network architectures were employed for the classiﬁcation of the extracted
+
+ARTICLE IN PRESS
+S. Halkiotis et al. / Signal Processing 87 (2007) 1559–1568 Table 2 Performance of the neural classiﬁers MLP with MLP with RBFN with 10 nodes 5 nodes 10 nodes TPF FPF 94.70% 0.27 84.20% 0.26 94.70% 0.413 RBFNN with 5 nodes 94.70% 0.52 1567
+
+objects: the multilayer perceptron and the radial basis function neural network. In the experimental part, they were both seen to generalize well (Table 2). The best classiﬁcation rate was achieved using the MLP with ten hidden nodes. Several techniques have been reported in the literature for the detection of microcalciﬁcation clusters using various methodologies and different data sets. The proposed method is totally based on a series of morphological transformations in order to segment microcalciﬁcation. Zhao et al. suggested a method to extract suspicious microcalciﬁcations using mathematical morphology [19]. They studied calciﬁcation structures and found that the detection of calciﬁcation can be solved by applying morphological ﬁltering operations combined with a rule base provided by experienced radiologists. Denger et al. described an approach of a two-stage algorithm for spot detection and shape extraction [20]. At the ﬁrst stage a weighted difference of Gaussian ﬁlter was applied for the noise-invariant and size-speciﬁc detection of spots. Morphological ﬁlters were applied to reproduce the shape of the spots. They reported a sensitivity of 97% with speciﬁcity about 70%. The performance of the proposed method is comparable with earlier results reported by others using the same database. Norhayati et al., using a triple-ring ﬁlter analysis, reported a sensitivity of 95.8% with an average false positive rate of 1.8 clusters/image [21]. Papadopoulos et al., using a hybrid neural network classiﬁer, reported a sensitivity of 94% with an average rate of 2.70 false positive clusters/image [17]. Moreover, the performance of our method depends on the imaging properties of the MIAS mammograms. As the imaging properties of the selected mammograms may affect the performance of our method, further evaluation of the performance of the proposed algorithm using different databases is prompted. One important factor concerning the imaging properties of the mammograms is the optical density range of the ﬁlm scanner. Basically, a ﬁlm digitizer converts optical density information present in the radiographic
+
+image into pixel values, which are interpreted by the computer to create the digital image. Feeding our algorithm with mammograms that were digitized using different ﬁlm scanners, it would be almost impossible to correctly segment the microcalciﬁcations, because the imaging properties of the microcalciﬁcations may be signiﬁcantly altered. Another aspect that may affect the performance of our method is the spatial resolution of the mammograms, since the pixel size is used for measuring the size of the extracted objects. Despite the above comments, it can be reasonably argued that the parametric structure of the proposed algorithm allows for reliable detection using mammograms from different databases. The key parameters that should be varied in order to render the algorithm able to handle different data sets with different spatial resolutions are the sizes of the structuring elements employed in the morphological processing steps of the proposed method. References
+[1] T. Lau, W. Bischof, Automated detection of breast tumours using the asymmetry approach, Comput. Biomed. Res. 24 (1991) 273–295. [2] A.I. Mushlin, R.W. Kuides, D. Shapiro, Estimating the accuracy of screening mammography: a meta analysis, Am. J. Prevent. Med. 14 (2) (1998) 143–153. [3] M. Guido, N. Karssemeijer, Automated detection of breast carcinomas not detected in a screening program, Radiology 207 (1998) 465–471. [4] K. Doi, M.L. Giger, H. MacMahon et al, Computer-aided diagnosis: development of automated schemes for quantitative analysis of radiographic images, Semin Ultrasound CT MR 13 (2) (1992) 140–152. [5] G. Boccignone, A. Chianese, A. Picariello, Computer aided detection of microcalciﬁcations in digital mammograms, Comput. Biol. Med. 30 (2000) 267–286. [6] H.D. Cheng, Xiaopeng Cai, Xiaowei Chen, et al., Computer-aided detection and classiﬁcation of microcalciﬁcations in mammograms: a survey, Pattern Recogn. 36 (2003) 2967–2991. [7] P. Soile, Morphological Image Analysis: Principles and Applications, Springer, Berlin, 1999. [8] M. Nachtegael, E. Kerre, Connections between binary, grayscale and fuzzy mathematical morphologies, Fuzzy Sets Systems 124 (2001) 73–85. [9] W.S. Kendall, O.E. Barndorff-Nielsen, M.C. van Lieshout, Current Trends in Stochastic Geometry and its Applications, Chapman & Hall, London, 1997. [10] L. Vincent, Morphological grayscale reconstruction in image analysis: applications and efﬁcient algorithms, IEEE Trans. Image Process. (2) (1993) 176–201. [11] M. Grimaud, 1992. A New Measure of Contrast: The Dynamics, Image Algebra and Morphological Processing, vol. III, San Diego, CA, July 1992, pp. 292–305.
+
+ARTICLE IN PRESS
+1568 S. Halkiotis et al. / Signal Processing 87 (2007) 1559–1568 [18] J.K. Kim, H.W. Park, Statistical textural features for detection of microcalciﬁcations in digitized mammograms, IEEE Trans. Med. Imag. 18 (1999) 231–238. [19] D. Zhao, M. Shridhar, D.G. Daul, 1992. Morphology on detection of calciﬁcations in mammograms. IEEE International Conference on Acoustics, Speech and Signal Processing, III, March 1992, pp. 129–132. [20] J. Dengler, S. Behrens, J.F. Desaga, Segmentation of microcalciﬁcations in mammograms, IEEE Trans. Med. Imag. 12 (4) (1993) 634–642. [21] I. Norhayati, F. Hiroshi, H. Takeshi, E. Tokiko, Automated detection of clustered microcalciﬁcations on mammograms: CAD system application to MIAS database, Phys. Med. Biol. 42 (1997) 2577–2589. [12] S. Olson, B. Fam, P. Winter, Breast calciﬁcations: analysis of imaging properties, Radiology 169 (1988) 329–332. [13] R.C. Gonzalez, R.E. Woods, Digital Image Processing, Addison Wesley, 1993. [14] Theodoridis, K. Koutroumbas, Pattern Recognition, Academic Press, New York, 1999. [15] I. Christogianni, E. Dermatas, G. Kokkinakis, Fast detection of masses in computer-aided mammography, IEEE Signal Process. 17 (2000) 54–64. [16] S. Haykin, Neural Networks: A Comprehensive Foundation, Prentice-Hall, Englewood Cliffs, NJ, 1999. [17] A. Papadopoulos, D.I. Fotiadis, A. Likas, An automatic microcalciﬁcation detection system based on a hybrid neural network classiﬁer, Artif. Intell. Med. 25 (2002) 149–167.
+

@@ -1,0 +1,1476 @@
+Képfeldolgozási módszerek
+egyetemi jegyzet
+
+Készítette: Fazekas Gábor, Hajdu András
+
+Debreceni Egyetem, Informatikai Intézet, Debrecen, 2004.
+
+Köszönetnyilvánítás
+A szerzők köszönetüket fejezik ki Tóth Tamás programtervező matematikus hallgatónak a hisztogram alapú technikák kidolgozásában való közreműködéséért.
+
+Tartalomjegyzék
+Előszó 1. Képjavítás 1.1. Bevezetés . . . . . . . . . . . . . . . . . . . 1.2. Hisztogram alapú eljárások . . . . . . . . . 1.2.1. Küszöbölési technikák . . . . . . . . 1.2.2. Hisztogram-transzformáció . . . . . . 1.2.3. Hisztogram-kiegyenlítés . . . . . . . 1.2.4. Lokális hisztogramkiegyenlítés . . . . 1.2.5. Multispektrális hisztogram . . . . . . 1.3. Éldetektálás . . . . . . . . . . . . . . . . . . 1.3.1. Gradiens módszerek . . . . . . . . . 1.3.2. Laplace operátor . . . . . . . . . . . 1.3.3. A második derivált tengelymetszetei 1.3.4. Képek élesítése . . . . . . . . . . . . 1.3.5. Canny éldetektálás . . . . . . . . . . 1.3.6. Parametrikus élmodellek . . . . . . . 1.3.7. Élek multispektrális képeken . . . . 1.3.8. Élkapcsolás, élvékonyítás . . . . . . . 1.3.9. Sarokdetektálás . . . . . . . . . . . . 1.3.10. Felüláteresztő szűrők . . . . . . . . . 1.4. Simítás . . . . . . . . . . . . . . . . . . . . 1.4.1. Környezeti átlagolás . . . . . . . . . 1.4.2. Medián szűrés . . . . . . . . . . . . . 1.4.3. Intervallum módszer . . . . . . . . . 1.4.4. Átlagolás inverz gradiens alapján . . 1.4.5. Nem lineáris középszűrők . . . . . . 1.4.6. Képsorozat átlagolása . . . . . . . . 1.4.7. Aluláteresztő szűrők . . . . . . . . . 1.4.8. Sávszűrés . . . . . . . . . . . . . . . iii 1 2 2 3 4 6 7 10 10 12 13 16 16 17 19 20 21 21 22 23 25 25 26 27 28 28 29 30 31
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2. Maszkolás 2.1. Bevezetés . . . . . . . . . . . . . . . . . . . . . 2.2. Alakzatok detektálása maszkokkal . . . . . . . 2.2.1. Pontdetektálás . . . . . . . . . . . . . . 2.2.2. Vonaldetektálás . . . . . . . . . . . . . . 2.2.3. Éldetektálás . . . . . . . . . . . . . . . . 2.2.4. Kombinált maszkrendszerek . . . . . . . 2.3. Matematikai morfológia . . . . . . . . . . . . . 2.4. Dilatáció és erózió . . . . . . . . . . . . . . . . 2.4.1. Nyitás és zárás . . . . . . . . . . . . . . 2.4.2. Hit-Miss transzformáció . . . . . . . . . 2.4.3. Kontúr kinyerése . . . . . . . . . . . . . 2.4.4. Lyukak kitöltése . . . . . . . . . . . . . 2.4.5. Összefüggő komponensek meghatározása 2.4.6. Konvex burok meghatározása . . . . . . 2.4.7. Vékonyítás . . . . . . . . . . . . . . . . 2.4.8. Vastagítás . . . . . . . . . . . . . . . . . 2.4.9. Vázkijelölés . . . . . . . . . . . . . . . . 2.4.10. Kinövések eltávolítása . . . . . . . . . . 2.4.11. Golay ábécé . . . . . . . . . . . . . . . . Irodalomjegyzék
+
+. . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . .
+
+. . . . . . . . . . . . . . . . . . .
+
+33 33 33 34 35 35 36 39 40 42 43 45 45 45 46 48 49 50 54 54 55
+
+iv
+
+Táblázatok jegyzéke
+1.1. 64 × 64-es, 8-szintű kép intenzitáshisztogramjának kiegyenlítése. . . . . . . . . 2.1. A Golay ábécé elemei. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10 56
+
+v
+
+Ábrák jegyzéke
+1.1. 256-szintű (8 bites) szürkeskálás kép hisztogramja; (a) eredeti kép, (b) intenzitáshisztogram. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1.2. Két szintre vágás; (a) eredeti kép, (b) intenzitáshisztogram és választott küszöbérték, (c) binarizált kép. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1.3. Sávkiemelés; (a) eredeti kép, (b) intenzitáshisztogram megfelelő küszöbértékekkel, (c) sávkiemelés eredménye. . . . . . . . . . . . . . . . . . . . . . . . 1.4. Szürkeárnyalatos transzformációs függvény. . . . . . . . . . . . . . . . . . . . 1.5. Sűrűségfüggvény (hisztogram) kiegyenlítése folytonos esetben; (a) eredeti sűrűségfüggvény, (b) transzformációs függvény, (c) kiegyenlített sűrűségfüggvény. 1.6. Szürkeárnyalatos kép hisztogram-kiegyenlítése; (a) eredeti kép, (b) intenzitáshisztogram, (c) kiegyenlített kép, (d) intenzitáshisztogram. . . . . . . . . . . 1.7. Az RGB színkocka; (a) a színkocka felszíne, (b) gömbök a színkocka belsejében. 1.8. Multispektrális kép hisztogram-kiegyenlítése; (a) eredeti kép, (b) kiegyenlítés komponensenkénti transzformációs függvényekkel, (c) kiegyenlítés a transzformációs függvények átlagolásával. . . . . . . . . . . . . . . . . . . . . . . . . 1.9. Az f (x) intenzitásfüggvény első és második deriváltjának viselkedése; (a) sötétvilágos átmenet esetén, (b) egy lassabb világos-sötét átmenet esetén. . . . . . 1.10. Digitális gradiens számolása; (a) Sobel gradiens, (b) Roberts gradiens. . . . . 1.11. A gradiensoperátor eredménye; (a) eredeti kép, (b) Sobel gradiens, (c) Roberts gradiens. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1.12. Kettős élek a Laplace operátor használatakor; (a) eredeti kép, (b) Laplace operátor hatása. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1.13. A LoG operátor maszkokkal való közelítései; (a) 5 × 5-ös maszk, (b) 13 × 13-ös maszk. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1.14. A LoG operátor hatása; (a) eredeti kép, (b) 5×5-ös maszk esetén, (c) 13×13ös maszk esetén. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1.15. Képélesítés 3 × 3 méretű maszkokkal; (a) enyhén élesítő maszk, (b) fokozottan élesítő maszk, (c) eredeti kép, (d) enyhe élesítés, (e) fokozott élesítés. . . . . 1.16. 3 × 3-as maszkrendszer lokális élkapcsoláshoz. . . . . . . . . . . . . . . . . . . 1.17. 3 × 3-as maszkrendszer bináris élvékonyításhoz. . . . . . . . . . . . . . . . . . 1.18. Az ideális felüláteresztő szűrő; (a) síkkal való metszete, (b) teljes alakja. . . . vi 4 5 6 7 9 11 12
+
+13 13 15 15 16 18 18 19 22 22 24
+
+1.19. Az ideális felüláteresztő szűrő hatása; (a) eredeti kép, (b) szűrt kép K = 20 esetben, (c) szűrt kép K = 40 esetben. . . . . . . . . . . . . . . . . . . . . . . 1.20. A Butterworth felüláteresztő szűrő (t = 2 paraméterű eset); (a) síkkal való metszete, (b) teljes alakja. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1.21. A Butterworth felüláteresztő szűrő hatása; (a) eredeti kép, (b) szűrt kép t = 2, K = 50 esetben, (c) szűrt kép t = 2, K = 80 esetben. . . . . . . . . . . . . . . 1.22. Környezeti átlagolás 3 × 3 méretű maszkkal; (a) konvolúciós maszk, (b) eredeti kép, (c) a maszk hatása, (d) a maszk hatása 10 iterációs lépés után. . . . . . . 1.23. Környezeti átlagolás 5 × 5 méretű maszkkal; (a) konvolúciós maszk, (b) eredeti kép, (c) a maszk hatása, (d) a maszk hatása 10 iterációs lépés után. . . . . . . 1.24. Medián szűrés hatása; (a) eredeti (15%-os fehér zajjal terhelt) kép, (b) a medián szűrés eredménye 3 × 3-as maszk esetén, (c) a szűrés eredménye 10 iterációs lépés után, (d) 5 × 5-ös medián szűrés eredménye kiegészítő küszöbölést használva. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1.25. Intervallum módszer képsimításhoz; (a) eredeti kép, (b) a szűrés eredménye 3 × 3-as maszk esetén, (c) a szűrés eredménye 5 × 5-ös maszk esetén. . . . . . 1.26. Képsorozat átlagolása; (a) - (c) (zajos) képsorozat elemei, (d) a képsorozat átlaga. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1.27. Az ideális aluláteresztő szűrő; (a) síkkal való metszete, (b) teljes alakja. . . . 1.28. Az ideális aluláteresztő szűrő hatása; (a) eredeti kép, (b) szűrt kép K = 25 esetben, (c) szűrt kép K = 60 esetben. . . . . . . . . . . . . . . . . . . . . . . 1.29. A Butterworth aluláteresztő szűrő (t = 2 paraméterű eset); (a) síkkal való metszete, (b) teljes alakja. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1.30. A Butterworth aluláteresztő szűrő hatása; (a) eredeti kép, (b) szűrt kép t = 2, K = 10 esetben, (c) szűrt kép t = 2, K = 20 esetben. . . . . . . . . . . . . . . 1.31. Ideális sávszűrő; (a) síkkal való metszete, (b) teljes alakja. . . . . . . . . . . . 2.1. Maszkolás a képtartományban 3 × 3 méretű maszkkal; (a) a vizsgált képrészlet adott xi intenzitásokkal, (b) a használt maszk, (c) vektoros felírás a W T , X maszkválasz meghatározásához. . . . . . . . . . . . . . . . . . . . . . . . . . . 2.2. Izolált- és határpontok meghatározása maszkkal; (a) detektáló maszk, (b) eredeti kép, (c) maszkolás eredménye. . . . . . . . . . . . . . . . . . . . . . . . . 2.3. Vonaldetektáló maszkrendszer a négy fő irányban. . . . . . . . . . . . . . . . . 2.4. Vonalak meghatározása maszkokkal; (a) vízszintes vonalak, (b) függőleges vonalak, (c)-(d) átlós vonalak. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2.5. Éldetektáló 3 × 3-as maszkrendszer a négy fő irányban. . . . . . . . . . . . . . 2.6. Éldetektálás 3 × 3 méretű maszkokkal; (a) eredeti kép, (b) vízszintes élek, (c) függőleges élek, (d) a vízszintes és függőleges élképek átlaga. . . . . . . . . . . 2.7. Laplace operátor konvolúciós maszkjai és azok hatása; (a) L4 maszk, (b) L8 maszk, (c) 5 × 5-ös Laplace maszk, (d) eredeti kép, (e) L4 maszk hatása, (f) L8 maszk hatása, (g) 5 × 5-ös maszk hatása. . . . . . . . . . . . . . . . . . . 2.8. 3 × 3-as Laplace maszkok speciális súlyozással. . . . . . . . . . . . . . . . . . vii
+
+24 24 25 26 26
+
+27 28 30 30 31 31 32 32
+
+34 34 35 35 36 36
+
+37 37
+
+2.9. Kombinált maszkrendszer 3D-ben két tulajdonságaltérrel. . . . . . . . . . . . 2.10. Három tulajdonság egyidejű detektálására alkalmas kilenc elemű maszkrendszer. 2.11. A dilatáció eredménye; (a) eredeti A alakzat, (b) adott B struktúraelem, (c) az A dilatáltja, (d) másik B struktúraelem, (e) az A dilatáltja erre nézve. . . 2.12. Az erózió eredménye; (a) eredeti A alakzat, (b) adott B struktúraelem, (c) az A erodáltja, (d) másik B struktúraelem, (e) az A erodáltja erre nézve. . . . . 2.13. A morfológiai nyitás és zárás kombinálása. . . . . . . . . . . . . . . . . . . . . 2.14. Kontúr kinyerése morfológiai műveletekkel; (a) eredeti A alakzat, (b) a felhasznált B struktúraelem, (c) az A halmaz ∂A kontúrja. . . . . . . . . . . . . 2.15. Lyukak kitöltése morfológiai műveletekkel; (a) eredeti A alakzat, (b) a felhasznált B struktúraelem, (c) a kitöltő eljárás végeredménye, (d) az iteráció lépései. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2.16. Összefüggő komponensek keresése morfológiai műveletekkel; (a) eredeti Y komponens kiindulóponttal, (b) a felhasznált B struktúraelem, (c) az eljárás végeredménye, (d) az iteráció lépései. . . . . . . . . . . . . . . . . . . . . . . . . . i 2.17. Konvex burok meghatározása morfológiai műveletekkel; (a) eredeti A = X0 alakzat, (b) a négy fő irányhoz tartozó struktúraelem, (c) az egyes struktúraelemek szerepe a C(A) előállításában (d) a C(A) konvex burok, (e) a négy 1 2 3 4 irányhoz tartozó D1 = X5 , D2 = X1 , D3 = X5 , D4 = X1 konvergenciahalmaz. 2.18. Vékonyítás morfológiai műveletekkel; (a) struktúraelemek, (b) eredeti A alakzat, (c)-(j) a B 1 , . . . , B 8 struktúraelemekkel lépésenként végzett vékonyítás (csak a változások feltüntetésével). . . . . . . . . . . . . . . . . . . . . . . . . 2.19. Vastagítás a komplementer vékonyításával; (a) eredeti A alakzat, (b) az A komplementere, (c) az Ac vékonyításának végeredménye, (d) az Ac vékonyításának komplementere, (e) az A vastagításának eredménye az izolált részek eltávolításával. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2.20. A középtengely, mint a maximális sugarú körök középpontjai; (a)-(d) egyszerű alakzatok középtengelyei. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2.21. A vázkijelölő vékonyító eljárásban használt szomszédság. . . . . . . . . . . . . 2.22. Vázkijelölés vékonyítással; (a) eredeti alakzat, (b) az első iterációs lépés, (c) a második iterációs lépés, (d) végeredmény. . . . . . . . . . . . . . . . . . . . . 2.23. Kinövések eltávolítása morfológiai műveletekkel; (a) eredeti A váz, (b) az eljárásban használt struktúraelemek, (c) az A vékonyításának eredménye, (d) az A vékonyításának végpontjai, (e) a végpontok dilatálása a törölt vázszegmensek visszaállításához, (f) az eljárás végeredménye. . . . . . . . . . . . . . . . .
+
+38 39 41 42 44 45
+
+46
+
+47
+
+48
+
+49
+
+50 51 52 53
+
+55
+
+viii
+
+Előszó
+Ez a jegyzet a "Képfeldolgozási módszerek" című tárgyhoz készült elsősorban programozó és programtervező matematikus szakos hallgatók számára. Az anyag tartalmát tekintve részben ráépül a "Képfeldolgozás matematikája" című tárgy tematikájára, így az annak keretében elsajátítható ismereteket ismertnek tételezi fel. A jegyzet fő célja a képfeldolgozási feladatokban jól használható alapvető elméleti eredmények bemutatása, valamint ezek jellegzetességeinek gyakorlati példákon keresztül való szemléltetése.
+
+A szerzők
+
+1
+
+1. fejezet
+
+Képjavítás
+1.1. Bevezetés
+
+A nem ideális körülmények között készült képi felvételek gyakran zajosak, homályosak, túlzottan vagy kevéssé kontrasztosak, egyenlőtlenül megvilágítottak lehetnek. Hasonló problémák léphetnek fel a nem megfelelő digitalizálás eredményeképpen is. A képjavító eljárásokkal ezeket a képeket az emberi szemlélő számára kellemesebbé alakíthatjuk. A képfeldolgozási feladatokban a képjavításokat előfeldolgozó lépésként is végrehajthatjuk, hogy a később alkalmazott technikákkal jobb eredményeket érjünk el. A képjavító eljárásokat alapvetően aszerint osztályozhatjuk, hogy a kép- vagy a frekvenciatartományban (Fourier tartományban) alkalmazhatóak-e. Az egyik leggyakrabban használt képjavító és képmanipuláló eljárások a szűrők. Szűrést a kép- és frekvenciatartományban egyaránt végezhetünk. A 2D-s képtartománybeli szűrés általános modellje a g(x, y) = f (x, y) ∗ h(x, y) =
+R2
+
+f (α, β) h(x − α, y − β) dα dβ
+
+konvolúciós modell, ahol f az eredeti intenzitáskép, g az eredménykép, h pedig a szűrőfüggvény. Digitális képek esetén a szűrőfüggvényt ú.n. konvolúciós maszkokkal közelítik – az eljárást részletesen a 2. fejezetben ismertetjük. A frekvenciatartománybeli szűrésnek a jól ismert konvolúciós tétel adja az alapját, így a szűrés G(u, v) = F (u, v)H(u, v) módon történik, ahol F , G és H jelöli rendre az f , g és h függvény Fourier transzformáltját. Mivel a frekvenciatartománybeli szűrés a képtartománybeli konvolúcióval szemben a kevésbé műveletigényes szorzást használja, így a gyors és inverz gyors Fourier transzformáció segítségével sok esetben hatékonyabb annál. Amennyiben a h függvény torzításként lép fel a képen, úgy a képrekonstrukció problémaköréhez jutunk, amelyet külön fejezetben tárgyalunk részletesen. 2
+
+1. fejezet. Képjavítás
+
+3
+
+Az alábbiakban a képjavításhoz szükséges elemek detektálásának módszereit, valamint a legnépszerűbb képjavító eljárások alapjait tekintjük át.
+
+1.2.
+
+Hisztogram alapú eljárások
+
+A képfeldolgozási eljárásokban a képek intenzitáshisztogramja alapvető jelentősséggel bír. Először a szürkeárnyalatos képekhez fűződő elméletet ismertetjük, ennek kiterjesztésével színes képekre pedig az 1.2.5. szakaszban foglalkozunk. Jelöljön r egy valós értékű valószínűségi változót (az intenzitást), és tekintsünk ennek egy r1 , r2 , . . . , rM realizációját. Mivel a hisztogram az elméleti sűrűségfüggvény diszkrét közelítése, ezért osszuk fel a számegyenest y0 < y1 < · · · < yk osztópontokkal, úgy hogy y0 ≥ min{rj } és yk ≤ max{rj }. Jelölje ni az [yi−1 , yi ) intervallumba eső mintaelemek számát (i = 1, . . . , k), majd rajzoljunk az [yi−1 , yi ) intervallum fölé az ni -vel arányos területű téglalapot. Az így kapott alakzatot az r1 , r2 , . . . , rM minta y0 < y1 < · · · < yk beosztáshoz tartozó hisztogramjának nevezzük. Ha a megrajzolt téglalapok összterülete M , akkor gyakorisági hisztogramhoz jutunk. Pontosabban, a gyakorisági hisztogram az az fn valós függvény, amelyre  νi   (y − y ) , ha x ∈ [yi−1 , yi ) , i = 1, . . . , k i i−1 fn (x) =   0, ha x ∈ [y0 , yk ). Ha a téglalapok összterülete 1, akkor a sűrűséghisztogramot kapjuk. Ekkor az i-edik téglalap magassága: νi . n(yi − yi−1 ) Vegyük észre, hogy a gyakorisági hisztogram és a sűrűséghisztogram ábrázolásában az egyetlen különbség a skála beosztása. A statisztika alaptétele szerint, ha M, k → ∞ (azaz növeljük a mintaelemeszámot és ﬁnomítjuk a beosztást), akkor a sűrűséghisztogram az elméleti sűrűségfüggvényhez tart. A hisztogram deﬁnícióját folytonos valószínűségi változóra (analóg képre) adtuk meg. A digitális képfeldolgozás azonban diszkrét változókra épül, ám a hisztogram-fogalom bevezetése a fentiekkel megegyező módon elvégezhető. Az eljárást a könnyebb érthetőség kedvéért a jól ismert 256 szürkeárnyalatú (8 bites) intenzitásképekre mutatjuk be. Az intenzitáshisztogramok természetesen más skálázással is elkészíthetők, a színes képek hisztogramjait pedig az egyes színcsatornákon külön-külön tekinthetjük. Tekintsünk tehát egy 256-szintű digitális képet, ahol a fekete és a fehér közti tartományt 256 árnyalatra bontottuk fel, úgy, hogy az i + 1-edik árnyalat az világosabb, mint az i-edik. Most a szürkeségi skálát 256 intervallumra osztjuk, ahol minden intervallumba egyetlen szürkeségi érték esik, azaz (y0 < y1 < · · · < y256 ). A valószínűségi mintát maga a kép, illetve annak intenzitásértékei adják. A hisztogram iedik oszlopának magasságát az [yi , yi+1 ) intervallumba eső elemek száma, azaz a képen lévő
+j=1 j=1 M M
+
+4
+
+1. fejezet. Képjavítás
+
+i-edik szürkeárnyalatú képpontok száma adja. Ebben az esetben a hisztogram alakja attól is függ, hogy milyen nagy képet vizsgáltunk. Például egy képnek és annak négyszeresen nagyított párjának a hisztogramja nem egyezik meg. Ennek elkerüléséhez normálhatjuk a hisztogramot, leosztva az oszlopokban lévő értékeket képpontok számával. Ebben az esetben az oszlopok a megfelelő intenzitásértékek relatív gyakoriságát mutatják. A hisztogramértékek [0, 1] intervallumba normálásához pedig a maximális hisztogramértékkel kell elvégeznünk a leosztást. Az 1.1. ábrán egy szürkeárnyalatos képet és annak hisztogramját ﬁgyelhetjük meg.
+
+(a)
+
+(b)
+
+1.1. ábra. 256-szintű (8 bites) szürkeskálás kép hisztogramja; (a) eredeti kép, (b) intenzitáshisztogram.
+
+1.2.1.
+
+Küszöbölési technikák
+
+Az intenzitáshisztogram azért nagyon népszerű a képfeldolgozási eljárásokban, mert igen szemléletesen mutatja az adott kép intenzitáseloszlását, továbbá igen jelentős valószínűségszámítási és statisztikai apparátus áll a rendelkezésre a megfelelő információk (automatikus) kinyeréséhez. A hisztogram értelmezése azon a tényen alapul, hogy annak erős módusai (hegyei) általában a kép nagyobb méretű homogén intenzitású objektumaira utalnak. Ennek megfelelően, a hisztogram módusait elválasztó völgyekhez tartozó intenzitásértékek alkalmasak lehetnek az objektumok szétválasztására vagyis a kép szegmentálására. A kép intenzitástartományok alapján történő szétbontását küszöbölésnek nevezzük. A K szintű küszöbölés elvégzéséhez jelölje a kép teljes intenzitástartományát y0 < y1 < · · · < yL , rögzítsük a T1 , . . . , TK ∈ R küszöbértékeket, és legyen T0 = y0 , TK+1 > yL . A küszöbértékeknek megfelelően a képpontokat K + 1 osztályba soroljuk, nevezetesen a j-ik osztályba azok a pontok kerülnek, amelyek intenzitása a [Tj , Tj+1 ) intervallumba esik (j = 0, . . . , K). A K = 2 eset a kép binarizálást jelenti. A szétbontáshoz használt értékek (küszöbök) megadása általában a hisztogram lokális szélsőértékeinek (módusainak/völgyeinek) meghatározásával történik. A küszöbölés végezhető manuálisan vagy automatikusan is, ám az utóbbi megoldás többszintű küszöbölésnél lényegesen bonyolultabbá és pontatlanabbá válhat. A küszöbölést (például binarizálást) általában előfeldolgozásként használhatjuk későbbi
+
+1. fejezet. Képjavítás
+
+5
+
+képfeldolgozási műveletekhez. Az alábbiakban áttekintünk néhány egyszerű eljárást, amelyeket a hisztogram küszöböléséhez használhatunk. Szintrevágás. Lényegében ez a művelet jelenti a klasszikus egy- vagy többszintű küszöbölést. Az egyszintű küszöböléshez egy T küszöböt rögzítünk és a képpontokat aszerint soroljuk két osztályba, hogy az intenzitásuk T alá vagy fölé esik-e. Az eljárásra az 1.2. ábrán láthatunk példát a hisztogram és a küszöbérték feltüntetésével egy 256-szintű szürkeskálás kép esetén. Az ábrán jól megﬁgyelhető, hogy bár szemre a binarizálás egyszerűnek ígérkezik, a megfelelő küszöbérték meghatározása nem mindig triviális. Amennyiben a globális küszöbölés nem nyújt kielégítő eredményt célszerű lehet a küszöbölést lokálisan, a képet kisebb részekre felbontva elvégezni.
+
+(a)
+
+(b)
+
+(c)
+
+1.2. ábra. Két szintre vágás; (a) eredeti kép, (b) intenzitáshisztogram és választott küszöbérték, (c) binarizált kép. Többszintű küszöbölés esetén az intenzitásskálán több küszöbértéket is megadunk, és a képpontok új intenzitásértékeit általában a kapott tartományok legkisebb értékeire állítjuk. Sávkiemelés/sávkizárás. Az intenzitáshisztogram segítségével egyszerűen kiemelhetjük a fontosnak tartott intenzitásokat, illetve analóg módon ki is szűrhetjük ezeket a képből. Az egyes intenzitásintervallumok kiemelését sávkiemelésnek, míg azok eltávolítását sávkizárásnak nevezzük. Így például egy intenzitássáv kiemeléséhez/kizárásához adjuk meg a T1 és T2 küszöböket, és az eredeti f képből készítsük el a megfelelő sávkiemelt g(x, y) = illetve sávkizárt g(x, y) = 0, ha T1 ≤ f (x, y) < T2 f (x, y), egyébként f (x, y), ha T1 ≤ f (x, y) < T2 0, egyébként,
+
+képet. A sávkiemelés hatását az 1.3. ábrán láthatjuk egy adott küszöbölésnek megfelelően.
+
+6
+
+1. fejezet. Képjavítás
+
+(a)
+
+(b)
+
+(c)
+
+1.3. ábra. Sávkiemelés; (a) eredeti kép, (b) intenzitáshisztogram megfelelő küszöbértékekkel, (c) sávkiemelés eredménye.
+
+1.2.2.
+
+Hisztogram-transzformáció
+
+Az intenzitáshisztogram transzformációja előfeldolgozó lépés mellett már önmagában is jól alkalmazható bizonyos képjavítások elvégzésére. Az egyszerűbb tárgyalhatóság kedvéért használjunk most normált r intenzitásváltozót, azaz legyen 0 ≤ r ≤ 1. Tekintsük az s = T (r) transzformációt, ami az eredeti kép egy r intenzitásértékéhez egy új s intenzitásértéket rendel. A transzformációval szemben az alábbi két feltételt támasztjuk: i) T (r) egyértékű és monoton növekvő a 0 ≤ r ≤ 1 intervallumon, ii) 0 ≤ T (r) ≤ 1 minden 0 ≤ r ≤ 1-re. Az i) feltétel biztosítja a szürkeségi skála árnyalatai sorrendjének megőrzését a legkisebbtől a legnagyobbig, míg az ii) feltétel megtartja a használt szürkeségi skálát. Egy ilyen transzformációs függvény látható az 1.4. ábrán. Az s-et r-re visszaalakító inverz transzformáció (amennyiben létezik) a következő: r = T −1 (s), 0 ≤ s ≤ 1,
+
+ahol a T −1 (s) transzformáció is teljesíti az i) és ii) feltételeket s-re nézve. Ha az r, illetve s folytonos valószínűségi változók sűrűségfüggvénye (hisztogramja) pr (r), illetve ps (s), valamint s = T (r) ismert és T −1 (s) teljesíti az i) és ii) feltételeket, akkor az átalakított szürkeségi fokozatok valószínűségi eloszlása (azaz a transzformációval nyert új ps (s) sűrűségfüggvény) a következő módon határozható meg (lásd [10]): ps (s) = pr (r) ∂r ∂s .
+r=T −1 (s)
+
+(1.1)
+
+1. fejezet. Képjavítás
+
+7
+
+1.4. ábra. Szürkeárnyalatos transzformációs függvény.
+
+1.2.3.
+
+Hisztogram-kiegyenlítés
+
+Azt az eljárást, ami a képet úgy transzformálja, hogy a világosságkódok egyenletes eloszlásúakká váljanak, hisztogram-kiegyenlítésnek nevezzük. Ez főként olyan képeknél hasznos, amelyek valamilyen ok miatt (például rossz megvilágítás) kevésbé kontrasztosak, azaz az intenzitásértékek az intenzitástartomány kisebb részére koncentrálódnak. Az eljárás lényegében analóg módon a folytonos és diszkrét térben egyaránt elvégezhető. Folytonos eset Tekintsük most a következő speciális hisztogram-transzformációs függvényt:
+r
+
+s = T (r) =
+0
+
+pr (w)dw
+
+0 ≤ r ≤ 1.
+
+(1.2)
+
+Vegyük észre, hogy az így deﬁniált T (r) függvény éppen az r változó eloszlásfüggvénye, ezért eleget tesz az előző szakaszban leírt i) és ii) feltételnek. Az s deriváltjára r-re vonatkozóan 1 ∂r ∂s = pr (r) ⇒ = ∂r ∂s pr (r) teljesül. Helyettesítsük dr/ds-t az (1.1) egyenletbe: ps (s) = pr (r) 1 pr (r) = [1]r=T −1 (s) = 1, 0 ≤ s ≤ 1. (1.3)
+
+r=T −1 (s)
+
+Az így kapott valószínűségi változó egyenletes eloszlású lesz a korábbi eloszlásától függetlenül.
+
+8
+
+1. fejezet. Képjavítás
+
+Példa folytonos hisztogramkiegyenlítésre. Kövessünk végig egy konkrét példát folytonos hisztogramtranszformációra. Ehhez legyen az eredeti (analóg képhez tartozó) sűrűségfüggvény alakja (lásd még 1.5(a) ábra): pr (r) = Ekkor a hisztogramkiegyenlítés az
+r
+
+−2r + 2, ha 0 ≤ r ≤ 1 0, egyébként.
+
+s = T (r) =
+0
+
+−2w + 2 dw = −r 2 + 2r
+
+transzformációs függvény alapján történik (lásd 1.5(b) ábra). Ellenőrzéképpen vizsgáljuk meg, hogy mi lesz a kiegyenlített kép hisztogramja. Ehhez szükségünk van az s = T −1 (r) függvényre, azaz ki kell fejeznünk az r-et az s segítségével. Ez a s = −r 2 + 2r egyenletből most könnyen megtehető (például a másodfokú egyenlet megoldóképletét használva): T −1 (s) = r = 1 ± √ 1 − s,
+
+és mivel r csak a [0, 1] intervallumon nem tűnik el, ezért csak az T −1 (s) = r = 1 − eset állhat fenn. Felhasználva ezt az összefüggést pr (r) = −2r + 2 = −2 1 − √ √ 1−s +2=2 1−s √ 1−s
+
+adódik. Ezek után a ps (s) új sűrűségfüggvény meghatározásához (lásd 1.5(c) ábra) helyettesítsünk az (1.2) egyenletbe: √ √ d 1− 1−s 2 1−s ds 1 √ 2 1−s
+√ r=1− 1−s
+
+ps (s) = (−2r + 2)
+
+dr ds
+
+√ r=1− 1−s
+
+=
+
+√ 2 1−s
+
+√ r=1− 1−s
+
+=
+
+= [1]1−√1−s = 1,
+
+ahol felhasználtuk, hogy √ 1 d . 1− 1−s = √ ds 2 1−s
+
+1. fejezet. Képjavítás
+
+9
+
+(a)
+
+(b)
+
+(c)
+
+1.5. ábra. Sűrűségfüggvény (hisztogram) kiegyenlítése folytonos esetben; (a) eredeti sűrűségfüggvény, (b) transzformációs függvény, (c) kiegyenlített sűrűségfüggvény. Diszkrét eset A folytonos esetnél leírt módszer a diszkrét esetre való természetes átfogalmazással alkalmazható digitális képekre. Legyen adott egy M képpontból álló L-szintű digitális kép és jelölje r0 , . . . , rL−1 a lehetséges normált intenzitásértékeket, azaz 0 ≤ rk ≤ 1 (k = 0, . . . , L − 1). Jelölje mk az rk intenzitású képpontok számát a képen, így a gyakorisághisztogram pr (r) = mk /M alakban írható fel. Az (1.2) egyenlet diszkrét változata a következő:
+k
+
+sk = T (rk ) =
+j=0
+
+mj = M
+
+k
+
+pr (rj ), 0 ≤ rk ≤ 1, k = 0, 1, . . . , L − 1.
+j=0
+
+(1.4)
+
+Az inverz transzformáció képlete: rk = T −1 (sk ), 0 ≤ sk ≤ 1, ahol mind T (rk ), mind T −1 (sk ) teljesíti az i) és ii) feltételt. Miután kiszámoltuk az sk értékeket, már csak egy lépés marad hátra. Nevezetesen, az új intenzitásértékek nem illeszkednek pontosan a régi szürkeségi értékekre, ezért minden új értékhez a hozzá legközelebbi régi értéket kell hozzárendelni kerekítéssel. Példa diszkrét hisztogramkiegyenlítésre. Legyen adott egy 64 × 64-es, 8-szintű kép. Az 1.2.3. táblázat oszlopai tartalmazzák rendre az intenzitásértékeket, az ezekhez tartozó képpontok számát, az intenzitásértékek relatív gyakoriságát, a transzformációs formulával kapott sk új intenzitásértékeket, majd ezen értékeket a régi világosságkódokra kerekítve. Tekintsük még szemléltetésül az 1.6. ábrát is, ahol az 1.6(a) ábrán az eredeti 411 × 480-as, 256-szintű szürkeárnyalatos kép látható, alatta az 1.6(b) ábrán pedig a kép hisztogramja. A transzformációs függvényre példaként hozott 1.4. ábrán látható a hisztogramkiegyenlítés által kiszámolt sk értékekből adódó transzformációs függvény képe. Az 1.6(c) ábrán a kiegyenlített kép, míg az 1.6(d) ábrán annak hisztogramja látható.
+
+10 1.1. táblázat. 64 × 64-es, 8-szintű kép nk rk r0 = 0 523 r1 = 1/7 780 r2 = 2/7 1053 r3 = 3/7 818 470 r4 = 4/7 r5 = 5/7 222 164 r6 = 6/7 r7 = 1 66
+
+1. fejezet. Képjavítás
+
+intenzitáshisztogramjának kiegyenlítése. pr (rk ) sk sk 0,13 0,13 1/7 0,19 0,32 2/7 0,26 0,58 4/7 0,20 0,78 5/7 0,11 0,89 6/7 0,05 0,94 1 0,04 0,98 1 0,02 1,00 1
+
+1.2.4.
+
+Lokális hisztogramkiegyenlítés
+
+A hisztogramkiegyenlítés eredménye az eljárás globális volta miatt nem minden esetben kielégítő ([10]), mivel nem veszi ﬁgyelembe a kép lokális tulajdonságait. Ennek kiküszöbölésére használhatunk lokális eljárást, amely egy lokális szomszédságon belül javítja a képet [22]. Ennek egy lehetséges megvalósítása: g(x, y) = A(x, y)[f (x, y) − m(x, y)] + m(x, y), ahol A(x, y) = k R , σ(x, y) 0 < k < 1,
+
+továbbá m(x, y), illetve σ(x, y) az (x, y) középpontú maszk intenzitásértékeinek az átlaga, illetve szórása, míg R a kép szürkeségi szintjeinek globális átlaga.
+
+1.2.5.
+
+Multispektrális hisztogram
+
+Természetesen nem csak szürkeárnyalatos, hanem többcsatornás képek hisztogramját is elkészíthetjük. Tekintsük például a jól ismert 24-bites (TrueColor) RGB reprezentációt, ahol három monokromatikus színkomponens (vörös,zöld,kék) aránya határozza meg a végső színt, a színkomponenseket egyenként 8 biten megadva. Ebben az esetben valójában három különböző hisztogramot készíthetünk, mindegyik komponenshez egyet-egyet. Egy másik lehetőség közvetlenül egy 3D-s hisztogram elkészítése, amelynek alapját 28 × 8 × 28 színkocka adja, ahol a hisztogram (i, j, k) indexű eleme az így leírt színhez tartozó 2 képpontok számát jelenti. A fentiek egyszerű következménye, hogy az origó fekete, a kocka origóhoz legközelebbi három csúcsában kapnak helyet a monokromatikus színek, az origótól legtávolabbi csúcs fehér, a fehérhez legközelebb eső három csúcs pedig két–két monokromatikus szín keveréke, a ciánkék (kék és zöld), a bíborvörös (piros és kék) és a sárga (piros és zöld). A koordinátarendszer áthelyezhető másik pontba, így például a fehér színt választva origónak és az innen kiinduló élek irányvektorainak csúcsait tekintve a CMY színrendszerhez jutunk. Az 1.7(a)
+
+1. fejezet. Képjavítás
+
+11
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+1.6. ábra. Szürkeárnyalatos kép hisztogram-kiegyenlítése; (a) eredeti kép, (b) intenzitáshisztogram, (c) kiegyenlített kép, (d) intenzitáshisztogram. ábra a színkockát mutatja perspektivikusan, míg az 1.7(b) ábrán a kockán belül véletlenszerűen elhelyezett 24 gömb látható pozíciójuknak megfelelően színezve. Hisztogramtranszformáció multispektrális esetben Több színcsatornával rendelkező kép esetén felmerülhet a kérdés, hogy az intenzitásképekre ismertetett hisztogramtranszformációt (például kiegyenlítést) hogyan célszerű végrehajtani. Egy egyszerű megközelítés, ha a képet színkomponensekre bontjuk, és azokra, mint intenzitásképekre külön-külön végrehajtjuk a hisztogramtranszformációt, majd a feldolgozott színcsatornákból visszaállítjuk a képet. Ha a komponensenkénti transzformációs függvények lényegesen eltérnek egymástól, akkor az ezen elven alapuló hisztogram-kiegyenlítés a színek torzulásához vezethet, mivel a színkomponensek változtatása függetlenül történik. Alkalmazhatunk egy másik transzformációs módszert is, amivel kapcsolatot teremthetünk
+
+12
+
+1. fejezet. Képjavítás
+
+(a)
+
+(b)
+
+1.7. ábra. Az RGB színkocka; (a) a színkocka felszíne, (b) gömbök a színkocka belsejében. a színkomponensek közt. Nevezetesen, tekinthetjük az egyes színcsatornák transzformációs függvényeinek olyan súlyozott átlagát, ahol a súlyok összege 1 (például számtani közep). Az így kapott transzformációs függvényt ezután mind a három komponensre külön-külön alkalmazhatjuk. Ez az eljárás kielégíti az i) és ii) feltételeket, így valóban egy megengedett hisztogramtranszformáció. (Az ii) feltétel teljesüléséhez vegyük észre, hogy a használt súlyozás miatt az intenzitások értékkészlete megmarad, míg i) azért áll fenn, mert monoton függvények összege is monoton). Az utóbbi eljárásnál a színek nem torzulnak, mivel minden színcsatornán ugyanazt a transzformációt végezzük el, ami egy másik színárnyalat meghatározását jelenti. Az első módszer előnye viszont, hogy amennyiben nem kell mindenképpen megakadályoznunk a színek torzulását, akkor a komponensenkénti transzformációs függvényt használva a hisztogramkiegyenlítés jobban kiemeli a kép apróbb jellemzőit. A két módszer közötti különbség jól megﬁgyelhető az 1.8. ábrán, ahol az 1.8(b) ábra a komponensenkénti transzformációs függvények használatával, míg az 1.8(c) ábra az egyes csatornákon számolt transzformációs függvények átlagolásával készült.
+
+1.3.
+
+Éldetektálás
+
+Az emberi szem nagyon érzékeny az intenzitásváltozásokra. Ezek a változások általában az objektumok határvonalainál jelentkeznek, amelyek érzékelése lehetőséget teremt az objektum felismerésére. A képfeldolgozásban ennek a megközelítésnek a kontúr alapú szegmentálás felel meg, melynek egy fontos lépése a kontúrpontok (élpontok) detektálása. Azoknak a helyeknek a kereséséhez pedig, ahol az intenzitásfüggvény gyorsan változik, természetes módon analitikus eszközöket, elsősorban a deriválást hívhatjuk segítségül. Az intenzitásfüggvény mind első, mind második deriváltjából hasznos információkhoz juthatunk az élekkel kapcsolatban.
+
+1. fejezet. Képjavítás
+
+13
+
+(a)
+
+(b)
+
+(c)
+
+1.8. ábra. Multispektrális kép hisztogram-kiegyenlítése; (a) eredeti kép, (b) kiegyenlítés komponensenkénti transzformációs függvényekkel, (c) kiegyenlítés a transzformációs függvények átlagolásával. Az 1.9. ábra a deriváltak viselkedését mutatja lépcsős jellegű intenzitásváltozás esetén.
+
+(a)
+
+(b)
+
+1.9. ábra. Az f (x) intenzitásfüggvény első és második deriváltjának viselkedése; (a) sötétvilágos átmenet esetén, (b) egy lassabb világos-sötét átmenet esetén.
+
+1.3.1.
+
+Gradiens módszerek
+
+A gradiens alapú éldetektálás intuitív hátterében az áll, hogy amíg az összegzés (átlagolás/integrálás) a képek elmosását eredményezi, addig a deriválás (mint inverz művelet) várhatóan
+
+14
+
+1. fejezet. Képjavítás
+
+ellentétes hatást vált ki. Ezen a természetes gondolaton alapuló meglátás ténylegesen megállja a helyét, és a gradiens módszerekre épülő eljárások fontos szerepet játszanak az intenzitásátmenetek (élek) detektálásában, így egyúttal a képek élesítésében is. A gradiensvektor (érintővektor) a kép első deriváltjaiból képezett G[f (x, y)] = (Gx , Gy )T vektor, ahol Gx = ∂f /∂x, illetve Gy = ∂f /∂y a gradiensvektor két komponense. A gradiensvektor hosszát (a gradiens nagyságát), illetve irányát euklideszi módon deﬁniáljuk, azaz |G[f (x, y)]| = a gradiens nagysága, illetve szöge, ∆f = Gx cos Θ + Gy sin Θ pedig a Θ irányba eső változás gyorsaságát mutatja. A gradiens iránya a változás irányát, nagysága pedig a változás mértékét adja meg. Értelemszerűen, az intenzitásátmeneteknél (élpontoknál) a gradiens relatíve nagyobb, az élek pedig a gradiens irányára merőlegesen futnak. Az élpontok detektálásához általában a gradiensnek ezt a két jellemzőjét használják. A gradiens digitális közelítésére diﬀerenciákat használhatunk. Elsőként a |G[f (x, y)]| = (f (x, y) − f (x + 1, y))2 + (f (x, y) − f (x, y + 1))2 , (1.5) G2 + G2 , illetve ∠G = tan−1 x y Gy Gx
+
+általában Sobel gradiensként ismert formula került bevezetésre. Ha jobban megﬁgyeljük a képletet, kiderül, hogy lényegében egy 2 × 2-es környezeten belül végzünk összehasonlítást, nyilvanvalóan az intenzitáseltéréseken alapulva. Ezt a szemléletet követve a későbbiekben az irodalomban újabb közelítő számolási módokat javasoltak, amelyek kisebb számításigénnyel bírnak, vagy egyes esetekben jobb eredményt adnak. Így az (1.5) képletnek az alábbi variánsai születtek: |G[f (x, y)]| = |f (x, y) − f (x + 1, y)| + |f (x, y) − f (x, y + 1)|, illetve az ú.n. Roberts gradiens |G[f (x, y)]| = (f (x, y) − f (x + 1, y + 1))2 + (f (x + 1, y) − f (x, y + 1))2 , (1.6)
+
+|G[f (x, y)]| = |f (x, y) − f (x + 1, y + 1)| + |f (x + 1, y) − f (x, y + 1)|. (1.5) és (1.6) alapvetően abban tér el, hogy a 2 × 2-es tartományon belül, más pontok intenzitását hasonlítjuk össze, amint ez az 1.10. ábrán is megﬁgyelhető. A kiszámolt gradiensértékekből készíthető el az eredeti f (x, y) intenzitáskép g(x, y) élvagy gradiensképe. A legegyszerűbb élkép a g(x, y) = |G[f (x, y)]|
+
+1. fejezet. Képjavítás
+
+15
+
+(a)
+
+(b)
+
+1.10. ábra. Digitális gradiens számolása; (a) Sobel gradiens, (b) Roberts gradiens. módon állítható elő. Az élkép megjelenítésekor ügyeljünk rá, hogy a gradiensértékeket kvantálnunk (kerekítenünk és normálnunk) kell a megjelenítési intezitásokra. Mivel a kép homogén részein nincsen intenzitásátmenet, így az élkép általában sötét. Amennyiben szeretnénk megőrizni az eredeti kép homogén részeinek információt, úgy azt a következő egyszerű küszöböléssel tehetjük meg: g(x, y) = f (x, y), ha |G[f (x, y)]| < K, |G[f (x, y)]|, egyébként,
+
+ahol a K küszöb rögzített pozitív konstans. Amennyiben viszont csak a megfelelően erős élek helye a fontos, úgy a következő binarizálást célszerű választani: g(x, y) = 0, ha |G[f (x, y)]| < K, 1, egyébként.
+
+Az 1.11. ábrán a Sobel és Roberts éldetektáló eljárások eredményét láthatjuk a g(x, y) = |G[f (x, y)]| élkép deﬁníciót használva.
+
+(a)
+
+(b)
+
+(c)
+
+1.11. ábra. A gradiensoperátor eredménye; (a) eredeti kép, (b) Sobel gradiens, (c) Roberts gradiens. Az éldetektálás fent leírt módszerei felfoghatók egy 2 × 2-es maszkolásként is. Mivel ezek az eljárások a vizsgált képpont nagyon szűk környezetét ﬁgyelik, így természetszerűen meglehetősen zajérzékenyek. A zajérzékenység csökkenthető 3 × 3-as maszkok használatával, amelyeket a 2.2.3. szakaszban tárgyalunk bővebben.
+
+16
+
+1. fejezet. Képjavítás
+
+1.3.2.
+
+Laplace operátor
+
+A Laplace-operátort az f (x, y) kép (intenzitásfüggvény) második parciális deriváltjaiból származtatjuk a következő módon: L[f (x, y)] = ∂2f ∂2f + 2. 2 ∂x ∂y
+
+A Laplace-operátor eltűnik a konstans intenzitású tartományokon és az intenzitásátmeneteken, mivel az intezitásváltozás kezdetét és végét jelzi. Ezen tulajdonságának megfelelően a Laplace operátor egyes képekre kettős éleket eredményez, amint ez az 1.12. ábrán is megﬁgyelhető.
+
+(a)
+
+(b)
+
+1.12. ábra. Kettős élek a Laplace operátor használatakor; (a) eredeti kép, (b) Laplace operátor hatása. Az élpontok esetén a Laplace-operátor előjeléből következtethetünk arra, hogy a vizsgált képpont az él által határolt világos, illetve sötét tartományba esik-e. Neveztesen, negatív előjel esetén az élpont a magasabb (világosabb) intenzitású tartományba, pozitív előjel esetén pedig az alacsonyabb (sötétebb) intenzitásúba esik. A Laplace-operátor digitális közelítést általában 3 × 3-as maszkolással végzik, amelynek leírását a 2.2.3. szakaszban adjuk meg.
+
+1.3.3.
+
+A második derivált tengelymetszetei
+
+Az eddig megismert éldetektáló eljárások a vizsgált képpont meglehetősen kis környezetének maszkolásán alapultak. Ennek megfelelően függenek az objektum méretétől és meglehetősen zajérzékenyek. [14]-ben megﬁgyelték, hogy az élek jelenlétére az intenzitásfüggvény lépcsős változása utal, így a függvény első deriváltjának szélsőértéke, míg a második deriváltjának zérushelye van ezeken a pontokon, lásd 1.9. ábra az 1D esetre. Nyilvánvaló, hogy az élátmenet annál gyorsabb, minél merőlegesebb az élre az a vágósík/egyenes amely mentén az intenzitásváltozást ﬁgyeljük. Mivel a zérushelyek detektálása általában egyszerűbben és pontosabban elvégezhető, az élek lokalizálása a második derivált zérushelyeinek keresésén is alapulhat [14]. Ekkor a legnagyobb kihívást a második derivált hatékony meghatározása jelenti.
+
+1. fejezet. Képjavítás
+
+17
+
+Egy gyakori eljárás, ha zajszűréshez először simítjuk a képet, majd ezután számoljuk a második deriváltat. Ekkor a simító műveletnek két feltételt kell kielégítenie. A szűrőnek sávkorlátosnak kell lennie a frekvenciatartományban, továbbá a képtartományban a vizsgált pont szomszédos pontjai alapján kell választ adnia. Ez a két feltétel időnként ütközik, de a normális eloszlás használatával párhuzamosan optimalizálhatók. A normális (Gauss) szűrőoperátor legegyszerűbb alakja: N (x, y) = e−
+x2 +y 2 2σ 2
+
+,
+
+ahol x és y a képkoordináták, σ pedig a tekintett eloszlás szórása. Az operátor használatos normalizáló tényezővel ellátva is: N (x, y) = 1 − x2 +y2 e 2σ2 , 2πσ 2 illetve N (x, y) = √
+x2 +y 2 1 e− 2σ2 . 2πσ
+
+A szűrő egyetlen paramétere a σ szórás, ami vizsgált környezet méretével arányos. A középponttól távolabb lévő képpontoknak így kisebb a befolyása, míg a 3σ-nál messzebb lévőknek már egyáltalán nincs is. Az éldetektálás tehát az L [N (x, y, σ) ∗ f (x, y)] művelet (LoG operátor) meghatározásával történik, ahol a ∗ konvolúció jelöli a normális simítás lépését, L pedig a második derivált (Laplace) operátort. A formula tovább egyszerűsíthető a résztvevő operátorok linearitását kihasználva: L [N (x, y, σ)] ∗ f (x, y). Megfelelő átalakítások után a LoG operátor konvolúciós maszkjára h(x, y) = c x2 + y 2 − σ 2 σ4 e−
+x2 +y 2 2σ 2
+
+adódik, ahol a c tényező szerepe a maszkelemek összegének 0-ra normálása. A konvolúciós maszk digitálisan közelíthető; az 1.13. ábrán a megfelelő 5 × 5 és 13 × 13 méretű maszkokat láthatjuk. Formája miatt a LoG operátor "mexikói kalap"-ként is ismert. A második derivált ilyentén meghatározása igen robosztus. A normális szűrés hatékonyan semlegesíti a 3σ-nál távolabb lévő pontok hatását, a Laplace operátor pedig megbízhatóan detektálja az intenzitásváltozásokat. A megközelítés előnye, hogy a vizsgált pont nagyobb környezetét ﬁgyelembe veszi, amivel számos esetben jobb eredményt kaphatunk, mint a klasszikus, kisebb tartományokra épülő éldetektálókkal használatakor. A LoG operátor eredményét az 1.14. ábrán ﬁgyelhetjük meg különböző maszméretek mellett.
+
+1.3.4.
+
+Képek élesítése
+
+Az eddig bemutatott technikák feladata a kép intenzitásátmenetei helyének detektálása volt. A felhasználó számára sokszor nagyon hasznos lehet a képek élesítése is, amelynek eléréséhez
+
+18
+
+1. fejezet. Képjavítás
+
+(a)
+
+(b)
+
+1.13. ábra. A LoG operátor maszkokkal való közelítései; (a) 5 × 5-ös maszk, (b) 13 × 13-ös maszk.
+
+(a)
+
+(b)
+
+(c)
+
+1.14. ábra. A LoG operátor hatása; (a) eredeti kép, (b) 5 × 5-ös maszk esetén, (c) 13 × 13-ös maszk esetén. az éldetektálásnál használt megközelítések kínálnak jó alapot. Egy lehetséges képelesítő eljárás például a [24]-ben javasolt g(x, y) = f (x, y) − cS(x, y), művelet, ahol f az eredeti kép, g az eredménykép, c az élesítés fokát szabályozó pozitív konstans tényező, S(x, y) pedig az intenzitásfüggvény alakját mutató mérték, amelyet valamilyen gradiens operátorral határozhatunk meg. Nagyon gyakran a Laplace operátort használják erre a célra. Ez az elképzelés egyszerű 3 × 3-as maszkokkal is megvalósítható, ahogyan ez az 1.15. ábrán is látható. Figyeljük meg, hogy ezeken a konvolúciós maszkokon a súlyok összege nem 0, szemben a 2.2. szakaszban bemutatott valamilyen elütő tulajdonságot detektáló maszkokkal.
+
+1. fejezet. Képjavítás
+
+19
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+(e)
+
+1.15. ábra. Képélesítés 3 × 3 méretű maszkokkal; (a) enyhén élesítő maszk, (b) fokozottan élesítő maszk, (c) eredeti kép, (d) enyhe élesítés, (e) fokozott élesítés. Képélesítést a frekvenciatartományban is lehet végezni gradiensmódszerek segítségével, mivel a Fourier transzformált harmonikus függvények kombinációja. Nevezetesen, a sin(nx) harmonikus függvény deriváltja n cos(nx), azaz minél magasabb a frekvencia, annál nagyobb a derivált értéke. Ez a példa is jól szemlélteti a gradiens operátorok élesítő tulajdonságát.
+
+1.3.5.
+
+Canny éldetektálás
+
+Canny [4] egy új megközelítést javasolt éldetektáláshoz, amely elsősorban fehér zajjal terhelt lépcsős élátmenetek detektálására optimális. A módszer hatékonysága miatt mindenképpen ﬁgyelmet érdemel az alkalmazásokban, de a jelen jegyzet terjedelme nem teszi lehetővé a teljes eljárás bemutatását. Itt most csak a főbb gondolatokat összegezzük a teljes leírás a [3, 4, 5, 27] publikációkban található meg. Az éldetektáló tervezésekor az alábbi három fő kritériumot vesszük ﬁgyelembe: • A fontos élek nem veszhetnek el, de ne legyenek valótlan élek. • Az él detektált és tényleges helye között minimális legyen az eltérés. • Ugyanazon élek ne legyenek többszörösen detektálva. Ezt a kritériumot az első feltétel lényegében lefedi, mivel ha egy élet duplán detektálunk, az egyiket hamisnak tekinthetjük. Ez a kritérium főleg a zajos élek detektálásához fontos. A kritériumokat kielégítő eljárás a következő fejlődési lépéseken ment keresztül:
+
+20
+
+1. fejezet. Képjavítás 1. Canny először 1D-s esetre készített el egy éldetektálót, amely az első két kritériumot kielégítette. Sikerült zárt alakot megadnia a szűrőfüggvényre a második momentumok segítségével. 2. Az eljárás, amely a harmadik kritériumot is ﬁgyelembe veszi, numerikus optimalizálással kapható meg. Az eredményül kapott szűrő 20%-nál kisebb hibával közelíthető normális simítószűrőkkel (lásd az 1.3.3. szakaszban leírt LoG operátort). 3. Sikerült a detektort 2D-re kiterjeszteni a képet és egy 2D-s normális szűrőt konvolváva, majd az eredményt a gradiens irányába deriválva. 4. Egy felső küszöböt meghaladó erős élválaszt adó pontokat élpontoknak tekintünk, a gyakran zajok által keltett gyengébb élek pedig csak akkor minősülnek tényleges éleknek, ha az erősségük meghalad egy bizonyos alsó küszöböt és erősebb élekhez kapcsolódnak. 5. A normális eloszlás σ szórásparaméterét használjuk a tekintett környezet méretének megadásához, nevezetesen azt a környezetet vizsgáljuk, amely esetén még megmarad egy erős válasz. Így biztosítható az él minél pontosabb lokalizálása. Canny javasolt egy szintetizáló lépést is, amelynek segítségével a kisebb σ paraméterű szűrésekből megjósoljuk a nagyobb σ esetében várható viselkedést, majd összehasonlítjuk azt a ténylegesen számolt értékekkel és csak azon új éleket fogadjuk el, amelyek esetében ez az eltérés szigniﬁkáns volt.
+
+1.3.6.
+
+Parametrikus élmodellek
+
+A parametrikus élmodellek azon a megﬁgyelésen alapulnak [20], hogy a digitális képek egy folytonos (vagy szakaszonként folytonos) intenzitásfüggvény mintavételezéssel nyert zajos közelítéseként is felfoghatók. Mivel a folytonos intenzitásfüggvény nem ismert, ezért a mintából készíthetünk rá becslést, majd a kép tulajdonságait már az így kapott folytonos becslésből származtathatjuk, akár képpontméret alatti pontossággal is. A képek bonyolultsága miatt az egyetlen folytonos függvénnyel való közelítés gyakorlatilag kizárt, ezért ezt szakaszonként folytonos függvények segítségével hajthatjuk végre a képpontok környezetének, az ú.n. fazetták (facet-ek) segítségével. Az így kapott képmodellt fazettamodellnek nevezzük [11]. Az intenzitásfüggvény a képpontok környezetében különböző szintű bonyolultsággal közelíthető. A legegyszerűb a sima fazettamodell, amikor a környezetek konstans intenzitást kapnak. A lejtős fazettamodellben a környezetekben az intenzitásváltozásokat lineáris módon írjuk le, és ez a megközelítés természetesen kiterjeszthető bonyolultabb (magasabb fokú) közelítésekre, így a kvadratikus vagy harmadfokú (bi-cubic) repezentációkra is. A fazettamodellek széleskörű alkalmazhatóságára (zajszűrés, szegmentálás, statisztikailag fontos élek detektálása, gradiens alapú éldetektálás, vonal- és sarokdetektálás) [12] mutat rá.
+
+1. fejezet. Képjavítás
+
+21
+
+1.3.7.
+
+Élek multispektrális képeken
+
+Egy multipspektrális kép egy pontját egy m dimenziós vektorként írhatjuk le, ahol a vektor komponenseit az m csatornán lévő intenzitásértékek adják. Több módszer is létezik a multispektrális képek éleinek detektálására, lásd [8]. Egy természetes eljárás a csatornákon külön-külön elvégezni az éldetektálást például a 1.3.1. szakaszban leírt technikákkal. Az így kapott élképeket kombinálva, a multispektrális kép pontjaihoz a csatornákon mért legerősebb élválaszt és élirányt rendelhetjük hozzá élinformációként. A maximális értékek kiválasztása mellett használatosak még a csatornákhoz tartozó élképek lineáris vagy egyéb kombinációi is [19]. Tekinthetjük még ezen kívül ugyanazon pont egyes csatornaértékeinek különbségét vagy hányadosát is [23]. Kiterjeszthető a Roberts gradiensnél (lásd 1.3.1. szakasz) ismertetett elképzelés is, amivel egy 2 × 2 × m méretű maszkoláshoz jutunk [27], ahol az egyes képpontok befolyását mérő együttható a korrelációs együtthatóhoz hasonlít. Jelölje f (x, y) az (x, y) pont egyes csatornákon mért intenzitásértékeinek átlagát, továbbá fj a j-edik csatorna intenzitásfüggvényét. Az (x, y) pontban a maszkválasz az alábbi két kifejezés minimumaként deﬁniálható:
+m j=1 m j=1
+
+fj (x, y) − f (x, y) fj (x + 1, y + 1) − f (x + 1, y + 1)
+2 m j=1
+
+fj (x, y) − f (x, y)
+m j=1
+
+fj (x + 1, y + 1) − f (x + 1, y + 1)
+
+2
+
+1 2
+
+,
+
+fj (x + 1, y) − f (x + 1, y)
+2 m j=1
+
+fj (x, y + 1) − f (x, y + 1) fj (x, y + 1) − f (x, y + 1)
+2
+1 2
+
+.
+
+m j=1
+
+fj (x + 1, y) − f (x + 1, y)
+
+1.3.8.
+
+Élkapcsolás, élvékonyítás
+
+Mivel a kép éleinek erőssége nem homogén ezért gyakran előfordul, hogy a küszöböléseken alapuló élképeken az élek megszakadnak. Az ilyen szakadások korrigálását nevezzük élkapcsolásnak. Az egyik legegyszerűbb eljárás az élpontok egy lokális (például 3 × 3 vagy 5 × 5 méretű) környezetének átvizsgálása és az ott található élpontok összekapcsolása. Az (x, y) és az (x , y ) élpontot akkor kapcsoljuk össze, ha az azokban számolt gradiensvektorok nagysága és iránya hasonló, azaz | |G[f (x, y)]| − |G[f (x , y )]| | < K1 , | ∠G(x, y) − ∠G(x , y ) | < K2 , ahol K1 és K2 megfelelő pozitív küszöbök. Vegyük észre, hogy az él irányára való merőlegességük miatt a gradiensvektorok irányának hasonlósága egyben az élek irányának hasonlóságát
+
+22
+
+1. fejezet. Képjavítás
+
+is jelenti. Természetes eljárásként az (x, y) és (x , y ) pontokat akkor kötjük össze, ha mindkét feltételnek eleget tesznek. Használhatjuk például a [27]-ben javasolt, 1.16. ábrán látható maszkokat, amelyek, ha illeszkednek a bináris élképre, akkor a centrális képpont értékét 1-re állítják.
+
+1.16. ábra. 3 × 3-as maszkrendszer lokális élkapcsoláshoz. A lokális élkapcsoló eljárások mellett globális megközelítést is használhatunk, például a Hough transzformációt alkalmazva. Ilyenkor azokat a pontokat próbáljuk összekötni, amelyek egy adott egyenesre, görbére vagy valamilyen más geometria alakzatra esnek. Ehhez először kiszámoljuk a gradiensértékeket, majd elvégezzük a Hough transzformációnál tekintett (például polár) paramétersík szokásos beosztását, és kiválasztjuk a legtöbb elemet tartalmazó cellákat. Ezt követően teszteljük az egy cellába eső pontok összefüggőségét. Ha egy szakadási helyen lévő két végpont távolsága egy megadott küszöbnél kisebb, illetve a gradiensértékek ebben a két pontban hasonlóak, akkor a két végpontot összekötjük. Amennyiben az élképen lévő élek nem egy képpont vastagságúak, akkor célszerű, hogy az élkapcsolást egy élvékonyítás előzze meg. Bináris élkép esetén az eljárás elvégezhető például az ugyancsak [27]-ben megadott és az 1.17. ábrán megﬁgyelhető 3 × 3-as maszkrendszerrel. A maszkok ? elemei tetszőlegesen lehetnek 0 vagy 1 értékűek, és illeszkedés esetén a centrális élpontok törlődnek.
+
+1.17. ábra. 3 × 3-as maszkrendszer bináris élvékonyításhoz.
+
+1.3.9.
+
+Sarokdetektálás
+
+A sarokpontok meghatározása elsősorban lokális detektorokkal végezhető. Az egyik legegyszerűbb ilyen módszer a Moravec-detektor [18] 1 MO(i, j) = 8
+i+1 l+1
+
+|f (i, j) − f (k, l)|,
+k=i−1 k=l−1
+
+amely az f kép nagy intenzitásátmeneteknél lévő képpontjainak (sarkok, erős élek) esetében adja a maximális választ.
+
+1. fejezet. Képjavítás
+
+23
+
+Jobb eredményeket kaphatunk számításigényesebb operátorok használatával, lásd [12, 29] vagy a fazettamodellt (lásd 1.3.6. szakasz) használó [13]. Ha például az intenzitásfüggvényt f (i, j) = c1 + c2 x + c3 y + c4 x2 + c5 xy + c6 y 2 + c7 x3 + c8 x2 y + c9 xy 2 + c10 y 3 harmadfokú módon közelítjük megfelelő ck együtthatókkal, akkor a Zuniga-Haralick (ZH) operátor alakja: −2 c2 c6 − c2 c3 c5 − c2 c4 2 3 . ZH(i, j) = 1 2 + c2 2 c2 3 A tesztelések során valamivel gyengébb eredményt adó Kitchen-Rosenfeld operátor esetén a nevezőben (c2 + c2 ) szerepel. 2 3 További megközelítések még a sarkok két fél él találkozásaként való detektálása a LoG operátor (lásd 1.3.3. szakasz) segítségével [17], továbbá a kontúr görbülete változásának ﬁgyelése [6].
+
+1.3.10.
+
+Felüláteresztő szűrők
+
+A nagy intenzitásátmenetek (zajok és élek) a kép Fourier transzformáltjának magasfrekvenciás összetevőiben jelennek meg. A frekvenciatartománybeli képélesítés természetes ötletét tehát az adja, hogy a magas frekvenciákat megtartva, az alacsony frekvenciás összetevőket szűrjük ki. A fejezet bevezetésében bemutatott módon az f (x, y) kép frekvenciatartománybeli szűrése a G(u, v) = F (u, v)H(u, v) egyszerű szorzásként elvégezhető, ahol a g(x, y) eredménykép a G(u, v) függvény inverz Fourier transzfolmátjaként állítható elő. A képélesítéshez tehát olyan H(u, v) szűrőfüggvényre van szükségünk, amely gyengíti az alacsony frekvenciás összetevőket. Az ilyen szűrőket felüláteresztő szűrőknek nevezzük, amelyek legegyszerűbb változata az ú.n. ideális felüláteresztő szűrő. Ennek szűrőfüggvénye H(u, v) = 0, ha ||(u, v)|| ≤ K, 1, egyébként,
+
+ahol K megfelelő pozitív küszöb (vágási frekvencia). Az ideális felüláteresztő szűrő síkkal való metszete és teljes alakja az 1.18. ábrán látható. Figyeljük meg, hogy az ideális szűrő meglehetősen drasztikusan gyengíti az alacsony frekvenciás összetevőket, nevezetesen teljesen eltávolítja azokat. Bizonyos képek esetén a szűrő ezen tulajdonsága hátrányokkal is jár, amint ez az 1.19. ábrán is megﬁgyelhető. Az ideális szűrő karakterisztikus jellege helyett használhatunk simább átmenetet biztosító szűrőfüggvényt is. Ilyen például a  1  ha ||(u, v)|| = 0, t, K 1+ ||(u,v)|| H(u, v) =  0, ha ||(u, v)|| = 0 módon deﬁniált a Butterworth felüláteresztő szűrő, ahol K a vágási küszöb, t pedig az átmenet sebességét szabályozó pozitív paraméter. A Butterworth felüláteresztő szűrő síkkal való
+
+24
+
+1. fejezet. Képjavítás
+
+(a)
+
+(b)
+
+1.18. ábra. Az ideális felüláteresztő szűrő; (a) síkkal való metszete, (b) teljes alakja.
+
+(a)
+
+(b)
+
+(c)
+
+1.19. ábra. Az ideális felüláteresztő szűrő hatása; (a) eredeti kép, (b) szűrt kép K = 20 esetben, (c) szűrt kép K = 40 esetben.
+
+metszetét és teljes alakját mutató 1.20. ábrán jól megﬁgyelhető annak az ideális szűrőtől való eltérése. Az 1.21. ábrán a szűrő hatását láthatjuk.
+
+(a)
+
+(b)
+
+1.20. ábra. A Butterworth felüláteresztő szűrő (t = 2 paraméterű eset); (a) síkkal való metszete, (b) teljes alakja.
+
+1. fejezet. Képjavítás
+
+25
+
+(a)
+
+(b)
+
+(c)
+
+1.21. ábra. A Butterworth felüláteresztő szűrő hatása; (a) eredeti kép, (b) szűrt kép t = 2, K = 50 esetben, (c) szűrt kép t = 2, K = 80 esetben.
+
+1.4.
+
+Simítás
+
+Az 1.3. szakaszban sok olyan technikát megismerhettünk, amelyek a képek intenzitásváltozásainak detektálásában használatosak. Az éldetektálás a képek élesítésében és a szegmentálásban játszik fontos szerepet. Ahogyan azonban erre már az 1.3.3. szakaszban is láthattunk példát, az erős intenzitásváltozások is lehetnek nemkívánatos jelenségek, különösen, ha azokat zaj okozza. Ebből következően gyakran indokolt lehet az intenzitásegyenetlenségek kiküszöbölése, azaz a képek simitása. A képsimitó eljárásokat elsősorban zajszűrésre használják, de hasznosak lehetnek a vizuális élmény kellemesebbé tételében is. A képsimítás lényegében az éldetektálás inverz műveletének is tekinthető, így az ott közöltekhez hasonló technikák alkalmazhatók. Ennek megfelelően a képsimító eljárásokat is alapvetően úgy csoportosítjuk, hogy a kép, vagy a frekvenciatartományban dolgoznak-e. A képtartománybeli szűrést konvolúciós maszkokkal végezzük, ami a frekvenciatartományban egy szűrőfüggvénnyel való szorzásnak felel meg a konvolúciós tétel alapján. A következőkben a képek simítására leggyakrabban használt eljárásokat tekintjük át.
+
+1.4.1.
+
+Környezeti átlagolás
+
+A környezeti átlagolás egy képtartományban végrehajtható konvolúciós maszkolás, amelynek 3 × 3 méretű maszkja, illetve a maszkolás eredménye az 1.22. ábrán látható. A simítást több iterációs lépésben is alkalmazhatjuk, ahogyan ez szintén megﬁgyelhető az 1.22. ábrán. Amennyiben kellően sokszor alkalmazzuk az iterációs lépést, úgy egy idő után elérjük a tovább már nem változó konstans intenzitású képet. Az átlagolást nagyobb maszkkal is végezhetjük, mely esetben az 1.23. ábrán is látható erősebb simításhoz jutunk. Vegyük észre, hogy mivel most nem egy elütő tulajdonság detektálása a célunk, a maszksúlyok összegének nem kell 0-nak lennie. A környezeti átlagolás zajszűrésre jól használható, ám hátrányos lehet, hogy új intenzitásértékek is megjelenhetnek a képen.
+
+26
+
+1. fejezet. Képjavítás
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+1.22. ábra. Környezeti átlagolás 3 × 3 méretű maszkkal; (a) konvolúciós maszk, (b) eredeti kép, (c) a maszk hatása, (d) a maszk hatása 10 iterációs lépés után.
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+1.23. ábra. Környezeti átlagolás 5 × 5 méretű maszkkal; (a) konvolúciós maszk, (b) eredeti kép, (c) a maszk hatása, (d) a maszk hatása 10 iterációs lépés után.
+
+1.4.2.
+
+Medián szűrés
+
+Bár a zajszűrésre és képsimításra használt medián szűrő szintén képtartománybeli maszkoláson alapul, mégsem tartozik a lineáris konvolúciós szűrők közé. Ennek az az oka, hogy a maszkválaszt nem a képtartomány és a maszkelemek konvolúciós szorzataként számoljuk. 3 × 3-as medián szűrésnél a vizsgált képtartomány pontjainak intenzitását (azaz az x1 , x2 , . . . , x9 értékeket, lásd 2.1. ábra) növekvő sorba rendezzük, majd kiválasztjuk az így kapott sorozat középső elemét (mediánját), amelyet új intenzitásértékként a centrális képponthoz rendelünk. Ahhoz, hogy valóban létezzen a sorozatnak "ﬁzikailag" középső eleme, általában az x5 intenzitást is felhasználjuk a sorbarendezésben. Amennyiben a centrális képpontot ajánlatosabb kihagyni ebből, úgy a sorozat 8 elemet tartalmaz, amelyből értelemszerűen a 4. vagy 5. elemet tekinthetjük középsőként. A medián szűrés alapötletét az adja, hogy a kiugró intenzitásértékek (zajok) a sorba rendezéskor a sorozat széleire szorulnak, a középső elem az adott képtartomány átlagos intenzitását mutatja. A medián szűrés népszerű módszer a zajszűrésben [10, 27], melynek egyik oka, hogy az eljárás során nem jelennek meg új intenzitásértékek (szemben például az átla-
+
+1. fejezet. Képjavítás
+
+27
+
+goló szűréssel). A medián szűréshez az átlagoló szűrésnél leírtakhoz hasonlóan használhatunk nagyobb (például 5 × 5-ös, 7 × 7-es) maszkokat, illetve tekinthetünk több iterációs lépést is. A medián szűrésnél az átlagoló szűréstől eltérően nem biztos, hogy megfelelő számú iterációs lépés után a konstans intenzitásképet kapjuk meg. Az eljárás eredményét az 1.24. ábrán ﬁgyelhetjük meg, klasszkius 3 × 3-as medián szűrés, több iterációs lépés, illetve egy egyszerű kiegészítő küszöbölési technika ﬁgyelembevétele (lásd [1]) után. Az utolós ábraképből jól látszik, hogy ügyes kiegészítő technikákkal a simító maszkolásokkal igen jó zajszűrés valósítható meg. Az ábrán az is jól megﬁgyelhető, hogy a medián szűrés kevésbé mossa el az éleket, mint az egyszerű környezeti átlagolás.
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+1.24. ábra. Medián szűrés hatása; (a) eredeti (15%-os fehér zajjal terhelt) kép, (b) a medián szűrés eredménye 3 × 3-as maszk esetén, (c) a szűrés eredménye 10 iterációs lépés után, (d) 5 × 5-ös medián szűrés eredménye kiegészítő küszöbölést használva.
+
+1.4.3.
+
+Intervallum módszer
+
+Ez az eljárás szintén a képpontok egy adott méretű (például 3 × 3-as) környezetét tekinti, és a centrális képpont intenzitását akkor változtatja meg, ha annak intenzitása kívül esik a környezetében található képpontok intenzitáértékei által meghatározott intenzitásintervallumon. A centrális képpont intenzitását értelemszerűen nem vesszük ﬁgyelembe az intervallum meghatározásakor. Az intenzitásintervallum alsó végpontját a tekintett környezet minimális, felső végpontját pedig annak maximális intenzitásértéke adja. Ha a centrális képpont intenzitása kieseik ebből az intervallumból, akkor új intenzitásértékként az intervallum alsó, illetve felső végpontját kapja attól függően, hogy az eredeti érték az intervallum alá, illetve felé esette. A módszer sok ponton emlékeztet a medián szűréshez, így például nem eredményez a képen korábban nem létező intenzitásértékeket. A lényeges különbség, hogy a környezetétől elütő képpont új intenzitásértéke nem a "középső" környezeti érték, hanem azok alsó vagy felső határa lesz. Az intervallum módszer használható nagyobb maszkokkal is, egynél több iterációs lépést azonban nincs értelme alkalmazni. Az eljárás hatását az 1.25. ábrán ﬁgyelhetjük meg.
+
+28
+
+1. fejezet. Képjavítás
+
+(a)
+
+(b)
+
+(c)
+
+1.25. ábra. Intervallum módszer képsimításhoz; (a) eredeti kép, (b) a szűrés eredménye 3 × 3as maszk esetén, (c) a szűrés eredménye 5 × 5-ös maszk esetén.
+
+1.4.4.
+
+Átlagolás inverz gradiens alapján
+
+Az 1.3. szakaszban láthattuk, hogy a gradiensértékek kiválóan használhatók az éldetektálásban és képélesítésben. Ennek megfelelően, azt a megközelítést használva, hogy az intenzitásváltozás az objektumok belsejében kisebb, mint azok határán, a gradiensértékek inverzéből képsimításra alkalmas konvolúciós maszkot készíthetünk [28]. Nevezetesen, a δ inverz gradiens függvény értéke az (i, j) pontban δ(i, j) = 2,
+1 |f (x,y)−f (i,j)| ,
+
+ha f (x, y) = f (i, j), ha f (x, y) = f (i, j),
+
+ahol f az eredeti kép, (x, y) pedig a tekintett maszk centrális pontjainak koordinátái. A δ inverz gradiens a (0, 2] intervallumba esik, értéke az éleken kisebb, míg az objektumok belsejében nagyobb. A konvolúciós maszk nem centrális elemeit a h(i, j) = 1 2 δ(i, j) δ(m, n)
+(m,n)∈N
+
+összefüggéssel adjuk meg, míg az (x, y) koordinátájú centrális elemre h(x, y) = 1/2. Éles intenzitásátmenetek esetén ez a maszkolás az éleket nem mossa el, csak az objektumok belsejében lévő zajokat szűri ki.
+
+1.4.5.
+
+Nem lineáris középszűrők
+
+A nem lineáris középszűrők az átlagoló technikák kiterjesztetését jelentik a következő modell alapján [27]:      (i,j)∈N c(i, j)h [f (i, j)]  , g(x, y) = h−1   c(i, j)  
+(i,j)∈N
+
+1. fejezet. Képjavítás
+
+29
+
+ahol f az eredeti kép, g az eredménykép, N az (x, y) koordinátájú képpont lokális (például 3 × 3-as) környezete, c megfelelő súlyfüggvény, h pedig egyváltozós invertálható függvény. Ha konstans c(i, j) súlyozást alkalmazunk, a szűrést homomorfnak nevezzük. Az alábbi homomorf szűréseket gyakran használják a képfeldolgozásban: • számtani közép, h(f ) = f , • harmonikus közép, h(f ) = 1/f , • mértani közép, h(f ) = log f .
+
+1.4.6.
+
+Képsorozat átlagolása
+
+Az átlagolást képsorozatok esetén is jól alkalmazhatjuk zajszűrésre. Előfordulhat, hogy a felvételekre mindig rárakódik valmilyen állandó véletlen zaj (például műholdképek esetén). Ilyenkor alkalmazhatjuk azt a technikát, hogy ugyanazon jelenetről több (zajos) felvételt készítünk, majd ezeket a felvételeket átlagoljuk. A megközelítés hátterében az áll, hogy a zajos felvételek zömén az egyes képpontok általában a valódi intenzitásértékükkel szerepelnek. Az átlagolás mellett természetesen alkalmazhatjuk az előző szakaszokban bemutatott egyéb technikákat (medián szűrés, intervallum módszer) is. A képek átlagolásának használata bizonyos feltételek mellett matematikailag is jól indokolható. Nevezetesen, tekintsük a g(x, y) = f (x, y) + µ(x, y) modellt, ahol f az eredeti kép, µ a felvétel során az arra rakódó zaj, g pedig az eredménykép. A modell realizációjaként tekintsünk M megﬁgyelést: g1 (x, y) = f (x, y) + µ1 (x, y), g2 (x, y) = f (x, y) + µ2 (x, y), . . . gM (x, y) = f (x, y) + µM (x, y), továbbá tegyük fel, hogy a zaj korrelálatlan és 0 várható értékű. Készítsük el a 1 g(x, y) = M
+M
+
+gi (x, y)
+i=1
+
+átlagképet. Ekkor g az f torzítatlan becslése, azaz M → ∞ esetén E (g(x, y)) = f (x, y), és 1 2 σ (µ(x, y)) , M ahol E egy valószínűségi változó várható értékét, σ 2 pedig a szórásnégyzetét jelöli. Az 1.26. ábrán a fenti eljárásra láthatunk példát az eredeti felvételek 25%-os normális zajjal való terhelése mellett. σ 2 (g(x, y)) =
+
+30
+
+1. fejezet. Képjavítás
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+1.26. ábra. Képsorozat átlagolása; (a) - (c) (zajos) képsorozat elemei, (d) a képsorozat átlaga.
+
+1.4.7.
+
+Aluláteresztő szűrők
+
+Az aluláteresztő szűrés az 1.3.10. szakaszban tárgyalt felüláteresztő szűrésnél leírtakkal éppen ellentétes gondolaton alapul. Nevezetesen, a frekvenciatartomány magas frekvenciás részeit gyengítve (vagy akár teljesen kiszűrve) a képen elmosó hatást érhetünk el. A felüláteresztő szűrésnél tárgyaltakhoz hasonlóan többféle szűrőt is alkalmazhatunk erre a célra, amelyek éppen az ellentétes hatást eredményezik, mint a megfelelő felüláteresztő szűrőpárjuk. Az ideális aluláteresztő szűrőfüggvény: H(u, v) = 1, ha ||(u, v)|| ≤ K, 0, egyébként,
+
+ahol K megfelelő pozitív küszöb (vágási frekvencia). Az ideális aluláteresztő szűrő síkkal való metszete és teljes alakja az 1.27. ábrán, hatása pedig az 1.28. ábrán látható.
+
+(a)
+
+(b)
+
+1.27. ábra. Az ideális aluláteresztő szűrő; (a) síkkal való metszete, (b) teljes alakja. A simább átmenetet biztosító Butterworth alulátersztő szűrő: H(u, v) = 1+ , ||(u,v)|| t K 1
+
+1. fejezet. Képjavítás
+
+31
+
+(a)
+
+(b)
+
+(c)
+
+1.28. ábra. Az ideális aluláteresztő szűrő hatása; (a) eredeti kép, (b) szűrt kép K = 25 esetben, (c) szűrt kép K = 60 esetben. ahol K a vágási frekvencia, t pedig az átmenet sebességét szabályozó pozitív paraméter. A Butterworth felüláteresztő szűrő síkkal való metszetét és teljes alakját az 1.29. ábra, hatását pedig az 1.30. ábra mutatja.
+
+(a)
+
+(b)
+
+1.29. ábra. A Butterworth aluláteresztő szűrő (t = 2 paraméterű eset); (a) síkkal való metszete, (b) teljes alakja.
+
+1.4.8.
+
+Sávszűrés
+
+A felül- és aluláteresztő szűrők konstrukciójának ötletét felhasználva készíthetünk speciálisabb célú sávszűrőket, amelyek feladata egy adott frekvenciasávba eső értékek gyengítése vagy erősítése. Ezzel a technikával lehetőség nyílik a kép éleinek azok erőssége alapján való feldolgozására. Példaképpen megadunk egy ideális sávkiemelő szűrőfüggvényt: H(u, v) = 1, ha K1 ≤ ||(u, v)|| < K2 , 0, egyébként,
+
+ahol K1 és K2 nemnegatív vágási frekvenciák. A szűrő síkkal való metszete és teljes térbeli alakja megﬁgyelhető az 1.31 ábrán.
+
+32
+
+1. fejezet. Képjavítás
+
+(a)
+
+(b)
+
+(c)
+
+1.30. ábra. A Butterworth aluláteresztő szűrő hatása; (a) eredeti kép, (b) szűrt kép t = 2, K = 10 esetben, (c) szűrt kép t = 2, K = 20 esetben.
+
+(a)
+
+(b)
+
+1.31. ábra. Ideális sávszűrő; (a) síkkal való metszete, (b) teljes alakja.
+
+2. fejezet
+
+Maszkolás
+2.1. Bevezetés
+
+A maszkolás alapötlete, hogy a végrehajtani kívánt műveletet nem egyszerre az egész képre globálisan, hanem annak kisebb részleteire lokálisan hajtjuk végre. Az ilyen jellegű eljárásokhoz maszkokat deﬁniálunk, amelyek segítségével eldönthetjük, hogy mi történjen az egyes képrészletekkel. Maszkoknak általában kis méretű, konvex, a maszk origójára centrálszimmetrikus alakzatokat választunk, így például a négyzetrácson a leggyakrabban 3 × 3-as maszkokkal dolgozunk. Maszkolásnál a maszk elemeit megfelelő valós súlyokkal ellátva, műveletet értelmezve a képrészlet és a maszk között, a képrészlet maszk origójára illeszkedő képpontjára egy maszkválasz értéket számolunk ki, melynek segítségével eldönthetjük, hogy mi történjen az adott ponttal a továbbiakban. A maszkot a kép maszkkal megegyező méretű összes képrészletére helyezve a teljes képen elvégezhető a kívánt művelet. A maszk és a képrészlet között értelmezett műveletként nagyon gyakran az egyszerű belső szorzatot tekintjük, ilyenkor konvolúciós maszkolásról beszélünk. Az eljárás elemeit a 2.1. ábra mutatja, ahol X a vizsgált képrészletből, illetve W a használt 3 × 3-as maszkból sorfolytonosan képzett 9D-s oszlopvektor, a képrészlet x5 pontjára adott maszkválasz pedig WT,X =
+9
+
+wi xi .
+i=1
+
+Morfológiai műveletek alkalmazásakor szintén a fent leírt maszkolási technikát alkalmazzuk, ám a konvolúciós maszolással ellentétben itt nem aritmetikai műveletet végzünk a vizsgált képrészlet és a maszk elemei között.
+
+2.2.
+
+Alakzatok detektálása maszkokkal
+
+A konvolúciós maszkolási eljárást alkalmazhatjuk olyan tulajdonságok detektálására, amelyek bizonyos alakzatok jelenlétére utalnak. Természetes elvárás, hogy amennyiben egy, a 33
+
+34
+
+2. fejezet. Maszkolás
+
+(a)
+
+(b)
+
+(c)
+
+2.1. ábra. Maszkolás a képtartományban 3 × 3 méretű maszkkal; (a) a vizsgált képrészlet adott xi intenzitásokkal, (b) a használt maszk, (c) vektoros felírás a W T , X maszkválasz meghatározásához.
+
+környezettől eltérő tulajdonságot kívánunk detektálni (például éldetektálás), akkor konstans képrészlet esetén a maszk 0 választ adjon. Más megfogalmazásban ez azt jelenti, hogy ilyen
+9
+
+esetben alkalmazzuk a
+
+az alábbiakban felhasználva, példát adunk néhány igen gyakran előforduló eset maszkokkal való detektálhatóságára.
+
+i=1
+
+wi = 0 feltételt a maszk súlyainak megválasztásához. Ezt a feltételt
+
+2.2.1.
+
+Pontdetektálás
+
+A pontdetektálás célja a környezetüktől erősen eltérő intenzitású (izolált vagy kontúr-) képpontok megkeresése. Az ehhez használható egyszerű maszkot és annak egy alkalmazását a 2.2. ábra mutatja.
+
+(a)
+
+(b)
+
+(c)
+
+2.2. ábra. Izolált- és határpontok meghatározása maszkkal; (a) detektáló maszk, (b) eredeti kép, (c) maszkolás eredménye. A W T , X maszkválasz nagysága jól mutatja a vizsgált képpont izoláltságának mértékét. Így például egy megfelelő K > 0 küszöböt használva, | W T , X | > K esetén a képpontot izoláltnak tekinthetjük. Vegyük észre továbbá azt is, hogy a maszksúlyok összege 0, azaz az izoláltság tulajdonsága konstans intenzitású területen a leggyengébb.
+
+2. fejezet. Maszkolás
+
+35
+
+2.2.2.
+
+Vonaldetektálás
+
+A vonaldetektálás célja a környezetüktől eltérő intenzitású vonalszegmensek meghatározása. Jellemzően a négy fő (vízszintes, függőleges és két átlós) irány detektálása a cél, amelyet a 2.3. ábra maszkjaival végezhetünk el.
+
+2.3. ábra. Vonaldetektáló maszkrendszer a négy fő irányban. A maszksúlyok összege most is 0, továbbá a pontdetektáláshoz hasonlóan újfent célszerű küszöbölést alkalmazni. Nevezetesen, azoknak a Wi maszkoknak (i = 1, 2, 3, 4) a válaszát tekintjük relevánsnak, amelyekre | WiT , X | > K (pozitív küszöb). Ha csak a legjellemzőbb
+4
+
+vonalirányt keressük, értelemszerűen a max{| WiT , X |} maszkválasszal kell dolgoznunk. A
+i=1
+
+vonaldetektáló maszkok 2.2(b) képre adott eredményét a 2.4. ábrán tekinthetjük meg. Vegyük észre, hogy az egyes maszkok valóban a vizsgált irányokra adják a legerősebb választ.
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+2.4. ábra. Vonalak meghatározása maszkokkal; (a) vízszintes vonalak, (b) függőleges vonalak, (c)-(d) átlós vonalak. A digitális egyenes deﬁniálható a 8-összefüggőség megkövetelése nélkül is. Ebben az esetben az y = mx + b (m, b ∈ R) digitális egyenest azon (z1 , z2 ) ∈ Z2 pontok alkotják, amelyekre z2 = mz1 + b. Az így deﬁniált, illetve a 8-összefüggő, de nem a négy főirányban haladó egyenesek detektálásához célszerű 3 × 3 méretűnél nagyobb maszkot használni.
+
+2.2.3.
+
+Éldetektálás
+
+Az 1.3.1. szakaszban bemutattuk, hogyan működenek a klasszikus, 2 × 2-es környezeten alapuló éldetektáló eljárások. Ugyanerre a feladatra 3 × 3-as maszkokat is használhatunk, mint például a 2.5. ábrán látható ötelemes (−2, −1, 0, 1, 2 elemekből álló) maszkrendszer, amely a négy fő irányban detektál éleket.
+
+36
+
+2. fejezet. Maszkolás
+
+2.5. ábra. Éldetektáló 3 × 3-as maszkrendszer a négy fő irányban. A 0 súlyösszeg megtartásával deﬁniálhatók más maszkrendszerek is, lásd [27]. Az éltulajdonság meglétét a vizsgált pontban a vonaldetektálásnál leírt küszöbölést alkalmazva ellenőrizhetjük. A 2.6(b)-(c) ábrán az ötelemes maszkkészlet vízszintes és függőleges éleket detektáló maszkjaihoz tartozó eredményeket láthatjuk. Az összes él meghatározásához tekinthetjük például ennek a két képnek az átlagát vagy maximumát (lásd 2.6(d) ábra).
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+2.6. ábra. Éldetektálás 3 × 3 méretű maszkokkal; (a) eredeti kép, (b) vízszintes élek, (c) függőleges élek, (d) a vízszintes és függőleges élképek átlaga. Az első derivált közelítése mellett az éldetektálásban jól használhatók a Laplace operátort (második deriváltat) közelítő 3 × 3-as maszkok is. A két alapvető szomszédsági viszonynak megfelelően ennek két formája használatos, de léteznek nagyobb méretű maszkok is, amelyek a pont tágabb környezetét tekintik, lásd 2.7. ábra. Vegyük észre, hogy az első deriváltat közelitő éldetektáló maszkokkal ellentétben a Laplace maszkok forgatásinvariánsak. A 2.8. ábrán látható Laplace maszkokkal változtathatjuk a centrális képpont és a környezet súlyviszonyát, ám egyúttal elveszítjük a forgatásinvarianciát.
+
+2.2.4.
+
+Kombinált maszkrendszerek
+
+A kombinált maszkrendszerek használatával egy maszkrendszerrel több tulajdonság detektálását is végezhetjük. A maszkrendszeren belül egy tulajdonság detektálásához több maszk is tartozhat, amelynek megfelelően a maszkokat csoportosítjuk. A célunk az, hogy eldöntsük, a több vizsgált tulajdonságok közül melyik a legjellemzőbb az adott pontra. Az eljárás helyes működéséhez feltesszük, hogy a maszkvektorok ortonormált rendszert alkotnak. Ekkor az egyes csoportokba tartozó vektorok az origótól eltekintve diszjunkt tulajdonságaltereket feszítenek fel, és egyszerűen meghatározható a vizsgált képrészlet ezen alterekkel bezárt szöge.
+
+2. fejezet. Maszkolás
+
+37
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+(e)
+
+(f)
+
+(g)
+
+2.7. ábra. Laplace operátor konvolúciós maszkjai és azok hatása; (a) L4 maszk, (b) L8 maszk, (c) 5 × 5-ös Laplace maszk, (d) eredeti kép, (e) L4 maszk hatása, (f) L8 maszk hatása, (g) 5 × 5-ös maszk hatása.
+
+2.8. ábra. 3 × 3-as Laplace maszkok speciális súlyozással. Természetes döntésként az adott pontra nézve azt a tulajdonságot tartjuk legvalószínűbbnek, amelynek tulajdonságaltere a legkisebb szöget zárja be a képrészlettel. A szög meghatározásához a maszkválasz műveletet használjuk. Az általános 3 × 3 maszkok esete előtt az elvet a 2.9. ábrán is látható 3D-s esetre mutatjuk be. Legyenek W1 , W2 és W3 ortonormált 3D-s vektorok és X a vizsgált képrészlet. Tegyük fel továbbá, hogy két tulajdonságot vizsgálunk, ahol W1 és W2 közösen az egyik, míg W3 a másik tulajdonságot detektálja. A feladat így a felfeszített 2D-s és 1D-s tulajdonságaltér Xszel bezárt szögének meghatározása. Vegyük észre, hogy a maszkvektorok ortonormáltsága miatt a maszkválaszokra WiT , X = ||WiT || ||X|| cos θi = ||X|| cos θi , i = 1, 2, 3 adódik, ahol θi az X és a Wi által bezárt szög, ami éppen az X-nek a maszkvektorok tengelyeire eső merőleges vetületének a hossza. Így az X képrészre, illetve annak a W1 és W2 által
+
+38
+
+2. fejezet. Maszkolás
+
+2.9. ábra. Kombinált maszkrendszer 3D-ben két tulajdonságaltérrel.
+
+felfeszített altérre eső P (X) vetületére
+
+||P (X)|| = ||X|| =
+
+T W1 , X
+
+2
+
+T + W2 , X
+
+2
+
+1 2
+
+,
+2
+
+T W1 , X 2
+
++
+
+T W2 , X 2
+
+T + W3 , X
+
+1 2
+
+.
+
+Az X képrészlet W1 és W2 , illetve a W3 által felfeszített alterekkel bezárt α, illetve β szöge T W3 ,X tehát α = arccos ||P (X)|| , illetve β = arccos ||X|| . ||X|| Mivel a 3 × 3-as maszkok 9D-s vektorokba rendezehetők, ezért a páronkénti ortogonalitás legfeljebb kilenc elemű kombinált maszkrendszereket enged meg. Tegyük fel, hogy a W1 , W2 , . . . , W9 maszkok a C1 , C2 , . . . , CK (K ≤ 9) osztályba vannak csoportosítva az egyes tulajdonságok detektálásához, így Cj maszkjainak sorszámai a 1 +
+K i=1 j−1 i=1
+
+|Ci | = 9 adódik. Indexeljük át a maszkokat úgy, hogy a |Ci |,
+j i=1
+
+|Ci | indexintervallumba essenek. Rögzítsünk
+
+egy 9D-s X képrészletet és jelölje θi (i = 1, . . . , K) ennek a Ci osztályba tartozó maszkok
+
+2. fejezet. Maszkolás által felfeszített altérrel bezárt szögeit. Ekkor a 3D-s esethez hasonlóan megmutatható:  |C
+1|
+
+39
+
+1
+WiT ,X
+2 2
+
+ θ1 = arccos  i=1 9
+i=1
+
+WiT ,X 2
+
+  , 1 2   ,
+
+ |C1 |+|C2 |  i=|C |+1 θ2 = arccos  91 . . .
+i=1
+
+WiT ,X 2
+
+WiT ,X 2
+
+
+
+|C1 |+···+|CK |
+
+θK
+
+ i=|C1 |+···+|CK−1 |+1 = arccos  9  T 2
+i=1
+
+WiT ,X 2
+
+1 2   . 
+
+Wi ,X
+
+A K tulajdonság közül azt a j-edik tulajdonságot tekintjük a legjellemzőbbnek a vizsgált pontban, amelyre θj = min{θi }. A 2.10. ábrán egy kilenc elemű ortogonális maszkrendszert ﬁgyelhetünk meg, amely három tulajdonság (él, vonal és átlagosság) egyidejű detektálására alklamas. Jól megﬁgyelhető, hogy a szigorúbb feltételrendszer miatt a maszksúlyok kevésbé optimálisak, mint a korábbi szakaszokban ugyanezen feladatokra egymástól függetlenül megadott maszkok esetében.
+i=1 K
+
+2.10. ábra. Három tulajdonság egyidejű detektálására alkalmas kilenc elemű maszkrendszer.
+
+2.3.
+
+Matematikai morfológia
+
+A morfológia szó a biológia szakterületén az állatok és növények alakjának, struktúrájának leírását jelenti. Ennek analógiájára a képfeldolgozásban a képi alakzatok reprezentációjára és leírására a matematikai morfológia eszköztárát használjuk. Ide sorolható az alakzatok határvonalának, vázának és konvex burkának vizsgálata, valamint utófeldolgozásként a morfológiai szűrés, vékonyítás és a kinövések eltávolítása. A matematikai morfológia a halamazelméleten alapul, azaz a képi objektumokat halmazokkal reprezentáljuk. A bináris képeket 2D-s (képpontok helykoordinátái), míg az intenzitásképeket 3D-s (képpontok helykordinátái és intenzitásai) halmazokkal reprezentálhatjuk. Az analóg (folytonos) és a digitális alakzatok morfológiai elmélete szépen harmonizál, ebben
+
+40
+
+2. fejezet. Maszkolás
+
+a jegyzetben az egyszerűbb érthetőség kedvéért a fogalmak és eredmények elsősorban a 2D-s digitális térre való megfogalmazását közöljük. Tekintsük át először a morfológiai műveletek deﬁniálásához szükséges halmazelméleti alapfogalmakat. Legyenek A, B ⊆ Z2 digitális halmazok és legyen x = (x1 , x2 ) ∈ Z2 egész vektor. Ekkor • az A halmaz x vektorral való eltoltja (A)x = {y ∈ Z2 | y = a + x, a ∈ A}, • az A halmaz (középpontos) tükrözöttje ˆ A = {y ∈ Z2 | y = −a, a ∈ A}, • az A halmaz komplementere Ac = {y ∈ Z2 | y ∈ A}, • az A és B halmaz különbsége A \ B = {y ∈ Z2 | y ∈ A, y ∈ B} = A ∩ B c .
+
+2.4.
+
+Dilatáció és erózió
+
+A morfológiai műveletek tárgyalását két olyan eljárással (a dilatációval és erózióval) kezdjük, amelyek a későbbi összetett eljárások alapelemei. Ez a két művelet duális tulajdonságú, vagyis egyik a másikból származtatható, ám az alaphalmazra gyakorolt különböző hatásuk miatt külön szokták deﬁniálni őket. Legyen A, B ⊆ Z2 és jelölje ∅ az üres halmazt. Az A halmaz B-vel való dilatáltja alatt az A ⊕ B = {x | [ˆ x ∩ A] = ∅} (B) halmazt értjük. A dilatáció során tehát először középpontosan tükrözzük a B halmazt, majd eltoljuk az az x vektorral. Az A ⊕ B dilatált meghatározásához ezután az összes olyan x ˆ eltolásvektort tekintjük, amelyekkel a B-t eltolva annak még marad közös pontja az A-val. Ezt a gondolatmenetet felhasználva megmutatható, hogy ˆ A ⊕ B = {x | [(B)x ∩ A] ⊆ A} is teljesül. A B halmazt, amivel az A halmazt dilatáljuk (növeljük) struktúraelemnek nevezzük. Vegyük észre, hogy a B helyzete a dilatáció végeredményét csak egy eltolás mértékében befolyásolja, így feltehetjük, hogy a B tartalmazza az origót. Amennyiben a B centrálisan ˆ szimmetrikus, akkor a fenti összefüggésekben a B-t B-re cserélhetjük. A gyakorlati alkalmazásokban használt struktúraelemeknél igen gyakran a viszonylag kis méretet és a konvexitást is megkövetelik. A dilatációs eljárás hatását a 2.11. ábrán ﬁgyelhetjük meg.
+
+2. fejezet. Maszkolás
+
+41
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+(e)
+
+2.11. ábra. A dilatáció eredménye; (a) eredeti A alakzat, (b) adott B struktúraelem, (c) az A dilatáltja, (d) másik B struktúraelem, (e) az A dilatáltja erre nézve. A dilatációnak léteznek egyéb (ekvivalens) deﬁníciói is. Az itt közölt megközelítés azonban sok rokon vonást mutat a konvolúciós maszkok elméletével, bár a morfológia halmazműveleteken, míg a konvolúciós szűrés aritmetikai műveleteken alapul. A dilatáció duális műveletének, az eróziónak a deﬁníciója a következő: A B = {x | (B)x ⊆ A}.
+
+Így az A halmaz B-vel való erodáltja azon x vektorokat tartalmazza, amelyekkel B-t eltolva az még A belsejében marad. Erodáló eljárásra a 2.12. ábrán láthatunk példákat. A dilatációhoz hasonlóan az eróziónak is léteznek egyéb deﬁniálási formái, ám az alkalmazásokban szintén a maszkoláshoz való hasonlósága miatt a fenti deﬁníció a domináns. A dilatáció és erózió duális viszonyára az (A ˆ B)c = Ac ⊕ B
+
+összefüggés mutat rá, amit szemléletesen úgy fogalmazhatunk meg, hogy a halmaz erodáltja megegyezik a halmaz komplementere dilatáltjának komplementerével. Az állítás bizonyításá-
+
+42
+
+2. fejezet. Maszkolás
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+(e)
+
+2.12. ábra. Az erózió eredménye; (a) eredeti A alakzat, (b) adott B struktúraelem, (c) az A erodáltja, (d) másik B struktúraelem, (e) az A erodáltja erre nézve. ban (lásd [10]) jól megﬁgyelhető a két művelet közötti szoros kapcsolat. A duális viszony azért is fontos, mert segítségével könnyen beláthatók az egyik műveletre teljesülő állítások a másik műveletre nézve is.
+
+2.4.1.
+
+Nyitás és zárás
+
+Habár a dilatáció és erózió duális műveletek (azaz a komplementerhalmazokon fordított a hatásuk), a két művelet nem inverze egymásnak, így a dilatációt követő erózió (ugyanazon) struktúraelemmel, illetve a műveletek fordított sorrendje nem adja vissza az alaphalmazt. Ennek belátásához tekinthetünk például egy egy pontból álló A halmazt, amelyet egy kezdő erózió teljes egészében töröl. (A fordított műveletsorrendre egy képpontnyi lyukat tekinthetünk.) A fentiek értelmében az A halmaz B struktúraelemmel történő nyitását A ◦ B = (A míg a zárását A • B = (A ⊕ B) B módon deﬁniáljuk. A nyitás simítja az objektum határát az azon lévő kisebb kinövések törlésével, és megszakítja a keskeny szálakat. A zárás szintén simítja a határokat, de a nyitással ellentétben az azon lévő kisebb hézagok betömésével, kitölti továbbá a kisebb lyukakat, B) ⊕ B,
+
+2. fejezet. Maszkolás
+
+43
+
+szakadásokat és keskeny csatornákat. Sokszor az döntheti hogy melyiküket használjuk egy alkalmazás során, hogy a nyitás csökkenti, míg a zárás növeli az alaphalmaz területét. A nyitás és zárás nem véletlenül kapták a nevüket, mivel tulajdonságaik megfelelnek a halmaztopológiában használt nyitás és zárás fogalmának. Nevezetesen, a nyitás A◦B ⊆A C ⊆ D =⇒ C ◦ B ⊆ D ◦ B (A ◦ B) ◦ B = A ◦ B tulajdonságokkal, míg a zárás A•B ⊇A C ⊆ D =⇒ C • B ⊆ D • B (A • B) • B = A • B (bővítő), (monoton), (idempotens) (szűkítő), (monoton), (idempotens)
+
+tulajdonságokkal rendelkezik. Mivel a nyitás és zárás a dilatáción és erózión alapul, ennek megfelelően a dualitás közöttük is fennáll, azaz a halmaz nyitása megegyezik a komplementerhalmaz zárásának komplementerével, illetve a halmaz zárása megegyezik a komplementerhalmaz nyitásának komplementerével azaz (A B) ⊕ B = ((Ac ⊕ B) B)c , illetve (A ⊕ B) B = ((Ac B) ⊕ B)c ,
+
+ˆ ahol az egyszerűbb megfogalmazás kedvéért feltettük, hogy B = B. A gyakorlatban a dilatáció/erózió, illetve a nyitás/zárás műveletekben általában kis méretű (3 × 3-as) B struktúraelemet használnak. Amennyiben ennél nagyobb változtatások szükségesek a képen (például a betömni kívánt lyukak viszonylag nagyok) akkor vagy nagyobb (5 × 5-ös vagy 7 × 7-es) struktúraelemet kell választanunk illetve egy másik lehetőség, hogy a nyitásban és zárásban a dilatációs és eróziós lépéseket egymás után többször alkalmazzuk az (((A B) B) ⊕ B) ⊕ B, illetve (((A ⊕ B) ⊕ B) B) B
+
+módon. Ügyeljünk arra, hogy a kiinduló halmaz méretének hozzávetőleges megőrzéséhez ilyenkor ugyanolyan számú dilatációs és eróziós lépést végezzünk. Kombiálhatjuk továbbá a nyitás és a zárás műveletét is egy lépésben (A ◦ B) • B, amivel mindkét módszer hatását érvényesíthetjük a képre. Ez utóbbi eljárást a 2.13. ábrán ﬁgyelhetjük meg.
+
+2.4.2.
+
+Hit-Miss transzformáció
+
+A Hit-Miss transzformáció egy igen általános morfológiai eszköz, amelyből például a már bemutatott erózió és dilatáció is származtatható. Az általánosabb megfogalmazás mellett a Hit-Miss transzformációt igen széles körben, például alakzatdetektálásra is használhatjuk.
+
+44
+
+2. fejezet. Maszkolás
+
+2.13. ábra. A morfológiai nyitás és zárás kombinálása. A transzformációhoz használt B struktúraelemről most feltesszük, hogy B = B1 ∪ B2 alakú, ahol a B1 és B2 halmazok diszjunktak, azaz B1 ∩ B2 = ∅. Ekkor az A halmaz B halmazzal való Hit-Miss transzformálján az A B = (A B1 ) ∩ (Ac B2 )
+
+halmazt értjük. Szemléletesen, a B1 , illetve B2 halmaz segítségével a vizsgálni kívánt objektum-, illetve háttérpontok helyét írhatjuk elő a B struktúraelemen belül. Halmazműveleteket és a dilatáció/erózió dualitását használva a fenti összefüggés A B = (A ˆ B1 ) \ (Ac ⊕ B2 )
+
+alakra hozható, vagyis A B olyan pontokat tartalmaz, amelyekre nézve B1 illeszkedik az A-ra, B2 pedig az Ac -re. Az erózió is speciális Hit-Miss transzformációnak tekinthető a B1 = B, B2 = ∅ választással, mivel ekkor a deﬁníció az A B = (A B1 ) = A B
+
+alakra egyszerűsödik. A Hit-Miss transzformáció egy X alakzat detektálásához a következő módon használható. Tekintsünk egy X-et tartalmazó W ablakot és legyen B1 = X, B2 = W \ X. Ekkor az A B = (A X) ∩ [Ac (W \ X)]
+
+Hit-Miss transzformált éppen az X alakzat(ok) középpontjait tartja meg.
+
+2. fejezet. Maszkolás
+
+45
+
+2.4.3.
+
+Kontúr kinyerése
+
+Az A halmaz ∂A-val jelölt határát az A egy B struktúraelemmel való erodálásával, majd az így kapott eredményhalmaz A-ból való kivonásával kaphatjuk meg: ∂A = A \ (A B).
+
+Véges vizsgált halmaz esetén a halmaz határára helyezett struktúraelem egyes részei "lelógnak". Ilyenkor a legegyszerűbb feltételezni, hogy ezek az elemek 0 értékűek (háttérpontok). Az eljárás eredményét a 2.14. ábrán ﬁgyelhetjük meg.
+
+(a)
+
+(b)
+
+(c)
+
+2.14. ábra. Kontúr kinyerése morfológiai műveletekkel; (a) eredeti A alakzat, (b) a felhasznált B struktúraelem, (c) az A halmaz ∂A kontúrja.
+
+2.4.4.
+
+Lyukak kitöltése
+
+Gyakran felmerülő probléma, hogy az alakzatok belseje olyan lyukakat tartalmaz, amelyeket ki szeretnénk tölteni. Az ezt megoldó iteratív eljárás első lépéseként tekintsük az A alakzatban lévő lyuk egy p pontját. Mivel az eljárás lényege, hogy a lyuk pontjait objektumpontokká alakítjuk, ezért tekintsük p-t is annak, és legyen X0 = {p}. Ezt követően ismételjük az Xk = (Xk−1 ⊕ B) ∩ Ac iterációs lépést a k = 1, 2, 3, . . . értékekre. Amennyiben az A alakzat véges és 8-összefüggő határral rendelkező halmaz volt, úgy a fenti iteráció véges sok lépésben betömi az abban lévő lyukakat szimmetrikus B struktúraelem használata esetén (lásd 2.15. ábra). Mivel az iterációban használt dilatációs lépés önmagában a teljes teret kitöltené, ezért ennek megakadályozásához alkalmazzuk az A komplementerével való metszetképzést. Az ilyen jellegű morfológiai műveleteket feltételes dilatációknak nevezzük.
+
+2.4.5.
+
+Összefüggő komponensek meghatározása
+
+Jelölje Y az A halmaz egy összefüggő komponensét, és legyen p ∈ Y . Ekkor a következő iterációs eljárással határozhatjuk meg Y összes elemét: Xk = (Xk−1 ⊕ B) ∩ A, k = 1, 2, 3, . . . ,
+
+46
+
+2. fejezet. Maszkolás
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+2.15. ábra. Lyukak kitöltése morfológiai műveletekkel; (a) eredeti A alakzat, (b) a felhasznált B struktúraelem, (c) a kitöltő eljárás végeredménye, (d) az iteráció lépései. ahol X0 = {p}, B pedig egy megfelelő struktúraelem (lásd 2.16(c) ábra). Amennyiben valamely k-ra Xk−1 = Xk , akkor a keresett komponens Y = Xk . A lyukak betöltésére és az összefüggő komponensek meghatározására javasolt iterációs lépések nagyon hasonlóak. Az egyetlen különbség, hogy az utóbbi esetben az A halmazzal végezzük a metszetképzést annak komplementere helyett, mivel ekkor csak objektumpontokat keresünk.
+
+2.4.6.
+
+Konvex burok meghatározása
+
+Az alakzatok konvex burkát használhatjuk közvetlenül azok reprezentációjára, ám a konvexitás sok más eljárásban is nagyon hasznos tulajdonság. Az alábbiakban ismertetünk egy A alakzat C(A) konvex burkának előállítására használható egyszerű morfológiai algoritmust. Az eljárás az i i Xk = (Xk−1 B i ) ∪ A, i = 1, 2, 3, 4 és k = 1, 2, 3, . . .
+
+2. fejezet. Maszkolás
+
+47
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+2.16. ábra. Összefüggő komponensek keresése morfológiai műveletekkel; (a) eredeti Y komponens kiindulóponttal, (b) a felhasznált B struktúraelem, (c) az eljárás végeredménye, (d) az iteráció lépései.
+i egyenletek implementálásából áll, ahol X0 = A, a B i -k (i = 1, 2, 3, 4) pedig a négy fő iránynak i az i irányba való konvergenciát mutató halmazt, azaz megfelelő struktúraelemek. Jelölje D i i amelyre Di = Xk−1 = Xk (valamely k indexre). Ekkor az A konvex burkát a 4
+
+C(A) =
+i=1
+
+Di
+
+összefüggéssel deﬁniáljuk. Szemléletesen, az eljárásban először a B 1 struktúraelemmel végzünk Hit-Miss transzformációt a D1 konvergenciahalmaz eléréséig, majd ugyanezt elvégezzük a B 2 , B 3 és B 4 struktúraelemmel is és a konvex burkot a konvergenciahalmazok uniójaként állítjuk elő. A 2.17. ábrán egy példán követhetjük végig az eljárás egyes lépéseit.
+
+48
+aaa aaa
+aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa
+
+2. fejezet. Maszkolás
+
+aaa aaa aaa
+
+aaa aaa
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+(e)
+i 2.17. ábra. Konvex burok meghatározása morfológiai műveletekkel; (a) eredeti A = X0 alakzat, (b) a négy fő irányhoz tartozó struktúraelem, (c) az egyes struktúraelemek szerepe 1 a C(A) előállításában (d) a C(A) konvex burok, (e) a négy irányhoz tartozó D1 = X5 , 2 = X 2 , D 3 = X 3 , D 4 = X 4 konvergenciahalmaz. D 1 5 1
+
+2.4.7.
+
+Vékonyítás
+
+Az A halmaz B struktúraelemmel való A ⊗ B vékonyítását a következő műveletként deﬁniáljuk: A ⊗ B = A \ (A B) = A ∩ (A B)c . Az A szimmetrikusan (minden irányba) történő vékonyítását struktúraelemek {B} = {B 1 , B 2 , B 3 , . . . , B n } sorozatával végezhetjük el, ahol a B i elemek egymás elforgatottjai. Ennek megfelelően a struktúraelemek sorozatával végzett vékonyítást a A ⊗ {B} = ((. . . ((A ⊗ B 1 ) ⊗ B 2 ) . . . ) ⊗ B n ) módon értelmezzük. Így az A halmazon először a B 1 elemmel hajtunk végre egy vékonyító lépést, ezt követően a B 2 -vel, stb., majd végül a B n -nel. A vékonyító eljárást mindaddig ismételjük, amíg változás történik. Egy vékonyításra alkalmas struktúraelem-sorozatot és az azokkal végrehajtott vékonyítás eredményét a 2.18. ábra tartalmazza. A struktúraelemek ?-lel jelzett pozícióiban objektum- és háttérpont egyaránt állhat.
+
+2. fejezet. Maszkolás
+
+49
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+(e)
+
+(f)
+
+(g)
+
+(h)
+
+(i)
+
+(j)
+
+2.18. ábra. Vékonyítás morfológiai műveletekkel; (a) struktúraelemek, (b) eredeti A alakzat, (c)-(j) a B 1 , . . . , B 8 struktúraelemekkel lépésenként végzett vékonyítás (csak a változások feltüntetésével).
+
+2.4.8.
+
+Vastagítás
+
+A morfológiai vastagítás a vékonyítás duális művelete, azaz a halmaz vastagítása megegyezik a komplementer halmaz vékonyításával, vagyis az A halmaz B struktúraelemmel történő vastagítása A B = A ∪ (A B)
+
+módon deﬁniált. A vékonyításhoz hasonlóan természetesen a vastagítás is végezhető struktúraelemek {B} = {B 1 , B 2 , B 3 , . . . , B n }
+
+50
+
+2. fejezet. Maszkolás
+
+sorozatával. A dualitás miatt a vastagításban használt struktúraelemek megegyeznek a 2.18(a) ábrán lévőkkel, azzal a különbséggel, hogy fel kell cserélni az objektum-, illetve háttérpontok helyét. A gyakorlatban általában nem ezzel a megoldással találkozhatunk: gyakran az A halmaz komplementerét vékonyítják, majd az így kapott eredmény komplementerét tekintik. Ez az eljárás azonban az A természetétől függően izolált pontokat eredményezhet, amelyek kiszűrése általában egy utófeldolgozó lépésben valósul meg. A komplementer halmaz vékonyításán alapuló vastagítás lépéseit a 2.19. ábrán ﬁgyelhetjük meg.
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+(e)
+
+2.19. ábra. Vastagítás a komplementer vékonyításával; (a) eredeti A alakzat, (b) az A komplementere, (c) az Ac vékonyításának végeredménye, (d) az Ac vékonyításának komplementere, (e) az A vastagításának eredménye az izolált részek eltávolításával.
+
+2.4.9.
+
+Vázkijelölés
+
+A vázkijelölés sok digitális képfeldolgozási eljárás igen fontos építőköve. Fő erőssége abban rejlik, hogy segítségével az alakzatokat egyszerűbb és gazdaságosabb módon tudjuk leírni. A legfontosabb elvárások a deﬁniált vázzal szemben, hogy egy képpont vastagságú legyen, jól kövesse az objektum alakját annak közepén haladva, és őrizze meg a topologikus viszonyokat. Az egy pont vastagságúra való zsugorítás vékonyítási technikákkal valósítható meg. A váz elsőként a Blum [2] által 1967-ben javasolt középtengely-transzformáció (MAT) segítségével került deﬁniálásra. Nevezetesen egy ∂T kontúrral rendelkező T tartomány minden p pontjához először meghatározzuk a ∂T legközelebbi pontját. Ha a ∂T egynél több ilyen pontot tartalmaz, akkor a p pontot a T középtengelye egyik pontjának tekintjük. Másképp fogalmazva, a T középtengelyét azok a pontok alkotják, amelyek köré rajzolt és a T halmazban haladó maximális sugarú kör legalább két pontban érinti a T határát. Az eljárást "préritűz" hatásnak is szokták nevezni, mivel a ∂T pontjaiban "tüzeket" gyújtva az egyes hullámfrontok éppen a középtengelyen fognak összeérni. Vegyük észre, hogy a középtengely alakja függ a távolságméréshez használt metrikától. A 2.20. ábrán néhány (folytonos térbeli) alakzatot és azok középtengelyeit láthatjuk az euklideszi távolság használata esetén.
+
+2. fejezet. Maszkolás
+
+51
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+2.20. ábra. A középtengely, mint a maximális sugarú körök középpontjai; (a)-(d) egyszerű alakzatok középtengelyei. A középtengely meghatározása általában nem a deﬁníció közvetlen alkalmazásával történik, mivel ez így meglehetősen költséges eljárás lenne. Ehelyett használhatunk határpontokat törlő vékonyító algoritmusokat, amelyek (1) nem törölnek végpontokat, (2) nem változtatják meg az alakzat összefüggőségét és (3) nem okozzák az alakzat túlzott erózióját. Egy ilyen eljárás bemutatásához rendeljük az 1 értéket az alakzat pontjaihoz, illetve a 0 értéket az annak komplementeréhez tartozó pontokhoz. Az eljárás két fő lépést végez el az alakzat kontúrpontjaira, vagyis azokra az 1 értékű pontokra, amelyek 8-környezetében van 0 értékű pont is. A 2.21. ábra jelöléseit használva, a p1 pontot törlésre jelöljük, ha teljesül az alábbi négy feltétel: (i) 2 ≤ N (p1 ) ≤ 6; (ii) S(p1 ) = 1; (iii) p2 · p4 · p6 = 0; (iv) p4 · p6 · p8 = 0; ahol N (p1 ) = p2 + p3 + · · · + p8 + p9 a p1 pont nem 0 értékű 8-szomszédainak a száma, S(p1 ) pedig a 0 − 1 átmenetek száma a p2 , p3 , . . . , p8 , p9 , p2 sorozatban. Így például az 1 0 1 0 p1 0 1 1 1 képrészlet esetén N (p1 ) = 5 és S(p1 ) = 3. Az eljárás második lépésében az (i) és (ii) feltétel ugyanaz, az (iii) és (iv) helyett azonban az
+
+52
+
+2. fejezet. Maszkolás
+
+2.21. ábra. A vázkijelölő vékonyító eljárásban használt szomszédság. (iii’) p2 · p4 · p8 = 0; (iv’) p2 · p6 · p8 = 0; feltételeket szabjuk. Alkalmazzuk az első lépést az eredeti alakzat minden kontúrpontjára. Ha az (i)-(iv) feltételek legalább egyike nem teljesül, akkor az aktuálisan vizsgált p1 pontot nem változtatjuk. Ha az összes feltétel teljesül, akkor a p1 -et megjelöljük törlésre, de a struktúra megőrzéséhez addig nem töröljük ténylegesen, amíg a lépést az összes kontúrpontra végre nem hajtottuk. Miután az első lépés az összes kontúrpontra lefutott, töröljük a megjelölt pontokat (vagyis az értéküket 0-ra állítjuk). Ezután a második lépést végezzük el az első lépéssel teljesen egyező módon. Összegezve, a vékonyító eljárás (1) végrehajtja az első lépést a kontúrpontokra és megjelöli a törlendő pontokat, (2) törli a megjelölt pontokat, (3) végrehajtja a második lépést a megmaradt kontúrponokra és megjelöli a törlendőket, (4) törli a megjelölt pontokat. A váz kinyeréséhez az eljárást mindaddig iteratív módon folytatjuk, amíg már nem tapasztalunk változást. Az (i) feltétel akkor sérül, ha a p1 pontnak nulla, egy vagy hét darab 8-szomszédja van. Nulla szomszéd esetén a p1 izolált, míg egy szomszéd esetén a p1 végpont, tehát a törlése nyilvánvalóan nem indokolt. A hét szomszéddal rendelkező p1 pont törlése pedig az alakzat túlzott erózióját okozná. Az (ii) feltétel megóvja az egy képpont vastagságú szegmensen elhelyezkedő p1 törlését, mivel az megszüntetné a korábban meglévő összefüggőséget. Az (iii) és (iv) feltétel egyidejűleg akkor teljesül, ha (p4 = 0 vagy p6 = 0), illetve (p2 = 0 és p8 = 0). Az (i) és (ii) feltételeknek is a ﬁgyelembe vételével ez azt jelenti, hogy p1 vagy egy keleti/déli kontúrpont, vagy pedig egy észak-nyugati sarokpont, így a törlése indokolt. Hasonlóan látható, hogy a második lépés (iii’) és (iv’) feltétele akkor teljesül, ha (p2 = 0 vagy p8 = 0), illetve (p4 = 0 és p6 = 0),vagyis p1 vagy egy északi/nyugati kontúrpont, vagy pedig egy dél-keleti sarokpont. A 2.22. ábrán a vékonyító eljárás első két lépése és végeredménye látható. Lantuejoul [15] (lásd még Serra [26], illetve Maragos [16]) már 1980-ban megmutatta, hogy egy A alakzat váza előállítható morfológiai eróziók és nyitások segítségével. Így az A halmaz S(A) váza előáll az
+K
+
+S(A) =
+k=0
+
+Sk (A)
+
+2. fejezet. Maszkolás
+
+53
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+2.22. ábra. Vázkijelölés vékonyítással; (a) eredeti alakzat, (b) az első iterációs lépés, (c) a második iterációs lépés, (d) végeredmény. alakban, ahol
+K
+
+Sk (A) =
+
+{(A
+k=0
+
+kB) − [(A
+
+kB) ◦ B]}
+
+megfelelő B struktúraelemmel. Itt (A történő erózióját jelenti: (A
+
+kB) az A halmaz B-vel k egymást követő lépésben ...)
+k
+
+kB) = ((. . . (A B)
+
+B)
+
+B,
+
+továbbá K azt a lépésszámot, amelyre az A erodáltja még nem tűnik el, azaz K = max{k | (A kB) = ∅}.
+
+Látható, hogy az A halmaz S(A) váza az Sk (A) részvázak uniójaként áll elő. Teljesül továbbá, hogy A ezekből a részvázakból az
+K
+
+A=
+
+(Sk (A) ⊕ kB)
+k=0
+
+módon állítható vissza, ahol (Sk (A) ⊕ kB) az Sk (A) részváz B-vel k egymást követő lépésben való dilatációját jelenti: (Sk (A) ⊕ kB) = ((. . . (Sk (A) ⊕B) ⊕ B) ⊕ . . . ) ⊕ B ,
+k
+
+ahol a korábbiakhoz hasonlóan az összeadás legfeljebb K tagú.
+
+54
+
+2. fejezet. Maszkolás
+
+2.4.10.
+
+Kinövések eltávolítása
+
+A vékonyító és vázkijelölő algoritmusok végeredményeképpen előálló váz az eredeti objektum alkotóinak zajos vagy nem egyenletes volta miatt gyakran tartalmaz kisebb kinövéseket (lásd például 2.20. ábra). Ezek eltávolításához célszerű egy utófeldolgozó lépést tenni a vázkijelölést követően. Használhatunk egy vékonyításhoz hasonló eljárást, amely csak a végpontoktól visszafelé töröl. Ehhez a módszerhez inicializáló paraméterként célszerű megadnunk, hogy maximum milyen hosszúságú szegmenseket tekintünk kinövéseknek (a 2.23. ábrán mutatott példánkban a három hosszúságú kinövéseket ﬁgyeljük). A végpontoknál való vékonyításhoz tekinthetjük például a 2.23(b) ábrán látható B i (i = 1, . . . 8) struktúraelemeket, így első lépésként végrehajtjuk az X1 = A ⊗ {B} morfológiai vékonyítást, ahol B a B i struktúraelemekből képzett sorozatot jelöli. A fenti vékonyításnak a 2.23(a) ábrán lévő eredeti alakzatra való háromszori szekvenciális alkalmazásnak X1 végeredményét a 2.23(c) ábrán láthatjuk. Mivel a vékonyítás nem csak a kinövéseket, hanem a fontos vázkomponenseket is rövidítette, az eljárás következő lépésének a feladata az eredeti váz helyreállítása a kinövések elhagyásával. Ehhez először elkészítjük az X1 végpontjait tartalmazó X2 halmazt (lásd 2.23(d) ábra):
+8
+
+X2 =
+
+(X1
+k=1
+
+B k ),
+
+ahol a B k -k a korábban használt struktúraelemeket jelentik. Ezután hajtsunk végre az X2 beli végpontokra feltételes (A-val metszett) dilatációt a 2.23(b) ábrán látható szokásos 3 × 3as H struktúraelemmel. Ez a feltételes dilatáció megakadályozza, hogy a vizsgálni kívánt tartományt elhagyjuk, amint ez a 2.23(e) ábrán is megﬁgyelhető. Az eljárás 2.23(f) ábrán látható végeredményét az X4 = X1 ∪ X3 módon képezzük.
+
+2.4.11.
+
+Golay ábécé
+
+Ebben a szakaszban a morfológiai műveletek összefoglalásként bemutatjuk a Golay ábécé elemeit (lásd [9, 26], illetve 2.1. táblázat), amelyek a már ismert maszkok mellett újakat is tartalmaznak. A maszkolási eljárás a korábbi szakaszokban látottakhoz hasonlóan a kiindulási alakzat és a struktúraelemek közötti Hit-Miss transzformációkkal történik, ezért az új elemek használatát és az általuk szolgáltatott eljárást nem magyarázzuk el részletesen. A struktúraelemekben az 1 értékek az objektumpontokat, a 0 értékek a háttérpontokat jelölik, míg a ? helyeken akár 0, akár 1 állhat. Az ábécé elnevezést az indokolja, hogy minden morfológiai műveletnek egy betűt feleltetünk meg.
+
+2. fejezet. Maszkolás
+
+55
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+(e)
+
+(f)
+
+2.23. ábra. Kinövések eltávolítása morfológiai műveletekkel; (a) eredeti A váz, (b) az eljárásban használt struktúraelemek, (c) az A vékonyításának eredménye, (d) az A vékonyításának végpontjai, (e) a végpontok dilatálása a törölt vázszegmensek visszaállításához, (f) az eljárás végeredménye. A morfológia műveletek szimmetrikus elvégzéséhez természetesen a megadott maszkok 90◦ -os elforgatottjait is alkalmaznunk kell. (A H és I betű esetében erre persze nincsen szükség.) Morfológiai műveletek nem csak a négyzetrácson értelmezhetők. Így például a hatszögrács Golay ábécéjének fenti feladatokat ellátó elemeit [26]-ban megtalálhatjuk.
+
+56
+
+2. fejezet. Maszkolás
+
+2.1. táblázat. A Golay ábécé elemei. Golay betű H (erózió) Struktúraelemek 1 1 1 1 1 1 1 1 1 Golay betű D (törlés) 0 0 0 Struktúraelemek 0 ? ? 0 ? ? 1 1 0 ? 1 ? ? ? ? ? 1 ? 1 0 0 0 1 0 1 1 1 1 1 ? 0 0 0 ? 1 0 1 1 1 0 ? 1 1 0 0 ? 1 ? 0 0 0 ? 0 0 1 1 0 ? ? 1 1 ? ? ? 1 ? ? ? ? ? ? ? 1 ? ? 1 ? ? 0 ? 1 ? 0 ? ? ? ? ? ? ?
+
+?
+
+I (dilatáció)
+
+0 0 0 0 0 0 0 0 0
+
+F (törlés)
+
+1 0 1
+
+0
+
+E (törlés)
+
+? ? ? 0 1 0 0 0 0 0 ? ? 0 1 ? 1 ? 0 1 ? ? 1 1 1 ? ? 1 ? 1 ? ? ? ? 0 ?
+
+F2 (törlés)
+
+1 0 0
+
+1
+
+L (törlés)
+
+0 0 0 ? 1 ? 1 1 1
+
+K (törlés)
+
+1 ? ?
+
+0
+
+M (törlés)
+
+1 ? ? 1 1 0 1 ? ?
+
+C (növelés)
+
+1 1 1
+
+?
+
+Irodalomjegyzék
+[1] I. Aizenberg, C. Butakoﬀ, D. Paliy, K. Egiazarian and J. Astola, Eﬀective Detection and Elimination of Impulsive Noise with a Minimal Image Smoothing, In Proceedings of IEEE International Conference on Image Processing (ICIP’2003), vol.3, pages 357-360, 2003. [2] H. Blum, A transformation for extracting new descriptions of shape, In Wathen-Dunn, Weiant (Ed.), Symp. on Models for the Perception of Speech and Visual Form (Boston, Nov. 1964), M.I.T. Press, Cambridge, Mass. [3] M. Brady, Representing shape, In M. Brady, L.A. Gerhardt and H.F. Davidson, editors, Robotics and Articial Intelligence, pages 279-300, Springer + NATO, Berlin, 1984. [4] J.F. Canny, Finding edges and lines in in images. Technical Report AI-TR-720, MIT, Artiﬁcial Intelligence Laboratory, Cambridge, MA, 1983. [5] J.F. Canny, A computational approach to edge detection, IEEE Transactions on Pattern Analysis and Machine Intelligence 8(6) (1986), 679-698. [6] J. Cooper, S. Venkatesh and L. Kitchen, Early jump-out corner detectors, IEEE Transactions on Pattern Analysis and Machine Intelligence 15 (1993), 823-828. [7] B. Everitt, Cluster Analysis, Heinemann Educational Books Ltd, London, 1973. [8] O.D. Faugeras, Three Dimensional Computer Vision: A Geomeric Viewpoint. MIT Press, Cambridge, MA, 1993. [9] M.J.E. Golay, Hexagonal parallel pattern transformation, IEEE Transactions on Computers C-18 (1969), 733-740. [10] R.C. Gonzalez and R.E. Woods, Digital image processing, Addison-Wesley, Reading, MA, 1992. [11] R.M. Haralick, Digital step edges from zero crossing of the second directional derivatives, IEEE Transactions on Pattern Analysis and Machine Intelligence 6 (1984), 58-68. [12] R.M. Haralick and L.G. Shapiro, Computer and Robot Vision, Volume I, AddisonWesley, Reading, MA, 1992. 57
+
+58
+
+Irodalomjegyzék
+
+[13] T.S. Huang, editor, Image Sequence Processing and Dynamic Scene Analysis. Springer Verlag, Berlin, 1983. [14] D. Marr and E. Hildreth, Theory of edge detection, Proceedings of the Royal Society B 207 (1980), 187-217. [15] C. Lantuejoul, Skeletonization in quantitative metallography, In:Issues of Digital Image Processing, edited by R.M. Haralick and J.C. Simon Groningen, The Netherlands: Sijthoﬀ and Noordhoﬀ, 1980. [16] P. Maragos, Tutorials on advances in morphological image processing and analysis, Optical Engineering 26/7 (11) (1987), 623-632. [17] R. Mehrotra and S. Nichani, Corner detection, Pattern Recognition Letters 23 (11) (1990), 1223-1233. [18] H.P. Moravec, Towards automatic visual obstacle avoidance. In Proceedings of the 5th International Joint Conference on Artiﬁcial Intelligence, Carnegie-Mellon University, Pittsburgh, PA, August, 1977. [19] M. Nagao and T. Matsuyama, A Structural Analysis of Complex Aerial Photographs. Plenum Press, New York, 1980. [20] R. Nevatia, Evaluation of simpliﬁed Hueckel edge-line detector, Computer Graphics and Image Processing 6(6) (1977), 582-588. [21] N.R. Pal and S.K. Pal, A review on image segmentation techniques, Pattern Recognition 26 (1993), 1277-1294. [22] S.M. Pizer, E.P. Amburn, J.D. Austin, R. Cromartie, A. Geselowitz, T. Greer, B. HaarRomeny, J.B. Zimmerman and K. Zuiderveld, Adaptive histogram equalization and its variations, Computer Vision, Graphics and Image Processing 39 (1987), 355-368. [23] W.K. Pratt, Digital Image Processing, Wiley, New York, 1978. [24] A. Rosenfeld and A.C. Kak, Digital Picture Processing, Academic Press, New York, 2nd edition, 1982. [25] A. Rosenfeld and J.L. Pfaltz, Distance functions on digital pictures, Pattern Recognition 1 (1968), 33–61. [26] J. Serra, Image analysis and mathematical morphology. Academic Press, New York, 1982. [27] M. Sonka, V. Hlavac and R. Boyle, Image processing, analysis, and machine vision. Brooks/Cole Publishing Company, Paciﬁc Grove, CA, 1999.
+
+Irodalomjegyzék
+
+59
+
+[28] D.C.C. Wang and A.H. Vagnucci, Gradient inverse weighting smoothing schema and the evaluation of its performance, Computer Graphics and Image Processing 15 (1981). [29] O. Zuniga and R.M. Haralick, Corner detection using the facet model. In Computer Vision and Pattern Recognition, pages 30-37, IEEE, Los Alamitos, CA, 1983.
+

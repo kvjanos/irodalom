@@ -1,0 +1,116 @@
+Prediction of Brain Activity Based on Sparse Regression using the Elastic Net Method
+Melissa K. Carroll
+Department of Computer Science, Princeton University, 35 Olden Street, Princeton, NJ 08540
+
+Guillermo A. Cecchi, Irina Rish, Ravi Rao, and Rahul Garg
+Computational Biology Center, IBM T.J. Watson Research Center, Yorktown Heights, NY 10598 (Dated: October 15, 2007) Note: lead author is a full-time PhD student requesting travel support.
+
+There has recently been great interest in using predictive modeling to infer the instantaneous cognitive state of a subject, e.g. viewing an image of a face or reacting to a barking dog in a video game, using only the subject’s fMRI data. Such modeling is typically achieved using machine learning approaches, in which models are trained on fMRI data for which the subject’s cognitive state over time is known and has been labeled. While such approaches have demonstrated that cognitive states can be predicted using fMRI, prediction accuracy can be improved. Also, relatively little eﬀort has been put into translating these predictive models into models of brain dynamics, sparking interest in improving the interpretability of predictive models. In the regression paradigm, a recent technique from bioinformatics, the Elastic Net [2], attempts to address prediction and interpretation concerns using a novel regularization scheme. In addition, this method oﬀers greater ﬂexibility than traditional regression methods, enabling control over model properties. Elastic Net eﬀectively optimizes the functional: L(λ1 , λ2 , β) = ||y − Xβ||2 + λ1 ||β||1 + λ2 ||β||2 , 2 2 (1)
+
+the L1 and L2 norms of the model coeﬃcients, The goal is to achieve the sparse modeling beneﬁts of L1 regularization while using L2 regularization to relax exclusion of correlated predictors, leading to a more accurate model of the underlying data structure. Increasing the L1 regularization leads to more voxels being selected; increasing the L2 regularization leads to more inclusion of correlated voxels.
+
+thus minimizing both the least-squares model error and
+
+We evaluate the Elastic Net for fMRI, focusing on the eﬀects of increasing the L2 regularization on the sparse model properties. Data were obtained from a predictive modeling competition [1]. Noting that voxels nearby in space are frequently correlated, we evaluate the spatial distribution of a model as a proxy for the degree of exclusion of correlated voxels. Our ﬁndings suggest that the most predictive and robust models use highly distributed information while drawing adequately from relevant spatially localized clusters of correlated voxels. These results highlight the non-trivial relationship between localization and distribution in functional brain processing and exemplify the ﬂexibility of the Elastic Net method for controlling model performance and interpretation.
+
+[1] Pittsburgh EBC Group. PBAIC Homepage: http://www.ebc.pitt.edu/2007/competition.html. [2] H. Zou and T. Hastie. Regularization and variable selec-
+
+tion via the Elastic Net. Journal of the Royal Statistical Society, Series B, 67(2):301–320, 2005.
+
+2
+Change in Spatial Distribution by Elastic Net λ Parameter Elastic Voxels Average by Feature Early Stopping: λ Cross−Validated
+2
+
+Change in Test Correlation by Elastic Net λ Parameter Elastic Voxels Average by Feature Early Stopping: λ Cross−Validated
+2
+
+Spatial Distribution: λ2 = 2.0
+
+0.8 0.6 0.5 0.6 0.7 0.8 0.9 Spatial Distribution: λ = 0.1 2
+2
+
+Test Correlation: λ2 = 2.0
+
+1
+
+1
+
+1
+
+1
+
+0.5
+
+1
+
+0
+
+0
+
+0.2 0.4 0.6 0.8 Test Correlation: λ = 0.1 2
+
+1
+
+Change in Number of Voxels Used by Elastic Net λ Parameter Elastic Voxels Average by Feature Early Stopping: λ Cross−Validated 1
+
+Number Used: λ2 = 2.0
+
+600 400 200 100 200 300 400 500 Number Used: λ = 0.1
+2
+
+600
+
+FIG. 1: Indeed, increasing the L2 regularization decreases spatial distribution but slightly decreases sparsity, while minimally impacting prediction performance.
+Spatial Distribution Versus Test Correlation by Voxel Selection Method λ = 2.0 Average by Feature Early Stopping: λ Cross−Validated 1 Correlation λ 2.0: r = 0.378, p > 0.05 2 Elastic λ 2.0: r = 0.548, p < 0.01 1 0.8
+2 2
+
+Correlation λ2 2.0 Elastic λ2 2.0
+
+Test Correlation
+
+0.6 0.4 0.2 0 0.5
+
+0.55
+
+0.6
+
+0.65
+
+0.7 0.75 0.8 Spatial Distribution
+
+0.85
+
+0.9
+
+0.95
+
+FIG. 2: If the degree of sparsity is controlled with crossvalidation, mental states for which more distributed representations are found tend to be better predicted.
+Change in Percent of Voxels in Common Axes: Percent in Common of Total Number of Selected Voxels Between Cross−Validation Runs by Method Average by Feature Cross−Validated Voxel Selection
+
+20
+
+Correlation λ2 = 2.0 Elastic λ = 0.1
+2
+
+15
+
+see legend
+
+10
+
+5
+
+0
+
+0
+
+5
+
+10 Elastic λ2 = 2.0
+
+15
+
+20
+
+FIG. 3: Increasing the L2 regularization results in more robust models.
+

@@ -1,0 +1,233 @@
+DEVELOPING A DEFORMATION MODEL FOR COMPLEX-SHAPED CONTOURS T. BOUDIER
+
+BioInformatique Structurale, Bât. A, 4ème étage, case courrier 11, 7 quai St Bernard, 75252 Paris Cedex, France.
+
+ABSTRACT In order to study the unfolding of cortical surfaces, we turned our interest towards deformable model. Classical models, known as “snakes” can not enter into the cavities formed by brain fissures. Deformable curves can do it, but they do not remain smooth during the deformation. We developed a deformable model that can detect complex shaped contours.
+
+KEYWORDS : ACTIVE ADAPTIVE MODELS, REGULARIZATION, GEOMETRY, DEFORMABLE CURVES, CEREBRAL IMAGING.
+
+DIFFERENTIAL
+
+INTRODUCTION
+The brain is the human organ which fascinates more. Many research try to elucidate its functional. A first stage consists in subdividing it in surface cortical spaces. The idea of the researchers is to unfold this surface[1]. It will be then easier to understand and to visualize the different interconnection between these areas. We want a model of the cortical surface which we would deform to try to unfold it. Before such a study on surface 3D of the brain, we looked at what that simply gave on 2D cross-sections of the cortex. The active contour model "snake" was envisaged [2]. We wanted to see whether a snake could deform in order to fit a cavity edges. The answer is not [3], it remains outside the cavity and do not penetrate in the cavity. We hence developed a more deformable model able to penetrate and detect complex contours like the cortical cavities. In a first part, we will explain in what the snake model is not a model suitable to our problem. We will consider the problem in the framework of curves deformation. Lastly, we will explain and detail our model, will show the results and will conclude.
+
+THE “SNAKE” MODEL
+The snake model was born from the need to have smooth contours in noisy images [2]. One seeks the curves v(s) which maximize the gradient ∇I (v( s)) in the image I ( x , y ) . There is not a unique solution. One then restricts to the smoothest possible curve by imposing constraints of mathematical regularity. The energy E which is to be minimized breaks up into two terms: the external energy
+Eex = − ∫ ∇ I ( v ( s )) ds which expresses the fact that, along the curve v(s), the gradient is
+2 s
+
+2 maximized, and the internal energy Ein = ∫ ( v ′ ( s) + v ′′ ( s ) ) ds which translates the degree of 2 s
+
+regularity of the curve, by minimizing the first and the second derivatives of the curve. In practice, the minimization of the energy E is done by the introduction of a physical model of the curve and a iterative minimization. That is visualized in the image by a " snake " which moves from its initial position towards the contour. Each point of the snake tends to move towards contour nearest. However, in the case of cavities, contour nearest is not inevitably the good contour which one wishes to detect (figure 1).
+
+M Q P
+
+R
+
+Figure 1. Diagram of a cavity with a deformable model " snake " initialized above the cavity. The point M of the snake naturally tends to move towards the nearest contour P or Q. However the contour which corresponds to the cavity is R. R is contour nearest on the perpendicular at M to the snake.
+
+Basically, the snakes are trapped into a local minimum of the function of energy. The detection of the closest contours allows the local minimization of the function E which comprises two terms: the internal energy that makes a smooth curve and the external energy that ensure the closeness to the data. This second term blocks the snakes outside the cavities. The first term guarantees the snake certain properties of regularity throughout its deformations. Cohen and Cohen [5] proposed an additional term of energy (the energy of inflation) to inflate the snake artificially. Starting from a small circle inside the form to be detected, the " snake-balloon " grows bigger under the effect of this term of inflation until approaching contours and then becoming again a traditional snake. Other approaches tried to solve this problem [ 6, 7 ].
+
+DEFORMABLE CURVES
+In this section we deal with deformable curves C(s, t), s being the arc-length parameter of the curve and t the temporal variable. The deformation is expressed by:
+
+r r r ∂ C ( s, t ) = X ( s, t )T ( s, t ) + Y ( s, t ) N ( s, t ) = F ∂t
+F is the vector of deformation projected onto the curve reference vectors (T tangent vector and N normal vector). We know that only the component YN changes the shape of the curve [8], the component XT carrying out only the change of parametrization. The curve remains smooth as long as F is a smooth deformation field. We also know that a curve deforming naturally according to a constant force or dependent on the curvature will tend to create singularities, the "shocks" [9]. The force which deforms the curve is carried by the normal component YN. To compute a deformation only the deformation along this component is to be considered. Here lies the difference with the classical deformable models. The force of deformation, contrary to the case of the snakes where it was derived from the gradient, in the case of the deformable curves, is always directed along the
+
+normal. The snake is directed towards the nearest contour, while the deformable curve is directed along a fixed direction [10, 11, 12]. This force along the normal allows the curve to “see” the cavities (figure 1).
+
+DEFORMABLE SNAKES We will now present our model which mixes two aspects of the models previously studied: the regularization of the snakes, and the deformation of the deformable curves. Our model will thus detect contours along the normal and will be regularized by minimizing an internal energy. The displacement will be the result of a compromise between the straightforward displacement towards the nearest contour along the normal and the constraints of smoothing. After the displacement of all the snake points, a procedure of re-parametrisation is carried out. The cycle detection / deformation / regularization / re-parametrisation is reiterated until the deformation becomes negligible. We summarize by this diagram the various stages of our algorithm:
+
+INITIALISATION
+
+DISCRETISATION
+
+Pour chaque point : Détection des contours suivant la normale. Contours détectés: Aucun : Destruction du point. On garde les deux plus proches de chaque côté. On applique une heuristique. On garde un seul point de contour, on peut calculer la force de déformation. Contraintes de régularité
+
+Déformation
+
+REGULARISATION
+
+Nouveaux points
+
+REPARAMETRISATION
+
+Critère d'arrêt FIN
+
+INITIALIZATION AND DISCRETISATION On the basis of a simple form above the cavity, our goal is to detect this cavity. We take the simplest possible form, namely a segment. This segment is then discretized, an essential procedure for any data-processing procedure. We thus have a set of points Mi, regularly spaced, that is a polygonal approximation of our model. We approximate the tangent in each point Mi by the unit vector carried by MiMi-1, the normal by a perpendicular unit vector, and the curvature by the inverse of the radius of the sphere passing by the 3 points Mi-1, Mi and Mi+1. DEFORMATION We move the points towards the contour which is detected along the normal. A contour is classically known to be a discontinuity of the gray-levels of an image [13]. In our implementation,
+
+we fix two thresholds, a threshold called "high" and one called "low". A contour is then detected when for on the normal the gray-level of the mean of gray-levels of upper pixels is higher than the high threshold and the mean of gray-levels of lower pixels is lower than the low threshold. This detection is very easily implemented and proves to be relatively adapted to many images. For each point we detect the nearest contours along the normal in both directions, within a fixed range. If we do not detect any contour, we destroy the point. If we detect only one contour, we keep it to calculate the force of deformation which will depend on the distance from the point to the corresponding contour. If we find two contours, the nearest two in each direction, we have to choose the good one. We propose the following heuristics: It consists in preventing our model from crossing itself (figure 2).
+
+P
+
+M
+
+Q
+
+Figure 2. Diagram of a cavity with our model at the beginning of its detection of the cavity. The model is already in the cavity but a part of the cavity remains to be detected. One detects along the normal at M two contour points P and Q; contour P is closest to M but it is behind the model. If M moved towards P, that would not correspond to a good detection of the cavity. Contour Q although more distant from M than P in the normal direction corresponds to a good detection of the cavity. If two contours are detected on both sides of M along the normal, the nearest one is kept unless this one is not behind another part of the model. This heuristics is intrinsic with the model, it tends to preserve a "normal" topology to it, in other words the model is set not to be transparent. It is supposed, at this stage, that for each point of our model, one knows the contour towards which it must move. One takes for the force of deformation the vector directed along the normal towards the detected contour point and proportional to the distance between the point and the contour.
+
+REGULARIZATION We calculated the forces to deform our model. We saw that if we let a curve become deformed without any constraint, it loses its smoothness since there are discontinuities in the deformation field towards a cavity. The regularization allows to impose certain constraints on the model. Ein being the internal energy E in =
+
+∫ (α ( s ) v ′ ( s )
+s
+
+2
+
++ β ( s ) v ′′ ( s ) ) d s , where v is the curve, α
+
+2
+
+and β are two parameters controlling, in reference to the physical model, the tension and the rigidity of the curve [14], the minimization of this energy allows to obtain a smooth curve. In its discrete version, this energy
+i −1
+
+results
+i+1
+
+in
+i −1
+
+the
+2
+
+expression:
+
+E in =
+
+∑
+i
+
+(α i ( M i − M
+
+)
+
+2
+
++ βi( M
+
+− 2Mi + M
+
+)
+
+)
+
+To simplify we will fix β=0 - which in practice does not change anything in the results. We set its derivative to be 0, and we obtain, for the Mi point: (α
+i+1
+
++ α
+
+i
+
+) M
+
+t +1 i
+
+= α
+
+i
+
+M
+
+t +1 i−1
+
++ α
+
+i+1
+
+M
+
+t +1 i+1
+
+(1)
+
+, (1) simply translates the fact that, at time t+1, Mi is the barycentre of Mi-1 and Mi+1,weighted by the above coefficients. When this relation is verified for all the points, a smooth curve is obtained. The deformation is expressed in the same way by:
+→
+
+M it +1 = M it + Fi (2)
+Eeach point is attracted towards the contours by (2) and regularized by the constraints of vicinity by (1) . Consequently each new Mi point must verify both equations (1) and (2). Ones then apply the technique of least squares and one obtains:
+(α i2 + 2α i α i +1 + α i2+1 + 1) M it + 1 = (α iα i + 1 + α2i ) M it−+11 + (α iα i + 1 + α2i
++1 →
+
+) M it++11 + M it + Fi
+
+This equation is to be verified by all the Mi points of the model. Let us notice that one can just as easily write other equations corresponding to other constraints, for example the minimization of the second derivative. One rewrites the preceding equation in the form:
+− ( α i α i +1 + α i2 ) M it−+11 + (α i2 + 2α i α i +1 + α i2 1 + 1) M it +1 − (α i α i +1 + α i2 1 ) M it++11 = M it + Fi + +
+→
+
+One puts the coefficients in matrix A:
+     A=      1 − α1α2 − α12 0 0 0 α + 2α1α2 + α22 + 1
+2 1
+
+0 − α1α2 − α22 αi2 + 2αi αi +1 + αi2 1 + 1 + 0
+
+0 0 − αiαi +1 − αi2 1 + 1
+
+− αi αi +1 − αi2 0
+
+          
+
+One has:
+
+ M 1t,+1   M 1t, x  M 1t,+1  y x       .    .   t  t +1   t +1  M x =  M i , x  , M y =  M i , y  , bx =  M i , x   .   .   t  t +1   t +1   M N ,x  M N ,x   M N,y      
+
+ M 1t, y + F1, x    .     + Fi , x  , b y =  M it, x   .  t  + FN , x   M N ,y  
+
++ F1 yx   .   + Fi , y   .  + FN , y  
+
+and then we need then, to find the new co-ordinates of the points of the model at time t+1, to solve AMx=bx and Amy=by. The parameter α controls the degree of smoothing of the model; the larger, the smoother the model. In our problem, it is necessary to have a smooth curve, but not too much, not to prevent it from moving into the cavities. One would then tend to have small a, which allows less smoothing; however one does not want to fall into the trap of non-continuous deformations. We translated these contradictory requirements by choosing an interval for α. The points having to go in the cavities, should not be slowed down by smoothing and thus α should be small; on the contrary, the part of the model already close to the contour must be smoothed, and α should be large. The function which we did choose for α is the following: α i =
+λ , λ and µ being 1 + µ Fi
+
+constants which determine the interval of the values, Fi is standardized to vary between 0 and 1. In practice, good results were noted with values between 0.5 and 1.0. At this stage, we deformed the snake, by encouraging it to go far, i.e. in the cavities. However if the snake goes too far, necessarily it will lengthen, the contour drawn by the cavities are known to multiply external surface by a factor up to10. We will thus have to add new points. REPARAMETRISATION During the deformation two close points can approach each other or on the contrary move away one from the other. The spacing between the points thus varies from one iteration to another. We will add new points where this spacing becomes too large and remove some points where spacing is too small. We calculate an ideal spacing and reparametrize the model based on this ideal spacing. This spacing will have to vary along the snake, one needs more points where the snake becomes deformed much and where the displacement is imortant, and less where it has almost reached onto the contour. Furthermore it is obvious that one needs more points to represent a curved part than an straight one. We thus will have the spacing depend on the curvature and the displacement. We propose the following formulation: γ i = α i (a + b
+K max − K i K max ) where γ is the spacing, a and b are
+
+two constants, Ki the curvature at point Mi, Kmax is the maximum value of the curvature calculated on the model and α is the regularization coefficient computed previously. α is small for the points with large displacement, the spacing will then be small and thus locally there will be more points. α is large for the points with small displacement thus close to the contour, the spacing will then be
+
+large. Quickly, let us see how we reparametize our snake. If at point number i, the distance to the next point is greater than the computed spacing, one simply adds intermediate new points between them, else one seeks the next point whose distance to the point number i is greater or equal to the computed spacing, the points between these two points are removed. One thus has, after this stage of reparametrisation, an optimized distribution of the points. STOPPING CRITERION We deform our snake towards the contours but how to decide when to stop ? In the case of classical snakes, the stopping criterion is part of the method, one stops when the minimum of the energy is reached. In our formulation, there is no explicit energy to minimize. It is assumed that our model reach a stable state when from one iteration to the next it practically did not move, which can be expressed by the fact that the sum of the distance between the points of the model and the contour has not changed from one iteration to the next.
+
+RESULTS
+In this section we will show various applications of our model. That will go from synthetic data to 3D data and cerebral imagery data. Synthetic data Innitially we developed our model under Maple [15]. In figure 3 we can see a synthetic cavity and our model deform to detect the cavity and to smooth it. The deformation forces of the model and contour are also shown. From a to e we can see the interest to seek contour according to the normal. For the last deformation in f , where our model is close to the contours, the forces push the model towards the closest contours as in classical snakes.
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+(e)
+
+(f)
+
+Figure 3. Detection of a synthetic cavity. The model is initialized with the top of the cavity. We see for each iteration a-f the model becoming deformed, the cavity and the forces connecting the model to the cavity. We note the importance of the deformation according to the normal at the time of the first iterations ac. There is a good detection of all the cavity as well as a good smoothing of this one by our model.
+
+CEREBRAL IMAGERY DATA We then validated our model on MRI cerebral images. In figure 4 we show various detections made with decreasing regularization coefficient (from 2.0-3.5 to 0.1-0.05). These images are already binary but the application of the model allows to have a smooth model of the cavity but also to visualize the deformations needed to go from the cavity contour to the outside contour.
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+Figure 4. Detection of a cortical cavity. We show the various detections carried out by our model according to the coefficient of regularization. This coefficient goes decreasing of a to c. In c are drawn all the intermediate stages leading to the detection of the cavity.
+
+REAL DATA We tested our model on real images. In figure 5 we detect the contour of a fiber by initializing the model as a straight line on the left side of the image. In spite of the image noise the contour is well detected. We can detect also detect contours even if those are not distinct as in figure 6.
+
+Figure 5.Detection of a cashmere fibre. The model is initialized on the left contour to be detected. Are visualized all theiterations (in gray) driving with detection (in white). The coefficient of regularization was selected large. It is necessary to note a good detection in spite of the noise.
+
+Figure 6. Detection in an ultrasound image. The model is initialized at the bottom of the image by a straight line. We note a good detection (in white) in spite of the absence of distinct contours.
+
+3D RECONSTRUCTION The extension 3D of the model to 3D is almost straightforward by using the software NUAGES [16]. This package allows to reconstruct starting from contours in successive cross-sections a 3D triangulated surface. In figure 7 we applied this reconstruction to a beveled ellipse we chose to smooth.
+
+Figure 7. 3D Reconstruction. We initialized our model inside the ellipse in all the cross-sections of the volume. There is thus a detection of the form in each cross-sections (a, b, c) then a rebuilding (d) was carried out starting from detections in each cross-sections.
+
+DISCUSSION AND FUTURE WORK We saw how, by combining two different concepts, we developed a “highly” deformable model. Our work has, in this respect, several interests: a theoretical interest to propose a modeling using deformable curves, an applied interest since it allows an easy detection of complex-shaped contours. Our model has the advantage over the classical snakes of being rather simple to understand and thus easy to modify and improve. For instance, the force field can be independent of the image, or combine several aspects like gradients, gray-levels of gray or the characteristics of the curve itself. It is also possible to easily introduce other linear constraints between the points. We currently are interested in the extension of this model to deformable surfaces [17, 18, 19]. We
+
+discretize surface in the form of particles [20, 21], which move under the effect of external forces towards contours - always according to the normal - and are regularized under neighboring constraints.
+
+ACKNOWLEDGEMENTS I thank professor Peter Sander at University of Nice for this M. Sc. project. I thank Olivier Faugeras and Robotvis at INRIA Sophia-Antipolis to have welcomed me for this project. Finally I thank Anne Strauss and the GRIB to have allowed me to continue my research.
+
+REFERENCES [1] D. Van Essen et J. Maunsell. "Two-dimensional Maps of the cerebral Cortex". The Journal of Comparative Neurology, 1980. [2] M. Kass, A. Witkin et D. Terzopoulos. "Snakes: Active Contour Models". IJCV, pp. 321-331, 1988 [3] W. Neuenschwander, P. Fua, G. Székely et O. Kübler. "Initializing Snakes". CVPR 1994, pp. 658-663. [4] F. Leymarie et D. Levine. "Tracking Deformable Objects in the Plane Using an Active Contour Model". IEEE PAMI 15(6), pp. 617-634, 1993. [5] L. Cohen et I. Cohen. "Finite-Element Methods for Active contour Models and Balloons for 2D and 3D Images". IEEE PAMI, 15(11), pp. 1131-1147, 1993 [6] V. Casselles, R. Kimmel et G. Sapiro. "Geodesic Active Contours". ICCV 1995, pp. 694-699. [7] R. Malladi, J. A. sethian, et B. C. Vemuri. "Evolutionary Fronts for Topology-Independent Shape Modeling and recovery". ECCV 1994, pp. 3-13. [8] B. Kimia, A. Tannenbaum et S. Zucker. "On the evolution of curves via a function of curvature, I: The classical Case". Mac-Gill University, TR-CIM-90-3, Sep. 1990. [9] B. Kimia, A. Tannenbaum et S. Zucker. "Shapes, Shocks and Deformations I: The Components of Shape and the Reaction-Diffusion Space". Tech. Report, LEMS-105, Div. of Engineering, Brown University, 1990. [10] R. Ronfard. "Principes variationnels pour l’extraction de contours dans les images multispectrales et en couleur". Thèse Ecole des Mines de Paris, Fév. 1991. [11] A. Blake, R. Curwen et A. Zisserman. "Affine-invariant Contour Tracking with automatic Control of spatiotemporal Scale". IEEE, pp. 66-75, Fév. 1993. [12] F. Dufrenois, H. Durin, S. Reboul et J. P. Dubus. "Interpolation de contours par deformation d'un modèle élastique (snake). Applications à la reconstruction 3D à partir d'explorations tomographiques". ITBM, 16(4), pp. 391-416, 1995.
+
+[13] J. Canny. "A Computational Approach to Edge Detection". IEEE PAMI, 8(10), pp. 679-698, 1986. [14] N. Rougon et F. Prêteux. "Régularisation directionnelle optimale et modèles déformables adaptatifs". AFCET RFIA 1994, pp. 51-62. [15] B. Char, K. Geddes, G. Gonnet, B. Leong, M. Monagan et S. Watt. "Maple V Language Reference Manual". Springer Verlag, 1991. [16] B. GEIGER. : "Three-Dimensional modeling of human organs and its application to diagnosis and surgical planning". INRIA(France) 1993, Technical Report 2105. [17] M. Herbert, K. Ikeuchi et H. Delingette. "A Spherical Representation for Recognition of FreeForm surface". IEEE PAMI, 17(7), pp. 681-689, July 1995. [18] C. Nastar. "Vibration Modes for Nonrigid Motion analysis in 3D Images". ECCV 1994, pp. 231-236. [19] D. Terzopoulos et D. Metaxas. "Dynamic 3D Models with Local and Global Deformations : Deformable Superquadrics". IEEE PAMI, 13(7), pp. 703-714, 1991. [20] D. Szeliski, D. Tonnensen et D. Terzopoulos. "Modeling Surfaces of Arbitrary Topology with Dynamics Particles".CVPR 1993, pp. 82-87. [21] P. Sander et S. Zucker. "Inferring Surface Trace and Differential Structure from 3D Images". IEEE PAMI, 12(9), pp. 833-854, 1990.
+

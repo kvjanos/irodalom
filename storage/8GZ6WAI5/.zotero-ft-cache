@@ -1,0 +1,832 @@
+ROC Graphs: Notes and Practical Considerations for Researchers
+Tom Fawcett (tom.fawcett@hp.com)
+HP Laboratories, MS 1143, 1501 Page Mill Road, Palo Alto, CA 94304 March 16, 2004 Abstract. Receiver Operating Characteristics (ROC) graphs are a useful technique for organizing classiﬁers and visualizing their performance. ROC graphs are commonly used in medical decision making, and in recent years have been increasingly adopted in the machine learning and data mining research communities. Although ROC graphs are apparently simple, there are some common misconceptions and pitfalls when using them in practice. This article serves both as a tutorial introduction to ROC graphs and as a practical guide for using them in research. Keywords: classiﬁcation, classiﬁer evaluation, ROC, visualization
+
+Introduction An ROC graph is a technique for visualizing, organizing and selecting classiﬁers based on their performance. ROC graphs have long been used in signal detection theory to depict the tradeoﬀ between hit rates and false alarm rates of classiﬁers (Egan, 1975; Swets et al., 2000). ROC analysis has been extended for use in visualizing and analyzing the behavior of diagnostic systems (Swets, 1988). The medical decision making community has an extensive literature on the use of ROC graphs for diagnostic testing (Zou, 2002). Swets, Dawes and Monahan (2000) recently brought ROC curves to the attention of the wider public with their Scientiﬁc American article. One of the earliest adopters of ROC graphs in machine learning was Spackman (1989), who demonstrated the value of ROC curves in evaluating and comparing algorithms. Recent years have seen an increase in the use of ROC graphs in the machine learning community. In addition to being a generally useful performance graphing method, they have properties that make them especially useful for domains with skewed class distribution and unequal classiﬁcation error costs. These characteristics have become increasingly important as research continues into the areas of cost-sensitive learning and learning in the presence of unbalanced classes. Most books on data mining and machine learning, if they mention ROC graphs at all, have only a brief description of the technique. ROC graphs are conceptually simple, but there are some non-obvious
+c 2004 Kluwer Academic Publishers. Printed in the Netherlands.
+
+ROC101.tex; 16/03/2004; 12:56; p.1
+
+2
+
+Tom Fawcett
+
+complexities that arise when they are used in research. There are also common misconceptions and pitfalls when using them in practice. This article attempts to serve as a tutorial introduction to ROC graphs and as a practical guide for using them in research. It collects some important observations that are perhaps not obvious to many in the community. Some of these points have been made in previously published articles, but they were often buried in text and were subsidiary to the main points. Other notes are the result of information passed around in email between researchers, but left unpublished. The goal of this article is to advance general knowledge about ROC graphs so as to promote better evaluation practices in the ﬁeld. This article is divided into two parts. The ﬁrst part, comprising sections 1 through 6, covers basic issues that will be encountered in most research uses of ROC graphs. Each topic has a separate section and is treated in detail, usually including algorithms. Researchers intending to use ROC curves seriously in their work should be familiar with this material. The second part, in section 7, covers some related but ancillary topics. They are more esoteric and are discussed in less detail, but pointers to further reading are included. Note: Implementations of the algorithms in this article, in the Perl language, are collected in an archive available from: http://www.purl. org/NET/tfawcett/software/ROC_algs.tar.gz
+
+1. Classiﬁer Performance We begin by considering classiﬁcation problems using only two classes. Formally, each instance I is mapped to one element of the set {p, n} of positive and negative class labels. A classiﬁcation model (or classiﬁer ) is a mapping from instances to predicted classes. Some classiﬁcation models produce a continuous output (e.g., an estimate of an instance’s class membership probability) to which diﬀerent thresholds may be applied to predict class membership. Other models produce a discrete class label indicating only the predicted class of the instance. To distinguish between the actual class and the predicted class we use the labels {Y, N} for the class predictions produced by a model. Given a classiﬁer and an instance, there are four possible outcomes. If the instance is positive and it is classiﬁed as positive, it is counted as a true positive; if it is classiﬁed as negative, it is counted as a false negative. If the instance is negative and it is classiﬁed as negative, it is counted as a true negative; if it is classiﬁed as positive, it is counted as a false positive. Given a classiﬁer and a set of instances (the test set), a two-by-two confusion matrix (also called a contingency table) can be
+
+ROC101.tex; 16/03/2004; 12:56; p.2
+
+ROC graphs
+
+3
+
+True class p n Y Hypothesized class N
+False Negatives True Negatives True Positives False Positives
+
+Column totals:
+
+P
+
+N
+
+fp rate = precision = accuracy =
+
+FP N TP T P +F P T P +T N P +N
+
+tp rate = recall = F-measure =
+
+TP P TP P
+
+2 1/precision+1/recall
+
+Figure 1. Confusion matrix and common performance metrics calculated from it
+
+constructed representing the dispositions of the set of instances. This matrix forms the basis for many common metrics. Figure 1 shows a confusion matrix and equations of several common metrics that can be calculated from it. The numbers along the major diagonal represent the correct decisions made, and the numbers oﬀ this diagonal represent the errors—the confusion—between the various classes. The true positive rate1 (also called hit rate and recall) of a classiﬁer is estimated as: tp rate ≈ Positives correctly classiﬁed Total positives
+
+For clarity, counts such as TP and FP will be denoted with upper-case letters and rates such as tp rate will be denoted with lower-case.
+
+1
+
+ROC101.tex; 16/03/2004; 12:56; p.3
+
+4
+1.0
+
+Tom Fawcett
+
+D
+True Positive rate
+0.8
+
+B C
+
+0.6
+
+A
+
+0.4
+
+0.2
+
+E
+
+0 0 0.2 0.4 0.6 0.8 1.0
+
+False Positive rate
+Figure 2. A basic ROC graph showing ﬁve discrete classiﬁers.
+
+The false positive rate (also called false alarm rate) of the classiﬁer is: fp rate ≈ negatives incorrectly classiﬁed total negatives
+
+Additional terms associated with ROC curves are: sensitivity = recall True negatives False positives + True negatives = 1 − fp rate positive predictive value = precision speciﬁcity =
+
+2. ROC Space ROC graphs are two-dimensional graphs in which TP rate is plotted on the Y axis and FP rate is plotted on the X axis. An ROC graph depicts relative trade-oﬀs between beneﬁts (true positives) and costs (false positives). Figure 2 shows an ROC graph with ﬁve classiﬁers labeled A through E. A discrete classiﬁer is one that outputs only a class label. Each discrete classiﬁer produces an (fp rate, tp rate) pair corresponding to a single point in ROC space. The classiﬁers in ﬁgure 2 are all discrete classiﬁers.
+
+ROC101.tex; 16/03/2004; 12:56; p.4
+
+ROC graphs
+
+5
+
+Several points in ROC space are important to note. The lower left point (0, 0) represents the strategy of never issuing a positive classiﬁcation; such a classiﬁer commits no false positive errors but also gains no true positives. The opposite strategy, of unconditionally issuing positive classiﬁcations, is represented by the upper right point (1, 1). The point (0, 1) represents perfect classiﬁcation. D’s performance is perfect as shown. Informally, one point in ROC space is better than another if it is to the northwest (tp rate is higher, fp rate is lower, or both) of the ﬁrst. Classiﬁers appearing on the left hand-side of an ROC graph, near the X axis, may be thought of as “conservative”: they make positive classiﬁcations only with strong evidence so they make few false positive errors, but they often have low true positive rates as well. Classiﬁers on the upper right-hand side of an ROC graph may be thought of as “liberal”: they make positive classiﬁcations with weak evidence so they classify nearly all positives correctly, but they often have high false positive rates. In ﬁgure 2, A is more conservative than B. Many real world domains are dominated by large numbers of negative instances, so performance in the far left-hand side of the ROC graph becomes more interesting. 2.1. Random Performance The diagonal line y = x represents the strategy of randomly guessing a class. For example, if a classiﬁer randomly guesses the positive class half the time, it can be expected to get half the positives and half the negatives correct; this yields the point (0.5, 0.5) in ROC space. If it guesses the positive class 90% of the time, it can be expected to get 90% of the positives correct but its false positive rate will increase to 90% as well, yielding (0.9, 0.9) in ROC space. Thus a random classiﬁer will produce a ROC point that “slides” back and forth on the diagonal based on the frequency with which it guesses the positive class. In order to get away from this diagonal into the upper triangular region, the classiﬁer must exploit some information in the data. In ﬁgure 2, C’s performance is virtually random. At (0.7, 0.7), C may be said to be guessing the positive class 70% of the time, Any classiﬁer that appears in the lower right triangle performs worse than random guessing. This triangle is therefore usually empty in ROC graphs. However, note that the decision space is symmetrical about the diagonal separating the two triangles. If we negate a classiﬁer—that is, reverse its classiﬁcation decisions on every instance—its true positive classiﬁcations become false negative mistakes, and its false positives become true negatives. Therefore, any classiﬁer that produces a point
+
+ROC101.tex; 16/03/2004; 12:56; p.5
+
+6
+
+Tom Fawcett
+
+in the lower right triangle can be negated to produce a point in the upper left triangle. In ﬁgure 2, E performs much worse than random, and is in fact the negation of B. Any classiﬁer on the diagonal may be said to have no information about the class. A classiﬁer below the diagonal may be said to have useful information, but it is applying the information incorrectly (Flach and Wu, 2003). Given an ROC graph in which a classiﬁer’s performance appears to be slightly better than random, it is natural to ask: “is this classiﬁer’s performance truly signiﬁcant or is it only better than random by chance?” There is no conclusive test for this, but Forman (2002) has shown a methodology that addresses this question with ROC curves. 3. Curves in ROC space Many classiﬁers, such as decision trees or rule sets, are designed to produce only a class decision, i.e., a Y or N on each instance. When such a discrete classiﬁer is applied to a test set, it yields a single confusion matrix, which in turn corresponds to one ROC point. Thus, a discrete classiﬁer produces only a single point in ROC space. Some classiﬁers, such as a Naive Bayes classiﬁer or a neural network, naturally yield an instance probability or score, a numeric value that represents the degree to which an instance is a member of a class. These values can be strict probabilities, in which case they adhere to standard theorems of probability; or they can be general, uncalibrated scores, in which case the only property that holds is that a higher score indicates a higher probability. We shall call both a probabilistic classiﬁer, in spite of the fact that the output may not be a proper probability 2 . Such a ranking or scoring classiﬁer can be used with a threshold to produce a discrete (binary) classiﬁer: if the classiﬁer output is above the threshold, the classiﬁer produces a Y, else a N. Each threshold value produces a diﬀerent point in ROC space. Conceptually, we may imagine varying a threshold from −∞ to +∞ and tracing a curve through ROC space. Algorithm 1 describes this basic idea. Computationally, this is a poor way of generating an ROC curve, and the next section describes a more eﬃcient and careful method. Figure 3 shows an example of an ROC “curve” on a test set of twenty instances. The instances, ten positive and ten negative, are shown in the table beside the graph. Any ROC curve generated from a ﬁnite set of instances is actually a step function, which approaches a true curve as the number of instances approaches inﬁnity. The step function in
+Techniques exist for converting an uncalibrated score into a proper probability but this conversion is unnecesary for ROC curves.
+2
+
+ROC101.tex; 16/03/2004; 12:56; p.6
+
+ROC graphs
+1 0.9 0.8 .38 .4 .51 .54 .55 .6 .8 .9 .7 .53 .52 .505 .39 .37 .36 .34 .35 .30 .33 .1
+
+7
+
+True positive rate
+
+0.7 0.6 0.5 0.4 0.3 0.2 0.1
+
+Infinity 0 0 0.1
+
+0.2
+
+0.3
+
+False positive rate
+Score .9 .8 .7 .6 .55 .54 .53 .52 .51 .505 Inst# 11 12 13 14 15 16 17 18 19 20
+
+0.4
+
+0.5
+
+0.6
+
+0.7
+
+0.8
+
+0.9
+
+1
+
+Inst# 1 2 3 4 5 6 7 8 9 10
+
+Class p p n p p p n n p n
+
+Class p n p n n n p n p n
+
+Score .4 .39 .38 .37 .36 .35 .34 .33 .30 .1
+
+Figure 3. The ROC “curve” created by thresholding a test set. The table at right shows twenty data and the score assigned to each by a scoring classiﬁer. The graph at left shows the corresponding ROC curve with each point labeled by the threshold that produces it.
+
+ﬁgure 3 is taken from a very small instance set so that each point’s derivation can be understood. In the table of ﬁgure 3, the instances are sorted by their scores, and each point in the ROC graph is labeled by the score threshold that produces it. A threshold of +∞ produces the point (0, 0). As we lower the threshold to 0.9 the ﬁrst positive instance is classiﬁed positive, yielding (0, 0.1). As the threshold is further reduced, the curve climbs up and to the right, ending up at (1, 1) with a threshold
+
+ROC101.tex; 16/03/2004; 12:56; p.7
+
+8
+
+Tom Fawcett
+
+Algorithm 1 Conceptual method for calculating an ROC curve. See algorithm 2 for a practical method.
+Inputs: L, the set of test instances; f (i), the probabilistic classiﬁer’s estimate that instance i is positive; min and max, the smallest and largest values returned by f ; increment, the smallest diﬀerence between any two f values. 1: for t = min to max by increment do 2: FP ← 0 3: TP ← 0 4: for i ∈ L do 5: if f (i) ≥ t then /* This example is over threshold */ 6: if i is a positive example then 7: TP ← TP + 1 8: else /* i is a negative example, so this is a false positive */ 9: FP ← FP + 1 10: end if 11: end if 12: end for P 13: Add point ( F P , TP ) to ROC curve N 14: end for 15: end
+
+of 0.1. Note that lowering this threshold corresponds to moving from the “conservative” to the “liberal” areas of the graph. Although the test set is very small, we can make some tentative observations about the classiﬁer. It appears to perform better in the more conservative region of the graph; the ROC point at (0.1, 0.5) produces its highest accuracy (70%). This is equivalent to saying that the classiﬁer is better at identifying likely positives than at identifying likely negatives. Note also that the classiﬁer’s best accuracy occurs at a threshold of ≥ .54, rather than at ≥ .5 as we might expect with a balanced distribution. The next section discusses this phenomenon. 3.1. Relative versus absolute scores An important point about ROC graphs is that they measure the ability of a classiﬁer to produce good relative instance scores. A classiﬁer need not produce accurate, calibrated probability estimates; it need only produce relative accurate scores that serve to discriminate positive and negative instances. Consider the simple instance scores shown in ﬁgure 4, which came from a Naive Bayes classiﬁer. Comparing the hypothesized class (which is Y if score> 0.5, else N) against the true classes, we can see that the classiﬁer gets instances 7 and 8 wrong, yielding 80% accuracy.
+
+ROC101.tex; 16/03/2004; 12:56; p.8
+
+ROC graphs
+
+9
+Inst no. Class True Hyp p p p p p p n n n n Y Y Y Y Y Y Y Y N N Score
+
+1
+
+0.8
+
+True positive rate
+
+Accuracy point (threshold = 0.5)
+0.6
+
+Accuracy point (threshold = 0.6)
+0.4
+
+0.2
+
+0
+
+0
+
+0.2
+
+False positive rate
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+1 2 3 4 5 6 7 8 9 10
+
+0.99999 0.99999 0.99993 0.99986 0.99964 0.99955 0.68139 0.50961 0.48880 0.44951
+
+Figure 4. Scores and classiﬁcations of ten instances, and the resulting ROC curve.
+
+However, consider the ROC curve on the left side of the ﬁgure. The curve rises vertically from (0, 0) to (0, 1), then horizontally to (1, 1). This indicates perfect classiﬁcation performance on this test set. Why is there a discrepancy? The explanation lies in what each is measuring. The ROC curve shows the ability of the classiﬁer to rank the positive instances relative to the negative instances, and it is indeed perfect in this ability. The accuracy metric imposes a threshold (score> 0.5) and measures the resulting classiﬁcations with respect to the scores. The accuracy measure would be appropriate if the scores were proper probabilities, but they are not. Another way of saying this is that the scores are not properly calibrated, as true probabilities are. In ROC space, the imposition of a 0.5 threshold results in the performance designated by the circled “accuracy point” in ﬁgure 4. This operating point is suboptimal. We could use the training set to estimate a prior for p(p) = 6/10 = 0.6 and use this as a threshold, but it would still produce suboptimal performance (90% accuracy). One way to eliminate this phenomenon is to calibrate the classiﬁer scores. There are some methods for doing this (Zadrozny and Elkan, 2001). Another approach is to use an ROC method that chooses operating points based on their relative performance, and there are methods for doing this as well (Provost and Fawcett, 1998; Provost and Fawcett, 2001). These latter methods are discussed brieﬂy in section 7.1. A consequence of relative scoring is that classiﬁer scores should not be compared across model classes. One model class may be designed
+
+ROC101.tex; 16/03/2004; 12:56; p.9
+
+10
+
+Tom Fawcett
+
+to produce scores in the range [0, 1] while another produces scores in [−1, +1] or [1, 100]. Comparing model performance at a common threshold will be meaningless. 3.2. Class skew ROC curves have an attractive property: they are insensitive to changes in class distribution. If the proportion of positive to negative instances changes in a test set, the ROC curves will not change. To see why this is so, consider the confusion matrix in ﬁgure 1. Note that the class distribution—the proportion of positive to negative instances—is the relationship of the left (+) column to the right (-) column. Any performance metric that uses values from both columns will be inherently sensitive to class skews. Metrics such as accuracy, precision, lift and F score use values from both columns of the confusion matrix. As a class distribution changes these measures will change as well, even if the fundamental classiﬁer performance does not. ROC graphs are based upon tp rate and fp rate, in which each dimension is a strict columnar ratio, so do not depend on class distributions. To some researchers, large class skews and large changes in class distributions may seem contrived and unrealistic. However, class skews of 101 and 102 are very common in real world domains, and skews up to 106 have been observed in some domains (Clearwater and Stern, 1991; Fawcett and Provost, 1996; Kubat et al., 1998; Saitta and Neri, 1998). Substantial changes in class distributions are not unrealistic either. For example, in medical decision making epidemics may cause the incidence of a disease to increase over time. In fraud detection, proportions of fraud varied signiﬁcantly from month to month and place to place (Fawcett and Provost, 1997). Changes in a manufacturing practice may cause the proportion of defective units produced by a manufacturing line to increase or decrease. In each of these examples the prevalance of a class may change drastically without altering the fundamental characteristic of the class, i.e., the target concept. Precision and recall are common in information retrieval for evaluating retrieval (classiﬁcation) performance (Lewis, 1990; Lewis, 1991). Precision-recall graphs are commonly used where static document sets can sometimes be assumed; however, they are also used in dynamic environments such as web page retrieval, where the number of pages irrelevant to a query (N ) is many orders of magnitude greater than P and probably increases steadily over time as web pages are created. To see the eﬀect of class skew, consider the curves in ﬁgure 5, which show two classiﬁers evaluated using ROC curves and precision-recall curves. In 5a and b, the test set has a balanced 1:1 class distribution.
+
+ROC101.tex; 16/03/2004; 12:56; p.10
+
+ROC graphs
+1 ’insts.roc.+’ ’insts2.roc.+’ 1
+
+11
+’insts.precall.+’ ’insts2.precall.+’
+
+0.8
+
+0.8
+
+0.6
+
+0.6
+
+0.4
+
+0.4
+
+0.2
+
+0.2
+
+0
+
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+0
+
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+(a) ROC curves, 1:1
+1 ’instsx10.roc.+’ ’insts2x10.roc.+’ 1
+
+(b) Precision-recall curves, 1:1
+’instsx10.precall.+’ ’insts2x10.precall.+’
+
+0.8
+
+0.8
+
+0.6
+
+0.6
+
+0.4
+
+0.4
+
+0.2
+
+0.2
+
+0
+
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+0
+
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+(c) ROC curves, 1:10
+
+(d) Precision-recall curves, 1:10
+
+Figure 5. ROC and precision-recall curves under class skew.
+
+Graphs 5c and d show the same two classiﬁers on the same domain, but the number of negative instances has been increased ten-fold. Note that the classiﬁers and the underlying concept has not changed; only the class distribution is diﬀerent. Observe that the ROC graphs in 5a and 5c are identical, while the precision-recall graphs in 5b and 5d diﬀer dramatically. In some cases, the conclusion of which classiﬁer has superior performance can change with a shifted distribution. 3.3. Creating scoring classifiers Many classiﬁer models are discrete: they are designed to produce only a class label from each test instance. However, we often want to generate
+
+ROC101.tex; 16/03/2004; 12:56; p.11
+
+12
+
+Tom Fawcett
+
+a full ROC curve from a classiﬁer instead of just a single point. To this end we want to generate scores from a classiﬁer rather than just a class label. There are several ways of producing such scores. Many discrete classiﬁer models may easily be converted to scoring classiﬁers by “looking inside” them at the instance statistics they keep. For example, a decision tree determines a class label of a leaf node from the proportion of instances at the node; the class decision is simply the most prevalent class. These class proportions may serve as a score (Provost and Domingos, 2001). Appendix A gives a basic algorithm for generating an ROC curve directly from a decision tree. A rule learner keeps similar statistics on rule conﬁdence, and the conﬁdence of a rule matching an instance can be used as a score (Fawcett, 2001). Even if a classiﬁer only produces a class label, an aggregation of them may be used to generate a score. MetaCost (Domingos, 1999) employs bagging to generate an ensemble of discrete classiﬁers, each of which produces a vote. The set of votes could be used to generate a score3 . Finally, some combination of scoring and voting can be employed. For example, rules can provide basic probability estimates, which may then be used in weighted voting (Fawcett, 2001). 4. Eﬃcient generation of ROC curves Given a test set, we often want to generate an ROC curve eﬃciently from it. Although some researchers have employed methods like algorithm 1, this method is neither eﬃcient nor practical: it requires knowing max, min and increment, which must be estimated from the test set and f values. It involves two nested loops; because the outer loop must increment t at least n times, the complexity is O(n 2 ) in the number of test set instances. A much better algorithm can be created by exploiting the monotonicity of thresholded classiﬁcations: any instance that is classiﬁed positive with respect to a given threshold will be classiﬁed positive for all lower thresholds as well. Therefore, we can simply sort the test instances decreasing by f scores and move down the list, processing one instance at a time and updating T P and F P as we go. In this way an ROC graph can be created from a linear scan.
+MetaCost actually works in the opposite direction because its goal is to generate a discrete classiﬁer. It ﬁrst creates a probabilistic classiﬁer, then applies knowledge of the error costs and class skews to relabel the instances so as to “optimize” their classiﬁcations. Finally, it learns a speciﬁc discrete classiﬁer from this new instance set. Thus, MetaCost is not a good method for creating a good scoring classiﬁer, though its bagging method may be.
+3
+
+ROC101.tex; 16/03/2004; 12:56; p.12
+
+ROC graphs
+
+13
+
+Algorithm 2 Eﬃcient method for generating ROC points
+Inputs: L, the set of test examples; f (i), the probabilistic classiﬁer’s estimate that example i is positive; P and N , the number of positive and negative examples. Outputs: R, a list of ROC points increasing by fp rate. Require: P > 0 and N > 0 1: Lsorted ← L sorted decreasing by f scores 2: F P ← T P ← 0 3: R ← 4: fprev ← −∞ 5: i ← 1 6: while i ≤ |Lsorted | do 7: if f (i) = fprev then P 8: push F P , TP onto R N 9: fprev ← f (i) 10: end if 11: if Lsorted [i] is a positive example then 12: TP ← TP + 1 13: else /* i is a negative example */ 14: FP ← FP + 1 15: end if 16: i←i+1 17: end while 18: push F P , T P onto R /* This is (1,1) */ N P 19: end
+
+The new algorithm is shown in algorithm 2. T P and F P both start at zero. For each positive instance we increment T P and for every negative instance we increment F P . We maintain a stack R of ROC points, pushing a new point onto R after each instance is processed. The ﬁnal output is the stack R, which will contain points on the ROC curve. Let n be the number of points in the test set. This algorithm requires an O(n log n) sort followed by an O(n) scan down the list, resulting in O(n log n) total complexity. 4.1. Equally scored instances Statements 7–10 need some explanation. These are necessary in order to correctly handle sequences of equally scored instances. Consider the ROC curve shown in ﬁgure 6. Assume we have a test set in which there is a sequence of instances, four negatives and six positives, all scored equally by f . The sort in line 1 of algorithm 2 does not impose any speciﬁc ordering on these instances since their f scores are equal.
+
+ROC101.tex; 16/03/2004; 12:56; p.13
+
+14
+1.0 Optimistic
+
+Tom Fawcett
+
+True Positive rate
+
+0.8 Expected
+
+0.6
+
+0.4
+
+Pessimistic
+
+0.2
+
+0 0 0.2 0.4 0.6 0.8 1.0
+
+False Positive rate
+Figure 6. The optimistic, pessimistic and expected ROC segments resulting from a sequence of ten equally scored instances.
+
+What happens when we create an ROC curve? In one extreme case, all the positives end up at the beginning of the sequence and we generate the “optimistic” upper L segment shown in ﬁgure 6. In the opposite extreme, all the negatives end up at the beginning of the sequence and we get the “pessimistic” lower L shown in ﬁgure 6. Any mixed ordering of the instances will give a diﬀerent set of step segments within the rectangle formed by these two extremes. However, the ROC curve should represent the expected performance of the classiﬁer, which, lacking any other information, is the average of the pessimistic and optimistic segments. This average is the diagonal of the rectangle, and can be created in the ROC curve algorithm by not emitting an ROC point until all instances of equal f values have been processed. This is what the fprev variable and the if statement of line 7 accomplish. Instances that are scored equally may seem unusual but with some classiﬁer models they are common. For example, if we use instance counts at nodes in a decision tree to score instances, a large, highentropy leaf node may produce many equally scored instances of both classes. If such instances are not averaged, the resulting ROC curves will be sensitive to the test set ordering, and diﬀerent orderings can yield very misleading curves. This can be especially critical in calculating the area under an ROC curve, discussed in section 5. Consider a decision tree containing a leaf node accounting for n positives and m negatives.
+
+ROC101.tex; 16/03/2004; 12:56; p.14
+
+ROC graphs
+1.0 1.0
+
+15
+B A
+
+B
+
+True Positive rate
+
+0.8
+
+True Positive rate
+
+0.8
+
+A
+0.6
+
+0.6
+
+0.4
+
+0.4
+
+0.2
+
+0.2
+
+0 0 0.2 0.4 0.6 0.8 1.0
+
+0 0 0.2 0.4 0.6 0.8 1.0
+
+False Positive rate
+
+False Positive rate
+
+Figure 7. Two ROC graphs. The graph on the left shows the area under two ROC curves. The graph on the right shows the area under the curves of a discrete classiﬁer (A) and a probabilistic classiﬁer (B).
+
+Every instance that is classiﬁed to this leaf node will be assigned the nm same score. The rectangle of ﬁgure 6 will be of size P N , and if these instances are not averaged this one leaf may account for errors in ROC nm curve area as high as 2P N . 5. Area under an ROC Curve (AUC) An ROC curve is a two-dimensional depiction of classiﬁer performance. To compare classiﬁers we may want to reduce ROC performance to a single scalar value representing expected performance. A common method is to calculate the area under the ROC curve, abbreviated AUC (Bradley, 1997; Hanley and McNeil, 1982). Since the AUC is a portion of the area of the unit square, its value will always be between 0 and 1.0. However, because random guessing produces the diagonal line between (0, 0) and (1, 1), which has an area of 0.5, no realistic classiﬁer should have an AUC less than 0.5. The AUC has an important statistical property: the AUC of a classiﬁer is equivalent to the probability that the classiﬁer will rank a randomly chosen positive instance higher than a randomly chosen negative instance. This is equivalent to the Wilcoxon test of ranks (Hanley and McNeil, 1982). The AUC is also closely related to the Gini coeﬃcient (Breiman et al., 1984), which is twice the area between the diagonal and the ROC curve. Hand and Till (2001) point out that Gini + 1 = 2 × AUC. Figure 7a shows the areas under two ROC curves, A and B. Classiﬁer B has greater area and therefore better average performance. Figure 7b
+
+ROC101.tex; 16/03/2004; 12:56; p.15
+
+16
+
+Tom Fawcett
+
+Algorithm 3 Calculating the area under an ROC curve
+Inputs: L, the set of test examples; f (i), the probabilistic classiﬁer’s estimate that example i is positive; P and N , the number of positive and negative examples. Outputs: A, the area under the ROC curve. Require: P > 0 and N > 0 1: Lsorted ← L sorted decreasing by f scores 2: F P ← T P ← 0 3: F Pprev ← T Pprev ← 0 4: A ← 0 5: fprev ← −∞ 6: i ← 1 7: while i ≤ |Lsorted | do 8: if f (i) = fprev then 9: A ← A + trapezoid area(F P, F Pprev , T P, T Pprev ) 10: fprev ← f (i) 11: F Pprev ← F P 12: T Pprev ← T P 13: end if 14: if i is a positive example then 15: TP ← TP + 1 16: else /* i is a negative example */ 17: FP ← FP + 1 18: end if 19: end while 20: A ← A + trap area(1, F Pprev , 1, T Pprev ) 21: A ← A/(P × N ) /* scale from P × N onto the unit square */ 22: end 1: function trapezoid area(X1, X2, Y 1, Y 2) 2: Base ← |X1 − X2| 3: Heightavg ← (Y 1 + Y 2)/2 4: return Base × Heightavg 5: end function
+
+shows the area under the curve of a binary classiﬁer A and a scoring classiﬁer B. Classiﬁer A represents the performance of B when B is used with a single, ﬁxed threshold. Though the performance of the two is equal at the ﬁxed point (A’s threshold), A’s performance becomes inferior to B further from this point. It is possible for a high-AUC classiﬁer to perform worse in a speciﬁc region of ROC space than a low-AUC classiﬁer. Figure 7a shows an example of this: classiﬁer B is generally better than A except at FPrate > 0.6 where A has a slight advantage. But in practice the
+
+ROC101.tex; 16/03/2004; 12:56; p.16
+
+ROC graphs
+
+17
+
+AUC performs very well and is often used when a general measure of predictiveness is desired. The AUC may be computed easily using a small modiﬁcation of algorithm 2, shown in algorithm 3. Instead of collecting ROC points, the algorithm adds successive areas of trapezoids to A. Finally, it divides A by the total possible area to scale the value to the unit square.
+
+6. Averaging ROC curves Although ROC curves may be used to evaluate classiﬁers, care should be taken when using them to make conclusions about classiﬁer superiority. Some researchers have assumed that an ROC graph may be used to select the best classiﬁers simply by graphing them in ROC space and seeing which ones dominate. This is misleading; it is analogous to taking the maximum of a set of accuracy ﬁgures from a single test set. Without a measure of variance we cannot compare the classiﬁers. Averaging ROC curves is easy if the original instances are available. Given test sets T1 , T2 , · · · , Tn , generated from cross-validation or the bootstrap method, we can simply merge sort the instances together by their assigned scores4 into one large test set TM . We then run an ROC curve generation algorithm such as algorithm 2 on T M and plot the result. However, the primary reason for using multiple test sets is to derive a measure of variance, which this simple merging does not provide. We need a more sophisticated method that samples individual curves at diﬀerent points and averages the samples. ROC space is two-dimensional, and any average is necessarily onedimensional. ROC curves can be projected onto a single dimension and averaged conventionally, but this leads to the question of whether the projection is appropriate, or more precisely, whether it preserves characteristics of interest. The answer depends upon the reason for averaging the curves. This section presents two methods for averaging ROC curves: vertical and threshold averaging. Figure 8a shows ﬁve ROC curves to be averaged. Each contains a thousand points and has some concavities. Figure 8b shows the curve formed by merging the ﬁve test sets and computing their combined ROC curve. Figures 8c and 8d show average curves formed by sampling the ﬁve individual ROC curves. The error bars are 95% conﬁdence intervals.
+4 This assumes that the scores generated by the models are comparable. If the same learning algorithm is being used, and the training and testing sets are representative samples of the population, the scores should be comparable.
+
+ROC101.tex; 16/03/2004; 12:56; p.17
+
+18
+1
+
+Tom Fawcett
+1
+
+0.8
+
+0.8
+
+True positive rate
+
+0.6
+
+True positive rate
+0 0.2 0.4 0.6 0.8 1
+
+0.6
+
+0.4
+
+0.4
+
+0.2
+
+0.2
+
+0
+
+0
+
+False positive rate
+
+0
+
+0.2
+
+False positive rate
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+(a) ROC curves of ﬁve instance samples
+1
+
+(b) ROC curve formed by merging the ﬁve samples
+1
+
+0.8
+
+0.8
+
+True positive rate
+
+0.6
+
+True positive rate
+0 0.2 0.4 0.6 0.8 1
+
+0.6
+
+0.4
+
+0.4
+
+0.2
+
+0.2
+
+0
+
+0
+
+False positive rate
+
+0
+
+0.2
+
+False positive rate
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+(c) The curves of a averaged vertically
+Figure 8. ROC curve averaging
+
+(d) The curves of a averaged by threshold
+
+6.1. Vertical averaging Vertical averaging takes vertical samples of the ROC curves for ﬁxed FP rates and averages the corresponding TP rates. Such averaging is appropriate when the FP rate can indeed be ﬁxed by the researcher, or when a single-dimensional measure of variation is desired. Provost,
+
+ROC101.tex; 16/03/2004; 12:56; p.18
+
+ROC graphs
+
+19
+
+Algorithm 4 Vertical averaging of ROC curves.
+Inputs: samples, the number of FP samples; nrocs, the number of ROC curves to be sampled, ROCS[nrocs], an array of nrocs ROC curves; npts[m], the number of points in ROC curve m. Each ROC point is a structure of two members, fpr and tpr. Output: Array tpravg, containing the vertical averages. 1: s ← 1 2: for f prsample = 0 to 1 by 1/samples do 3: tprsum ← 0 4: for i = 1 to nrocs do 5: tprsum ← tprsum + tpr for fpr(f prsample , ROCS[i], npts[i]) 6: end for 7: tpravg[s] ← tprsum/i 8: s←s+1 9: end for 10: end 1: function tpr for fpr(f prsample , ROC, npts) 2: i ← 1 3: while i < npts and ROC[i + 1].f pr ≤ f prsample do 4: i←i+1 5: end while 6: if ROC[i].f pr = f prsample then 7: return ROC[i].tpr 8: else 9: return interpolate(ROC[i], ROC[i + 1], f prsample ) 10: end if 11: end function 1: function interpolate(ROCP 1, ROCP 2, X) 2: slope = (ROCP 2.tpr − ROCP 1.tpr)/(ROCP 2.f pr − ROCP 1.f pr) 3: return ROCP 1.tpr + slope · (X − ROCP 1.f pr) 4: end function
+
+Fawcett and Kohavi (1998) used this method in their work of averaging ROC curves of a classiﬁer for k-fold cross-validation. In this method each ROC curve is treated as a function, R i , such that tp rate = Ri (fp rate). This is done by choosing the maximum tp rate for each fp rate and interpolating between points when necessary. The ˆ averaged ROC curve is the function R(fp rate) = mean[Ri (fp rate)]. ˆ To plot an average ROC curve we can sample from R at points regularly spaced along the fp rate-axis. Conﬁdence intervals of the mean of tp rateare computed using the common assumption of a binomial distribution. Algorithm 4 computes this vertical average of a set of ROC points. It leaves the means in the array T P avg.
+
+ROC101.tex; 16/03/2004; 12:56; p.19
+
+20
+
+Tom Fawcett
+
+Several extensions have been left out of this algorithm for clarity. The algorithm may easily be extended to compute standard deviations of the samples in order to draw conﬁdence bars. Also, the function tp for fp may be optimized somwhat. Because it is only called on monotonically increasing values of F P , it need not scan each ROC array from the beginning every time; it could keep a record of the last point seen and initialize i from this array. Figure 8c shows the vertical average of the ﬁve curves in ﬁgure 8a. The vertical bars on the curve show the 95% conﬁdence region of the ROC mean. For this average curve, the curves were sampled at FP rates from 0 through 1 by 0.1. It is possible to sample curves much more ﬁnely but the conﬁdence bars may become diﬃcult to read. 6.2. Threshold averaging Vertical averaging has the advantage that averages are made of a single dependent variable, the true positive rate, which simpliﬁes computing conﬁdence intervals. However, Holte (2002) has pointed out that the independent variable, false positive rate, is often not under the direct control of the researcher. It may be preferable to average ROC points using an independent variable whose value can be controlled directly, such as the threshold on the classiﬁer scores. Threshold averaging accomplishes this. Instead of sampling points based on their positions in ROC space, as vertical averaging does, it samples based on the thresholds that produced these points. The method must generate a set of thresholds to sample, then for each threshold it ﬁnds the corresponding point of each ROC curve and averages them. Algorithm 5 shows the basic method for doing this. It generates an array T of classiﬁer scores which are sorted from largest to smallest and used as the set of thresholds. These thresholds are sampled at ﬁxed intervals determined by samples, the number of samples desired. For a given threshold, the algorithm selects from each ROC curve the the point of greatest score less than or equal to the threshold. 5 These points are then averaged separately along their X and Y axes, with the center point returned in the Avg array. Figure 8d shows the result of averaging the ﬁve curves of 8a by thresholds. The resulting curve has average points and conﬁdence bars in the X and Y directions. The bars shown are at the 95% conﬁdence level.
+We assume the ROC points have been generated by an algorithm like 2 that deals correctly with equally scored instances.
+5
+
+ROC101.tex; 16/03/2004; 12:56; p.20
+
+ROC graphs
+
+21
+
+Algorithm 5 Threshold averaging of ROC curves.
+Inputs: samples, the number of threshold samples; nrocs, the number of ROC curves to be sampled; ROCS[nrocs], an array of nrocs ROC curves sorted by score; npts[m], the number of points in ROC curve m. Each ROC point is a structure of three members, fpr, tpr and score. Output: Avg, an array of (X,Y) points constituting the average ROC curve. Require: samples > 1 1: initialize array T to contain all scores of all ROC points 2: sort T in descending order 3: s ← 1 4: for tidx = 1 to length(T ) by int(length(T )/samples) do 5: f prsum ← 0 6: tprsum ← 0 7: for i = 1 to nrocs do 8: p ← roc point at threshold(ROCS[i], npts[i], T [tidx]) 9: f prsum ← f prsum + p.f pr 10: tprsum ← tprsum + p.tpr 11: end for 12: Avg[s] ← (f prsum/i , tprsum/i) 13: s←s+1 14: end for 15: end 1: function roc point at threshold(ROC, npts, thresh) 2: i ← 1 3: while i ≤ npts and ROC[i].score > thresh do 4: i←i+1 5: end while 6: return ROC[i] 7: end function
+
+There are some minor limitations of threshold averaging with respect to vertical averaging. To perform threshold averaging we need the classiﬁer score assigned to each point. Also, section 3.1 pointed out that classiﬁer scores should not be compared across model classes. Because of this, ROC curves averaged from diﬀerent model classes may be misleading because the scores may be incommensurate. Finally, Macskassy and Provost (2004) have investigated diﬀerent techniques for generating conﬁdence bands for ROC curves. They investigate conﬁdence intervals from vertical and threshold averaging, as well as three methods from the medical ﬁeld for generating bands (simultaneous join conﬁdence regions, Working-Hotelling based bands, and ﬁxed-width conﬁdence bands). The reader is referred to their paper for
+
+ROC101.tex; 16/03/2004; 12:56; p.21
+
+22
+
+Tom Fawcett
+
+a much more detailed discussion of the techniques, their assumptions, and empirical studies. 7. Additional Topics The previous sections are intended to be self-contained and to cover the basic issues that arise in using ROC curves in machine learning research. This section discusses additional, slightly more esoteric topics. 7.1. The ROC convex hull One advantage of ROC graphs is that they enable visualizing and organizing classiﬁer performance without regard to class distributions or error costs. This ability becomes very important when investigating learning with skewed distributions or cost-sensitive learning. A researcher can graph the performance of a set of classiﬁers, and that graph will remain invariant with respect to the operating conditions (class skew and error costs). As these conditions change, the region of interest may change, but the graph itself will not. Provost and Fawcett (1998; 2001) show that a set of operating conditions may be transformed easily into a so-called iso-performance line in ROC space. Two points in ROC space, (F P 1 ,T P1 ) and (F P2 ,T P2 ), have the same performance if c(Y, n)p(n) T P2 − T P 1 = =m F P2 − F P 1 c(N, p)p(p) This equation deﬁnes the slope of an iso-performance line. All classiﬁers corresponding to points on a line of slope m have the same expected cost. Each set of class and cost distributions deﬁnes a family of iso-performance lines. Lines “more northwest” (having a larger T P intercept) are better because they correspond to classiﬁers with lower expected cost. The details are beyond the scope of this article, but more generally a classiﬁer is potentially optimal if and only if it lies on the convex hull (Barber et al., 1993) of the set of points in ROC space. We call the convex hull of the set of points in ROC space the ROC convex hull (ROCCH) of the corresponding set of classiﬁers. This ROCCH formulation has a number of useful implications. Since only the classiﬁers on the convex hull are potentially optimal, no others need be retained. The operating conditions of the classiﬁer may be translated into an iso-performance line, which in turn may be used to identify a portion of the ROCCH. As conditions change, the hull itself does not change; only the portion of interest will.
+
+ROC101.tex; 16/03/2004; 12:56; p.22
+
+ROC graphs
+
+23
+fraudulent legitimate 0 0.02x + $20 0 $20 + x (b)
+
+fraudulent refuse approve $20 −x (a)
+
+legitimate −$20 0.02x refuse approve
+
+Figure 9. Matrices for the credit approval domain. (a) original beneﬁt matrix, (b) transformed cost-beneﬁt matrix
+
+7.2. Example-specific costs In some domains the cost of a particular kind of error is not constant throughout the population, but varies by example. Consider a simple credit card transaction domain used by Elkan (2001) in which the task is to decide whether to approve or refuse a given transaction. Elkan describes a beneﬁt matrix for the task, shown in ﬁgure 9a. This cost matrix is justiﬁed with the following explanation. A refused fraudulent transaction has a beneﬁt of $20 because it may prevent future fraud. Refusing a legitimate transaction has a negative beneﬁt because it annoys a customer. Approving a fraudulent transaction has a negative beneﬁt proporational to the transaction amount (x). Approving a legitimate transaction generates a small amount of income proportional to the transaction amount (0.02x). ROC graphs have been criticized because of their inability to handle example-speciﬁc costs. In the traditional formulation this is correct because the axes graph rates that are based on simple counts of TP and FP examples, which is in turn based on the assumption that all true positives are equivalent and all false positives are equivalent. However, with a straightforward transformation we can show how ROC graphs may be used with example-speciﬁc costs. For this domain we assume that a Y decision corresponds to approving a transaction, and N means denying it. To use the matrix for an ROC graph we transform it into a cost-beneﬁt matrix where the costs are relative only to Y (approve) decisions. First we subtract the ﬁrst row from both rows in the matrix. Conceptually this matrix now corresponds to a baseline situation where all transactions are refused, so all fraud is denied and all legitimate customers are annoyed. We then negate the approvefraudulent cell to turn it into a cost. This yields the cost-beneﬁt matrix of ﬁgure 9b which forms the deﬁnition of the cost function c(Y, p, x) and c(Y, n, x). In standard ROC graphs the x axis represents the fraction of total FP mistakes possible. In the example-speciﬁc cost formulation it will represent the fraction of total FP cost possible, so the denominator will
+
+ROC101.tex; 16/03/2004; 12:56; p.23
+
+24
+
+Tom Fawcett
+
+Algorithm 6 Generating ROC points from an dataset with examplespeciﬁc costs
+Inputs: L, the set of test examples; f (i), the probabilistic classiﬁer’s estimate that example i is positive; P and N , the number of positive and negative examples; c(Y, class, i), the cost of judging instance i of class class to be Y. Outputs: R, a list of ROC points increasing by fp rate. Require: P > 0 and N > 0 1: for x ∈ L do 2: if x is a positive example then 3: P total ← P total + c(Y, p, x) 4: else 5: N total ← N total + c(Y, n, x) 6: end if 7: end for 8: Lsorted ← L sorted decreasing by f scores 9: F P cost ← 0 10: T P benef it ← 0 11: R ← 12: fprev ← −∞ 13: i ← 1 14: while i ≤ |Lsorted | do 15: if f (i) = fprev then
+16:
+
+push
+
+F P cost T P benef it N total , P total
+
+onto R
+
+17: fprev ← f (i) 18: end if 19: if Lsorted [i] is a positive example then 20: T P benef it ← T P benef it + c(Y, p, Lsorted [i]) 21: else /* i is a negative example */ 22: F P cost ← F P cost + c(Y, n, L sorted[i]) 23: end if 24: i←i+1 25: end while cost 26: push F P N , T P benef it onto R /* This is (1,1) */ P 27: end
+
+now be $20 + x
+x∈f raudulent
+
+Similarly the y axis will be the fraction of total TP beneﬁts so its denominator will be 0.02x + $20
+x∈legitimate
+
+ROC101.tex; 16/03/2004; 12:56; p.24
+
+ROC graphs
+
+25
+
+Instead of incrementing T P and F P instance counts, as in algorithm 2, we increment T P benef it and F P cost by the cost (beneﬁt) of each negative (positive) instance as it is processed. The ROC points are the fractions of total beneﬁts and costs, respectively. Conceptually this transformation corresponds to replicating instances in the instance set in proportion to their cost, though this transformation has the advantage that no actual replication is performed and non-integer costs are easily accommodated. The ﬁnal algorithm is shown in algorithm 6. It is important to mention two caveats in adopting this transformation. First, while example costs may vary, ROC analysis requires that costs always be negative and beneﬁts always be positive. For example, if we deﬁned c(Y, p, x) = x − $20, with example x values ranging in [0, 40], this could be violated. Second, incorporating error costs into the ROC graph in this way introduces an additional assumption. Traditional ROC graphs assume that the fp rate and tp rate metrics of the test population will be similar to those of the training population; in particular that a classiﬁer’s performance on random samples will be similar. This new formulation adds the assumption that the example costs will be similar as well; in other words, not only will the classiﬁer continue to score instances similarly between the training and testing sets, but the costs and beneﬁts of those instances will be similar between the sets too. 7.3. Decision problems with more than two classes Discussions up to this point have dealt with only two classes, and much of the ROC literature maintains this assumption. ROC analysis is commonly employed in medical decision making in which two-class diagnostic problems—presence or absence of an abnormal condition— are common. The two axes represent tradeoﬀs between errors (false positives) and beneﬁts (true positives) that a classiﬁer makes between two classes. Much of the analysis is straightforward because of the symmetry that exists in the two-class problem. The resulting performance can be graphed in two dimensions, which is easy to visualize. 7.3.1. Multi-class ROC graphs With more than two classes the situation becomes much more complex if the entire space is to be managed. With n classes the confusion matrix becomes an n × n matrix containing the n correct classiﬁcations (the major diagonal entries) and n2 −n possible errors (the oﬀ-diagonal entries). Instead of managing trade-oﬀs between TP and FP, we have n beneﬁts and n2 − n errors. With only three classes, the surface becomes a 32 − 3 = 6-dimensional polytope. Lane (2000) has written a short
+
+ROC101.tex; 16/03/2004; 12:56; p.25
+
+26
+
+Tom Fawcett
+
+paper outlining the issues involved and the prospects for addressing them. Srinivasan (1999) has shown that the analysis behind the ROC convex hull extends to multiple classes and multi-dimensional convex hulls. One method for handling n classes is to produce n diﬀerent ROC graphs, one for each class. Called this the class reference formulation. Speciﬁcally, if C is the set of all classes, ROC graph i plots the classiﬁcation performance using class c i as the positive class and all other classes as the negative class, i.e., Pi = c i Ni =
+j=i
+
+(1) cj ∈ C (2)
+
+While this is a convenient formulation, it compromises one of the attractions of ROC graphs, namely that they are insensitive to class skew (see section 3.2). Because each N i comprises the union of n − 1 classes, changes in prevalence within these classes may alter the c i ’s ROC graph. For example, assume that some class c k ∈ N is particularly easy to identify. A classiﬁer for class c i , i = k may exploit some characteristic of ck in order to produce low scores for ck instances. Increasing the prevalence of ck might alter the performance of the classiﬁer, and would be tantamount to changing the target concept by increasing the prevalence of one of its disjuncts. This in turn would alter the ROC curve. However, with this caveat, this method can work well in practice and provide reasonable ﬂexibility in evaluation.
+
+7.3.2. Multi-class AUC The AUC is a measure of the discriminability of a pair of classes. In a two-class problem, the AUC is a single scalar value, but a multi-class problem introduces the issue of combining multiple pairwise discriminability values. The reader is referred to Hand and Till’s (2001) article for an excellent discussion of these issues. One approach to calculating multi-class AUCs was taken by Provost and Domingos (2001) in their work on probability estimation trees. They calculated AUCs for multi-class problems by generating each class reference ROC curve in turn, measuring the area under the curve, then summing the AUCs weighted by the reference class’s prevalence in the data. More precisely, they deﬁne: AU Ctotal =
+ci ∈C
+
+AU C(ci ) · p(ci )
+
+ROC101.tex; 16/03/2004; 12:56; p.26
+
+ROC graphs
+
+27
+
+where AU C(ci ) is the area under the class reference ROC curve for c i , as in equations 2. This deﬁnition requires only |C| AUC calculations, so its overall complexity is O(|C|n log n). The advantage of Provost and Domingos’s AUC formulation is that AU Ctotal is generated directly from class reference ROC curves, and these curves can be generated and visualized easily. The disadvantage is that the class reference ROC is sensitive to class distributions and error costs, so this formulation of AU C total is as well. Hand and Till (2001) take a diﬀerent approach in their derivation of a multi-class generalization of the AUC. They desired a measure that is insensitive to class distribution and error costs. The derivation is too detailed to summarize here, but it is based upon the fact that the AUC is equivalent to the probability that the classiﬁer will rank a randomly chosen positive instance higher than a randomly chosen negative instance. From this probabilistic form, they derive a formulation that measures the unweighted pairwise discriminability of classes. Their measure, which they call M, is equivalent to: AU Ctotal = 2 |C|(|C| − 1) {c ,c
+i
+
+AU C(ci , cj )
+j }∈C
+
+where n is the number of classes and AU C(c i , cj ) is the area under the two-class ROC curve involving classes c i and cj . The summation is calculated over all pairs of distinct classes, irrespective of order. There are |C|(|C| − 1)/2 such pairs, so the time complexity of their measure is O(|C|2 n log n). While Hand and Till’s formulation is well justiﬁed and is insensitive to changes in class distribution, there is no easy way to visualize the surface whose area is being calculated. 7.4. Combining classifiers While ROC curves are commonly used for visualizing and evaluating individual classiﬁers, ROC space can also be used to estimate the performance of combinations of classiﬁers. 7.4.1. Interpolating classiﬁers Sometimes the performance desired of a classiﬁer is not exactly produced by any available classiﬁer, but lies between two available classiﬁers. The desired performance can be obtained by sampling the decisions of each classiﬁer. The sampling ratio will determine where the resulting classiﬁcation performance lies. For a concrete example, consider the decision problem of the CoIL Challenge 2000 (van der Putten and van Someren, 2000). In this challenge there is a set of 4000 clients to whom we wish to market a new
+
+ROC101.tex; 16/03/2004; 12:56; p.27
+
+28
+1.0
+
+Tom Fawcett
+
+True Positive rate
+
+constraint line: TPr * 240 + FPr * 3760 = 800
+
+0.8 B 0.6 C 0.4 A
+
+0.2
+
+k
+
+}
+0.15 0.2 0.25 0.3
+
+0 0 0.05 0.1
+
+False Positive rate
+Figure 10. Interpolating classiﬁers
+
+insurance policy. Our budget dictates that we can aﬀord to market to only 800 of them, so we want to select the 800 who are most likely to respond to the oﬀer. The expected class prior of responders is 6%, so within the population of 4000 we expect to have 240 responders (positives) and 3760 non-responders (negatives). Assume we have generated two classiﬁers, A and B, which score clients by the probability they will buy the policy. In ROC space A lies at (.1, .2) and B lies at (.25, .6), as shown in ﬁgure 10. We want to market to exactly 800 people so our solution constraint is fp rate × 3760 + tp rate × 240 = 800. If we use A we expect .1 × 3760 + .2 × 240 = 424 candidates, which is too few. If we use B we expect .25 × 3760 + .6 × 240 = 1084 candidates, which is too many. We want a classiﬁer between A and B. The solution constraint is shown as a dashed line in ﬁgure 10. It intersects the line between A and B at C, approximately (.18, .42). A classiﬁer at point C would give the performance we desire and we can achieve it using linear interpolation. Calculate k as the proportional distance that C lies on the line between A and B: 0.18 − 0.1 k= ≈ 0.53 0.25 − 0.1 Therefore, if we sample B’s decisions at a rate of .53 and A’s decisions at a rate of 1 − .53 = .47 we should attain C’s performance. In practice this fractional sampling can be done by randomly sampling decisions
+
+ROC101.tex; 16/03/2004; 12:56; p.28
+
+ROC graphs
+1.0 C 1.0 C
+
+29
+
+True Positive rate
+
+0.8
+
+True Positive rate
+
+0.8
+
+B’
+
+0.6 A 0.4 B
+
+0.6 A 0.4 B
+
+0.2
+
+0.2
+
+0 0 0.2 0.4 0.6 0.8 1.0
+
+0 0 0.2 0.4 0.6 0.8 1.0
+
+False Positive rate
+
+False Positive rate
+
+(a)
+Figure 11. Removing concavities
+
+(b)
+
+from each: for each instance, generate a random number between zero and one. If the random number is greater than k, apply classiﬁer A to the instance and report its decision, else pass the instance to B. 7.4.2. Conditional combinations of classiﬁers to remove concavities A concavity in an ROC curve represents a sub-optimality in the classiﬁer. Speciﬁcally, a concavity occurs whenever a segment of slope r is joined at the right to a segment of slope s where s > r. The slope of an ROC curve represents the class likelihood ratio. A concavity indicates that the group of instances producing s have a higher posterior class ratio than those accounting for r. Because s occurs to the right of r, r’s instances should have been ranked more highly than s’s, but were not. This is a sub-optimality of the classiﬁer. In practice, concavities in ROC curves produced by learned classiﬁers may be due either to idiosyncracies in learning or to small test set eﬀects. 6 Section 2.1 mentioned that the diagonal y = x on an ROC graph represents a zone of “no information”, where a classiﬁer is randomly guessing at classiﬁcations. Any classiﬁer below the diagonal can have its classiﬁcations reversed to bring it above the diagonal. Flach and Wu (2003) show that in some cases this can be done locally to remove concavities in an ROC graph. Figure 11a shows three classiﬁers, A, B and C. B introduces a concavity in the ROC graph. The segment BC has higher slope than AB, so ideally we would want to “swap” the position of segment BC for that
+Bradley’s (1997) ROC curves exhibit noticeable concavities, as do the Breast cancer and RoadGrass domains of Provost et al. (1998).
+6
+
+ROC101.tex; 16/03/2004; 12:56; p.29
+
+30
+
+Tom Fawcett
+
+´ Figure 11b shows the new classiﬁer B. Its position is equivalent to reﬂecting B’s about the line AC or, equivalently, transposing the decisions in AB with those in BC. Flach and Wu (2003) demonstrate this construction in greater detail and prove its performance formally. An important caveat is that A, B and C must be dependent. Speciﬁcally, it must be the case that T PA ⊆ T PB ⊆ T PC and F PA ⊆ F PB ⊆ F PC . This is commonly achieved when A, B and C are the results of imposing a threshold T on a single model and T A < TB < TC . Because of these relationships, there need be no fourth clause covering ´ A(x) = N ∧ C(x) = Y in the deﬁnition of B since these conditions are contradictory. 7.4.3. Logically combining classiﬁers As we have seen, with two classes a classiﬁer c can be viewed as a predicate on an instance x where c(x) is true iﬀ c(x) = Y. We can then speak of boolean combinations of classiﬁers, and an ROC graph can provide a way of visualizing the performance of such combinations. It can help to illustrate both the bounding region of the new classiﬁer and its expected position. If two classiﬁers c1 and c2 are conjoined to create c3 = c1 ∧ c2 , where will c3 lie in ROC space? Let TPrate 3 and FPrate3 be the ROC positions of c3 . The minimum number of instances c3 can match is zero. The maximum is limited by the intersection of their positive sets. Since a new instance must satisfy both c1 and c2 , we can bound c3 ’s position: 0 ≤ TPrate3 ≤ min(TPrate1 , TPrate2 ) 0 ≤ TPrate3 ≤ min(FPrate1 , FPrate2 ) Figure 12 shows this bounding rectangle for two classiﬁers c 1 ∧c2 , the shaded rectangle in the lower left corner. Where within this rectangle do we expect c3 to lie? Let x be an instance in the true positive set T P3 of c3 . Then: T P rate3 ≈ p(x ∈ T P3 ) ≈ p(x ∈ T P1 ∧ x ∈ T P2 )
+
+of AB in the ROC graph. If A, B and C are related—for example, if they represent diﬀerent thresholds applied to the same scoring model— then this can be done. Let A(x) represent the classiﬁcation assigned to instance x by classiﬁer A. Flach and Wu’s method involves creating a ´ new classiﬁer B deﬁned as:  N if A(x) = N ∧ C(x) = N  ´ Y if A(x) = Y ∧ C(x) = Y B(x) =  ¬B(x) if A(x) = N ∧ C(x) = Y
+
+ROC101.tex; 16/03/2004; 12:56; p.30
+
+ROC graphs
+1.0
+
+31
+
+0.8
+
+c2 c1
+
++ c1Vc2
+
+True Positive rate
+
+0.6
+
+c1 ^ c2
+0.4
+
+0.2
+
+0 0 0.2 0.4 0.6 0.8 1.0
+
+False Positive rate
+Figure 12. The expected positions of boolean combinations of c1 and c2 .
+
+By assuming independence of c1 and c2 , we can continue: T P rate3 ≈ p(x ∈ T P1 ) · p(x ∈ T P2 ) | T P1 | | T P2 | · ≈ |P | |P | ≈ T P rate1 · T P rate2 A similar derivation can be done for FPrate 3 , showing that F P rate3 ≈ F P rate1 · F P rate2 . Thus, the conjunction of two classiﬁers c 1 and c2 can be expected to lie at the point (FPrate1 · FPrate2 , TPrate1 · TPrate2 ) in ROC space. This point is shown as the triangle in ﬁgure 12 at (0.08, 0.42). This estimate assumes independence of classiﬁers; interactions between c1 and c2 may cause the position of c3 in ROC space to vary from this estimate. We can derive similar expressions for the disjunction c 4 = c1 ∨ c2 . In this case the rates are bounded by: max(TPrate1 , TPrate2 ) ≤ TPrate4 ≤ min(1, TPrate1 + TPrate2) max(FPrate1 , FPrate2 ) ≤ FPrate4 ≤ min(1, FPrate 1 + FPrate2)
+
+ROC101.tex; 16/03/2004; 12:56; p.31
+
+32
+
+Tom Fawcett
+
+This bounding region is indicated in ﬁgure 12 by the shaded rectangle in the upper right portion of the ROC graph. The expected position, assuming independence, is: TPrate4 = 1 − [1 − TPrate1 − TPrate2 + TPrate1 · TPrate2 ] FPrate4 = 1 − [1 − FPrate1 − FPrate2 + FPrate1 · FPrate2 ] This point is indicted by the marked + symbol within the bounding rectangle. It is worth noting that the expected location of both c 1 ∧c2 and c1 ∨c2 are outside of the ROC convex hull formed by c 1 and c2 . In other words, logical combinations of classiﬁers can produce performance outside of the convex hull and better than what could be achieved with linear interpolation.
+
+7.4.4. Chaining classiﬁers Section 2 mentioned that classiﬁers on the left side of an ROC graph near X = 0 may be thought of as “conservative”; and classiﬁers on the upper side of an ROC graph near Y = 1 may be thought of as “liberal”. With this interpretation it might be tempting to devise a composite scheme that applies classiﬁers sequentially like a rule list. Such a technique might work as follows: Given the classiﬁers on the ROC convex hull, an instance is ﬁrst given to the most conservative (left-most) classiﬁer. If that classiﬁer returns Y, the composite classiﬁer returns Y; otherwise, the second most conservative classiﬁer is tested, and so on. The sequence terminates when some classiﬁer issues a Y classiﬁcation, or when the classiﬁers reach a maximum expected cost, such as may be speciﬁed by an iso-performance line. The resulting classiﬁer is c1 ∨ c2 ∨ · · · ∨ ck , where ck has the highest expected cost tolerable. Unfortunately, this chaining of classiﬁers may not work as desired. Classiﬁers’ positions in ROC space are based upon their independent performance. When classiﬁers are applied in sequence this way, they are not being used independently but are instead being applied to instances which more conservative classiﬁers have already classiﬁed as negative. Due to classiﬁer interactions (intersections among classiﬁers’ T P and F P sets), the resulting classiﬁer may have very diﬀerent performance characteristics than any of the component classiﬁers. Although section 7.4.3 introduced an independence assumption that may be reasonable for combining two classiﬁers, this assumption becomes much less tenable as longer chains of classiﬁers are constructed.
+
+ROC101.tex; 16/03/2004; 12:56; p.32
+
+ROC graphs
+
+33
+
+7.4.5. The importance of ﬁnal validation To close this section on classiﬁer combination, we emphasize a basic point that is easy to forget. ROC graphs are commonly used in evaluation, and are generated from a ﬁnal test set. If an ROC graph is instead used to select or to combine classiﬁers, this use must be considered to be part of the training phase. A separate held-out validation set must be used to estimate the expected performance of the classiﬁer(s). This is true even if the ROC curves are being used to form a convex hull. 7.5. Alternatives to ROC graphs Recently, various alternatives to ROC graphs have been proposed. We brieﬂy summarize them here. 7.5.1. DET curves DET graphs (Martin et al., 1997) are not so much an alternative to ROC curves as an alternative way of presenting them. There are two diﬀerences. First, DET graphs plot false negatives on the Y axis instead of true positives, so they plot one kind of error against another. Second, DET graphs are log scaled on both axes so that the area of the lower left part of the curve (which corresponds to the upper left portion of an ROC graph) is expanded. Martin et al. (1997) argue that wellperforming classiﬁers, with low false positive rates and/or low false negative rates, tend to be “bunched up” together in the lower left portion of a ROC graph. The log scaling of a DET graph gives this region greater surface area and allows these classiﬁers to be compared more easily. 7.5.2. Cost curves Section 7.1 showed how information about class proportions and error costs could be combined to deﬁne the slope of a so-called isoperformance line. Such a line can be placed on an ROC curve and used to identify which classiﬁer(s) perform best under the conditions of interest. In many cost minimization scenarios, this requires inspecting the curves and judging the tangent angles for which one classiﬁer dominates. Drummond and Holte (2000; 2002) point out that reading slope angles from an ROC curve may be diﬃcult to do. Determining the regions of superiority, and the amount by which one classiﬁer is superior to another, is challenging when the comparison lines are curve tangents rather than simple vertical lines. Drummond and Holte reason that if the primary use of a curve is to compare relative costs, the graphs should represent these costs explicitly. They propose cost curves as an alternative to ROC curves.
+
+ROC101.tex; 16/03/2004; 12:56; p.33
+
+34
+
+Tom Fawcett
+
+On a cost curve, the X axis ranges from 0 to 1 and measures the proportion of positives in the distribution. The Y axis, also from 0 to 1, is the relative expected misclassiﬁcation cost. A perfect classiﬁer is a horizontal line from (0, 0) to (0, 1). Cost curves are a point-line dual of ROC curves: a point (i.e., a discrete classiﬁer) in ROC space is represented by a line in cost space, with the line designating the relative expected cost of the classiﬁer. For any X point, the corresponding Y points represent the expected costs of the classiﬁers. Thus, while in ROC space the convex hull contains the set of lowest-cost classiﬁers, in cost space the lower envelope represents this set. 7.5.3. Relative superiority graphs and the LC index Like cost curves, the LC index (Adams and Hand, 1999) is a transformation of ROC curves that facilitates comparing classiﬁers by cost. Adams and Hand argue that precise cost information is rare, but some information about costs is always available, and so the AUC is too coarse of a measure of classiﬁer performance. An expert may not be able to specify exactly what the costs of a false positive and false negative should be, but an expert usually has some idea how much more expensive one error is than another. This can be expressed as a range of values in which the error cost ratio will lie. Adams and Hand’s method maps the ratio of error costs onto the interval (0,1). It then transforms a set of ROC curves into a set of parallel lines showing which classiﬁer dominates at which region in the interval. An expert provides a sub-range of (0,1) within which the ratio is expected to fall, as well as a most likely value for the ratio. This serves to focus attention on the interval of interest. Upon these “relative superiority” graphs a measure of conﬁdence—the LC index— can be deﬁned indicating how likely it is that one classiﬁer is superior to another within this interval. The relative superiority graphs may be seen as a binary version of cost curves, in which we are only interested in which classiﬁer is superior. The LC index (for loss comparison) is thus a measure of conﬁdence of superiority rather than of cost diﬀerence.
+
+8. Conclusion ROC graphs are a very useful tool for visualizing and evaluating classiﬁers. They are able to provide a richer measure of classiﬁcation performance than accuracy or error rate can, and they have advantages over other evaluation measures such as precision-recall graphs and lift curves. However, as with any evaluation metric, using them wisely
+
+ROC101.tex; 16/03/2004; 12:56; p.34
+
+ROC graphs
+
+35
+
+requires knowing their characteristics and limitations. It is hoped that this article advances the general knowledge about ROC graphs and helps to promote better evaluation practices in the data mining community.
+
+Appendix A. Generating an ROC curve from a decision tree As a basic example of how scores can be derived from some model classes, and how a ROC curve can be generated directly from them, we present a procedure for generating a ROC curve from a decision tree. Algorithm 7 shows the basic idea. For simplicity the algorithm is written in terms of descending the tree structure, but it could just as easily extract the same information from the printed tree representation. Following C4.5 usage, each leaf node keeps a record of the number of examples matched by the condition, the number of errors (local false positives), and the class concluded by the node.
+
+Acknowledgements While at Bell Atlantic, Foster Provost and I investigated ROC graphs and ROC analysis for use in real-world domains. My understanding of ROC analysis has beneﬁted greatly from discussions with him. I am indebted to Rob Holte and Chris Drummond for many enlightening email exchanges on ROC graphs, especially on the topics of cost curves and averaging ROC curves. These discussions increased my understanding of the complexity of the issues involved. I wish to thank Terran Lane, David Hand and Jos´ Hernandez-Orallo for discussions e clarifying their work. I wish to thank Kelly Zou and Holly Jimison for pointers to relevant articles in the medical decision making literature. I am grateful to the following people for their comments and corrections on previous drafts of this article: Chris Drummond, Peter Flach, George Forman, Rob Holte, Sofus Macskassy, Sean Mooney, Joshua O’Madadhain and Foster Provost. Of course, any misunderstandings or errors remaining are my own responsibility. Much open source software was used in this work. I wish to thank A the authors and maintainers of XEmacs, TEXand L TEX, Perl and its many user-contributed packages, and the Free Software Foundation’s GNU Project. The ﬁgures in this paper were created with Tgif, Grace and Gnuplot.
+
+ROC101.tex; 16/03/2004; 12:56; p.35
+
+36
+
+Tom Fawcett
+
+References
+Adams, N. M. and D. J. Hand: 1999, ‘Comparing classiﬁers when the misallocations costs are uncertain’. Pattern Recognition 32, 1139–1147. Barber, C., D. Dobkin, and H. Huhdanpaa: 1993, ‘The quickhull algorithm for convex hull’. Technical Report GCG53, University of Minnesota. Available: ftp:// geom.umn.edu/pub/software/qhull.tar.Z. Bradley, A. P.: 1997, ‘The use of the area under the ROC curve in the evaluation of machine learning algorithms’. Pattern Recognition 30(7), 1145–1159. Breiman, L., J. Friedman, R. Olshen, and C. Stone: 1984, Classiﬁcation and regression trees. Belmont, CA: Wadsworth International Group. Clearwater, S. and E. Stern: 1991, ‘A rule-learning program in high energy physics event classiﬁcation’. Comp Physics Comm 67, 159–182. Domingos, P.: 1999, ‘MetaCost: A general method for making classiﬁers costsensitive’. In: Proceedings of the Fifth ACM SIGKDD International Conference on Knowledge Discovery and Data Mining. pp. 155–164. Drummond, C. and R. C. Holte: 2000, ‘Explicitly Representing Expected Cost: An alternative to ROC representation’. In: R. Ramakrishnan and S. Stolfo (eds.): Proceedings of the Sixth ACM SIGKDD International Conference on Knowledge Discovery and Data Mining. pp. 198–207, ACM Press. Drummond, C. and R. C. Holte: 2002, ‘Classiﬁer cost curves: Making performance evaluation easier and more informative’. Unpublished manuscript available from the authors. Egan, J. P.: 1975, Signal Detection Theory and ROC Analysis, Series in Cognitition and Perception. New York: Academic Press. Elkan, C.: 2001, ‘The Foundations of Cost-Sensitive Learning’. In: Proceedings of the IJCAI-01. pp. 973–978. Fawcett, T.: 2001, ‘Using Rule Sets to Maximize ROC Performance’. In: Proceedings of the IEEE International Conference on Data Mining (ICDM-2001). Los Alamitos, CA, pp. 131–138, IEEE Computer Society. Fawcett, T. and F. Provost: 1996, ‘Combining Data Mining and Machine Learning for Eﬀective User Proﬁling’. In: Simoudis, Han, and Fayyad (eds.): Proceedings on the Second International Conference on Knowledge Discovery and Data Mining. Menlo Park, CA, pp. 8–13, AAAI Press. Fawcett, T. and F. Provost: 1997, ‘Adaptive Fraud Detection’. Data Mining and Knowledge Discovery 1(3), 291–316. Flach, P. and S. Wu: 2003, ‘Repairing concavities in ROC curves’. In: Proc. 2003 UK Workshop on Computational Intelligence. pp. 38–44. Forman, G.: 2002, ‘A method for discovering the insigniﬁcance of one’s best classiﬁer and the unlearnability of a classiﬁcation task’. In: Lavrac, Motoda, and Fawcett (eds.): Proceedings of th First International Workshop on Data Mining Lessons Learned (DMLL-2002). Available: http://www.hpl.hp.com/personal/ Tom_Fawcett/DMLL-2002/Forman.pdf. Hand, D. J. and R. J. Till: 2001, ‘A simple generalization of the area under the ROC curve to multiple class classiﬁcation problems’. Machine Learning 45(2), 171–186. Hanley, J. A. and B. J. McNeil: 1982, ‘The Meaning and Use of the Area under a Receiver Operating Characteristic (ROC) Curve’. Radiology 143, 29–36. Holte, R.: 2002, ‘Personal communication’. Kubat, M., R. C. Holte, and S. Matwin: 1998, ‘Machine Learning for the Detection of Oil Spills in Satellite Radar Images’. Machine Learning 30, 195–215.
+
+ROC101.tex; 16/03/2004; 12:56; p.36
+
+ROC graphs
+
+37
+
+Lane, T.: 2000, ‘Extensions of ROC Analysis to multi-class domains’. In: T. Dietterich, D. Margineantu, F. Provost, and P. Turney (eds.): ICML-2000 Workshop on Cost-Sensitive Learning. Lewis, D.: 1990, ‘Representation quality in text classiﬁcation: An introduction and experiment’. In: Proceedings of Workshop on Speech and Natural Language. Hidden Valley, PA, pp. 288–295, Morgan Kaufmann. Lewis, D.: 1991, ‘Evaluating Text Categorization’. In: Proceedings of Speech and Natural Language Workshop. pp. 312–318, Morgan Kaufmann. Macskassy, S. A. and F. Provost: 2004, ‘Conﬁdence Bands for ROC curves’. In: Submitted to ICML-2004. Martin, A., G. Doddington, T. Kamm, M. Ordowski, and M. Przybocki: 1997, ‘The DET Curve in Assessment of Detection Task Performance’. In: Proc. Eurospeech ’97. Rhodes, Greece, pp. 1895–1898. Provost, F. and P. Domingos: 2001, ‘Well-trained PETs: Improving Probability Estimation Trees’. CeDER Working Paper #IS-00-04, Stern School of Business, New York University, NY, NY 10012. Provost, F. and T. Fawcett: 1998, ‘Robust classiﬁcation systems for imprecise environments’. In: Proceedings of the Fifteenth National Conference on Artiﬁcial Intelligence (AAAI-98). Menlo Park, CA, pp. 706–713. Available: http: //www.purl.org/NET/tfawcett/papers/aaai98-dist.ps.gz. Provost, F. and T. Fawcett: 2001, ‘Robust Classiﬁcation for Imprecise Environments’. Machine Learning 42(3), 203–231. Provost, F., T. Fawcett, and R. Kohavi: 1998, ‘The Case Against Accuracy Estimation for Comparing Induction Algorithms’. In: J. Shavlik (ed.): Proceedings of the Fifteenth International Conference on Machine Learning. San Francisco, CA, pp. 445–453. Saitta, L. and F. Neri: 1998, ‘Learning in the “Real World”’. Machine Learning 30, 133–163. Spackman, K. A.: 1989, ‘Signal detection theory: Valuable tools for evaluating inductive learning’. In: Proceedings of the Sixth International Workshop on Machine Learning. San Mateo, CA, pp. 160–163, Morgan Kaufman. Srinivasan, A.: 1999, ‘Note on the location of optimal classiﬁers in n-dimensional ROC space’. Technical Report PRG-TR-2-99, Oxford University Computing Laboratory, Oxford, England. Swets, J.: 1988, ‘Measuring the accuracy of diagnostic systems’. Science 240, 1285– 1293. Swets, J. A., R. M. Dawes, and J. Monahan: 2000, ‘Better Decisions through Science’. Scientiﬁc American 283, 82–87. Available: http: //www.psychologicalscience.org/newsresearch/publications/journals/ %siam.pdf. van der Putten, P. and M. van Someren: 2000, ‘CoIL Challenge 2000: The Insurance Company Case’. Tech report 2000-09, Leiden Institute of Advanced Computer Science. Zadrozny, B. and C. Elkan: 2001, ‘Obtaining calibrated probability estimates from decision trees and naive bayesian classiers’. In: Proceedings of the Eighteenth International Conference on Machine Learning. pp. 609–616. Zou, K. H.: 2002, ‘Receiver operating characteristic (ROC) literature research’. Online bibliography available from http://splweb.bwh.harvard.edu:8000/pages/ ppl/zou/roc.html.
+
+ROC101.tex; 16/03/2004; 12:56; p.37
+
+38
+
+Tom Fawcett
+
+Algorithm 7 Generating an ROC curve from a decision tree
+Inputs: pos class and neg class, the positive and negative classes; and T , the decision tree root node. Each tree node has ﬁelds class, the class concluded by the node; matched, the number of instances matched by the condition; and errors, the number of non-class instances matched by the condition. If a node is not a leaf node it also has children, an array of pointers to its children, and n children, the number of children. Outputs: R, a list of ROC points. 1: pos points ← (); neg points ← () 2: count[pos class] ← 0; count[neg class] ← 0 3: descend(T, pos class); 4: for pt ∈ pos points do 5: pt.x ← pt.x/count[neg class] 6: pt.y ← pt.y/count[pos class] 7: end for 8: for pt ∈ neg points do 9: pt.x ← (count[neg class] − pt.x)/count[neg class] 10: pt.y ← (count[pos class] − pt.y)/count[pos class] 11: end for 12: R ← pos points ∪ neg points ∪ (0, 0) ∪ (1, 1) 13: sort R increasing by x values 14: end 1: function descend(node, pos class) 2: if node is a leaf node then 3: T P ← node.matched − node.errors 4: F P ← node.errors 5: count[node.class] ← count[node.class] + T P 6: pt ← new point 7: if node.class = pos class then 8: pt.x ← F P ; pt.y ← T P 9: push pt onto pos points 10: else 11: pt.x ← T P ; pt.y ← F P 12: push pt onto neg points 13: end if 14: else /* node is an internal node */ 15: for i = 1 to node.n children do 16: descend(node.children[i], pos class) 17: end for 18: end if 19: end function
+
+ROC101.tex; 16/03/2004; 12:56; p.38
+

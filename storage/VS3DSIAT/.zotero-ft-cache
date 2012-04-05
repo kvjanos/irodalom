@@ -1,0 +1,1151 @@
+Department of Computer Science
+
+Hamilton, NewZealand
+
+Correlation-based Feature Selection for Machine Learning
+
+Mark A. Hall
+
+This thesis is submitted in partial fulﬁlment of the requirements for the degree of Doctor of Philosophy at The University of Waikato.
+
+April 1999 c 1999 Mark A. Hall
+
+ii
+
+Abstract
+A central problem in machine learning is identifying a representative set of features from which to construct a classiﬁcation model for a particular task. This thesis addresses the problem of feature selection for machine learning through a correlation based approach. The central hypothesis is that good feature sets contain features that are highly correlated with the class, yet uncorrelated with each other. A feature evaluation formula, based on ideas from test theory, provides an operational deﬁnition of this hypothesis. CFS (Correlation based Feature Selection) is an algorithm that couples this evaluation formula with an appropriate correlation measure and a heuristic search strategy. CFS was evaluated by experiments on artiﬁcial and natural datasets. Three machine learning algorithms were used: C4.5 (a decision tree learner), IB1 (an instance based learner), and naive Bayes. Experiments on artiﬁcial datasets showed that CFS quickly identiﬁes and screens irrelevant, redundant, and noisy features, and identiﬁes relevant features as long as their relevance does not strongly depend on other features. On natural domains, CFS typically eliminated well over half the features. In most cases, classiﬁcation accuracy using the reduced feature set equaled or bettered accuracy using the complete feature set. Feature selection degraded machine learning performance in cases where some features were eliminated which were highly predictive of very small areas of the instance space. Further experiments compared CFS with a wrapper—a well known approach to feature selection that employs the target learning algorithm to evaluate feature sets. In many cases CFS gave comparable results to the wrapper, and in general, outperformed the wrapper on small datasets. CFS executes many times faster than the wrapper, which allows it to scale to larger datasets. Two methods of extending CFS to handle feature interaction are presented and experimentally evaluated. The ﬁrst considers pairs of features and the second incorporates iii
+
+feature weights calculated by the RELIEF algorithm. Experiments on artiﬁcial domains showed that both methods were able to identify interacting features. On natural domains, the pairwise method gave more reliable results than using weights provided by RELIEF.
+
+iv
+
+Acknowledgements
+First and foremost I would like to acknowledge the tireless and prompt help of my supervisor, Lloyd Smith. Lloyd has always allowed me complete freedom to deﬁne and explore my own directions in research. While this proved difﬁcult and somewhat bewildering to begin with, I have come to appreciate the wisdom of his way—it encouraged me to think for myself, something that is unfortunately all to easy to avoid as an undergraduate. Lloyd and the Department of Computer Science have provided me with much appreciated ﬁnancial support during my degree. They have kindly provided teaching assistantship positions and travel funds to attend conferences. I thank Geoff Holmes, Ian Witten and Bill Teahan for providing valuable feedback and reading parts of this thesis. Stuart Inglis (super-combo!), Len Trigg, and Eibe Frank deserve thanks for their technical assistance and helpful comments. Len convinced me (rather emphatically) not to use MS Word for writing a thesis. Thanks go to Richard Littin and David McWha for kindly providing the University of Waikato thesis style and
+A assistance with LTEX.
+
+Special thanks must also go to my family and my partner Bernadette. They have provided unconditional support and encouragement through both the highs and lows of my time in graduate school.
+
+v
+
+vi
+
+Contents
+Abstract Acknowledgements List of Figures List of Tables 1 Introduction 1.1 1.2 1.3 Motivation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Thesis statement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Thesis Overview . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . iii v xv xx 1 1 4 5 7 7 8 9 10 12 14 16 18 19 25 26 27 28
+
+2 Supervised Machine Learning: Concepts and Deﬁnitions 2.1 2.2 2.3 The Classiﬁcation Task . . . . . . . . . . . . . . . . . . . . . . . . . . . Data Representation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Learning Algorithms . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2.3.1 2.3.2 2.3.3 2.4 2.5 Naive Bayes . . . . . . . . . . . . . . . . . . . . . . . . . . . . C4.5 Decision Tree Generator . . . . . . . . . . . . . . . . . . . IB1-Instance Based Learner . . . . . . . . . . . . . . . . . . . .
+
+Performance Evaluation . . . . . . . . . . . . . . . . . . . . . . . . . . . Attribute Discretization . . . . . . . . . . . . . . . . . . . . . . . . . . . 2.5.1 Methods of Discretization . . . . . . . . . . . . . . . . . . . . .
+
+3 Feature Selection for Machine Learning 3.1 3.2 3.3 Feature Selection in Statistics and Pattern Recognition . . . . . . . . . . Characteristics of Feature Selection Algorithms . . . . . . . . . . . . . . Heuristic Search . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . vii
+
+3.4
+
+Feature Filters . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3.4.1 3.4.2 3.4.3 3.4.4 3.4.5 Consistency Driven Filters . . . . . . . . . . . . . . . . . . . . . Feature Selection Through Discretization . . . . . . . . . . . . . Using One Learning Algorithm as a Filter for Another . . . . . . An Information Theoretic Feature Filter . . . . . . . . . . . . . . An Instance Based Approach to Feature Selection . . . . . . . . .
+
+32 32 36 36 38 39 40 41 42 45 46 47 49 51 51 55 56 57 59 61 62 64 66 67 69 74 75 75 80
+
+3.5
+
+Feature Wrappers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3.5.1 3.5.2 3.5.3 3.5.4 Wrappers for Decision Tree Learners . . . . . . . . . . . . . . . Wrappers for Instance Based Learning . . . . . . . . . . . . . . . Wrappers for Bayes Classiﬁers . . . . . . . . . . . . . . . . . . . Methods of Improving the Wrapper . . . . . . . . . . . . . . . .
+
+3.6 3.7 4
+
+Feature Weighting Algorithms . . . . . . . . . . . . . . . . . . . . . . . Chapter Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+Correlation-based Feature Selection 4.1 4.2 Rationale . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Correlating Nominal Features . . . . . . . . . . . . . . . . . . . . . . . . 4.2.1 4.2.2 4.2.3 4.3 Symmetrical Uncertainty . . . . . . . . . . . . . . . . . . . . . . Relief . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . MDL . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+Bias in Correlation Measures between Nominal Features . . . . . . . . . 4.3.1 4.3.2 4.3.3 4.3.4 Experimental Measurement of Bias . . . . . . . . . . . . . . . . Varying the Level of Attributes . . . . . . . . . . . . . . . . . . . Varying the Sample Size . . . . . . . . . . . . . . . . . . . . . . Discussion . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4.4 4.5 5
+
+A Correlation-based Feature Selector . . . . . . . . . . . . . . . . . . . . Chapter Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+Datasets Used in Experiments 5.1 5.2 Domains . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Experimental Methodology . . . . . . . . . . . . . . . . . . . . . . . . . viii
+
+6 Evaluating CFS with 3 ML Algorithms 6.1 Artiﬁcial Domains . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6.1.1 6.1.2 6.1.3 6.1.4 6.2 6.3 Irrelevant Attributes . . . . . . . . . . . . . . . . . . . . . . . . Redundant Attributes . . . . . . . . . . . . . . . . . . . . . . . .
+
+85 85 86 95
+
+Monk’s problems . . . . . . . . . . . . . . . . . . . . . . . . . . 104 Discussion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 106
+
+Natural Domains . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 107 Chapter Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 119 121
+
+7 Comparing CFS to the Wrapper 7.1 7.2 7.3
+
+Wrapper Feature Selection . . . . . . . . . . . . . . . . . . . . . . . . . 121 Comparison . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 123 Chapter Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 128 131
+
+8 Extending CFS: Higher Order Dependencies 8.1 8.2 8.3 8.4 8.5
+
+Related Work . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 131 Joining Features . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 133 Incorporating RELIEF into CFS . . . . . . . . . . . . . . . . . . . . . . 135 Evaluation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 136 Discussion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 143 145
+
+9 Conclusions 9.1 9.2 9.3
+
+Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 145 Conclusions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 147 Future Work . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 147
+
+Appendices A Graphs for Chapter 4 B Curves for Concept A3 with Added Redundant Attributes C Results for CFS-UC, CFS-MDL, and CFS-Relief on 12 Natural Domains D 5×2cv Paired t test Results ix 151 153 157 159
+
+E CFS Merit Versus Accuracy F CFS Applied to 37 UCI Domains Bibliography
+
+163 167 171
+
+x
+
+List of Figures
+2.1 A decision tree for the “Golf” dataset. Branches correspond to the values of attributes; leaves indicate classiﬁcations. . . . . . . . . . . . . . . . . 3.1 3.2 4.1 Filter and wrapper feature selectors. . . . . . . . . . . . . . . . . . . . . Feature subset space for the “golf” dataset. . . . . . . . . . . . . . . . . . The effects on the correlation between an outside variable and a composite variable (rzc ) of the number of components (k), the inter-correlations among the components (rii ), and the correlations between the components and the outside variable (rzi ). . . . . . . . . . . . . . . . . . . . . 4.2 The effects of varying the attribute and class level on symmetrical uncertainty (a & b), symmetrical relief (c & d), and normalized symmetrical MDL (e & f) when attributes are informative (graphs on the left) and noninformative (graphs on the right). Curves are shown for 2, 5, and 10 classes. 65 4.3 The effect of varying the training set size on symmetrical uncertainty (a & b), symmetrical relief (c & d), and normalized symmetrical MDL (e & f) when attributes are informative and non-informative. The number of classes is 2; curves are shown for 2, 10, and 20 valued attributes. . . . . . 4.4 The components of CFS. Training and testing data is reduced to contain only the features selected by CFS. The dimensionally reduced data can then be passed to a machine learning algorithm for induction and prediction. 71 5.1 Effect of CFS feature selection on accuracy of naive Bayes classiﬁcation. Dots show results that are statistically signiﬁcant . . . . . . . . . . . . . 5.2 The learning curve for IB1 on the dataset A2 with 17 added irrelevant attributes. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . xi 83 82 68 54 13 29 30
+
+6.1
+
+Number of irrelevant attributes selected on concept A1 (with added irrelevant features) by CFS-UC, CFS-MDL, and CFS-Relief as a function of training set size. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 87
+
+6.2
+
+Number of relevant attributes selected on concept A1 (with added irrelevant features) by CFS-UC, CFS-MDL, and CFS-Relief as a function of training set size. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 88
+
+6.3
+
+Learning curves for IB1, CFS-UC-IB1, CFS-MDL-IB1, and CFS-ReliefIB1 on concept A1 (with added irrelevant features) . . . . . . . . . . . . 90
+
+6.4
+
+Number of irrelevant attributes selected on concept A2 (with added irrelevant features) by CFS-UC, CFS-MDL, and CFS-Relief as a function of training set size. Note: CFS-UC and CFS-Relief produce the same result. 90
+
+6.5
+
+Number of relevant attributes selected on concept A2 (with added irrelevant features) by CFS-UC, CFS-MDL, and CFS-Relief as a function of training set size. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 93
+
+6.6
+
+Learning curves for IB1, CFS-UC-IB1, CFS-MDL-IB1, and CFS-ReliefIB1 on concept A2 (with added irrelevant features). . . . . . . . . . . . . 93
+
+6.7
+
+Number of irrelevant attributes selected on concept A3 (with added irrelevant features) by CFS-UC, CFS-MDL, and CFS-Relief as a function of training set size. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 94
+
+6.8
+
+Number of relevant attributes selected on concept A3 (with added irrelevant features) by CFS-UC, CFS-MDL, and CFS-Relief as a function of training set size. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 94
+
+6.9
+
+Number of irrelevant multi-valued attributes selected on concept A3 (with added irrelevant features) by CFS-UC, CFS-MDL, and CFS-Relief as a function of training set size. . . . . . . . . . . . . . . . . . . . . . . . . . 95
+
+6.10 Learning curves for IB1, CFS-UC-IB1, CFS-MDL-IB1, and CFS-ReliefIB1 on concept A3 (with added irrelevant features). . . . . . . . . . . . . 6.11 Number of redundant attributes selected on concept A1 (with added redundant features) by CFS-UC, CFS-MDL, and CFS-Relief as a function of training set size. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . xii 98 96
+
+6.12 Number of relevant attributes selected on concept A1 (with added redundant features) by CFS-UC, CFS-MDL, and CFS-Relief as a function of training set size. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6.13 Number of multi-valued attributes selected on concept A1 (with added redundant features) by CFS-UC, CFS-MDL, and CFS-Relief as a function of training set size. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6.14 Number of noisy attributes selected on concept A1 (with added redundant features) by CFS-UC, CFS-MDL, and CFS-Relief as a function of training set size. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 100 6.15 Learning curves for nbayes (naive-Bayes), CFS-UC-nbayes, CFS-MDLnbayes, and CFS-Relief-nbayes on concept A1 (with added redundant features). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 101 6.16 Number of redundant attributes selected on concept A2 (with added redundant features) by CFS-UC, CFS-MDL, and CFS-Relief as a function of training set size. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 102 6.17 Number of relevant attributes selected on concept A2 (with added redundant features) by CFS-UC, CFS-MDL, and CFS-Relief as a function of training set size. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 102 6.18 Learning curves for nbayes (naive Bayes), CFS-UC-nbayes, CFS-MDLnbayes, and CFS-Relief-nbayes on concept A2 (with added redundant features). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 103 6.19 Learning curves for nbayes (naive Bayes), CFS-UC-nbayes, CFS-MDLnbayes, and CFS-Relief-nbayes on concept A3 (with added redundant features). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 104 6.20 Number of natural domains for which CFS improved accuracy (left) and degraded accuracy (right) for naive Bayes (a), IB1 (b), and C4.5 (c). . . . 108 6.21 Effect of feature selection on the size of the trees induced by C4.5 on the natural domains. Bars below the zero line indicate feature selection has reduced tree size. Dots show statistically signiﬁcant results. . . . . . . . . 110 6.22 The original number of features in the natural domains (left), and the average number of features selected by CFS (right). . . . . . . . . . . . . 113 xiii 99 99
+
+6.23 Heuristic merit (CFS-UC) vs actual accuracy (naive Bayes) of randomly selected feature subsets on chess end-game (a), horse colic (b), audiology (c), and soybean (d). Each point represents a single feature subset. . . . . 114 6.24 Absolute difference in accuracy between CFS-UC with merged subsets and CFS-UC for naive Bayes (left), IB1 (middle), and C4.5 (right). Dots show statistically signiﬁcant results. . . . . . . . . . . . . . . . . . . . . 116 7.1 7.2 The wrapper feature selector. . . . . . . . . . . . . . . . . . . . . . . . . 122 Comparing CFS with the wrapper using naive Bayes: Average accuracy of naive Bayes using feature subsets selected by CFS minus the average accuracy of naive Bayes using feature subsets selected by the wrapper. Dots show statistically signiﬁcant results. . . . . . . . . . . . . . . . . . 125 7.3 Number of features selected by the wrapper using naive Bayes (left) and CFS (right). Dots show the number of features in the original dataset. . . 126 7.4 Comparing CFS with the wrapper using C4.5: Average accuracy of C4.5 using feature subsets selected by CFS minus the average accuracy of C4.5 using feature subsets selected by the wrapper. Dots show statistically signifcant results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 128 7.5 Average change in the size of the trees induced by C4.5 when features are selected by the wrapper (left) and CFS (right). Dots show statistically signiﬁcant results. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 129 A.1 The effect of varying the training set size on symmetrical uncertainty (a & b), symmetrical relief (c & d), and normalized symmetrical MDL (e & f) when attributes are informative and non-informative. The number of classes is 2; curves are shown for 2, 10, and 20 valued attributes. . . . . . 152 B.1 Number of redundant attributes selected on concept A3 by CFS-UC, CFSMDL, and CFS-Relief as a function of training set size. . . . . . . . . . . 153 B.2 Number of relevant attributes selected on concept A3 by CFS-UC, CFSMDL, and CFS-Relief as a function of training set size. . . . . . . . . . . 154 B.3 Number of multi-valued attributes selected on concept A3 by CFS-UC, CFS-MDL, and CFS-Relief as a function of training set size. . . . . . . . 154 xiv
+
+B.4 Number of noisy attributes selected on concept A3 by CFS-UC, CFSMDL, and CFS-Relief as a function of training set size. . . . . . . . . . . 155 E.1 Mushroom (mu). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 163 E.2 Vote (vo). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 163 E.3 Vote1 (v1). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 163 E.4 Australian credit screening (cr). . . . . . . . . . . . . . . . . . . . . . . 164 E.5 Lymphography (ly). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 164 E.6 Primary tumour (pt). . . . . . . . . . . . . . . . . . . . . . . . . . . . . 164 E.7 Breast cancer (bc). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 164 E.8 Dna-promoter (dna). . . . . . . . . . . . . . . . . . . . . . . . . . . . . 165 E.9 Audiology (au). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 165 E.10 Soybean-large (sb). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 165 E.11 Horse colic (hc). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 165 E.12 Chess end-game (kr). . . . . . . . . . . . . . . . . . . . . . . . . . . . . 166 F.1 Average number of features selected by CFS on 37 UCI domains. Dots show the original number of features. . . . . . . . . . . . . . . . . . . . 169 F.2 Effect of feature selection on the size of the trees induced by C4.5 on 37 UCI domains. Bars below the zero line indicate that feature selection has reduced tree size. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 169
+
+xv
+
+xvi
+
+List of Tables
+2.1 2.2 2.3 3.1 3.2 3.3 4.1 The “Golf” dataset. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Contingency tables compiled from the “Golf” data. . . . . . . . . . . . . Computed distance values for the “Golf” data. . . . . . . . . . . . . . . 9 11 15 30 31 32
+
+Greedy hill climbing search algorithm . . . . . . . . . . . . . . . . . . . Best ﬁrst search algorithm . . . . . . . . . . . . . . . . . . . . . . . . . Simple genetic search strategy. . . . . . . . . . . . . . . . . . . . . . . . A two-valued non informative attribute A (a) and a three valued attribute A derived by randomly partitioning A into a larger number of values (b). Attribute A appears more predictive of the class than attribute A according to the information gain measure. . . . . . . . . . . . . . . . .
+
+62
+
+4.2
+
+Feature correlations calculated from the “Golf” dataset. Relief is used to calculate correlations. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 72
+
+4.3
+
+A forward selection search using the correlations in Table 4.2. The search starts with the empty set of features [] which has merit 0.0. Subsets in bold show where a local change to the previous best subset has resulted in improvement with respect to the evaluation function. . . . . . . . . . . 73
+
+5.1
+
+Domain characteristics. Datasets above the horizontal line are natural domains; those below are artiﬁcial. The % Missing column shows what percentage of the data set’s entries (number of features × number of instances) have missing values. Average # Feature Vals and Max/Min # Feature Vals are calculated from the nominal features present in the data sets. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 76
+
+5.2 6.1
+
+Training and test set sizes of the natural domains and the Monk’s problems. 81 Feature-class correlation assigned to features A, B, and C by symmetrical uncertainty, MDL, and relief on concept A1. . . . . . . . . . . . . . . . . xvii 89
+
+6.2
+
+Feature-class correlations assigned by the three measures to all features in the dataset for A1 containing redundant features. The ﬁrst three columns under each measure lists the attribute (A, B, and C are the original features), number of values the attribute has, and the level of redundancy. . . 98
+
+6.3
+
+Average number of features selected by CFS-UC, CFS-MDL, and CFSRelief on the Monk’s problems. . . . . . . . . . . . . . . . . . . . . . . . 105
+
+6.4
+
+Comparison of naive Bayes with and without feature selection on the Monk’s problems. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 105
+
+6.5
+
+Comparison of IB1 with and without feature selection on the Monk’s problems. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 105
+
+6.6
+
+Comparison of C4.5 with and without feature selection on the Monk’s problems. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 106
+
+6.7
+
+Naive Bayes, IB1, and C4.5 with and without feature selection on 12 natural domains. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 110
+
+6.8
+
+Comparison of three learning algorithms with and without feature selection using merged subsets. . . . . . . . . . . . . . . . . . . . . . . . . . 115
+
+6.9
+
+Top eight feature-class correlations assigned by CFS-UC and CFS-MDL on the chess end-game dataset. . . . . . . . . . . . . . . . . . . . . . . . 116
+
+7.1
+
+Comparison between naive Bayes without feature selection and naive Bayes with feature selection by the wrapper and CFS. . . . . . . . . . . . 124
+
+7.2
+
+Time taken (CPU units) by the wrapper and CFS for a single trial on each dataset. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 125
+
+7.3
+
+Comparison between C4.5 without feature selection and C4.5 with feature selection by the wrapper and CFS. . . . . . . . . . . . . . . . . . . . . . 127
+
+8.1
+
+Performance of enhanced CFS (CFS-P and CFS-RELIEF) compared with standard CFS-UC on artiﬁcial domains when IB1 is used as the induction algorithm. Figures in braces show the average number of features selected. 138 xviii
+
+8.2
+
+An example of the effect of a redundant attribute on RELIEF’s distance calculation for domain A2. Table (a) shows instances in domain A2 and Table (b) shows instances in domain A2 with an added redundant attribute. The column marked “Dist. from 1” shows how far a particular instance is from instance #1. . . . . . . . . . . . . . . . . . . . . . . . . 140
+
+8.3
+
+Performance of enhanced CFS (CFS-P and CFS-RELIEF) compared to standard CFS-UC on artiﬁcial doamins when C4.5 is used as the induction algorithm. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 140
+
+8.4
+
+Performance of enhanced CFS (CFS-P and CFS-RELIEF) compared to standard CFS-UC on artiﬁcial doamins when naive Bayes is used as the induction algorithm. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 141
+
+8.5
+
+Performance of enhanced CFS (CFS-P and CFS-RELIEF) compared to standard CFS-UC on natural domains when IB1 is used as the induction algorithm. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 142
+
+8.6
+
+Performance of enhanced CFS (CFS-P and CFS-RELIEF) compared to standard CFS-UC on natural domains when C4.5 is used as the induction algorithm. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 142
+
+8.7
+
+Performance of enhanced CFS (CFS-P and CFS-RELIEF) compared with standard CFS-UC on natural doamins when naive Bayes is used as the induction algorithm. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 143
+
+C.1 Accuracy of naive Bayes with feature selection by CFS-UC compared with feature selection by CFS-MDL and CFS-Relief. . . . . . . . . . . . 157 C.2 Accuracy of IB1 with feature selection by CFS-UC compared with feature selection by CFS-MDL and CFS-Relief. . . . . . . . . . . . . . . . . . . 158 C.3 Accuracy of C4.5 with feature selection by CFS-UC compared with feature selection by CFS-MDL and CFS-Relief. . . . . . . . . . . . . . . . . 158 D.1 Naive Bayes, IB1, and C4.5 with and without feature selection on 12 natural domains. A 5×2cv test for signiﬁcance has been applied. . . . . . 160 xix
+
+D.2 Comparison between naive Bayes without feature selection and naive Bayes with feature selection by the wrapper and CFS. A 5×2cv test for signiﬁcance has been applied. . . . . . . . . . . . . . . . . . . . . . . . . 161 D.3 Comparison between C4.5 without feature selection and C4.5 with feature selection by the wrapper and CFS. A 5×2cv test for signiﬁcance has been applied. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 161 F.1 Comparison of three learning algorithms with and without feature selection using CFS-UC. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 168
+
+xx
+
+Chapter 1 Introduction
+We live in the information-age—accumulating data is easy and storing it inexpensive. In 1991 it was alleged that the amount of stored information doubles every twenty months [PSF91]. Unfortunately, as the amount of machine readable information increases, the ability to understand and make use of it does not keep pace with its growth. Machine learning provides tools by which large quantities of data can be automatically analyzed. Fundamental to machine learning is feature selection. Feature selection, by identifying the most salient features for learning, focuses a learning algorithm on those aspects of the data most useful for analysis and future prediction. The hypothesis explored in this thesis is that feature selection for supervised classiﬁcation tasks can be accomplished on the basis of correlation between features, and that such a feature selection process can be beneﬁcial to a variety of common machine learning algorithms. A technique for correlation-based feature selection, based on ideas from test theory, is developed and evaluated using common machine learning algorithms on a variety of natural and artiﬁcial problems. The feature selector is simple and fast to execute. It eliminates irrelevant and redundant data and, in many cases, improves the performance of learning algorithms. The technique also produces results comparable with a state of the art feature selector from the literature, but requires much less computation.
+
+1.1 Motivation
+Machine learning is the study of algorithms that automatically improve their performance with experience. At the heart of performance is prediction. An algorithm that—when 1
+
+presented with data that exempliﬁes a task—improves its ability to predict key elements of the task can be said to have learned. Machine learning algorithms can be broadly characterized by the language used to represent learned knowledge. Research has shown that no single learning approach is clearly superior in all cases, and in fact, different learning algorithms often produce similar results [LS95]. One factor that can have an enormous impact on the success of a learning algorithm is the nature of the data used to characterize the task to be learned. If the data fails to exhibit the statistical regularity that machine learning algorithms exploit, then learning will fail. It is possible that new data may be constructed from the old in such a way as to exhibit statistical regularity and facilitate learning, but the complexity of this task is such that a fully automatic method is intractable [Tho92]. If, however, the data is suitable for machine learning, then the task of discovering regularities can be made easier and less time consuming by removing features of the data that are irrelevant or redundant with respect to the task to be learned. This process is called feature selection. Unlike the process of constructing new input data, feature selection is well deﬁned and has the potential to be a fully automatic, computationally tractable process. The beneﬁts of feature selection for learning can include a reduction in the amount of data needed to achieve learning, improved predictive accuracy, learned knowledge that is more compact and easily understood, and reduced execution time. The last two factors are of particular importance in the area of commercial and industrial data mining. Data mining is a term coined to describe the process of sifting through large databases for interesting patterns and relationships. With the declining cost of disk storage, the size of many corporate and industrial databases have grown to the point where analysis by anything but parallelized machine learning algorithms running on special parallel hardware is infeasible [JL96]. Two approaches that enable standard machine learning algorithms to be applied to large databases are feature selection and sampling. Both reduce the size of the database—feature selection by identifying the most salient features in the data; sampling by identifying representative examples [JL96]. This thesis focuses on feature selection—a process that can beneﬁt learning algorithms regardless of the amount of data available to learn from.
+
+2
+
+Existing feature selection methods for machine learning typically fall into two broad categories—those which evaluate the worth of features using the learning algorithm that is to ultimately be applied to the data, and those which evaluate the worth of features by using heuristics based on general characteristics of the data. The former are referred to as wrappers and the latter ﬁlters [Koh95b, KJ96]. Within both categories, algorithms can be further differentiated by the exact nature of their evaluation function, and by how the space of feature subsets is explored. Wrappers often give better results (in terms of the ﬁnal predictive accuracy of a learning algorithm) than ﬁlters because feature selection is optimized for the particular learning algorithm used. However, since a learning algorithm is employed to evaluate each and every set of features considered, wrappers are prohibitively expensive to run, and can be intractable for large databases containing many features. Furthermore, since the feature selection process is tightly coupled with a learning algorithm, wrappers are less general than ﬁlters and must be re-run when switching from one learning algorithm to another. In the author’s opinion, the advantages of ﬁlter approaches to feature selection outweigh their disadvantages. In general, ﬁlters execute many times faster than wrappers, and therefore stand a much better chance of scaling to databases with a large number of features than wrappers do. Filters do not require re-execution for different learning algorithms. Filters can provide the same beneﬁts for learning as wrappers do. If improved accuracy for a particular learning algorithm is required, a ﬁlter can provide an intelligent starting feature subset for a wrapper—a process that is likely to result in a shorter, and hence faster, search for the wrapper. In a related scenario, a wrapper might be applied to search the ﬁltered feature space—that is, the reduced feature space provided by a ﬁlter. Both methods help scale the wrapper to larger datasets. For these reasons, a ﬁlter approach to feature selection for machine learning is explored in this thesis. Filter algorithms previously described in the machine learning literature have exhibited a number of drawbacks. Some algorithms do not handle noise in data, and others require that the level of noise be roughly speciﬁed by the user a-priori. In some cases, a subset of features is not selected explicitly; instead, features are ranked with the ﬁnal choice left to the user. In other cases, the user must specify how many features are required, or must 3
+
+manually set a threshold by which feature selection terminates. Some algorithms require data to be transformed in a way that actually increases the initial number of features. This last case can result in a dramatic increase in the size of the search space.
+
+1.2 Thesis statement
+This thesis claims that feature selection for supervised machine learning tasks can be accomplished on the basis of correlation between features. In particular, this thesis investigates the following hypothesis: A good feature subset is one that contains features highly correlated with (predictive of) the class, yet uncorrelated with (not predictive of) each other. Evaluation of the above hypothesis is accomplished by creating a feature selection algorithm that evaluates the worth of feature sets. An implementation (Correlation based Feature Selection, or CFS) is described in Chapter 4. CFS measures correlation between nominal features, so numeric features are ﬁrst discretized. However, the general concept of correlation-based feature selection does not depend on any particular data transformation—all that must be supplied is a means of measuring the correlation between any two variables. So, in principle, the technique may be applied to a variety of supervised classiﬁcation problems, including those in which the class (the variable to be predicted) is numeric. CFS is a fully automatic algorithm—it does not require the user to specify any thresholds or the number of features to be selected, although both are simple to incorporate if desired. CFS operates on the original (albeit discretized) feature space, meaning that any knowledge induced by a learning algorithm, using features selected by CFS, can be interpreted in terms of the original features, not in terms of a transformed space. Most importantly, CFS is a ﬁlter, and, as such, does not incur the high computational cost associated with repeatedly invoking a learning algorithm. CFS assumes that features are conditionally independent given the class. Experiments in 4
+
+Chapter 6 show that CFS can identify relevant features when moderate feature dependencies exist. However, when features depend strongly on others given the class, CFS can fail to select all the relevant features. Chapter 8 explores methods for detecting feature dependencies given the class.
+
+1.3 Thesis Overview
+Chapter 2 deﬁnes terms and provides an overview of concepts from supervised machine learning. It also reviews some common machine learning algorithms and techniques for discretization—the process of converting continuous attributes to nominal attributes. Many feature selectors (including the implementation of CFS presented here) and machine learning algorithms are best suited to, or cannot handle problems in which attributes are nominal. Chapter 3 surveys feature selection techniques for machine learning. Two broad categories of algorithms are discussed—those that involve a machine learning scheme to estimate the worth of features, and those that do not. Advantages and disadvantages of both approaches are discussed. Chapter 4 begins by presenting the rationale for correlation based feature selection, with ideas borrowed from test theory. Three methods of measuring association between nominal variables are reviewed and empirically examined in Section 4.3. The behaviour of these measures with respect to attributes with more values and the number of available training examples is discussed; emphasis is given to their suitability for use in a correlation based feature selector. Section 4.4 describes CFS, an implementation of a correlation based feature selector based on the rationale of Section 4.1 and incorporating the correlation measures discussed in Section 4.2. Operational requirements and assumptions of the algorithm are discussed, along with its computational expense and some simple optimizations that can be employed to decrease execution time. Chapter 5 describes the datasets used in the experiments discussed in Chapters 6, 7, and 8. It also outlines the experimental method. 5
+
+The ﬁrst half of Chapter 6 empirically tests three variations of CFS (each employing one of the correlation measures examined in Chapter 4) on artiﬁcial problems. It is shown that CFS is effective at eliminating irrelevant and redundant features, and can identify relevant features as long as they do not strongly depend on other features. One of the three correlation measures is shown to be inferior to the other two when used with CFS. The second half of Chapter 6 evaluates CFS with machine learning algorithms applied to natural learning domains. Results are presented and analyzed in detail for one of the three variations of CFS. It is shown that, in many cases, CFS improves the performance and reduces the size of induced knowledge structures for machine learning algorithms. A shortcoming in CFS is revealed by results on several datasets. In some cases CFS will fail to select locally predictive features, especially if they are overshadowed by strong, globally predictive ones. A method of merging feature subsets is shown to partially mitigate the problem. Chapter 7 compares CFS with a well known implementation of the wrapper approach to feature selection. Results show that, in many cases, CFS gives results comparable to the wrapper, and, in general, outperforms the wrapper on small datasets. Cases where CFS is inferior to the wrapper can be attributed to the shortcoming of the algorithm revealed in Chapter 6, and to the presence of strong class-conditional feature dependency. CFS is shown to execute signiﬁcantly faster than the wrapper. Chapter 8 presents two methods of extending CFS to detect class-conditional feature dependency. The ﬁrst considers pairwise combinations of features; the second incorporates a feature weighting algorithm that is sensitive to higher order (including higher than pairwise) feature dependency. The two methods are compared and results show that both improve results on some datasets. The second method is shown to be less reliable than the ﬁrst. Chapter 9 presents conclusions and suggests future work.
+
+6
+
+Chapter 2 Supervised Machine Learning: Concepts and Deﬁnitions
+The ﬁeld of artiﬁcial intelligence embraces two approaches to artiﬁcial learning [Hut93]. The ﬁrst is motivated by the study of mental processes and says that artiﬁcial learning is the study of algorithms embodied in the human mind. The aim is to discover how these algorithms can be translated into formal languages and computer programs. The second approach is motivated from a practical computing standpoint and has less grandiose aims. It involves developing programs that learn from past data, and, as such, is a branch of data processing. The sub-ﬁeld of machine learning has come to epitomize the second approach to artiﬁcial learning and has grown rapidly since its birth in the mid-seventies. Machine learning is concerned (on the whole) with concept learning and classiﬁcation learning. The latter is simply a generalization of the former [Tho92].
+
+2.1 The Classiﬁcation Task
+Learning how to classify objects to one of a pre-speciﬁed set of categories or classes is a characteristic of intelligence that has been of keen interest to researchers in psychology and computer science. Identifying the common “core” characteristics of a set of objects that are representative of their class is of enormous use in focusing the attention of a person or computer program. For example, to determine whether an animal is a zebra, people know to look for stripes rather than examine its tail or ears. Thus, stripes ﬁgure strongly in our concept (generalization) of zebras. Of course stripes alone are not sufﬁcient to form 7
+
+a class description for zebras as tigers have them also, but they are certainly one of the important characteristics. The ability to perform classiﬁcation and to be able to learn to classify gives people and computer programs the power to make decisions. The efﬁcacy of these decisions is affected by performance on the classiﬁcation task. In machine learning, the classiﬁcation task described above is commonly referred to as supervised learning. In supervised learning there is a speciﬁed set of classes, and example objects are labeled with the appropriate class (using the example above, the program is told what is a zebra and what is not). The goal is to generalize (form class descriptions) from the training objects that will enable novel objects to be identiﬁed as belonging to one of the classes. In contrast to supervised learning is unsupervised learning. In this case the program is not told which objects are zebras. Often the goal in unsupervised learning is to decide which objects should be grouped together—in other words, the learner forms the classes itself. Of course, the success of classiﬁcation learning is heavily dependent on the quality of the data provided for training—a learner has only the input to learn from. If the data is inadequate or irrelevant then the concept descriptions will reﬂect this and misclassiﬁcation will result when they are applied to new data.
+
+2.2 Data Representation
+In a typical supervised machine learning task, data is represented as a table of examples or instances. Each instance is described by a ﬁxed number of measurements, or features, along with a label that denotes its class. Features (sometimes called attributes) are typically one of two types: nominal (values are members of an unordered set), or numeric (values are real numbers). Table 2.1 [Qui86] shows fourteen instances of suitable and unsuitable days for which to play a game of golf. Each instance is a day described in terms of the (nominal) attributes Outlook, Humidity, Temperature and Wind, along with the class label which indicates whether the day is suitable for playing golf or not. A typical application of a machine learning algorithms requires two sets of examples: training examples and test examples. The set of training examples are used to produce the 8
+
+Instance # 1 2 3 4 5 6 7 8 9 10 11 12 13 14 Outlook sunny sunny overcast rain rain rain overcast sunny sunny rain sunny overcast overcast rain
+
+Features Temperature Humidity hot high hot high hot high mild high cool normal cool normal cool normal mild high cool normal mild normal mild normal mild high hot normal mild high
+
+Class Wind false true false false false true true false false false true true false true Don’t play Don’t Play Play Play Play Don’t Play Play Don’t Play Play Play Play Play Play Don’t Play
+
+Table 2.1: The “Golf” dataset. learned concept descriptions and a separate set of test examples are needed to evaluate the accuracy. When testing, the class labels are not presented to the algorithm. The algorithm takes, as input, a test example and produces, as output, a class label (the predicted class for that example).
+
+2.3 Learning Algorithms
+A learning algorithm, or an induction algorithm, forms concept descriptions from example data. Concept descriptions are often referred to as the knowledge or model that the learning algorithm has induced from the data. Knowledge may be represented differently from one algorithm to another. For example, C4.5 [Qui93] represents knowledge as a decision tree; naive Bayes [Mit97] represents knowledge in the form of probabilistic summaries. Throughout this thesis, three machine learning algorithms are used as a basis for comparing the effects of feature selection with no feature selection. These are naive Bayes, C4.5, and IB1—each represents a different approach to learning. These algorithms are well known in the machine learning community and have proved popular in practice. C4.5 is the most sophisticated algorithm of the three and induces knowledge that is (arguably) 9
+
+easier to interpret than the other two. IB1 and naive Bayes have proved popular because they are simple to implement and have been shown to perform competitively with more complex algorithms such as C4.5 [CN89, CS93, LS94a] . The following three sections brieﬂy review these algorithms and indicate under what conditions feature selection can be useful.
+
+2.3.1 Naive Bayes
+The naive Bayes algorithm employs a simpliﬁed version of Bayes formula to decide which class a novel instance belongs to. The posterior probability of each class is calculated, given the feature values present in the instance; the instance is assigned the class with the highest probability. Equation 2.1 shows the naive Bayes formula, which makes the assumption that feature values are statistically independent within each class. p(Ci ) n p(vj |Ci ) j=1 p(Ci|v1 , v2 , . . . , vn ) = p(v1 , v2 , . . . , vn ) (2.1)
+
+The left side of Equation 2.1 is the posterior probability of class Ci given the feature values, < v1 , v2 , . . . , vn >, observed in the instance to be classiﬁed. The denominator of the right side of the equation is often omitted because it is a constant which is easily computed if one requires that the posterior probabilities of the classes sum to one. Learning with the naive Bayes classiﬁer is straightforward and involves simply estimating the probabilities in the right side of Equation 2.1 from the training instances. The result is a probabilistic summary for each of the possible classes. If there are numeric features it is common practice to assume a normal distribution—again the necessary parameters are estimated from the training data. Tables 2.2(a) through 2.2(d) are contingency tables showing frequency distributions for the relationships between the features and the class in the golf dataset (Table 2.1). From these tables is easy to calculate the probabilities necessary to apply Equation 2.1. Imagine we woke one morning and wished to determine whether the day is suitable for a game of golf. Noting that the outlook is sunny, the temperature is hot, the humidity is nor10
+
+Sunny Overcast Rain
+
+Play 2 4 3 9
+
+Don’t Play 3 0 2 5
+
+5 4 5 14
+
+Hot Mild Cool
+
+Play 2 4 3 9
+
+Don’t Play 2 2 1 5
+
+4 6 4 14
+
+(a) Outlook Play 3 6 9 Don’t Play 4 1 5
+
+(b) Temperature Play 3 6 9 Don’t Play 5 2 5
+
+High Norm
+
+7 7 14
+
+True False
+
+6 8 14
+
+(c) Humidity
+
+(d) Wind
+
+Table 2.2: Contingency tables compiled from the “Golf” data.
+
+mal and there is no wind (wind=false), we apply Equation 2.1 and calculate the posterior probability for each class, using probabilities derived from Tables 2.2(a) through 2.2(d): p(Don’t Play | sunny, hot, normal, false) = p(Don’t Play) × p(sunny | Don’t Play) × p(hot | Don’t Play) × p(normal | Don’t Play) × p(false | Don’t Play) = 5/14 × 3/5 × 2/5 × 1/5 × 2/5 = 0.0069.
+
+p(Play | sunny, hot, normal, false) = p(Play) × p(sunny | Play) × p(hot | Play) × p(normal | Play) × p(false | Play) = 9/14 × 2/9 × 2/9 × 6/9 × 6/9 = 0.0141. On this day we would play golf. Due to the assumption that feature values are independent within the class, the naive Bayesian classiﬁer’s predictive performance can be adversely affected by the presence 11
+
+of redundant attributes in the training data. For example, if there is a feature X that is perfectly correlated with a second feature Y , then treating them as independent means that X (or Y ) has twice as much affect on Equation 2.1 as it should have. Langley and Sage [LS94a] have found that naive Bayes performance improves when redundant features are removed. However, Domingos and Pazzani [DP96] have found that, while strong correlations between features will degrade performance, naive Bayes can still perform very well when moderate dependencies exist in the data. The explanation for this is that moderate dependencies will result in inaccurate probability estimation, but the probabilities are not so far “wrong” as to result in increased mis-classiﬁcation. The version of naive Bayes used for the experiments described in this thesis is that provided in the MLC++ utilities [KJL+ 94]. In this version, the probabilities for nominal features are estimated using frequency counts calculated from the training data. The probabilities for numeric features are assumed to come from a normal distribution; again, the necessary parameters are estimated from training data. Any zero frequencies are replaced by 0.5/m as the probability, where m is the number of training examples.
+
+2.3.2 C4.5 Decision Tree Generator
+C4.5 [Qui93], and its predecessor, ID3 [Qui86], are algorithms that summarise training data in the form of a decision tree. Along with systems that induce logical rules, decision tree algorithms have proved popular in practice. This is due in part to their robustness and execution speed, and to the fact that explicit concept descriptions are produced, which users can interpret. Figure 2.1 shows a decision tree that summarises the golf data. Nodes in the tree correspond to features, and branches to their associated values. The leaves of the tree correspond to classes. To classify a new instance, one simply examines the features tested at the nodes of the tree and follows the branches corresponding to their observed values in the instance. Upon reaching a leaf, the process terminates, and the class at the leaf is assigned to the instance. Using the decision tree (Figure 2.1) to classify the example day (sunny, hot, normal, false) initially involves examining the feature at the root of the tree (Outlook). The value 12
+
+Outlook
+
+sunny
+
+overcast
+
+rain
+
+Humidity
+
+Play
+
+Wind
+
+high
+
+normal
+
+true
+
+false
+
+Don’t Play
+
+Play
+
+Don’t Play
+
+Play
+
+Figure 2.1: A decision tree for the “Golf” dataset. Branches correspond to the values of attributes; leaves indicate classiﬁcations.
+
+for Outlook in the new instance is “sunny”, so the left branch is followed. Next the value for Humidity is evaluated—in this case the new instance has the value “normal”, so the right branch is followed. This brings us to a leaf node and the instance is assigned the class “Play”. To build a decision tree from training data, C4.5 and ID3 employ a greedy approach that uses an information theoretic measure as its guide. Choosing an attribute for the root of the tree divides the training instances into subsets corresponding to the values of the attribute. If the entropy of the class labels in these subsets is less than the entropy of the class labels in the full training set, then information has been gained (see Section 4.2.1 in Chapter 4) through splitting on the attribute. C4.5 uses the gain ratio criterion [Qui86] to select the attribute attribute to be at the root of the tree. The gain ratio criterion selects, from among those attributes with an average-or-better gain, the attribute that maximsises the ratio of its gain divided by its entropy. The algorithm is applied recursively to form sub-trees, terminating when a given subset contains instances of only one class. The main difference between C4.5 and ID3 is that C4.5 prunes its decision trees. Pruning simpliﬁes decision trees and reduces the probability of overﬁtting the training data [Qui87]. C4.5 prunes by using the upper bound of a conﬁdence interval on the resubstitution error. A node is replaced by its best leaf when the estimated error of the leaf is within one standard deviation of the estimated error of the node. 13
+
+C4.5 has proven to be a benchmark against which the performance of machine learning algorithms are measured. As an algorithm it is robust, accurate, fast, and, as an added bonus, it produces a comprehensible structure summarising the knowledge it induces. C4.5 deals remarkably well with irrelevant and redundant information, which is why feature selection has generally resulted in little if any improvement in its accuracy [JKP94]. However, removing irrelevant and redundant information can reduce the size of the trees induced by C4.5 [JKP94, KJ96]. Smaller trees are preferred because they are easier to understand. The version of C4.5 used in experiments throughout this thesis is the original algorithm implemented by Quinlan [Qui93].
+
+2.3.3 IB1-Instance Based Learner
+Instance based learners represent knowledge in the form of speciﬁc cases or experiences. They rely on efﬁcient matching methods to retrieve stored cases so they can be applied in novel situations. Like the Naive Bayes algorithm, instance based learners are usually computationally simple, and variations are often considered as models of human learning [CLW97]. Instance based learners are sometimes called lazy learners because learning is delayed until classiﬁcation time, with most of the power residing in the matching scheme. IB1 [AKA91] is an implementation of the simplest similarity based learner, known as nearest neighbour. IB1 simply ﬁnds the stored instance closest (according to a Euclidean distance metric) to the instance to be classiﬁed. The new instance is assigned to the retrieved instance’s class. Equation 2.2 shows the distance metric employed by IB1.
+n
+
+D(x, y) =
+j=1
+
+f (xj , yj )
+
+(2.2)
+
+Equation 2.2 gives the distance between two instances x and y; xj and yj refer to the jth feature value of instance x and y, respectively. For numeric valued attributes f (xj , yj ) = 14
+
+(xj − yj )2 ; for symbolic valued attributes f (x, y) = 0, if the feature values xj and yj are the same, and 1 if they differ. Table 2.3 shows the distance from the example day (sunny, hot, normal, false) to each of the instances in the golf data set by Equation 2.2. In this case there are three instances that are equally close to the example day, so an arbitrary choice would be made between them. An extension to the nearest neighbour algorithm, called k nearest neighbours, uses the most prevalent class from the k closest cases to the novel instance—where k is a parameter set by the user.
+Instance # 1 2 3 4 5 6 7 Distance 1 2 2 3 2 3 2 Instance # 8 9 10 11 12 13 14 Distance 2 1 2 2 4 1 4
+
+Table 2.3: Computed distance values for the “Golf” data. The simple nearest neighbour algorithm is known to be adversely affected by the presence of irrelevant features in its training data. While nearest neighbour can learn in the presence of irrelevant information, it requires more training data to do so and, in fact, the amount of training data needed (sample complexity) to reach or maintain a given accuracy level has been shown to grow exponentially with the number of irrelevant attributes [AKA91, LS94c, LS94b]. Therefore, it is possible to improve the predictive performance of nearest neighbour, when training data is limited, by removing irrelevant attributes. Furthermore, nearest neighbour is slow to execute due to the fact that each example to be classiﬁed must be compared to each of the stored training cases in turn. Feature selection can reduce the number of training cases because fewer features equates with fewer distinct instances (especially when features are nominal). Reducing the number of training cases needed (while maintaining an acceptable error rate) can dramatically increase the speed of the algorithm. The version of IB1 used in experiments throughout this thesis is the version implemented by David Aha [AKA91]. Equation 2.2 is used to compute similarity between instances. 15
+
+Attribute values are linearly normalized to ensure each attribute has the same affect on the similarity function.
+
+2.4 Performance Evaluation
+Evaluating the performance of learning algorithms is a fundamental aspect of machine learning. Not only is it important in order to compare competing algorithms, but in many cases is an integral part of the learning algorithm itself. An estimate of classiﬁcation accuracy on new instances is the most common performance evaluation criterion, although others based on information theory have been suggested [KB91, CLW96]. In this thesis, classiﬁcation accuracy is the primary evaluation criterion for experiments using feature selection with the machine learning algorithms. Feature selection is considered successful if the dimensionality of the data is reduced and the accuracy of a learning algorithm improves or remains the same. In the case of C4.5, the size (number of nodes) of the induced trees is also important—smaller trees are preferred because they are easier to interpret. Classiﬁcation accuracy is deﬁned as the percentage of test examples correctly classiﬁed by the algorithm. The error rate (a measure more commonly used in statistics) of an algorithm is one minus the accuracy. Measuring accuracy on a test set of examples is better than using the training set because examples in the test set have not been used to induce concept descriptions. Using the training set to measure accuracy will typically provide an optimistically biased estimate, especially if the learning algorithm overﬁts the training data. Strictly speaking, the deﬁnition of accuracy given above is the sample accuracy of an algorithm. Sample accuracy is an estimate of the (unmeasurable) true accuracy of the algorithm, that is, the probability that the algorithm will correctly classify an instance drawn from the unknown distribution D of examples. When data is limited, it is common practice to resample the data, that is, partition the data into training and test sets in different ways. A learning algorithm is trained and tested for each partition and the accuracies averaged. Doing this provides a more reliable estimate of the true accuracy of 16
+
+an algorithm. Random subsampling and k-fold cross-validation are two common methods of resampling [Gei75, Sch93]. In random subsampling, the data is randomly partitioned into disjoint training and test sets multiple times. Accuracies obtained from each partition are averaged. In k-fold cross-validation, the data is randomly split into k mutually exclusive subsets of approximately equal size. A learning algorithm is trained and tested k times; each time it is tested on one of the k folds and trained using the remaining k − 1 folds. The cross-validation estimate of accuracy is the overall number of correct classiﬁcations, divided by the number of examples in the data. The random subsampling method has the advantage that it can be repeated an indeﬁnite number of times. However, it has the disadvantage that the test sets are not independently drawn with respect to the underlying distribution of examples D. Because of this, using a t-test for paired differences with random subsampling can lead to increased chance of Type I error—that is, identifying a signiﬁcant difference when one does not actually exist [Die88]. Using a t-test on the accuracies produced on each fold of k fold cross-validation has lower chance of Type I error but may not give a stable estimate of accuracy. It is common practice to repeat k fold cross-validation n times in order to provide a stable estimate. However, this of course renders the test sets non-independent and increases the chance of Type I error. Unfortunately, there is no satisfactory solution to this problem. Alternative tests suggested by Dietterich [Die88] have low chance of Type I error but high chance of Type II error—that is, failing to identify a signiﬁcant difference when one does actually exist. Stratiﬁcation is a process often applied during random subsampling and k-fold crossvalidation. Stratiﬁcation ensures that the class distribution from the whole dataset is preserved in the training and test sets. Stratiﬁcation has been shown to help reduce the variance of the estimated accuracy—especially for datasets with many classes [Koh95b]. Stratiﬁed random subsampling with a paired t-test is used herein to evaluate accuracy. Appendix D reports results for the major experiments using the 5×2cv paired t test recommended by Dietterich [Die88]. As stated above, this test has decreased chance of type I error, but increased chance of type II error (see the appendix for details).
+
+17
+
+Plotting learning curves are another way that machine learning algorithms can be compared. A learning curve plots the classiﬁcation accuracy of a learning algorithm as a function of the size of the training set—it shows how quickly an algorithm’s accuracy improves as it is given access to more training examples. In situations where training data is limited, it is preferable to use a learning algorithm that achieves high accuracy with small training sets.
+
+2.5 Attribute Discretization
+Most classiﬁcation tasks in machine learning involve learning to distinguish among nominal class values1, but may involve features that are ordinal or continuous as well as nominal. While many machine learning algorithms have been developed to deal with mixed data of this sort, recent research [Tin95, DKS95] shows that common machine learning algorithms such as instance based learners and naive Bayes beneﬁt from treating all features in a uniform fashion. One of the most common methods of accomplishing this is called discretization. Discretization is the process of transforming continuous valued attributes to nominal. In fact, the decision tree algorithm C4.5 [Qui93] accomplishes this internally by dividing continuous features into discrete ranges during the construction of a decision tree. Many of the feature selection algorithms described in the next chapter require continuous features to be discretized, or give superior results if discretization is performed at the outset [AD91, HNM95, KS96b, LS96]. Discretization is used as a preprocessing step for the correlation-based approach to feature selection presented in this thesis, which requires all features to be of the same type. This section describes some discretization approaches from the machine learning literature.
+
+CART [BFOS84], M5 [WW97], and K∗ [CT95] are some machine learning algorithms capable of dealing with continuous class data.
+
+1
+
+18
+
+2.5.1 Methods of Discretization
+Dougherty, Kohavi, and Sahami [DKS95] deﬁne 3 axes along which discretization methods can be categorised: 1. Supervised versus. unsupervised; 2. Global versus. local; 3. Static versus. dynamic.
+
+Supervised methods make use of the class label when discretizing features. The distinction between global and local methods is based on when discretization is performed. Global methods discretize features prior to induction, whereas local methods carry out discretization during the induction process. Local methods may produce different discretizations2 for particular local regions of the instance space. Some discretization methods require a parameter, k, indicating the maximum number of intervals by which to divide a feature. Static methods perform one discretization pass on the data for each feature and determine the value of k for each feature independently of the others. On the other hand, dynamic methods search the space of possible k values for all features simultaneously. This allows inter-dependencies in feature discretization to be captured. Global methods of discretization are most relevant to the feature selection algorithm presented in this thesis because feature selection is generally a global process (that is, a single feature subset is chosen for the entire instance space). Kohavi and Sahami [KS96a] have compared static discretization with dynamic methods using cross-validation to estimate the accuracy of different values of k. They report no signiﬁcant improvement in employing dynamic discretization over static methods. The next two sections discuss several methods for unsupervised and supervised global discretization of numeric features in common usage. Unsupervised Methods The simplest discretization method is called equal interval
+For example, C4.5 may split the same continuous feature differently down different branches of a decision tree
+2
+
+19
+
+width. This approach divides the range of observed values for a feature into k equal sized bins, where k is a parameter provided by the user. Dougherty et al. [DKS95] point out that this method of discretization is sensitive to outliers that may drastically skew the range. For example, given the observed feature values
+
+0, 0, 0.5, 1, 1, 1.2, 2, 2, 3, 3, 3, 4, 4
+
+and setting k = 4 gives a bin width of (4 − 0) ÷ 4 = 1, resulting in discrete ranges
+
+[0 − 1], (1 − 2], (2 − 3], (3 − 4] with a reasonably even distribution of examples across the bins. However, suppose there was an outlying value of 100. This would cause the ranges
+
+[0 − 25], (25 − 50], (50 − 75], (75 − 100] to be formed. In this case, all the examples except the example with the value 100 would fall into the ﬁrst bin. Another simple discretization method, equal frequency intervals, requires a feature’s values to be sorted, and assigns 1/k of the values to each bin. Wong and Chiu [WC87] describe a variation on equal frequency intervals called maximal marginal entropy that iteratively adjusts the boundaries to minimise the entropy at each interval. Because unsupervised methods do not make use of the class in setting interval boundaries, Dougherty et al. [DKS95] note that classiﬁcation information can be lost as a result of placing values that are strongly associated with different classes in the same interval. The next section discusses methods for supervised discretization which overcome this problem. Supervised Methods Holte [Hol93] presents a simple supervised discretization method 20
+
+that is incorporated in his one-level decision tree algorithm (1R). The method ﬁrst sorts the values of a feature, and then attempts to ﬁnd interval boundaries such that each interval has a strong majority of one particular class. The method is constrained to form intervals of some minimal size in order to avoid having intervals with very few instances. Setiono and Liu [SL95] present a statistically justiﬁed heuristic method for supervised discretization called Chi2. A numeric feature is initially sorted by placing each observed value into its own interval. The next step uses a chi-square statistic χ2 to determine whether the relative frequencies of the classes in adjacent intervals are similar enough to justify merging. The formula for computing the χ2 value for two adjacent intervals is χ2 = (Aij − Eij )2 , Eij i=1 j=1
+2 C
+
+(2.3)
+
+where C is the number of classes, Aij is the number of instances in the i-th interval with class j, Ri is the number of instances in the i-th interval, Cj is the number of instances of class j in the two intervals, N is the total number of instances in the two intervals, and Eij is the expected frequency of Aij = Ri × Cj /N. The extent of the merging process is controlled by an automatically set χ2 threshold. The threshold is determined through attempting to maintain the ﬁdelity of the original data. Catlett [Cat91] and Fayyad and Irani [FI93] use a minimum entropy heuristic to discretize numeric features. The algorithm uses the class entropy of candidate partitions to select a cut point for discretization. The method can then be applied recursively to the two intervals of the previous split until some stopping conditions are satisﬁed, thus creating multiple intervals for the feature. For a set of instances S, a feature A, and a cut point T , the class information entropy of the partition induced by T is given by E(A, T ; S) = |S1 | |S2 | Ent(S1 ) + Ent(S2 ), S S (2.4)
+
+where S1 and S2 are two intervals of S bounded by cut point T , and Ent(S) is the class
+
+21
+
+entropy of a subset S given by
+C
+
+Ent(S) = −
+
+p(Ci, S)log2 (p(Ci , S)).
+i=1
+
+(2.5)
+
+For feature A, the cut point T which minimises Equation 2.5 is selected (conditionally) as a binary discretization boundary. Catlett [Cat91] employs ad hoc criteria for terminating the splitting procedure. These include: stopping if the number of instances in a partition is sufﬁciently small, stopping if some maximum number of partitions have been created, and stopping if the entropy induced by all possible cut points for a set is equal. Fayyad and Irani [FI93] employ a stopping criterion based on the minimum description length principle [Ris78]. The stopping criterion prescribes accepting a partition induced by T if and only if the cost of encoding the partition and the classes of the instances in the intervals induced by T is less than the cost of encoding the classes of the instances before splitting. The partition induced by cut point T is accepted iff Gain(A, T ; S) > log2 (N − 1) ∆(A, T ; S) + , N N (2.6)
+
+where N is the number of instances in the set S, Gain(A, T ; S) =Ent(S) − E(A, T ; S), and ∆(A, T ; S) = log2 (3c − 2) − [cEnt(S) − c1 Ent(S1 ) − c2 Ent(S2 )]. (2.8) (2.7)
+
+In Equation 2.8, c, c1 , and c2 are the number of distinct classes present in S, S1 , and S2 respectively. C4.5 [Qui86, Qui93] uses Equation 2.7 locally at the nodes of a decision tree to determine a binary split for a numeric feature. Kohavi and Sahami [KS96a] use C4.5 to perform global discretization on numeric features. C4.5 is applied to each numeric feature separately to build a tree which contains binary splits that only test a single feature. C4.5’s internal pruning mechanism is applied to determine an appropriate number of nodes in the tree and hence the number of discretization intervals.
+
+22
+
+A number of studies [DKS95, KS96a] comparing the effects of using various discretization techniques (on common machine learning domains and algorithms) have found the method of Fayyad and Irani to be superior overall. For that reason, this method of discretization is used in the experiments described in chapters 6, 7 and 8.
+
+23
+
+24
+
+Chapter 3 Feature Selection for Machine Learning
+Many factors affect the success of machine learning on a given task. The representation and quality of the example data is ﬁrst and foremost. Theoretically, having more features should result in more discriminating power. However, practical experience with machine learning algorithms has shown that this is not always the case. Many learning algorithms can be viewed as making a (biased) estimate of the probability of the class label given a set of features. This is a complex, high dimensional distribution. Unfortunately, induction is often performed on limited data. This makes estimating the many probabilistic parameters difﬁcult. In order to avoid overﬁtting the training data, many algorithms employ the Occam’s Razor [GL97] bias to build a simple model that still achieves some acceptable level of performance on the training data. This bias often leads an algorithm to prefer a small number of predictive attributes over a large number of features that, if used in the proper combination, are fully predictive of the class label. If there is too much irrelevant and redundant information present or the data is noisy and unreliable, then learning during the training phase is more difﬁcult. Feature subset selection is the process of identifying and removing as much irrelevant and redundant information as possible. This reduces the dimensionality of the data and may allow learning algorithms to operate faster and more effectively. In some cases, accuracy on future classiﬁcation can be improved; in others, the result is a more compact, easily interpreted representation of the target concept. Recent research has shown common machine learning algorithms to be adversely affected by irrelevant and redundant training information. The simple nearest neighbour algorithm is sensitive to irrelevant attributes—its sample complexity (number of training 25
+
+examples needed to reach a given accuracy level) grows exponentially with the number of irrelevant attributes [LS94b, LS94c, AKA91]. Sample complexity for decision tree algorithms can grow exponentially on some concepts (such as parity) as well. The naive Bayes classiﬁer can be adversely affected by redundant attributes due to its assumption that attributes are independent given the class [LS94a]. Decision tree algorithms such as C4.5 [Qui86, Qui93] can sometimes overﬁt training data, resulting in large trees. In many cases, removing irrelevant and redundant information can result in C4.5 producing smaller trees [KJ96]. This chapter begins by highlighting some common links between feature selection in pattern recognition and statistics and feature selection in machine learning. Important aspects of feature selection algorithms are described in section 3.2. Section 3.3 outlines some common heuristic search techniques. Sections 3.4 through 3.6 review current approaches to feature selection from the machine learning literature.
+
+3.1 Feature Selection in Statistics and Pattern Recognition
+Feature subset selection has long been a research area within statistics and pattern recognition [DK82, Mil90]. It is not surprising that feature selection is as much of an issue for machine learning as it is for pattern recognition, as both ﬁelds share the common task of classiﬁcation. In pattern recognition, feature selection can have an impact on the economics of data acquisition and on the accuracy and complexity of the classiﬁer [DK82]. This is also true of machine learning, which has the added concern of distilling useful knowledge from data. Fortunately, feature selection has been shown to improve the comprehensibility of extracted knowledge [KJ96]. Machine learning has taken inspiration and borrowed from both pattern recognition and statistics. For example, the heuristic search technique sequential backward elimination (section 3.3) was ﬁrst introduced by Marill and Green [MG63]; Kittler [Kit78] introduced different variants, including a forward method and a stepwise method. The use of 26
+
+cross-validation for estimating the accuracy of a feature subset—which has become the backbone of the wrapper method in machine learning—was suggested by Allen [All74] and applied to the problem of selecting predictors in linear regression. Many statistical methods1 for evaluating the worth of feature subsets based on characteristics of the training data are only applicable to numeric features. Furthermore, these measures are often monotonic (increasing the size of the feature subset can never decrease performance)—a condition that does not hold for practical machine learning algorithms2. Because of this, search algorithms such as dynamic programming and branch and bound [NF77], which rely on monotonicity in order to prune the search space, are not applicable to feature selection algorithms that use or attempt to match the general bias of machine learning algorithms.
+
+3.2 Characteristics of Feature Selection Algorithms
+Feature selection algorithms (with a few notable exceptions) perform a search through the space of feature subsets, and, as a consequence, must address four basic issues affecting the nature of the search [Lan94]: 1. Starting point. Selecting a point in the feature subset space from which to begin the search can affect the direction of the search. One option is to begin with no features and successively add attributes. In this case, the search is said to proceed forward through the search space. Conversely, the search can begin with all features and successively remove them. In this case, the search proceeds backward through the search space. Another alternative is to begin somewhere in the middle and move outwards from this point. 2. Search organisation. An exhaustive search of the feature subspace is prohibitive for all but a small initial number of features. With N initial features there exist 2N possible subsets. Heuristic search strategies are more feasible than exhaustive
+Measures such as residual sum of squares (RSS), Mallows Cp , and separability measures such as F Ratio and its generalisations are described in Miller [Mil90] and Parsons [Par87] respectively. 2 For example, decision tree algorithms (such as C4.5 [Qui93]) discover regularities in training data by partitioning the data on the basis of observed feature values. Maintaining statistical reliability and avoiding overﬁtting necessitates the use of a small number of strongly predictive attributes.
+1
+
+27
+
+ones and can give good results, although they do not guarantee ﬁnding the optimal subset. Section 2.2.3 discusses some heuristic search strategies that have been used for feature selection. 3. Evaluation strategy. How feature subsets are evaluated is the single biggest differentiating factor among feature selection algorithms for machine learning. One paradigm, dubbed the ﬁlter [Koh95b, KJ96] operates independent of any learning algorithm—undesirable features are ﬁltered out of the data before learning begins. These algorithms use heuristics based on general characteristics of the data to evaluate the merit of feature subsets. Another school of thought argues that the bias of a particular induction algorithm should be taken into account when selecting features. This method, called the wrapper [Koh95b, KJ96], uses an induction algorithm along with a statistical re-sampling technique such as cross-validation to estimate the ﬁnal accuracy of feature subsets. Figure 3.1 illustrates the ﬁlter and wrapper approaches to feature selection. 4. Stopping criterion. A feature selector must decide when to stop searching through the space of feature subsets. Depending on the evaluation strategy, a feature selector might stop adding or removing features when none of the alternatives improves upon the merit of a current feature subset. Alternatively, the algorithm might continue to revise the feature subset as long as the merit does not degrade. A further option could be to continue generating feature subsets until reaching the opposite end of the search space and then select the best.
+
+3.3 Heuristic Search
+Searching the space of feature subsets within reasonable time constraints is necessary if a feature selection algorithm is to operate on data with a large number of features. One simple search strategy, called greedy hill climbing, considers local changes to the current feature subset. Often, a local change is simply the addition or deletion of a single feature from the subset. When the algorithm considers only additions to the feature subset it is 28
+
+Testing data Training data Search Training data Feature set Training data feature set heuristic "merit" ML Algorithm Hypothesis Feature evaluation Final Evaluation Estimated accuracy Dimensionality Reduction
+
+Filter
+
+Testing data Training data Search feature set estimated accuracy Training data Feature set Training data ML Algorithm Hypothesis feature set +CV fold hypothesis ML algorithm Final Evaluation Estimated accuracy Dimensionality Reduction
+
+Feature evaluation: cross validation
+
+Wrapper
+
+Figure 3.1: Filter and wrapper feature selectors.
+
+known as forward selection; considering only deletions is known as backward elimination [Kit78, Mil90]. An alternative approach, called stepwise bi-directional search, uses both addition and deletion. Within each of these variations, the search algorithm may consider all possible local changes to the current subset and then select the best, or may simply choose the ﬁrst change that improves the merit of the current feature subset. In either case, once a change is accepted, it is never reconsidered. Figure 3.2 shows the feature subset space for the golf data. If scanned from top to bottom, the diagram shows all local additions to each node; if scanned from bottom to top, the diagram shows all possible local deletions from each node. Table 3.1 shows the algorithm for greedy hill climbing search. Best ﬁrst search [RK91] is an AI search strategy that allows backtracking along the search path. Like greedy hill climbing, best ﬁrst moves through the search space by making local 29
+
+[]
+
+[Outlk]
+
+[Temp]
+
+[Hum]
+
+[Wind]
+
+[Outlk, Temp]
+
+[Outlk, Hum]
+
+[Outlk, Wind]
+
+[Temp, Hum]
+
+[Temp, Wind]
+
+[Hum, Wind]
+
+[Outlk, Temp, Hum]
+
+[Outlk, Temp, Wind]
+
+[Outlk, Hum, Wind]
+
+[Temp, Hum, Wind]
+
+[Outlk, Temp, Hum, Wind]
+
+Figure 3.2: Feature subset space for the “golf” dataset.
+
+1. 2. 3. 4. 5. 6.
+
+Let s ←start state. Expand s by making each possible local change. Evaluate each child t of s. Let s ←child t with highest evaluation e(t). If e(s ) ≥ e(s) then s ← s , goto 2. Return s.
+
+Table 3.1: Greedy hill climbing search algorithm
+
+30
+
+changes to the current feature subset. However, unlike hill climbing, if the path being explored begins to look less promising, the best ﬁrst search can back-track to a more promising previous subset and continue the search from there. Given enough time, a best ﬁrst search will explore the entire search space, so it is common to use a stopping criterion. Normally this involves limiting the number of fully expanded3 subsets that result in no improvement. Table 3.2 shows the best ﬁrst search algorithm.
+
+1. 2. 3. 4. 5. 6. 7.
+
+Begin with the OPEN list containing the start state, the CLOSED list empty, and BEST←start state. Let s = arg max e(x) (get the state from OPEN with the highest evaluation). Remove s from OPEN and add to CLOSED. If e(s) ≥ e(BEST), then BEST ← s. For each child t of s that is not in the OPEN or CLOSED list, evaluate and add to OPEN. If BEST changed in the last set of expansions, goto 2. Return BEST.
+
+Table 3.2: Best ﬁrst search algorithm
+
+Genetic algorithms are adaptive search techniques based on the principles of natural selection in biology [Hol75]. They employ a population of competing solutions—evolved over time—to converge to an optimal solution. Effectively, the solution space is searched in parallel, which helps in avoiding local optima. For feature selection, a solution is typically a ﬁxed length binary string representing a feature subset—the value of each position in the string represents the presence or absence of a particular feature. The algorithm is an iterative process where each successive generation is produced by applying genetic operators such as crossover and mutation to the members of the current generation. Mutation changes some of the values (thus adding or deleting features) in a subset randomly. Crossover combines different features from a pair of subsets into a new subset. The application of genetic operators to population members is determined by their ﬁtness (how good a feature subset is with respect to an evaluation strategy). Better feature subsets have a greater chance of being selected to form a new subset through crossover or mutation. In this manner, good subsets are “evolved” over time. Table 3.3 shows a simple genetic search strategy.
+3
+
+A fully expanded subset is one in which all possible local changes have been considered.
+
+31
+
+1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 11.
+
+Begin by randomly generating an initial population P . Calculate e(x) for each member x ∈ P . Deﬁne a probability distribution p over the members of P where p(x) ∝ e(x). Select two population members x and y with respect to p. Apply crossover to x and y to produce new population members x and y . Apply mutation to x and y . Insert x and y into P (the next generation). If |P | < |P |, goto 4. Let P ← P . If there are more generations to process, goto 2. Return x ∈ P for which e(x) is highest.
+
+Table 3.3: Simple genetic search strategy.
+
+3.4 Feature Filters
+The earliest approaches to feature selection within machine learning were ﬁlter methods. All ﬁlter methods use heuristics based on general characteristics of the data rather than a learning algorithm to evaluate the merit of feature subsets. As a consequence, ﬁlter methods are generally much faster than wrapper methods, and, as such, are more practical for use on data of high dimensionality.
+
+3.4.1 Consistency Driven Filters
+Almuallim and Dieterich [AD91] describe an algorithm originally designed for boolean domains called FOCUS. FOCUS exhaustively searches the space of feature subsets until it ﬁnds the minimum combination of features that divides the training data into pure classes (that is, where every combination of feature values is associated with a single class). This is referred to as the “min-features bias”. Following feature selection, the ﬁnal feature subset is passed to ID3 [Qui86], which constructs a decision tree. There are two main difﬁculties with FOCUS, as pointed out by Caruanna and Freitag [CF94]. Firstly, since FOCUS is driven to attain consistency on the training data, an exhaustive search may be intractable if many features are needed to attain consistency. Secondly, a strong bias towards consistency can be statistically unwarranted and may lead to overﬁtting the training data—the algorithm will continue to add features to repair a single inconsistency. The authors address the ﬁrst of these problems in their 1992 paper [AD92]. Three 32
+
+algorithms—each consisting of forward selection search coupled with a heuristic to approximate the min-features bias—are presented as methods to make FOCUS computationally feasible on domains with many features. The ﬁrst algorithm evaluates features using the following information theoretic formula:
+2|Q| −1
+
+Entropy(Q) = −
+
+i=0
+
+ni pi + ni pi ni pi log2 + log2 . (3.1) |Sample| pi + Ni pi + Ni pi + ni pi + ni
+
+For a given feature subset Q, there are 2|Q| possible truth value assignments to the features. A given feature set Q divides the training data into groups of instances with the same truth value assignments to the features in Q. Equation 3.1 measures the overall entropy of the class values in these groups—pi and ni denote the number of positive and negative examples in the i-th group respectively. At each stage, the feature which minimises Equation 3.1 is added to the current feature subset. The second algorithm chooses the most discriminating feature to add to the current subset at each stage of the search. For a given pair of positive and negative examples, a feature is discriminating if its value differs between the two. At each stage, the feature is chosen which discriminates the greatest number of positive-negative pairs of examples—that have not yet been discriminated by any existing feature in the subset. The third algorithm is like the second except that each positive-negative example pair contributes a weighted increment to the score of each feature that discriminates it. The increment depends on the total number of features that discriminate the pair. Liu and Setiono [LS96] describe an algorithm similar to FOCUS called LVF. Like FOCUS, LVF is consistency driven and, unlike FOCUS, can handle noisy domains if the approximate noise level is known a-priori. LVF generates a random subset S from the feature subset space during each round of execution. If S contains fewer features than the current best subset, the inconsistency rate of the dimensionally reduced data described by S is compared with the inconsistency rate of the best subset. If S is at least as consistent as the best subset, S replaces the best subset. The inconsistency rate of the training data prescribed by a given feature subset is deﬁned over all groups of matching instances. Within
+
+33
+
+a group of matching instances the inconsistency count is the number of instances in the group minus the number of instances in the group with the most frequent class value. The overall inconsistency rate is the sum of the inconsistency counts of all groups of matching instances divided by the total number of instances. Liu and Setiono report good results for LVF when applied to some artiﬁcial domains and mixed results when applied to commonly used natural domains. They also applied LVF to two “large” data sets—the ﬁrst having 65, 000 instances described by 59 attributes; the second having 5, 909 instances described by 81 attributes. They report that LVF was able to reduce the number of attributes on both data sets by more than half. They also note that due to the random nature of LVF, the longer it is allowed to execute, the better the results (as measured by the inconsistency criterion). Feature selection based on rough sets theory [Mod93, Paw91] uses notions of consistency similar to those described above. In rough sets theory an information system is a 4-tuple S = (U, Q, V, f ), where U is the ﬁnite universe of instances. Q is the ﬁnite set of features. V is the set of possible feature values. f is the information function. Given an instance and a feature, f maps it to a value v ∈ V. For any subset of features P ⊆ Q, an indiscernibility relation IND(P ) is deﬁned as: IND(P ) = (x, y) ∈ U × U : f (x, a) = f (y, a), for every feature a. ∈ P The indiscernibility relation is an equivalence relation over U. Hence, it partitions the instances into equivalence classes—sets of instances indiscernible with respect to the features in P . Such a partition (classiﬁcation) is denoted by U/IND(P ). In supervised machine learning, the sets of instances indiscernible with respect to the class attribute (3.2)
+
+34
+
+contain (obviously) the instances of each class. For any subset of instances X ⊆ U and subset of features P ⊆ Q, the lower P , and the upper, P approximations of Xare deﬁned as follows: P (X) = ∪{Y ∈ U/IND(P ) : Y ⊆ X} P (X) = ∪{Y ∈ U/IND(P ) : Y ∩ X = ∅} (3.3) (3.4)
+
+If P (X) = P (X) then X is an exact set (deﬁnable using feature subset P ), otherwise X is a rough set with respect to P . The instances in U that can be classiﬁed to the equivalence classes of U/IND(P ) by using feature set R is called the positive region of P with respect to R, and is deﬁned as follows: POSR (P ) =
+X∈U/IND(P )
+
+R(X).
+
+(3.5)
+
+The degree of consistency afforded by feature subset R with respect to the equivalence classes of U/IND(P ) is given by: γR (P ) = |POSR (P )| . |U| (3.6)
+
+IF γR (P ) = 1 then P is totally consistent with respect to R. Feature selection in rough sets theory is achieved by identifying a reduct of a given set of features. A set R ⊆ P is a reduct of P if it is independent and IND(R) = IND(P ). R is independent if there does not exist a strict subset R of R such that IND(R ) = IND(R). Each reduct has the property that a feature cannot be removed from it without changing the indiscernibility relation. Both rough sets and the LVF algorithm are likely to assign higher consistency to attributes that have many values. An extreme example is an attribute that has as many values as there are instances. An attribute such as this has little power to generalize beyond the training data. If R is such an attribute, and C is the class attribute, then it is easy to show that
+
+35
+
+POSR (C) contains all the instances4 and γR (P ) = 1. Similarly, for LVF, the feature R guarantees that there is no inconsistency in the data.
+
+3.4.2 Feature Selection Through Discretization
+Setiono and Liu [SL95] note that discretization has the potential to perform feature selection among numeric features. If a numeric feature can justiﬁably be discretized to a single value, then it can safely be removed from the data. The combined discretization and feature selection algorithm Chi2 (discussed in section 2.5.1), uses a chi-square statistic χ2 to perform discretization. Numeric attributes are initially sorted by placing each observed value into its own interval. Each numeric attribute is then repeatedly discretized by using the χ2 test to determine when adjacent intervals should be merged. The extent of the merging process is controlled by the use of an automatically set χ2 threshold. The threshold is determined by attempting to maintain the original ﬁdelity of the data— inconsistency (measured the same way as in the LVF algorithm described above) controls the process. The authors report results on three natural domains containing a mixture of numeric and nominal features, using C4.5 [Qui86, Qui93] before and after discretization. They conclude that Chi2 is effective at improving C4.5’s performance and eliminating some features. However, it is not clear whether C4.5’s improvement is due entirely to some features having been removed or whether discretization plays a role as well.
+
+3.4.3 Using One Learning Algorithm as a Filter for Another
+Several researchers have explored the possibility of using a particular learning algorithm as a pre-processor to discover useful feature subsets for a primary learning algorithm. Cardie [Car95] describes the application of decision tree algorithms to the task of selecting feature subsets for use by instance based learners. C4.5 was applied to three natural language data sets; only the features that appeared in the ﬁnal decision trees were used
+Each element in U/IND(R) is a set containing exactly one unique instance from U . Therefore, each element of U/IND(R) is a subset of one of the equivalence classes in U/IND(C).
+4
+
+36
+
+with a k nearest neighbour classiﬁer. The use of this hybrid system resulted in significantly better performance than either C4.5 or the k nearest neighbour algorithm when used alone. In a similar approach, Singh and Provan [SP96] use a greedy oblivious decision tree algorithm to select features from which to construct a Bayesian network. Oblivious decision trees differ from those constructed by algorithms such as C4.5 in that all nodes at the same level of an oblivious decision tree test the same attribute. Feature subsets selected by three oblivious decision tree algorithms—each employing a different information theoretic splitting criterion—were evaluated with a Bayesian network classiﬁer on several machine learning datasets. Results showed that Bayesian networks using features selected by the oblivious decision tree algorithms outperformed Bayesian networks without feature selection and Bayesian networks with features selected by a wrapper. Holmes and Nevill-Manning [HNM95] use Holte’s 1R system [Hol93] to estimate the predictive accuracy of individual features. 1R builds rules based on a single features (called 1-rules5 ). If the data is split into training and test sets, it is possible to calculate a classiﬁcation accuracy for each rule and hence each feature. From classiﬁcation scores, a ranked list of features is obtained. Experiments with choosing a select number of the highest ranked features and using them with common machine learning algorithms showed that, on average, the top three or more features are as accurate as using the original set. This approach is unusual due to the fact that no search is conducted. Instead, it relies on the user to decide how many features to include from the ranked list in the ﬁnal subset. Pfahringer [Pfa95] uses a program for inducing decision table majority classiﬁers to select features. DTM (Decision Table Majority) classiﬁers are a simple type of nearest neighbour classiﬁer where the similarity function is restricted to returning stored instances that are exact matches with the instance to be classiﬁed. If no instances are returned, the most prevalent class in the training data is used as the predicted class; otherwise, the majority class of all matching instances is used. DTMs work best when all features are nominal. Induction of a DTM is achieved by greedily searching the space of possible decision tables. Since a decision table is deﬁned by the features it includes, induction is simply
+5
+
+1-rules can be thought of as single level decision trees.
+
+37
+
+feature selection. In Pfahringer’s approach, the minimum description length (MDL) principle [Ris78] guides the search by estimating the cost of encoding a decision table and the training examples it misclassiﬁes with respect to a given feature subset. The features appearing in the ﬁnal decision table are then used with other learning algorithms. Experiments on a small selection of machine learning datasets showed that feature selection by DTM induction can improve the accuracy of C4.5 in some cases. DTM classiﬁers induced using MDL were also compared with those induced using cross-validation (a wrapper approach) to estimate the accuracy of tables (and hence feature sets). The MDL approach was shown to be more efﬁcient than, and perform as well as, as cross-validation.
+
+3.4.4 An Information Theoretic Feature Filter
+
+Koller and Sahami [KS96b] recently introduced a feature selection algorithm based on ideas from information theory and probabilistic reasoning [Pea88]. The rationale behind their approach is that, since the goal of an induction algorithm is to estimate the probability distributions over the class values, given the original feature set, feature subset selection should attempt to remain as close to these original distributions as possible. More formally, let C be a set of classes, V a set of features, X a subset of V , v an assignment of values (v1 , . . . , vn ) to the features in V , and vx the projection of the values in v onto the variables in X. The goal of the feature selector is to choose X so that Pr(C|X = vx ) is as close as possible to Pr(C|V = v). To achieve this goal, the algorithm begins with all the original features and employs a backward elimination search to remove, at each stage, the feature that causes the least change between the two distributions. Because it is not reliable to estimate high order probability distributions from limited data, an approximate algorithm is given that uses pair-wise combinations of features. Cross entropy is used to measure the difference between two distributions and the user must specify how many features are to be removed by the algorithm. The cross entropy of the class distribution given a pair of features is: D Pr(C|Vi = vi , Vj = vj ), Pr(C|Vj = vj ) = p(c|Vi = vi , Vj = vj )log2
+c∈C
+
+p(c|Vi = vi , Vj = vj ) . p(c|Vj = vj )
+
+(3.7)
+
+38
+
+For each feature i, the algorithm ﬁnds a set Mi , containing K attributes from those that remain, that is likely to subsume6 the information feature i has about the class values. Mi contains K features out of the remaining features for which the value of Equation 3.7 is smallest. The expected cross entropy between the distribution of the class values, given Mi , Vi , and the distribution of class values given just Mi , is calculated for each feature i. The feature for which this quantity is minimal is removed from the set. This process iterates until the user-speciﬁed number of features are removed from the original set. Experiments on four natural domains and two artiﬁcial domains using C4.5 and naive Bayes as the ﬁnal induction algorithm, showed that the feature selector gives the best results when the size K of the conditioning set M is set to 2. In two domains containing over 1000 features the algorithm is able to reduce the number of features by more than half, while improving accuracy by one or two percent. One problem with the algorithm is that it requires features with more than two values to be encoded as binary in order to avoid the bias that entropic measures have toward features with many values. This can greatly increase the number of features in the original data, as well as introducing further dependencies. Furthermore, the meaning of the original attributes is obscured, making the output of algorithms such as C4.5 hard to interpret.
+
+3.4.5 An Instance Based Approach to Feature Selection
+Kira and Rendell [KR92] describe an algorithm called RELIEF that uses instance based learning to assign a relevance weight to each feature. Each feature’s weight reﬂects its ability to distinguish among the class values. Features are ranked by weight and those that exceed a user-speciﬁed threshold are selected to form the ﬁnal subset. The algorithm works by randomly sampling instances from the training data. For each instance sampled, the nearest instance of the same class (nearest hit) and opposite class (nearest miss) is found. An attribute’s weight is updated according to how well its values distinguish the sampled instance from its nearest hit and nearest miss. An attribute will receive a high weight if it differentiates between instances from different classes and has the same value for instances of the same class. Equation 3.8 shows the weight updating formula used by
+6
+
+Mi is an approximation of a markov blanket[Pea88] for feature i.
+
+39
+
+RELIEF: WX = WX − diff(X, R, H)2 diff(X, R, M)2 + , m m (3.8)
+
+where WX is the weight for attribute X, R is a randomly sampled instance, H is the nearest hit, M is the nearest miss, and m is the number of randomly sampled instances. The function diff calculates the difference between two instances for a given attribute. For nominal attributes it is deﬁned as either 1 (the values are different) or 0 (the values are the same), while for continuous attributes the difference is the actual difference normalised to the interval [0, 1]. Dividing by m guarantees that all weights are in the interval [−1, 1]. RELIEF operates on two-class domains. Kononenko [Kon94] describes enhancements to RELIEF that enable it to cope with multi-class, noisy and incomplete domains. Kira and Rendell provide experimental evidence that shows RELIEF to be effective at identifying relevant features even when they interact7 (for example, in parity problems). However, RELIEF does not handle redundant features. The authors state: “If most of the given features are relevant to the concept, it (RELIEF) would select most of the given features even though only a small number of them are necessary for concept description.” Scherf and Brauer [SB97] describe a similar instance based approach (EUBAFES) to assigning feature weights developed independently of RELIEF. Like RELIEF, EUBAFES strives to reinforce similarities between instances of the same class while simultaneously decrease similarities between instances of different classes. A gradient descent approach is employed to optimize feature weights with respect to this goal.
+
+3.5 Feature Wrappers
+Wrapper strategies for feature selection use an induction algorithm to estimate the merit of feature subsets. The rationale for wrapper approaches is that the induction method that
+Interacting features are those whose values are dependent on the values of other features and the class, and as such, provide further information about the class. On the other hand, redundant features, are those whose values are dependent on the values of other features irrespective of the class, and as such, provide no further information about the class.
+7
+
+40
+
+will ultimately use the feature subset should provide a better estimate of accuracy than a separate measure that has an entirely different inductive bias [Lan94]. Feature wrappers often achieve better results than ﬁlters due to the fact that they are tuned to the speciﬁc interaction between an induction algorithm and its training data. However, they tend to be much slower than feature ﬁlters because they must repeatedly call the induction algorithm and must be re-run when a different induction algorithm is used. Since the wrapper is a well deﬁned process, most of the variation in its application are due to the method used to estimate the off-sample accuracy of a target induction algorithm, the target induction algorithm itself, and the organisation of the search. This section reviews work that has focused on the wrapper approach and methods to reduce its computational expense.
+
+3.5.1 Wrappers for Decision Tree Learners
+John, Kohavi, and Pﬂeger [JKP94] were the ﬁrst to advocate the wrapper [All74] as a general framework for feature selection in machine learning. They present formal deﬁnitions for two degrees of feature relevance, and claim that the wrapper is able to discover relevant features. A feature Xi is said to be strongly relevant to the target concept(s) if the probability distribution of the class values, given the full feature set, changes when Xi is removed. A feature Xi is said to be weakly relevant if it is not strongly relevant and the probability distribution of the class values, given some subset S (containing Xi ) of the full feature set, changes when Xi is removed. All features that are not strongly or weakly relevant are irrelevant. Experiments were conducted on three artiﬁcial and three natural domains using ID3 and C4.5 [Qui86, Qui93] as the induction algorithms. Accuracy was estimated by using 25-fold cross validation on the training data; a disjoint test set was used for reporting ﬁnal accuracies. Both forward selection and backward elimination search were used. With the exception of one artiﬁcial domain, results showed that feature selection did not signiﬁcantly change ID3 or C4.5’s generalisation performance. The main effect of feature selection was to reduce the size of the trees. Like John et al., Caruanna and Freitag [CF94] test a number of greedy search methods with ID3 on two calendar scheduling domains. As well as backward elimination and for41
+
+ward selection they also test two variants of stepwise bi-directional search—one starting with all features, the other with none. Results showed that although the bi-directional searches slightly outperformed the forward and backward searches, on the whole there was very little difference between the various search strategies except with respect to computation time. Feature selection was able to improve the performance of ID3 on both calendar scheduling domains. Vafaie and De Jong [VJ95] and Cherkauer and Shavlik [CS96] have both applied genetic search strategies in a wrapper framework for improving the performance of decision tree learners. Vafaie and De Jong [VJ95] describe a system that has two genetic algorithm driven modules—the ﬁrst performs feature selection, and the second performs constructive induction8 [Mic83]. Both modules were able to signiﬁcantly improve the performance of ID3 on a texture classiﬁcation problem. Cherkauer and Shavlik [CS96] present an algorithm called SET-Gen which strives to improve the comprehesibility of decision trees as well as their accuracy. To achive this, SET-Gen’s genetic search uses a ﬁtness function that is a linear combination of an accuracy term and a simplicity term: 1 3 S+F Fitness(X) = A + 1− , 4 4 2 (3.9)
+
+where X is a feature subset, A is the average cross-validation accuracy of C4.5, S is the average size of the trees produced by C4.5 (normalized by the number of training examples), and F is is the number of features is the subset X (normalized by the total number of available features). Equation 3.9 ensures that the ﬁttest population members are those feature subsets that lead C4.5 to induce small but accurate decision trees.
+
+3.5.2 Wrappers for Instance Based Learning
+The wrapper approach was proposed at approximately the same time and independently
+Constructive induction is the process of creating new attributes by applying logical and mathematical operators to the original features.
+8
+
+42
+
+of John et al. by Langley and Sage [LS94c, LS94b] during their investigation of the simple nearest neighbour algorithm’s sensitivity to irrelevant attributes. Scaling experiments showed that the nearest neighbour’s sample complexity (the number of training examples needed to reach a given accuracy) increases exponentially with the number of irrelevant attributes present in the data [AKA91, LS94c, LS94b]. An algorithm called OBLIVION is presented which performs backward elimination of features using an oblivious decision tree9 as the induction algorithm. Experiments with OBLIVION using k-fold cross validation on several artiﬁcial domains showed that it was able to remove redundant features and learn faster than C4.5 on domains where features interact. Moore and Lee [ML94] take a similar approach to augmenting nearest neighbour algorithms, but their system uses leave-one-out instead of k-fold cross-validation and concentrates on improving the prediction of numeric rather than discrete classes. Aha and Blankert [AB94] also use leave-one-out cross validation, but pair it with a beam search10 instead of hill climbing. Their results show that feature selection can improve the performance of IB1 (a nearest neighbour classiﬁer) on a sparse (very few instances) cloud pattern domain with many features. Moore, Hill, and Johnson [MHJ92] encompass not only feature selection in the wrapper process, but also the number of nearest neighbours used in prediction and the space of combination functions. Using leave-one-out cross validation, they achieve signiﬁcant improvement on several control problems involving the prediction of continuous classes. In a similar vein, Skalak [Ska94] combines feature selection and prototype selection into a single wrapper process using random mutation hill climbing as the search strategy. Experimental results showed signiﬁcant improvement in accuracy for nearest neighbour on two natural domains and a drastic reduction in the algorithm’s storage requirement (number of instances retained during training). Domingos [Dom97] describes a context sensitive wrapper approach to feature selection for instance based learners. The motivation for the approach is that there may be features that are either relevant in only a restricted area of the instance space and irrelevant
+When all the original features are included in the tree and given a number of assumptions at classiﬁcation time, Langley and Sage note that the structure is functionally equivalent to the simple nearest neighbour; in fact, this is how it is implemented in OBLIVION. 10 Beam search is a limited version of best ﬁrst search that only remembers a portion of the search path for use in backtracking
+9
+
+43
+
+elsewhere, or relevant given only certain values (weakly interacting) of other features and otherwise irrelevant. In either case, when features are estimated globally (over the entire instance space), the irrelevant aspects of these sorts of features may overwhelm their useful aspects for instance based learners. This is true even when using backward search strategies with the wrapper11 . Domingos presents an algorithm called RC which can detect and make use of context sensitive features. RC works by selecting a (potentially) different set of features for each instance in the training set. It does this by using a backward search strategy and cross validation to estimate accuracy. For each instance in the training set, RC ﬁnds its nearest neighbour of the same class and removes those features in which the two differ. The accuracy of the entire training dataset is then estimated by cross validation. If the accuracy has not degraded, the modiﬁed instance in question is accepted; otherwise the instance is restored to its original state and deactivated (no further feature selection is attempted for it). The feature selection process continues until all instances are inactive. Experiments on a selection of machine learning datasets showed that RC outperformed standard wrapper feature selectors using forward and backward search strategies with instance based learners. The effectiveness of the context sensitive approach was also shown on artiﬁcial domains engineered to exhibit restricted feature dependency. When features are globally relevant or irrelevant, RC has no advantage over standard wrapper feature selection. Furthermore, when few examples are available, or the data is noisy, standard wrapper approaches can detect globally irrelevant features more easily than RC. Domingos also noted that wrappers that employ instance based learners (including RC) are unsuitable for use on databases containing many instances because they are quadratic in N (the number of instances). Kohavi [KF94, Koh95a] uses wrapper feature selection to explore the potential of decision table majority (DTM) classiﬁers. Appropriate data structures allow the use of fast incremental cross-validation with DTM classiﬁers. Experiments showed that DTM classiﬁers using appropriate feature subsets compared very favourably with sophisticated algorithms
+In the wrapper approach, backward search strategies are generally more effective than forward search strategies in domains with feature interactions. Because backward search typically begins with all the features, the removal of a strongly interacting feature is usually detected by decreased accuracy during cross validation.
+11
+
+44
+
+such as C4.5.
+
+3.5.3 Wrappers for Bayes Classiﬁers
+
+Due to the naive Bayes classiﬁer’s assumption that, within each class, probability distributions for attributes are independent of each other, Langley and Sage [LS94a] note that its performance on domains with redundant features can be improved by removing such features. A forward search strategy is employed to select features for use with naive Bayes, as opposed to the backward strategies that are used most often with decision tree algorithms and instance based learners. The rationale for a forward search is that it should immediately detect dependencies when harmful redundant attributes are added. Experiments showed overall improvement and increased learning rate on three out of six natural domains, with no change on the remaining three. Pazzani [Paz95] combines feature selection and simple constructive induction in a wrapper framework for improving the performance of naive Bayes. Forward and backward hill climbing search strategies are compared. In the former case, the algorithm considers not only the addition of single features to the current subset, but also creating a new attribute by joining one of the as yet unselected features with each of the selected features in the subset. In the latter case, the algorithm considers both deleting individual features and replacing pairs of features with a joined feature. Results on a selection of machine learning datasets show that both approaches improve the performance of naive Bayes. The forward strategy does a better job at removing redundant attributes than the backward strategy. Because it starts with the full set of features, and considers all possible pairwise joined features, the backward strategy is more effective at identifying attribute interactions than the forward strategy. Improvement for naive Bayes using wrapper-based feature selection is also reported by Kohavi and Sommerﬁeld [KS95] and Kohavi and John [KJ96]. Provan and Singh [PS96] have applied the wrapper to select features from which to construct Bayesian networks. Their results showed that while feature selection did not improve accuracy over networks constructed from the full set of features, the networks con45
+
+structed after feature selection were considerably smaller and faster to learn.
+
+3.5.4 Methods of Improving the Wrapper
+
+Most criticism of the wrapper approach to feature selection is concerned with its computational cost. For each feature subset examined, an induction algorithm is invoked k times in an k-fold cross validation. This can make the wrapper prohibitively slow for use on large data sets with many features. This drawback has led some researchers to investigate ways of mitigating the cost of the evaluation process. Caruanna and Freitag [CF94] devised a scheme that caches decision trees. This can substantially reduce the number of trees grown during feature selection and allow larger spaces to be searched. Moore and Lee [ML94] present a method to “race” competing models or feature subsets. If at some point during leave-one-out cross-validation, a subset is deemed to be unlikely to have the lowest estimated error, its evaluation is terminated. This has the effect of reducing the percentage of training examples used during evaluation and reduces the computational cost of fully evaluating each subset. The algorithm also “blocks” all near identical feature subsets—except one—in the race. This prevents having to run feature subsets with nearly identical predictions right to the end. Both racing and blocking use Bayesian statistics to maintain a probability distribution on the estimate of the mean leave-one-out cross validation error for each competing subset. The algorithm uses forward selection, but instead of sequentially trying all local changes to the best subset, these changes are raced. The race ﬁnishes when only one competing subset remains or the cross validation ends. Kohavi and John [KS95] introduce the notion of “compound” search space operators in an attempt to make backward and best ﬁrst search strategies computationally feasible. When all local changes (additions or deletions of single features) to a given feature subset have been evaluated, the ﬁrst compound operator is created, combining the two best local changes. This operator is then applied to the feature subset, creating a new subset further away in the search space. If the ﬁrst compound operator leads to a subset with 46
+
+an improved estimate, a second compound operator is constructed that combines the best three local changes, and so forth. The use of compound operators propels the search more quickly toward the strongly relevant features. Experiments using compound operators with a forward best ﬁrst search showed no signiﬁcant change in the accuracy for ID3 and naive Bayes. When compound operators were combined with a backward best ﬁrst search, accuracy degraded slightly for ID3 but improved for C4.5. The poor results with ID3 suggest that the best ﬁrst search can still get stuck in some local maxima. The improvement with C4.5 is due to C4.5’s pruning (again a form of feature selection), which allows the best ﬁrst search to overcome the local maxima. Moore and Lee [ML94] describe another search variant called schemata search that takes interacting features into account and speeds up the search process. Rather than starting with an empty or full set of features, the search begins with all features marked as “unknown”. In each iteration, a feature is chosen and raced between being in the subset or excluded from it. All combinations of unknown features are used with equal probability. Due to the probabilistic nature of the search, a feature that should be in the subset will win the race, even if it is dependent on another feature. Experiments on artiﬁcial domains showed schemata search to be effective at identifying relevant features (more so than raced versions of forward and backward selection) and much faster than raced backward selection.
+
+3.6 Feature Weighting Algorithms
+Feature weighting can be viewed as a generalisation of feature selection. In feature selection, feature weights are restricted to 0 or 1 (a feature is used or it is not). Feature weighting allows ﬁner differentiation between features by assigning each a continuous valued weight. Algorithms such as nearest neighbour (that normally treat each feature equally) can be easily modiﬁed to include feature weighting when calculating similarity between cases. One thing to note is that, in general, feature weighting algorithms do not reduce the dimensionality of the data. Unless features with very low weight are removed from the data initially, it is assumed that each feature is useful for induction; its degree of usefulness is reﬂected in the magnitude of its weight. Using continuous weights for 47
+
+features involves searching a much larger space and involves a greater chance of overﬁtting [KLY97]. Salzberg [Sal91] incorporates incremental feature weighting in an instance based learner called EACH. For each correct classiﬁcation made, the weight for each matching feature is incremented by ∆f (the global feature adjustment rate). Mismatching features have their weights decremented by this same amount. For incorrect classiﬁcations, the opposite occurs—mismatching features are incremented while the weights of matching features are decremented. Salzberg reported that the value of ∆f needs to be tuned for different data sets to give best results. Wettschereck and Aha [WA95] note that EACH’s weighting scheme is insensitive to skewed concept descriptions. IB4 [Aha92] is an extension of the k nearest neighbour algorithm that addresses this problem by calculating a separate set of feature weights for each concept. The weight for feature i is computed using wi = max CumulativeWeighti − 0.5, 0 . WeightNormaliseri (3.10)
+
+CumulativeWeight is expected to approach one half of WeightNormaliser for apparently irrelevant attributes. Both CumulativeWeight and WeightNormaliser are incrementally updated during learning. Let Λ be the higher of the observed frequencies among the classes of two instances X (the instance to be classiﬁed) and Y (its most similar neighbour in the concept description). CumulativeWeighti is incremented by 1 − diff(xi , yi) × (1 − Λ) if X and Y have the same class, diff(xi , yi ) × (1 − Λ) otherwise. WeightNormaliser is always incremented by (1 − Λ). Experiments with IB4 showed it to be more tolerant of irrelevant features than the k nearest neighbour algorithm. RELIEF12 [KR92] is an algorithm that uses an instance based approach to assign weights to features. Wettschereck and Aha [WA95] use RELIEF to calculate weights for a k
+12
+
+(3.11)
+
+RELIEF was originally used for feature selection and is described in section 2.5.5
+
+48
+
+nearest neighbour algorithm—they report signiﬁcant improvement over standard k nearest neighbour in seven out of ten domains. Kohavi, Langley, and Yun [KLY97] describe an approach to feature weighting that considers a small set of discrete weights rather than continuous weights. Their approach uses the wrapper coupled with simple nearest neighbour to estimate the accuracy of feature weights and a best ﬁrst search to explore the weight space. In experiments that vary the number of discrete weights considered by the algorithm, results showed that there is no advantage to increasing the number of non-zero discrete weights above two; in fact, with the exception of some carefully crafted artiﬁcial domains, using one non-zero weight (equivalent to feature selection) was difﬁcult to outperform. The above methods for feature weighting all use feedback from a nearest neighbour algorithm (either incrementally during learning or in a special stage prior to induction) to adjust weights. Some non-feedback methods for setting weights include: the per category feature importance [CMSW92] which sets the weight for a feature to the conditional probability of the class given the feature, the cross-category feature importance [WA95], which is like the per category feature importance but averages across classes, and the mutual information13 [SW48] between the feature and the class. All of these approaches require numeric features to be discretized.
+
+3.7 Chapter Summary
+Practical machine learning algorithms often make assumptions or apply heuristics that trade some accuracy of the resulting model for speed of execution, and comprehensibility of the result. While these assumptions and heuristics are reasonable and often yield good results, the presence of irrelevant and redundant information can often fool them, resulting in reduced accuracy and less understandable results. Feature subset selection can help focus the learning algorithm on the important features for a particular problem. It can also reduce the dimensionality of the data, allowing learning algorithms to operate faster and more effectively.
+13
+
+This is also known as the information gain between the feature and the class. See Chapter 3 for details.
+
+49
+
+There are two main approaches to feature subset selection described in the literature. The wrapper—which is tuned to the speciﬁc interaction between an induction algorithm and its training data—has been shown to give good results, but in practise may be too slow to be of practical use on large real-world domains containing many features. Filter methods are much faster as they do not involve repeatedly invoking a learning algorithm. Existing ﬁlter solutions exhibit a number of drawbacks. Some algorithms are unable to handle noise (or rely on the user to specify the level of noise for a particular problem). In some cases, a subset of features is not selected explicitly; instead, features are ranked with the ﬁnal choice left to the user. Some algorithms do not handle both redundant and irrelevant features. Other algorithms require features to be transformed in such a way that actually increases the initial number of features and hence the search space. This last case can result in a loss of meaning from the original representation, which in turn can have an impact on the interpretation of induced models. Feature weights are easily incorporated into learning algorithms such as nearest neighbour, but the advantage of feature weighting over feature selection is minimal at best, due to the increased chance of overﬁtting the data. In general, feature weighting does not reduce the dimensionality of the original data.
+
+50
+
+Chapter 4 Correlation-based Feature Selection
+This thesis claims that feature selection for classiﬁcation tasks in machine learning can be accomplished on the basis of correlation1 between features, and that such a feature selection procedure can be beneﬁcial to common machine learning algorithms. This chapter presents a correlation based feature selector (CFS) based on this claim; subsequent chapters examine the behaviour of CFS under various conditions and show that CFS can identify useful features for machine learning. Section 4.1 outlines the rationale and motivation for a correlation-based approach to feature selection, with ideas borrowed from psychological measurement theory. Various machine learning approaches to measuring correlation between nominal variables are discussed in Section 4.2; their respective biases and implications for use with CFS are discussed in Section 4.3. Section 4.4 presents the CFS algorithm and the variations used for experimental purposes.
+
+4.1 Rationale
+Genari et al. [GLF89] state that “Features are relevant if their values vary systematically with category membership.”
+The term correlation is used in its general sense in this thesis. It is not intended to refer speciﬁcally to classical linear correlation; rather it is used to refer to a degree of dependence or predictability of one variable with another.
+1
+
+51
+
+In other words, a feature is useful if it is correlated with or predictive of the class; otherwise it is irrelevant. Kohavi and John [KJ96] formalize this deﬁnition as Deﬁnition 1: A feature Vi is said to be relevant iff there exists some vi and c for which p(Vi = vi ) > 0 such that p(C = c|Vi = vi ) = p(C = c). (4.1)
+
+Empirical evidence from the feature selection literature shows that, along with irrelevant features, redundant information should be eliminated as well [LS94a, KJ96, KS95]. A feature is said to be redundant if one or more of the other features are highly correlated with it. The above deﬁnitions for relevance and redundancy lead to the following hypothesis, on which the feature selection method presented in this thesis is based: A good feature subset is one that contains features highly correlated with (predictive of) the class, yet uncorrelated with (not predictive of) each other. In test theory [Ghi64], the same principle is used to design a composite test for predicting an external variable of interest. In this situation, the “features” are individual tests which measure traits related to the variable of interest (class). For example, a more accurate prediction of a person’s success in a mechanics training course can be had from a composite of a number of tests measuring a wide variety of traits (ability to learn, ability to comprehend written material, manual dexterity and so forth), rather than from any one individual test which measures a restricted scope of traits. Ghiselli states: “When we develop a composite which we intend to use as a basis for predicting an outside variable, it is likely that the components we select to form the composite will have relatively low inter-correlations. When we seek to predict some variable from several other variables, we try to select predictor variables which measure different aspects of the outside variable.” If the correlation between each of the components in a test and the outside variable is known, and the inter-correlation between each pair of components is given, then the cor-
+
+52
+
+relation between a composite test consisting of the summed components and the outside variable can be predicted from rzc = krzi k + k(k − 1)rii , (4.2)
+
+where rzc is the correlation between the summed components and the outside variable, k is the number of components, rzi is the average of the correlations between the components and the outside variable, and rii is the average inter-correlation between components [Ghi64, Hog77, Zaj62]. Equation 4.2 is, in fact, Pearson’s correlation coefﬁcient, where all variables have been standardized. It shows that the correlation between a composite and an outside variable is a function of the number of component variables in the composite and the magnitude of the inter-correlations among them, together with the magnitude of the correlations between the components and the outside variable. Entering two illustrative values for rzi in Equation 4.2, and allowing the values of k and rii to vary, the formula is solved for rzc and the values are plotted in Figure 4.1. From this ﬁgure the following conclusions can be drawn: • The higher the correlations between the components and the outside variable, the higher the correlation between composite and the outside variable. • The lower the inter-correlations among the components, the higher the correlation between the composite and the outside variable. • As the number of components in the composite increases (assuming the additional components are the same as the original components in terms of their average intercorrelation with the other components and with the outside variable), the correlation between the composite and the outside variable increases.
+
+From Figure 4.1, it can be seen that increasing the number of components substantially increases the correlation between the composite and the outside variable. However, it is unlikely that a group of components that are all highly correlated with the outside 53
+
+avg. rzi = 0.8 avg. rzi = 0.2
+
+rzc 3.5 3 2.5 2 1.5 1 0.5 0 0.8 0.7 1 0.9
+
+5 10 k 15 20 0.1
+
+0.4 0.3 0.2
+
+0.6 0.5
+
+avg. rii
+
+Figure 4.1: The effects on the correlation between an outside variable and a composite variable (rzc ) of the number of components (k), the inter-correlations among the components (rii ), and the correlations between the components and the outside variable (rzi). variable will at the same time bear low correlations with each other [Ghi64]. Furthermore, Hogarth [Hog77] notes that, when addition of an additional component is considered, low inter-correlation with the already selected components may well predominate over high correlation with the outside variable. Equation 4.2 is used in this thesis as a heuristic measure of the “merit” of feature subsets in supervised classiﬁcation tasks. In this situation, z (the external variable) becomes C (the class); the problem remaining is to develop suitable ways of measuring the featureclass correlation and feature-feature inter-correlation. Supervised learning tasks often involve different data features, any of which may be continuous, ordinal, nominal, or binary. In order to have a common basis for computing the correlations in Equation 4.2, it is desirable to have a uniform way of treating different types of features. Discretization using the method of Fayyad and Irani [FI93] is applied as a pre-processing step to convert continuous features to nominal. For prediction it is clear that redundant attributes should be eliminated—if a given feature’s predictive ability is covered by another then it can safely be removed. Indeed, some learning algorithms (such as naive Bayes) require this in order to maximise predictive per54
+
+formance [LS94a]. However, for data mining applications where comprehensible results are of paramount importance, it is not always clear that redundancy should be eliminated. For example, a rule may make more “sense” to a user if an attribute is replaced with one highly correlated with it. CFS (described in section 4.4) accommodates this situation by providing a report generation facility. For any given attribute in the ﬁnal subset, CFS can list its close substitutes, either in terms of the overall merit of the ﬁnal subset if the attribute in question was to be replaced by one of the substitutes, or simply correlation with the attribute in question.
+
+4.2 Correlating Nominal Features
+Once all features and the class are treated in a uniform manner, the feature-class correlation and feature-feature inter-correlations in Equation 4.2 may be calculated. Research on decision tree induction has provided a number of methods for estimating the quality of an attribute—that is, how predictive one attribute is of another. Measures of attribute quality characterize the variability present in the collections of instances corresponding to the values of a particular attribute. For this reason they are sometimes known as impurity functions [Bre96b, CB97]. A collection of instances is considered pure if each instance is the same with respect to the value of a second attribute; the collection of instances is impure (to some degree) if instances differ with respect to the value of the second attribute. Decision tree induction typically only involves measuring how predictive attributes are of the class. This corresponds to the feature-class correlations in Equation 4.2. To calculate the merit of a feature subset using Equation 4.2, feature-feature inter-correlations—the ability of one feature to predict another (and vice versa)—must be measured as well. Because decision tree learners perform a greedy simple-to-complex hill climbing search through the space of possible trees, their general inductive bias is to favour smaller trees over larger ones [Mit97]. One factor that can impact on both the size of the tree and how it well it generalizes to new instances is the bias inherent in the attribute quality measure used to select among attributes to test at the nodes of the tree. Some quality measures are known to unfairly favour attributes with more values over those with fewer 55
+
+values [Qui86, WL94, Kon95]. This can result in the construction of larger trees that may overﬁt the training data and generalize poorly. Similarly, if such measures are used as the correlations in Equation 4.2, feature subsets containing features with more values may be preferred—a situation that could lead to inferior performance by a decision tree learner if it is restricted to using such a subset. Kononenko [Kon95] examines the biases of eleven measures for estimating the quality of attributes. Two of these, relief and MDL, with the most acceptable biases with respect to attribute level (number of values), are described in this section. For the inter-correlation between two features, a measure is needed that characterizes the predictive ability of one attribute for another and vice versa. Simple symmetric versions of relief and MDL are presented for this purpose. A third measure (not tested by Kononenko), symmetrical uncertainty [PFTV88], with bias similar to relief and MDL, is also presented. Section 4.3 reconstructs experiments done by Kononenko to analyze the bias of attribute quality measures. The behaviour of symmetrical uncertainty, MDL, and relief with respect to attribute level and how this may affect feature selection is discussed. The experimental scenario is extended to examine the behaviour of the measures with respect to the number of available training examples; again implications for feature selection are discussed. Versions of the CFS feature selector using relief, MDL, and symmetric uncertainty are empirically compared in Chapter 6.
+
+4.2.1 Symmetrical Uncertainty
+A probabilistic model of a nominal valued feature Y can be formed by estimating the individual probabilities of the values y ∈ Y from the training data. If this model is used to estimate the value of Y for a novel sample (drawn from the same distribution as the training data), then the entropy of the model (and hence of the attribute) is the number of bits it would take, on average, to correct the output of the model. Entropy is a measure of the uncertainty or unpredictability in a system. The entropy of Y is given by H(Y ) = − p(y)log2 (p(y)).
+y∈Y
+
+(4.3)
+
+56
+
+If the observed values of Y in the training data are partitioned according to the values of a second feature X, and the entropy of Y with respect to the partitions induced by X is less than the entropy of Y prior to partitioning, then there is a relationship between features Y and X. Equation 4.4 gives the entropy of Y after observing X. H(Y |X) = − p(x)
+x∈X y∈Y
+
+p(y|x)log2 (p(y|x)).
+
+(4.4)
+
+The amount by which the entropy of Y decreases reﬂects additional information about Y provided by X and is called the information gain [Qui86], or, alternatively, mutual information [SW48]. Information gain is given by gain = H(Y ) − H(Y |X) = H(X) − H(X|Y ) = H(Y ) + H(X) − H(X, Y ). Information gain is a symmetrical measure—that is, the amount of information gained about Y after observing X is equal to the amount of information gained about X after observing Y . Symmetry is a desirable property for a measure of feature-feature intercorrelation to have. Unfortunately, information gain is biased in favour of features with more values. Furthermore, the correlations in Equation 4.2 should be normalized to ensure they are comparable and have the same affect. Symmetrical uncertainty [PFTV88] compensates for information gain’s bias toward attributes with more values and normalizes its value to the range [0, 1]: (4.5)
+
+symmetrical uncertainty coefﬁcient = 2.0 ×
+
+gain . H(Y ) + H(X)
+
+(4.6)
+
+4.2.2 Relief
+
+RELIEF [KR92] is a feature weighting algorithm that is sensitive to feature interactions (see Chapters 3 and 8 for details). Kononenko [Kon95] notes that RELIEF attempts to 57
+
+approximate the following difference of probabilities for the weight of a feature X: WX = P (different value of X| nearest instance of different class) − P (different value of X| nearest instance of same class). By removing the context sensitivity provided by the “nearest instance” condition, attributes are treated as independent of one another; Equation 4.8 then becomes [Kon94, Kon95] ReliefX = P (different value of X| different class) − P (different value of X| same class), which can be reformulated as Gini × x∈X p(x)2 , ReliefX = (1 − c∈C p(c)2 ) c∈C p(c)2 where C is the class variable and Gini =
+c∈C
+
+(4.7)
+
+(4.8)
+
+(4.9)
+
+p(c)(1 − p(c)) −
+
+x∈X
+
+p(x)2 2 x∈X p(x)
+
+c∈C
+
+p(c|x)(1 − p(c|x)) .
+
+(4.10)
+
+Gini is a modiﬁcation of another attribute quality measure called the Gini-index2 [Bre96b]. Both Gini and the Gini-index are similar to information gain in that they are biased in favour of attributes with more values. To use relief symmetrically for two features, the measure can be calculated twice (each feature is treated in turn as the “class”), and the results averaged. Whenever relief is mentioned in subsequent chapters, it is the symmetrical version that is referred to.
+
+2
+
+The only difference to Equation 4.10 is that the Gini-index uses p(x) in place of p(x)2 /
+
+p(x)2 .
+
+58
+
+4.2.3 MDL
+Roughly speaking, the minimum description length (MDL) principle [Ris78] states that the “best” theory to infer from training data is the one that minimizes the length (complexity) of the theory and the length of the data encoded with respect to the theory. The MDL principle can be taken as an operational deﬁnition of Occam’s Razor3 . More formally, if T is a theory inferred from data D, then the total description length is given by DL(T, D) = DL(T ) + DL(D|T ). (4.11)
+
+In Equation 4.11, all description lengths are measured in bits. If the data (D) is the observed values of a feature Y , and these values are partitioned according to the values of a second feature X, then the description length of the data given the theory (the second term in Equation 4.11) can be approximated by multiplying the average entropy of Y given X by the number of observed instances. One problem with just using entropy to measure the quality of a model (and hence an attribute) is that it is possible to construct a model that predicts the data perfectly, and as such has zero entropy. Such a model is not necessarily as good as it seems. For example, consider an attribute X that has as many distinct values as there are instances in the data. If the data is partitioned according to the values of X, then there will be exactly one value of Y (with probability 1) in each of these partitions, and the entropy of Y with respect to X will be zero. However, a model such as this is unlikely to generalize well to new data; it has overﬁtted the training data—that is, it is overly sensitive to statistical idiosyncrasies of the training data. The ﬁrst term in Equation 4.11 deals with just this sort of problem. A model such as the one just described is very complex and would take many bits to describe. So although the model has reduced the description length of the data to zero, the value of Equation 4.11 would still be large due to the high cost of describing the model. The best models (according to the MDL principle) are those which are predictive of the data and, at the same time, have captured the underlying structure
+The Occam’s Razor principle, commonly attributed to William of Occam (early 14th century), states: “Entities should not be multiplied beyond necessity.” This principle is generally interpreted as: “Given the choice between theories that are equally consistent with the observed phenomena, prefer the simplest”.
+3
+
+59
+
+in a compact fashion. Quinlan [Qui89] discusses the use of the MDL principle in coding decision trees; Kononenko [Kon95] deﬁnes an MDL measure of attribute quality: MDL = (Prior MDL − Post MDL) n n n+C −1 + log2 n1 , . . . , nC C −1 n.j + C − 1 , C−1 (4.12)
+
+Prior MDL = log2
+
+(4.13)
+
+Post MDL =
+j
+
+log2
+
+n.j + n1j , . . . , nCj
+
+log2
+j
+
+(4.14)
+
+where n is the number of training instances, C is the number of class values, ni. is the number of training instances from class Ci , n.j is the number of training instances with the j-th value of the given attribute, and nij is the number of training instances of class Ci having the j-th value for the given attribute. Equation 4.12 gives the average compression (per instance) of the class afforded by an attribute. Prior MDL is the description length of the class labels prior to partitioning on the values of an attribute. Post MDL performs the same calculation as Prior MDL for each of the partitions induced by an attribute and sums the result. The ﬁrst term of Equation 4.13 and Equation 4.14 encodes the class labels with respect to the model encoded in the respective second term. The model for Prior MDL is simply a probability distribution over the class labels (that is, how many instances of each class are present); the model for Post MDL is the probability distribution of the class labels in each of the partitions induced by the given attribute. To obtain a measure that lies between 0 and 1, Equation 4.12 can be normalized by dividing by Prior MDL/n. This gives the fraction by which the average description length of the class labels is reduced through partitioning on the values of an attribute. Equation 4.12 is a non-symmetric measure; exchanging the roles of the attribute and the class does not give the same result. To use the measure symmetrically for two features, it can be calculated twice (treating each feature in turn as the “class”) and the results averaged. Whenever the MDL measure is mentioned in subsequent chapters, it is the normalized
+
+60
+
+symmetrical version that is referred to.
+
+4.3 Bias in Correlation Measures between Nominal Features
+This section examines bias in the methods, discussed above, for measuring correlation between nominal features. Measures such as information gain tend to overestimate the worth of multi-valued attributes. This problem is well known in the decision tree community. Quinlan [Qui86] shows that the gain of an attribute A (measured with respect to the class or another feature) is less than or equal to the gain of an attribute A formed by randomly partitioning A into a larger number of values. This means that, in general, the derived attribute (and by analogy, attributes with more values) will appear to be more predictive of or correlated with the class than the original one. For example, suppose there is an attribute A with values a, b and there are two possible classes p, n (as shown in Table 4.1(a)). Given the eight instances shown in Table 4.1(a), the entropy of the class is 1.0 bit, the entropy of the class given attribute A is 1.0 bit, and the gain (calculated from Equation 4.6) is 0.0 (the attribute provides no further information about the class). If a second attribute A is formed by converting ‘b’ values of attribute A into the value ‘c’ with probability 0.5, then the examples shown in Table 4.1(b) may occur. In this case, the entropy of the class with respect to attribute A is 0.84 bits and the gain is 0.16 bits. However, since the the additional partitioning of A was produced randomly, A cannot be reasonably considered more correlated with the class than A. One approach to eliminating this bias in decision tree induction is to construct only binary decision trees. This entails dividing the values of an attribute into two mutually exclusive subsets. Bias is now eliminated by virtue of all features having only two values. However, Quinlan [Qui86] notes that this process results in large increase in computation—for a given feature A with a values, at a given node in the tree, there are 2a possible ways of subsetting the values of A, each of which must be evaluated in order to select the best. Some feature selection algorithms, such as the one described by Koller and Sa61
+
+A a a a a b b b b
+
+Class p p n n p p n n (a)
+
+A a a a a b b b c
+
+Class p p n n p p n n (b)
+
+Table 4.1: A two-valued non informative attribute A (a) and a three valued attribute A derived by randomly partitioning A into a larger number of values (b). Attribute A appears more predictive of the class than attribute A according to the information gain measure.
+
+hami [KS96b], avoid bias in favour of multi-valued features by using a boolean encoding. Each value of an attribute A is represented by binary indicator attribute. For a given value of attribute A in a dataset, the appropriate indicator attribute is set to 1, and the indicator attributes corresponding to the other possible values of A are set to 0. This can greatly increase the number of features (and hence the size of the search space) and also introduce more dependencies into the data than were originally present. Furthermore, both subsetting in decision trees and boolean encoding for feature selection can result in less intelligible decision trees and a loss of meaning from the original attributes. In the following sections the bias of symmetrical uncertainty, relief, and MDL is examined. The purpose of exploring bias in the measures is to obtain an indication as to how each measure will affect the heuristic “merit” calculated from Equation 4.2, and to get a feel for which measures exhibit bias similar to that employed by common learning algorithms. Each measure’s behaviour with respect to irrelevant attributes is of particular interest for the feature selection algorithm presented in this thesis.
+
+4.3.1 Experimental Measurement of Bias
+To test bias in the various measures, the Monte Carlo simulation technique of White and Liu is adopted [WL94]. The technique approximates the distributions of the various measures under differing conditions (such as the number of attribute values and/or class 62
+
+values). Estimated parameters derived from these distributions can then be compared to see what effects (if any) these conditions have on the measures. White and Liu examined effects of attribute and class level on various measures using random (irrelevant) attributes generated independently of the class. Kononenko [Kon95] extended this scenario by including attributes predictive of the class. Section 4.3.2 examines the bias of symmetrical uncertainty, normalized symmetrical MDL, and symmetrical relief using the experimental methodology of Kononenko [Kon95]. Section 4.3.3 explores the effect of varying the sample size on the behaviour of the measures. Method The experiments in this section use artiﬁcial data generated with the following properties:
+
+• two, ﬁve or ten equiprobable classes; • two, ﬁve, ten, twenty or forty attribute values; • attributes are either irrelevant (have values drawn from the uniform distribution independently of the class), or are made informative using Kononenko’s method [Kon95]; • 1000 training instances are used for the experiments in Section 4.3.2; the number of training instances is allowed to vary for the experiments in Section 4.3.3.
+
+Multi-valued attributes are made informative by joining the values of the attribute into two subsets. If an attribute has a values, then subsets {1, . . . , (a div 2)} and {(a div 2 + 1), . . . , a} are formed. The probability that the attribute’s value is from one of the subsets depends on the class; the selection of one particular value inside the subset is random from the uniform distribution. The probability that the attribute’s value is in one of the subsets is given by a p j ∈ 1, . . . , 2
+  1/(i + kC)
+
+|i =
+
+i mod 2 = 0 i mod 2 = 0
+
+where C is the number of class values, i is an integer indexing the possible class values {c1 , . . . , ci }, and k is a parameter controlling the level of association between the 63
+
+ 1 − 1/(i + kC)
+
+(4.15)
+
+attribute and the class—higher values of k make the attribute more informative. From Equation 4.15 it can be seen that attributes are also more informative for higher numbers of classes. All experiments presented in this section use k = 1. The merit of all features is calculated using symmetrical uncertainty, MDL, and relief. The results of each measure are averaged over 1000 trials.
+
+4.3.2 Varying the Level of Attributes
+This section explores the effects of varying the number of attribute values on the bias of the measures, using a ﬁxed number of training instances. Figure 4.2 show the results for informative and non-informative attributes when there are 2, 5, and 10 classes. The estimates of informative attributes by all three measures decrease exponentially with the number of values. The effect is less extreme for symmetrical uncertainty compared with the other two. This behaviour is comparable with Occam’s Razor, which states that, all things being equal, the simplest explanation is usually the best. In practical terms, feature selection using these measures will prefer features with fewer values to those with more values; furthermore, since probability estimation is likely to be more reliable for attributes with fewer values (especially if data is limited), there is less risk of overﬁtting the training data and generalizing poorly to novel cases. For non-informative attributes, the MDL measure is the best of the three. Its estimates are always less than zero—clearly distinguishing them from the informative attributes. Symmetrical uncertainty and relief both exhibit a linear bias in favour of non-informative attributes with more values. Relief’s estimates are lower (relative to the informative attributes) than symmetrical uncertainty. When the curves corresponding to the number of classes are compared between informative and non-informative attributes for symmetrical uncertainty and relief, it can be seen from the scale of the graphs that there is a clear separation between the estimates for informative and non-informative attributes—even when the informative attributes are least informative, that is, when the number of classes is 2 (see Equation 4.15). However, there is a possibility that a non-informative attribute with 64
+
+0.45 0.4 symmetrical uncert. coeff. 0.35 0.3 0.25 0.2 0.15 0.1 0.05 0 0 5 10 15 20 25 30 number of attribute values 35 40 informative C=10 informative C=5 informative C= 2 symmetrical uncert. coeff.
+
+0.1 0.08 0.06 0.04 0.02 0 -0.02 -0.04 -0.06 -0.08 -0.1 0 5 10 15 20 25 30 number of attribute values 35 40 non-informative C=10 non-informative C=5 non-informative C=2
+
+(a)
+0.45 0.4 0.35 symmetrical relief symmetrical relief 0.3 0.25 0.2 0.15 0.1 0.05 0 0 5 10 15 20 25 30 number of attribute values 35 40 informative C=10 informative C=5 informative C= 2 0.1 0.08 0.06 0.04 0.02 0 -0.02 -0.04 -0.06 -0.08 -0.1 0 5 10
+
+(b)
+non-informative C=10 non-informative C=5 non-informative C=2
+
+15 20 25 30 number of attribute values
+
+35
+
+40
+
+(c)
+0.45 0.4 normalized symmetrical MDL 0.35 0.3 0.25 0.2 0.15 0.1 0.05 0 0 5 10 15 20 25 30 number of attribute values 35 40 informative C=10 informative C=5 informative C= 2 normalized symmetrical MDL 0.1 0.08 0.06 0.04 0.02 0 -0.02 -0.04 -0.06 -0.08 -0.1 0 5 10
+
+(d)
+non-informative C=10 non-informative C=5 non-informative C=2
+
+15 20 25 30 number of attribute values
+
+35
+
+40
+
+(e)
+
+(f)
+
+Figure 4.2: The effects of varying the attribute and class level on symmetrical uncertainty (a & b), symmetrical relief (c & d), and normalized symmetrical MDL (e & f) when attributes are informative (graphs on the left) and non-informative (graphs on the right). Curves are shown for 2, 5, and 10 classes.
+
+65
+
+many values could be estimated as more useful than a slightly informative attribute by symmetrical uncertainty and relief. The next section—which examines the behaviour of the measures when the sample size is varied—shows that the danger of this occurring is greater when there are fewer training examples.
+
+4.3.3 Varying the Sample Size
+
+Experiments described in this section vary the number of training examples and examine the effect this has on the behaviour of the correlation measures. Training data sets containing between 50 and 20, 000 instances were generated. The results of each measure were averaged over 1000 trials for each training set size. In the graphs presented below, the number of classes is set to 10 and curves are generated for 2, 10, and 20 attribute values. Curves for 2 classes show similar (but less extreme) tendencies as those shown below and can be found in appendix A. Figure 4.3 shows the results for the three correlation measures. The behaviour of all three measures is stable for large training set sizes. The estimates of both symmetrical uncertainty and symmetrical relief show a tendency to increase exponentially with fewer training examples. The effect is more marked for attributes (both informative and noninformative) with more values. Since the number of training examples for a given problem is typically ﬁxed, an increase in the value of the measure for a smaller training set does not pose a problem for informative attributes, given that the increase is the same for attributes of differing levels. However, as can be seen from the graphs, the increase is not constant with respect to attribute level and applies to non-informative attributes as well. Symmetrical uncertainty and relief show greater increase for both informative and non-informative attributes with greater numbers of values. In the graph for the symmetrical uncertainty coefﬁcient (Figure 4.3a and Figure 4.3b), the worth of an informative attribute with 20 values becomes greater than that of an informative attribute with 10 values for training sets of less than 500 examples. Both informative attributes with 10 and 20 values “overtake” the informative attribute with 2 values at 100 66
+
+and 200 training examples respectively. Furthermore, the non-informative attribute with 20 values appears to be more useful than the informative attribute with 2 values for 100 or fewer training examples. Relief is slightly better behaved than the symmetrical uncertainty coefﬁcient—while the estimate of an informative attribute with 20 values does overtake that of an informative attribute with 10 values, the estimates of irrelevant attributes do not exceed those of informative attributes. For informative attributes, the behaviour of the MDL measure (Figure 4.3e and Figure 4.3f) is the exact opposite to that of symmetrical uncertainty and relief. Whilst stable for large numbers of training examples, the MDL measure exhibits a tendency to decrease exponentially with fewer training examples. A similar tendency can be observed for noninformative attributes. However, when there are fewer than 1000 training examples, the trend reverses and the measure begins to increase. Again, the effect is more prominent for attributes with greater numbers of values. At less than 200 training examples, noninformative attributes with 10 and 20 values appear slightly informative (> 0). In general, the MDL measure is more pessimistic than the other two—it requires more data in order to ascertain the quality of a feature.
+
+4.3.4 Discussion
+
+The preceding section empirically examined the bias of three attribute quality measures with respect to attribute level and training sample size. For informative attributes, all three measures exhibit behaviour in the spirit of Occam’s Razor by preferring attributes with fewer values when given a choice between equally informative attributes of varying level. When calculating the heuristic merit of feature subsets using Equation 4.2, this bias will result in a preference for subsets containing predictive features with fewer values—a situation that should be conducive to the induction of smaller models by machine learning schemes that prefer simple hypotheses. With respect to irrelevant attributes, the MDL measure is the best of the three. Except when there are very few training examples, the MDL measure clearly identiﬁes an irrelevant attribute by returning a negative value. Symmetrical uncertainty and relief are 67
+
+1 informative C=10 a=2 informative C=10 a=10 informative C=10 a=20 non-informative C=10 a=2 non-informative C=10 a=10 non-informative C=10 a=20
+
+1 informative C=10 a=2 informative C=10 a=10 informative C=10 a=20 non-informative C=10 a=2 non-informative C=10 a=10 non-informative C=10 a=20
+
+0.8 symmetrical uncert. coeff.
+
+0.8 symmetrical uncert. coeff.
+
+0.6
+
+0.6
+
+0.4
+
+0.4
+
+0.2
+
+0.2
+
+0 0 2000 4000 6000 8000 100001200014000160001800020000 number of examples
+
+0 50 100 150 200 250 300 350 number of examples 400 450 500
+
+(a)
+0.5 informative C=10 a=2 informative C=10 a=10 informative C=10 a=20 non-informative C=10 a=2 non-informative C=10 a=10 non-informative C=10 a=20 symmetrical relief 0.5
+
+(b)
+informative C=10 a=2 informative C=10 a=10 informative C=10 a=20 non-informative C=10 a=2 non-informative C=10 a=10 non-informative C=10 a=20
+
+0.4 symmetrical relief
+
+0.4
+
+0.3
+
+0.3
+
+0.2
+
+0.2
+
+0.1
+
+0.1
+
+0 0 2000 4000 6000 8000 100001200014000160001800020000 number of examples
+
+0 50 100 150 200 250 300 350 number of examples 400 450 500
+
+(c)
+0.5 0.5
+
+(d)
+
+0.4 normalized symmetrical MDL
+
+normalized symmetrical MDL
+
+0.3
+
+informative C=10 a=2 informative C=10 a=10 informative C=10 a=20 non-informative C=10 a=2 non-informative C=10 a=10 non-informative C=10 a=20
+
+0.4 informative C=10 a=2 informative C=10 a=10 informative C=10 a=20 non-informative C=10 a=2 non-informative C=10 a=10 non-informative C=10 a=20
+
+0.3
+
+0.2
+
+0.2
+
+0.1
+
+0.1
+
+0 0 2000 4000 6000 8000 100001200014000160001800020000 number of examples
+
+0 50 100 150 200 250 300 350 number of examples 400 450 500
+
+(e)
+
+(f)
+
+Figure 4.3: The effect of varying the training set size on symmetrical uncertainty (a & b), symmetrical relief (c & d), and normalized symmetrical MDL (e & f) when attributes are informative and non-informative. The number of classes is 2; curves are shown for 2, 10, and 20 valued attributes.
+
+68
+
+linearly biased in favour of irrelevant attributes with greater numbers of values. This is undesirable when measuring an attribute’s ability to predict the class because an irrelevant attribute with many values may appear more useful than an informative attribute with few values. The experiments of Section 4.3.3 show that the danger of this occurring is greater for small training set sizes. However, this bias towards multi-valued irrelevant attributes can be advantageous with respect to the feature-feature inter-correlations used in the denominator of Equation 4.2. In Equation 4.2, a feature is more acceptable if it has low correlation with the other features—a multi-valued irrelevant feature will appear more correlated with the others and is less likely to be included in the subset. Symmetrical uncertainty and relief are optimistic measures when there is little training data; the MDL measure is pessimistic. When training sets are small, using the MDL measure in Equation 4.2 may result in a preference for smaller feature subsets containing only very strong correlations with the class. The next section introduces CFS, a correlation based feature selection algorithm that uses the attribute quality measures described above in its heuristic evaluation function.
+
+4.4 A Correlation-based Feature Selector
+CFS is a simple ﬁlter algorithm that ranks feature subsets according to a correlation based heuristic evaluation function. The bias of the evaluation function is toward subsets that contain features that are highly correlated with the class and uncorrelated with each other. Irrelevant features should be ignored because they will have low correlation with the class. Redundant features should be screened out as they will be highly correlated with one or more of the remaining features. The acceptance of a feature will depend on the extent to which it predicts classes in areas of the instance space not already predicted by other features. CFS’s feature subset evaluation function (Equation 4.2) is repeated here (with slightly modiﬁed notation) for ease of reference: MS = krcf k + k(k − 1)rf f 69 (4.16)
+
+where MS is the heuristic “merit” of a feature subset S containing k features, rcf is the mean feature-class correlation (f ∈ S), and rf f is the average feature-feature intercorrelation. The numerator of Equation 4.16 can be thought of as providing an indication of how predictive of the class a set of features are; the denominator of how much redundancy there is among the features. Equation 4.16 forms the core of CFS and imposes a ranking on feature subsets in the search space of all possible feature subsets. This addresses issue 3 (evaluation strategy) in Langley’s [Lan94] characterization of search based feature selection algorithms (Chapter 3, Section 2). Since exhaustive enumeration of all possible feature subsets is prohibitive in most cases, issues 1, 2, and 4, concerning the organization of the search, start point, and stopping criterion must be addressed also. The implementation of CFS used in the experiments described in this thesis allows the user to choose from three heuristic search strategies: forward selection, backward elimination, and best ﬁrst. Forward selection begins with no features and greedily adds one feature at a time until no possible single feature addition results in a higher evaluation. Backward elimination begins with the full feature set and greedily removes one feature at a time as long as the evaluation does not degrade. Best ﬁrst can start with either no features or all features. In the former, the search progresses forward through the search space adding single features; in the latter the search moves backward through the search space deleting single features. To prevent the best ﬁrst search from exploring the entire feature subset search space, a stopping criterion is imposed. The search will terminate if ﬁve consecutive fully expanded subsets show no improvement over the current best subset. Figure 4.4 shows the stages of the CFS algorithm and how it is used in conjunction with a machine learning scheme. A copy of the training data is ﬁrst discretized using the method of Fayyad and Irani [FI93], then passed to CFS. CFS calculates feature-class and feature-feature correlations using one of the measures described in section refsec:cnf and then searches the feature subset space. The subset with the highest merit (as measured by Equation 4.16) found during the search is used to reduce the dimensionality of both the original training data and the testing data. Both reduced datasets may then be passed to a machine learning scheme for training and testing. It is important to note that the
+
+70
+
+general concept of correlation-based feature selection does not depend on any one module (such as discretizaton). A more sophisticated method of measuring correlation may make discretization unnecessary. Similarly, any conceivable search strategy may be used with CFS.
+
+CFS
+
+Data pre-processing
+
+Calculate feature correlations
+feature-class: f1 f2 f3 f4
+
+Search feature set
+
+Training data Discretisation
+
+class feature-feature: f1 f2
+
+merit
+
+Feature evaluation
+
+f3
+
+f4
+
+feature set
+
+ML algorithm Dimensionality Reduction
+
+Testing data
+
+Final evaluation Estimated accuracy
+
+Figure 4.4: The components of CFS. Training and testing data is reduced to contain only the features selected by CFS. The dimensionally reduced data can then be passed to a machine learning algorithm for induction and prediction.
+
+Three variations of CFS—each employing one of the attribute quality measures described in the previous section to estimate correlations in Equation 4.16—are evaluated in the experiments described in Chapter 5. CFS-UC uses symmetrical uncertainty to measure correlations, CFS-MDL uses normalized symmetrical MDL to measure correlations, and CFS-Relief uses symmetrical relief to measure correlations. Unknown (missing) data values are treated as a separate value when calculating correlations. The best way to deal with unknowns depends on their meaning in the domain. If the unknown has a special meaning (for example, a blank entry for a particular symptom of a disease may mean that the patient does not exhibit the symptom), treating it as a separate value is the best approach. However, if the unknowns represent truly missing information, then a 71
+
+more sophisticated scheme such as distributing the counts associated with missing entries across the values of an attribute (in proportion to their relative frequencies) may be more appropriate. Table 4.2 and Table 4.3 give an example of CFS applied to the “Golf” data set (Table 2.1). Table 4.2 shows the feature correlation matrix for the data set—relief has been used to calculate the correlations. Table 4.3 illustrates a forward selection search through the feature subset space along with the merit of each subset, calculated using Equation 4.16. The search begins with the empty set of features, which has zero merit. Each single feature addition to the empty set is evaluated; Humidity is added to the subset because it has the highest score. The next step involves trying each of the remaining features with Humidity and choosing the best (Outlook). Similarly, in the next stage Wind is added to the subset. The last step tries the single remaining feature (Temperature) with the current subset; this does not improve its merit and the search terminates. The best subset found (Outlook, Humidity, Wind) is returned.
+Outlook 1.000 Temperature 0.116 1.000 Humidity 0.022 0.248 1.000 Wind 0.007 0.028 0.000 1.000 Class 0.130 0.025 0.185 0.081
+
+Outlook Temperature Humidity Wind
+
+Table 4.2: Feature correlations calculated from the “Golf” dataset. Relief is used to calculate correlations. Computational Expense The time complexity of CFS is quite low. It requires m((n2 − n)/2) operations for computing the pairwise feature correlation matrix, where m is the number of instances and n is the initial number of features. The feature selection search requires (n2 − n)/2 operations (worst case) for a forward selection or backward elimination search. Best ﬁrst search in its pure form is exhaustive, but the use of a stopping criterion makes the probability of exploring the entire search space small. In evaluating Equation 4.16 for a feature subset S containing k features, k additions are required in the numerator (feature-class correlations) and (k 2 − k)/2 additions are required in the denominator (feature-feature inter-correlations). Since the search algorithm imposes a partial ordering on the search space, the numerator and denominator of Equation 4.16 can be calculated incrementally; this requires only one addition (or subtraction if using a 72
+
+Feature set [] [Outlook] [Temperature] [Humidity] [Wind] [Outlook Humidity] [Temperature Humidity] [Humidity Wind] [Outlook Temperature Humidity] [Outlook Humidity Wind] [Outlook Temperature Humidity Wind]
+
+k 0 1 1 1 1 2 2 2 3 3 4
+
+rcf N/A 0.130 0.025 0.185 0.081 0.158 0.105 0.133 0.11¯ 3 0.132 0.105
+
+rf f N/A 1.000 1.000 1.000 1.000 0.022 0.258 0.0 0.132 0.0096 0.0718
+
+Merit 0.0
+1×0.130 = 0.130 1+1(1−1)1.0 1×0.025 √ = 0.025 1+1(1−1)1.0 1×0.185 √ = 0.185 1+1(1−1)1.0 √ 1×0.081 = 0.081 1+1(1−1)1.0 2×0.158 √ = 0.220 2+2(2−1)0.022 2×0.105 √ = 0.133 2+2(2−1)0.258 2×0.133 √ = 0.188 2+2(2−1)0.0 ¯ √ 3×0.113 = 0.175 3+3(3−1)0.132 3×0.132 √ = 0.226 3+3(3−1)0.0096 4×0.105 √ = 0.191 4+4(4−1)0.0718
+
+√
+
+Table 4.3: A forward selection search using the correlations in Table 4.2. The search starts with the empty set of features [] which has merit 0.0. Subsets in bold show where a local change to the previous best subset has resulted in improvement with respect to the evaluation function.
+
+backward search) in the numerator and k additions/subtractions in the denominator. If a forward search is used, it is not necessary to pre-compute the entire feature correlation matrix; feature correlations can be calculated as they are needed during the search. Unfortunately, this can not be applied to a backward search as a backward search begins with all features. Independence Assumption Like the naive Bayesian classiﬁer, CFS assumes that features are conditionally independent given the class. Experiments with naive Bayes on real data sets has shown that it can perform well even when this assumption is moderately violated [DP96, DP97]; it is expected that CFS can identify relevant features when moderate feature dependencies exist. However, when strong feature interactions occur, CFS may fail to select all the relevant features. An extreme example of this is a parity problem—no feature in isolation will appear any better than any other feature (relevant or not). Chapter 8 explores two additional methods for detecting feature dependencies given the class. 73
+
+4.5 Chapter Summary
+This chapter presents a new feature selection technique for discrete-class supervised learning. The technique, dubbed CFS (Correlation-based Feature Selection) assumes that useful feature subsets contain features that are predictive of the class but uncorrelated with one another. CFS computes a heuristic measure of the “merit” of a feature subset from pair-wise feature correlations and a formula adapted from test theory. Heuristic search is used to traverse the space of feature subsets in reasonable time; the subset with the highest merit found during the search is reported. CFS treats features uniformly by discretizing all continuous features in the training data at the outset. The supervised discretization method of Fayyad and Irani [FI93] is employed because this method has been found to perform the best when used as a pre-processing step for machine learning algorithms [DKS95, KS96a]. Three measures of association between nominal variables are reviewed for the task of quantifying the feature-class and feature-feature correlations necessary to calculate the merit of a feature subset from Equation 4.16. Symmetrical uncertainty, MDL, and relief all prefer predictive features with fewer values over those with more values. The bias of these measures is likely to promote the choice of feature subsets that will give good results with machine learning algorithms (especially those that prefer compact predictive theories) than the bias of measures (such as information gain) that favour multi-valued attributes. All three measures may report irrelevant attributes with many values as being predictive to some degree. The chance of an irrelevant attribute being preferred to a predictive one is greatest when there are few training examples.
+
+74
+
+Chapter 5 Datasets Used in Experiments
+In order to evaluate the effectiveness of CFS for selecting features for machine learning, this thesis takes an empirical approach by applying CFS as a pre-processing step for several common machine learning algorithms. This chapter reviews the datasets and the general methodology used in the experiments presented in Chapters 6, 7, and 8.
+
+5.1 Domains
+Twelve natural domains and six artiﬁcial domains were used for evaluating CFS with machine learning algorithms. The natural domains and the three artiﬁcial Monk’s domains [TBB+ 91] are drawn from the UCI repository of machine learning databases [MM98]. These domains were chosen because of (a) their predominance in the literature, and (b) the prevalence of nominal features, thus reducing the need to discretize feature values. In addition, three artiﬁcial domains of increasing difﬁculty were borrowed from Langley and Sage [LS94c], where they were used to test a wrapper feature selector for nearest neighbour classiﬁcation. Artiﬁcial domains are useful because they allow complete control over parameters such as attribute level, predictive ability of attributes, number of irrelevant/redundant attributes, and noise. Varying parameters allows conjectures to be tested and the behaviour of algorithms under extreme conditions to be examined. 75
+
+Table 5.1 summarises the characteristics of these domains. The default accuracy is the accuracy of always predicting the majority class on the whole dataset. For the three artiﬁcial domains (A1, A2, and A3), the default accuracy is the default accuracy in the limit, that is, given that each example is equally likely and an inﬁnite sample is available. Variations of the three artiﬁcial domains with added irrelevant and redundant features are used to test CFS’s ability to screen out these types of features.
+
+Domain mu vo v1 cr ly pt bc dna au sb hc kr A1 A2 A3 M1 M2 M3
+
+Instances 8124 435 435 690 148 339 286 106 226 683 368 3196 1000 1000 1000 432 432 432
+
+Features 22 16 15 15 18 17 9 55 69 35 27 36 3 3 3 6 6 6
+
+% Missing 1.3 5.3 5.3 0.6 0.0 3.7 0.3 0.0 2.0 9.5 18.7 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+
+Average # Feature Vals 5.3 2.0 2.0 4.4 2.9 2.2 4.6 4.0 2.2 2.8 23.8 2.0 2.0 2.0 2.0 2.8 2.8 2.8
+
+Max/Min # Feature Vals 12/1 2/2 2/2 14/2 8/2 3/2 11/2 4/4 6/2 7/2 346/2 3/2 2/2 2/2 2/2 4/2 4/2 4/2
+
+Class Vals 2 2 2 2 4 23 2 2 24 19 2 2 2 2 2 2 2 2
+
+Default Accuracy 51.8 61.4 61.4 55.5 54.7 24.8 70.3 50.0 25.2 13.5 62.7 52.2 87.5 50.0 75.0 50.0 67.1 52.8
+
+Table 5.1: Domain characteristics. Datasets above the horizontal line are natural domains; those below are artiﬁcial. The % Missing column shows what percentage of the data set’s entries (number of features × number of instances) have missing values. Average # Feature Vals and Max/Min # Feature Vals are calculated from the nominal features present in the data sets. The following is a brief description of the datasets. Mushroom (mu) This dataset contains records drawn from The Audubon Society Field Guide to North American Mushrooms [Lin81]. The task is to distinguish edible from poisonous mushrooms on the basis of 22 nominal attributes describing characteristics of the mushrooms such as the shape of the cap, odour, and gill spacing. This is a large dataset containing 8124 instances. C4.5 and IB1 can achieve over 99% accuracy on this dataset, but naive Bayes does not do as well, suggesting that many of the attributes may be redundant. 76
+
+Vote (vo, v1) In this dataset the party afﬁliation of U.S House of Representatives Congressmen is characterised by how they voted on 16 key issues such as education spending and immigration. There are 435 (267 democrats, 168 republicans) instances and all features are binary. In the original data, there were nine different types of vote a congressman could make. Some of these have been collapsed into related voting categories. The v1 version of this dataset has the single most predictive attribute (physician-fee-freeze) removed. Australian credit screening (cr) This dataset contains 690 instances from an Australian credit company. The task is to distinguish credit-worthy from non credit-worthy customers. There are 15 attributes whose names and values have been converted to meaningless symbols to ensure conﬁdentiality of the data. There are six continuous features and nine nominal. The nominal features range from 2 to 14 values. Lymphography (ly) This is a small medical dataset containing 148 instances. The task is to distinguish healthy patients from those with metastases or malignant lymphoma. All 18 features are nominal. This is the one of three medical domains (the others being Primary Tumour and Breast Cancer) provided by the University Medical Centre, Institute of Oncology, Ljubljana, Yugoslavia. Primary Tumour (pt) This dataset involves predicting the location of a tumour in the body of a patient on the basis of 17 nominal features. There are 22 classes corresponding to body locations such as lung, pancreas, liver, and so forth. 365 instances are provided. Breast Cancer (bc) The task is to predict whether cancer will recur in patients. There are 9 nominal attributes describing characteristics such as tumour size and location. There are 286 instances. Dna-promoter (dna) A small dataset containing 53 positive examples of E. coli promoter gene sequences and 53 negative examples. There are 55 nominal attributes representing the gene sequence. Each attribute is a DNA nucleotide (“base-pair”) having four possible values (A, G, T, C). Audiology (au) The task is to diagnose ear dysfunctions. There are 226 instances de77
+
+scribed by 69 nominal features. There are 24 classes. This dataset is provided by Professor Jergen at the Baylor College of Medicine. Soybean-large (sb) The task is to diagnose diseases in soybean plants. There are 683 examples described by 35 nominal features. Features measure properties of leaves and various plant abnormalities. There are 19 classes (diseases). Horse colic (hc) There are 368 instances in this dataset, provided by Mary McLeish and Matt Cecile from the University of Guelph. There are 27 attributes, of which 7 are continuous. Features include whether a horse is young or old, whether it had surgery, pulse, respiratory rate, level of abdominal distension, etc. There are a number of attributes that could serve as the class—the most commonly used is whether a lesion is surgical. Chess end-game (kr) This dataset contains 3196 chess end-game board descriptions. Each end game is a King + Rook versus King + Pawn on a7 (one square away from queening) and it is the King + Rook’s side (white) to move. The task is to predict if white can win on the basis of 36 features that describe the board. There is one feature with three values; the others are binary. A1, A2, A3 These three boolean domains are borrowed from Langley and Sage [LS94c]. They exhibit an increasing level of feature interaction. Irrelevant and redundant attributes are added to these domains to test CFS’s ability to deal with these sorts of features. A1 is a simple conjunction of three features and exhibits the least amount of feature interaction. The concept is: A∧B∧C The class is 1 when A, B, and C all have the value 1, otherwise the class is 0. A2 is a disjunct of conjuncts (sometimes known as an m-of-n concept). In this case it is a 2-of-3 concept—that is, the class is 1 if 2 or more of bits A, B, and C are set to 1: (A ∧ B) ∨ (A ∧ C) ∨ (B ∧ C) This problem is more difﬁcult than A1 due to the higher degree of interaction among the 78
+
+3 features. A3 exhibits the highest degree of feature interaction, similar to a parity problem in that no single feature in isolation will appear useful. The concept is: ¯ ¯ ¯ (A ∧ B ∧ C) ∨ (A ∧ B ∧ C) This last domain is included as an example of a situation when CFS will fail to select the relevant features due to the fact that its assumption of attribute independence given the class is completely incorrect. Monk’s problems The Monk’s problems are three artiﬁcial domains, each using the same representation, that have been used to compare machine learning algorithms [TBB+ 91]. Monk’s domains contain instances of robots described by six nominal features: Head-shape ∈ {round, square, octagon} Body-shape ∈ {round, square, octagon} Is-smiling ∈ {yes, no} Holding ∈ {sword, balloon, ﬂag} Jacket-colour ∈ {red, yellow, green, blue} Has-tie ∈ {yes, no} There are three Monk’s problems, each with 432 instances in total. For each problem there is a standard training and test set. Monk1 (M1) The concept is: (head-shape = body-shape) or (jacket-colour = red) This problem is difﬁcult due to the interaction between the ﬁrst two features. Note that only one value of the jacket-colour feature is useful.
+
+79
+
+Monk2 (M2) The concept is: Exactly two of the features have their ﬁrst value. This is a hard problem due to the pairwise feature interactions and the fact that only one value of each feature is useful. Note that all six features are relevant to the concept. C4.5 does no better than predicting the default class on this problem. Monk3 (M3) The concept is: (jacket-colour = green and holding = sword) or (jacket-colour = blue and body-shape = octagon) The standard training set for this problem has 5% class noise added—that is, 5% of the training examples have had their label reversed. This is the only Monk’s problem that is not noise free. It is possible to achieve approximately 97% accuracy using only the (jacket-colour = blue and body-shape = octagon) disjunct.
+
+5.2 Experimental Methodology
+The experiments described in this thesis compare runs of machine learning algorithms with and without feature selection on the datasets described in the previous section. Accuracy of algorithms is measured using random subsampling, which performs multiple random splits of a given dataset into disjoint train and test sets. In each trial, an algorithm is trained on the training dataset and the induced theory is evaluated on the test set. When algorithms are compared, each is applied to the same training and test sets. The testing accuracy of an algorithm is the percentage of test examples it classiﬁes correctly. Table 5.2 shows the train and test set sizes used with the natural domains and the Monk’s problems. On the natural domains, a two-thirds training and one-third testing split was used in all but four cases. A ﬁfty/ﬁfty split was used on the vote datasets, a one-third/two-thirds split on credit and one-eighth of the instances were used for training on mushroom (the largest 80
+

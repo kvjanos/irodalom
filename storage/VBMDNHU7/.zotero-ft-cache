@@ -1,0 +1,399 @@
+Computing Local Thickness of 3D Structures with ImageJ
+Robert P. Dougherty OptiNav, Inc. Bellevue, WA, USA Karl-Heinz Kunzelmann Poliklinik für Zahnerhaltung und Parodontologie Ludwig-Maximilians-Universität-München, München, Germany Microscopy & Microanalysis 2007 Meeting August 5-9, 2007 Broward County Convention Center Ft. Lauderdale, Florida
+
+Outline
+
+• Introduction • Definition • Properties • Computation • Examples
+
+Local Thickness Plugin
+
+• Grande Custom ImageJ Plugin from OptiNav, Inc. • Ordered by Prof. Dr. Kunzelmann Aug. 2006 • He sent with the order: - 7 papers - Sample data files - c-code by David Coeurjolly
+
+Key Paper
+“A new method for the model-independent assessment of thickness in three-dimensional images” T. Hildebrand and P. Rüesgsegger, J. of Microscopy, 185 (1996) 67-75.
+
+Another Key Paper
+“New algorithms for Euclidean distance transformation on an n-dimensional digitized picture with applications,” T. Saito and J. Toriwaki, Pattern Recognition 27 (1994) 1551-1565
+
+Local Thickness Definition
+
+Object
+! !
+
+r
+
+r x
+r p
+
+Background
+
+" # R3
+
+!
+
+Local Thickness
+
+!
+
+r r r {r ) $ (p ) = 2 max( r p " sph(x , r )# !, x " !}
+
+“The diameter of the largest sphere that fits inside the object and contains the point”
+
+Local Thickness Properties
+
+• Inherently 3D - Does not depend on structural assumptions - Expected results for plates, cylinders, cubes - Suited to 3D imaging data - Thickness distributions: mean, variance • Applications - Thickness of trabecular bone structures - Thickness of paper fibers - Planning dental surgery
+
+Local Thickness Properties
+Intersecting balls
+0 D = 160 D = 120 z = 128 plane
+
+y
+
+255
+
+0
+
+x (VolumeJ)
+
+255
+
+Local Thickness Properties
+Finite Cylinders Length 146 Diameter 80
+
+Isosurface 78
+
+Local Thickness Computation
+Direct application of the definition would be slow
+r r r {r ) $ (p ) = 2 max( r p " sph(x , r )# !, x " !}
+r for ( p " #){ rmax = 0; r for ( x " #){ ! for ( r = 0;r " R;r+ = #r){
+
+r
+
+r x r p
+
+!
+! ! !
+
+Sphere s = new Sphere( x,r); if ( s " #){ r if ( p " s) rmax = r; }
+
+! ! " # R3 !
+
+!
+
+O(n9)! ?
+!
+
+!
+
+} } ! r " ( p) = rmax ; } ! ! !
+
+! n = 256 ⇒ 4.7×1021 operations
+
+At least 37,000 years on a PC
+
+Local Thickness Computation
+First compute the distance map by the “Distance Transformation”
+r r Dmap (q ) = max {r > 0 sph (q,r) " #}
+
+Distance Map
+
+(
+
+)
+r q
+
+“The radius of the largest sphere centered at ! that fits inside the object”
+!
+r q
+r Dmap (q )
+
+!
+!
+
+"
+
+!
+
+Distance map of a finite cylinder
+Length 146 Diameter 80
+
+Local Thickness Computation
+Express local thickness in terms of distance map
+
+Local Thickness
+
+r r " ( p) = 2 max( Dmap (q )) r r q " X ( p)
+
+r X ( p) =
+
+r r the set of q s whose distance map spheres contain p
+!
+
+r r r r r X ( p) = { x " # p " sph( x,Dmap ( x ))} ! !
+
+!
+
+r ! X ( p) =
+
+r r the set of q s that own p
+
+!
+
+!
+
+!
+
+!
+
+Local Thickness Computation
+Simplify the search set to the Distance Ridge
+r r r r r X R ( p) = { x " #R p " sph( x,Dmap ( x ))}
+
+where
+r r r r r r r r "R = { p # " sph ( p,Dmap ( p)) $ sph ( x,Dmap ( x )), p % x, x # "} !
+
+“The center points of all nonredundant spheres”
+!
+r Dmap (q2 ) r q2 r r p q1 r Dmap (q1 )
+
+r r " ( p) = 2 max( Dmap (q )) r r q " X R ( p) ! ! r r q1 is redundant because it does not own any points that q2 doesn’t
+
+"
+
+!
+
+!
+!
+!
+
+!
+
+!
+
+!
+
+!
+
+Local Thickness Computation
+
+1. Perform the distance transformation to produce the distance map 2. Remove redundant points to produce the distance ridge 3. Compute the local thickness at each point p by scanning the distance r r ridge to find the “largest” q that “owns” p
+! ! r
+
+!
+
+Distance Transformation (Step 1 in LT)
+r xs ! r q
+r Dmap (q )
+
+!
+!
+
+"
+
+Naïve algorithm: ! r r r r For each q, scan the surface points, x s , to minimize x s " q
+
+O(n5)
+!
+!
+!
+
+Dramatically better algorithm: Saito-Toriwaki
+
+Saito-Toriwaki Euclidean Distance Transformation Algorithm
+Notation: Digitized w×h×d picture:
+F = { f ijk }, 0 " i < w, 0 " j < h, 0 " k < d f ijk = 1 if (i, j,k ) " #, 0 else
+
+Algorithm: ! Transformation 1. Derive picture G from F according to
+!
+!
+
+!
+
+Dmap (i, j,k ) " {dijk } 2 ! S (i, j,k ) " {sijk }, sijk = dijk , 0 # i < w, 0 # j < h, 0 # k < d 2 2 2 sijk = min {! " p) + ( j " q) + ( k " r) f pqr = 0} (i pqr
+
+Transformation 2. Derive picture H from G according to
+!
+
+gijk = min{(i " x ) f xjk = 0, 0 # x < w} x
+hijk = min{giyk + ( j " y ) , 0 # y < h} y
+2
+2
+
+2
+
+Transformation 3. Derive picture S from H according to
+!
+
+!
+
+O(n4), easy parallel processing, no 3D work arrays needed.
+!
+!
+
+sijk = min{hijz + ( k " z) , 0 # z < d} z !
+
+Distance Ridge Computation (Step 2 in LT)
+r Dmap (q2 ) r q2 r q1 r Dmap (q1 )
+!
+!
+
+"
+!
+
+!
+
+!
+
+Objective: remove redundant points, such as q1 , from the distance map to improve the speed of the subsequent local thickness search. • Difficult • Complete removal not required
+!
+
+r
+
+Distance Ridge Computation
+Brute force algorithm adapted from Saito & Toriwaki:*
+
+Scan everything in sight
+
+Seems to be O(n6) and require 4 3D work arrays
+
+*“Reverse Distance Transformation and Skeletons Based upon the Euclidean Metric For n-Dimensional Binary Pictures,” T. Saito and J. Toriwaki, IEICE Trans. Inf. & Syst., Vol E77-D, No. 9, Sept. 1994 The reference also gives a more-efficient algorithm for a different skeleton.
+
+Distance Ridge Computation
+Template approach implemented in the plugin. Loosely inspired by Remy & Thiel* Input: distance map Output: distance map with some redundant points removed Algorithm: Scan points in the distance map. For each point, Scan neighboring points Use a template to evaluate the point and the neighboring point If the neighboring point does not “own” any more points than the scan point, based on a template, then delete the neighbor point
+
+Limitation:
+
+Does not remove all redundant points *“Exact medial axis with euclidean distance,” E. Remy and E. Thiel, Image and Vision Computing 23 (2005) 167-175.
+
+Distance Ridge Examples
+Cube
+
+Distance map
+
+One slice of distance ridge
+
+3D rendering of distance ridge
+
+Distance Ridge Examples
+Finite Cylinder
+
+Distance map
+
+Distance ridge
+
+Distance Ridge Examples
+Elliptical Cylinder
+
+Geometry
+
+Distance map
+
+Distance ridge
+
+Local Thickness from Distance Ridge (Step 3)
+r r " ( p) = 2 max( Dmap (q )) r r q " X R ( p)
+
+H = {hijk } Input: distance ridge: ! ! Output: local thickness: " = {! ijk }
+
+Let tijk be the square ! half of the local thickness of Make a list of non-zero distance ridge points: (il , jl , kl , hl ), l = 0,..., L ! 1 Initialize tijk = 0 ! ijk for points (u, v, w) { for ridge points, l {
+if (il ! u ) + ( jl ! v ) + (kl ! w) < hl if (hl > tuvw )update tuvw = hl ;
+
+(
+
+2
+
+2
+
+2
+
+)
+
+{
+
+} } } Output " ijk = 2 tijk ! ijk
+
+Local Thickness Detail: Small Surface Values Due to Voxel Effects
+
+Infinite cylinder, nominal diameter = 50
+
+Distance map
+
+48.826
+
+Distance ridge
+
+Local Thickness
+
+Local Thickness Detail: Surface Cleanup Algorithm
+Definitions • A voxel has 26 neighbor voxels • A surface voxel is an object voxel with at least one background neighbor Algorithm Replace the local thickness value of every surface voxel by the average of the local thicknesses of its neighboring, non-surface, object voxels.
+Background Object 48.826 48.826
+
+Infinite cylinder nominal diameter = 50
+
+Original Local Thickness
+
+Local Thickness after Cleanup
+
+Example: Cylinder with Diameter Change
+
+Distance map
+
+Distance ridge
+
+Local thickness
+
+Example: Elliptical Cylinder with Transition
+
+Local thickness
+
+Example: µMRI Quail Embryo
+
+Caltech MRI Atlases http://atlasserv.caltech.edu/
+
+Binary image after 3D blur Local thickness (z=88 slice) and threshold of 3
+
+Example: µMRI Quail Embryo
+
+Local thicknes: surface projection
+
+µMRI Quail Embryo: Internal Structure
+
+Caltech MRI Atlases http://atlasserv.caltech.edu/ z = 109 slice
+
+Binary image with threshold = 44
+
+Local thickness (z=109 slice)
+
+Example: µMRI Quail Embryo
+Render the local thickness using VolumeJ with different thickness thresholds 2 10 20 30
+
+Example: MRI Stack
+(Expanded by 5 in z)
+
+VolumeJ Distance map (threshold=40) Slice 42 Distance ridge Local thickness
+
+Slice 116
+
+Example: µCT of Trabecular Rabbit Femur
+Dr. Miriam Draenert Poliklinik für Zahnerhaltung und Parodontologie Ludwig-Maximilians-Universität-München
+
+• Hole drilled in rabbit femur • Hole filled with hydroxyapatite particles • Bone morphogenetic proteins (BMPs) to stimulate growth • Rabbits sacrificed after 90 days • Femur prepared for evaluations, including µCT • Mean local thickness evaluated statistically to compare different BMPs
+
+Example: µCT of Trabecular Rabbit Femur
+
+Slice 173 of µCT Local thickness (z=173 slice)
+
+Example: Tooth
+
+Enamel, dentin and pulp segmented from µCT ParaView 2.4 (Kitware, www.kitware.com)
+
+Local thickness of pulp VolumeJ plugin for ImageJ (v. 1.7a, Michael Abramoff)
+
+Summary
+• New, Quantitative, 3D Tool • Open Source, Freely available
+1. EDT_S1D.java • Inputs an 8-bit image stack describing the 3D geometry • Distance map: Saito-Toriwaki Euclidean Distance Transformation • Parallel processing using all available processors • Output is a 32-bit stack 2. Distance_Ridge.java • Inputs a 32-bit distance map stack • Applies a template algorithm to remove many of the redundant points • Overwrites the input stack with the resulting quasi-distance ridge 3. Local_Thickness_Parallel.java • Inputs a distance map or distance ridge stack • Uses a direct search method to compute the local thickness stack • Parallel processing using all available processors 4. Clean_Up_Local_Thickness.java • Adjusts surface values of a local thickness stack to compensate for voxel artifacts
+
+Conclusion
+
+Different types of local thickness results can be obtained using different threshold values when the image stacks have a range of density values
+

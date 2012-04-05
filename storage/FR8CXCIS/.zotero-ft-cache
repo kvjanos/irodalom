@@ -1,0 +1,393 @@
+Pattern Recognition Letters 22 (2001) 1483±1502
+
+www.elsevier.com/locate/patrec
+
+Application of Baddeley's distance to dissimilarity measurement between gray scale images
+D. Coquin *, Ph. Bolon
+Laboratoire d'Automatique et de Micro-Informatique Industrielle, LAMII/CESALP, Universit de Savoie, CNRS-GdR-ISIS, e B.P. 806 ± 41, avenue de la Plaine, 74016 Annecy cedex, France Received 6 April 2000; received in revised form 18 June 2001
+
+Abstract In this paper, we introduce a dissimilarity measure between two gray-scale images based on Baddeley's distance. To some extent, it can be regarded as a modi®cation of that proposed by Wilson et al. [Internat. J. Comput. Vision 24 (1) (1997) 5±18]. Images are represented by surfaces in a 3D space, instead of their subgraphs. Distance calculations are performed by means of a 3D local distance operator adapted to parallelepipedic grids. No truncation eect is introduced. Properties of the new dissimilarity operator are compared to those of the Wilson±Baddeley±Owen operator in terms of sensitivity to gray level variations, spatial shifts and shape distortions. Compared with the Wilson±Baddeley± Owen operator, a more linear behavior is observed. A simpli®ed phenomenological model is proposed in order to explain this behavior. Ó 2001 Elsevier Science B.V. All rights reserved.
+Keywords: Dissimilarity measure; Gray-scale image comparison; Objective metric
+
+1. Introduction A problem of both theoretical and practical importance in image processing is to compare two gray-scale images of equal sizes and gray value ranges, taking into account the eventual diversities due to translation, or gray level variations. A quantitative dissimilarity measure DA; B between two images A and B is desirable for a large number of practical applications (®ltering, restoration and compression assessment, segmentation comparison). Thus, to estimate dissimilarity between images is a signi®cant problem in image analysis.
+
+*
+
+Corresponding author. Fax: +33-450-666-020. E-mail address: didier.coquin@univ-savoie.fr (D. Coquin).
+
+Several distances have been proposed for measuring the dissimilarities between objects in binary images (e.g. Baddeley, 1992; Huttenlocher et al., 1993; Dubuisson and Jain, 1994). These dissimilarities are average measures and give a global value which corresponds to the average dissimilarity between two images. Other objective criteria have been proposed for measuring dissimilarities between objects in grayscale images (e.g. Coquin et al., 1995, 1997; Zamperoni and Starovoitov, 1996; Wilson et al., 1997; Di Ges and Starovoitov, 1999), or for u image retrieval purposes (Jacobs and Weinshall, 2000). Zamperoni and Starovoitov (1996) have proposed a multi-stage dissimilarity measure, in which each stage (pixel-to-pixel, pixel-to-window, window-to-window, and image-to-image) can be
+
+0167-8655/01/$ - see front matter Ó 2001 Elsevier Science B.V. All rights reserved. PII: S 0 1 6 7 - 8 6 5 5 ( 0 1 ) 0 0 1 0 4 - 0
+
+1484
+
+D. Coquin, P. Bolon / Pattern Recognition Letters 22 (2001) 1483±1502
+
+based upon dierent distance measures, thus originating several variants of dissimilarities. They have shown the interest of choosing a distance computation based on a combined spatial and gray value match. Wilson et al. (1997) have proposed an extension to gray scale images of Baddeley's error measure. Di Ges and Starovoitov (1999) have presented three u image distance-based functions for digital image comparison. Experimental results indicate better function sensitivity by combining both global intensity and local structural features with respect to conventional intensity-based measures. Unlike the RMS criterion which takes into account gray level variations only, those approaches include comparisons in both amplitude and spatial domains. In this paper we introduce a new dissimilarity measure, based on a full 3D discrete distance operator, as well as a simpli®ed phenomenological model describing its behavior. Unlike the Wilson± Baddeley±Owner (W±B±O) operator, no distance saturation eect is introduced. The main advantages of the new dissimilarity measure are: · relative weighting of spatial and gray level distortion, · invariance with respect to video inversion, · quasi linear response to spatial and amplitude distortions, · lower complexity (with respect to W±B±O operator). Section 2 introduces the image representation. Section 3 brie¯y describes the W±B±O measure. In Section 4, the principle of the new operator is
+
+introduced. The experimental study of this criterion is developed in Section 5, and a comparison between the two methods is performed.
+
+2. Image representation Let S & Z 2 be the referential on which images are de®ned. Generally S  f0; 1; . . . ; N À 1g Â f0; 1; . . . ; N À 1g, with N the image dimension. Let G  f0; 1; . . . ; 255g be the set of gray level values. Let us consider two gray-scale images A and B, de®ned on referential S. Image A (resp. B) can be regarded as a function fA : S 3 G (resp. fB , or function FA : S Â G 3 f0; 1g (resp. FB ), with s  x; y P S a pixel. FA s; g  1 0 iff fA s  g; else:
+
+Hence, an image can be regarded as a binary set of points in a 3D volume. Thus we can apply Baddeley's distance of this set of points. It requires the computation of distances between voxels of volume V  S Â G. These distances are obtained by means of a 3D local distance operator (Borgefors, 1984; Verwer, 1991). Voxels are regarded as parallelepipedic-shaped bricks of size L Â H Â P (see Fig. 1). For the sake of simplicity, we take L  H  1 (pixel size unit). Parameter P control the weight of gray level variations with respect to spatial distortions (see Section 4.4).
+
+Fig. 1. Image representation: (a) voxel shape, (b) gray level representation of f and (c) binary function F.
+
+D. Coquin, P. Bolon / Pattern Recognition Letters 22 (2001) 1483±1502
+
+1485
+
+Representing an image as a surface rather than a subgraph is preferable. In fact, the dissimilarity calculation takes all the voxels in set S Â G into account. Using the subgraph representation, only voxels located above the image surfaces contribute to the dissimilarity measurements. This introduces an asymmetry in the processing. For instance, the dissimilarity between two images diers from that of their inverse video versions (see Appendix E). 3. Dissimilarity measures In this section, the principle of Baddeley's distance between binary images is recalled. We then present its extension to gray level images proposed by Wilson et al. (1997). 3.1. Baddeley's distance (1992) Baddeley's distance between two binary images A and B A; B  S, is de®ned as 4 51=E  1 Db A; B  jdA s À dB sjE 1 cardS sPS with CardS the number of elements in referential S, dA s  minaPA ds; a is the distance between a point s  x; y and a set A, and exponent E, such that 1 6 E < I. Baddeley's distance is an average measure. Hence, it is less sensitive than the Hausdor distance to small and localized distor-
+
+tions. It can be shown that the Baddeley's distance tends to the Hausdor distance as coecient E tends to in®nity (Baddeley, 1992). 3.2. Wilson±Baddeley±Owen dissimilarity measure (1997) Wilson et al. introduced a new gray scale measure in 1997. Let f : S 3 G be any picture function. According to Wilson et al. (1997), the subgraph of f is de®ned as: Cf  fs; g; s P S; g P G; g 6 f sg. This is the set of all points lying between the graph of f and the plane g  0. Let fA and fB be two picture functions having the same number of possible gray levels. Let CfA and CfB be the subgraphs of fA and fB , respectively. The gray level metric Dg is then de®ned, for 1 6 E < I, as Dg CfA ; CfB  4   1 jd Ã s; g; CfA  cardS Á cardG sPS gPG 51=E
+E
+
+À d Ã s; g; CfB j
+
+;
+
+2
+
+where d Ã s; g; CfA   inf gH ;jgÀgH j 6 c minmaxfds; XgH A; jg À gH jg; c is a distance function which gives the shortest distance between a voxel s; g P S Â G and the subgraph of fA Á XgH A  fs P S; fA s P gH g is the upper-level set at gray level gH (Fig. 2).
+
+Fig. 2. Distance from a point s and image A.
+
+1486
+
+D. Coquin, P. Bolon / Pattern Recognition Letters 22 (2001) 1483±1502
+
+The value of E determines the relative importance of large localization errors. For large E, the eect is similar to the Hausdor metric. It should be noticed that distance d Ã is bounded by value c. Wilson et al. suggests to truncate distances by constant c, such that only pixels s such that the amplitude is close to those of images are taken into account. The principle of calculation of d Ã is the following: for each gH layer one seeks the larger of two distances: the ®rst one is the spatial distance between voxel s; g and the subgraph CfA ; the second one is the gray level distance jg À gH j. d Ã is then the smallest distance on all the gray levels gH on which search is made. In the implementation proposed by Wilson et al. S is a two-dimensional raster and the distance ds; XgH A between pixel s and the upperlevel set XgH A in the domain S is calculated by means of the discrete 2D chamfer distance operator d5À7À11 (Borgefors, 1984). Calculations are carried out plane by plane. The authors have shown that for certain types of distortions resulting from smoothing or compression, there is little dierence between the errors detected by Dg and those found by the RMS criterion. However, as far as ``feature'' distortion is concerned, the response of Dg is a considerable improvement on the response of RMS (Wilson et al., 1997). Setting the c value for the other image sizes can be done by considering noise magnitude. Let us consider a high resolution noisy image I and its low resolution version J. If J is obtained from I by a N Â N size low pass ®lter and down sampling by factor N, the ratio of noise standard deviations will be rJ =rI  % 1=N . The scale of gray level distortions is divided by N. We use the same ratio for parameter c. In the following, we set constant c in proportion of the image size (e.g. c  8 for 128 Â 128 images). Anyway, it can be experienced that dissimilarity measures are not very sensitive to the value of parameter c. In their paper (Wilson et al., 1997), they suggest to take c  4 for 64 Â 64 images. 4. The new operator In this section, we introduce a new dissimilarity measure based on Baddeley's distance between binary objects.
+
+4.1. Principle With the same notations as in Section 2, let A and B be the images to be compared. The new operator is de®ned, for 1 6 E < I, as 4 51=E  1 E jdA m À dB mj ; 3 DA; B  cardV  mPV where cardV  is the number of voxels m  s; g in the volume V  S Â G on which this dissimilarity is computed, dA m (resp. dB m) is the shortest distance between voxel m and the binary set characterizing image A (resp. B) (Fig. 3). Hence, we have dA m  minpPA dm; p. The calculation of D is done on the whole space V, and not only voxels on the surfaces, so that the least dierence between the two images is ampli®ed, by accumulation. 4.2. Properties of D D is a metric, since it satis®es the following axioms: (i) DA; B  0 if and only of A  B; (ii) symmetry: DA; B  DB; A; (iii) triangle inequality: DA; B 6 DA; C  DC; B: 4
+
+Proof. (i) A  B A DA; B  0 is obvious. DA; B  0 A A  B? Let s be a pixel such that fA s T fB s. Let voxel m  s; fA s, then dA m  0 and dB m T 0. Hence A T B A DA; B T 0. (ii) Formula are symmetrical with respect to A and B. (iii) We have 4 51=E  E jdA m À dB mj
+mPV
+
+4
+
+
+
+
+mPV
+
+51=E jdA m À dC m  dC m À dB mj
+E
+
+5 Let us consider functions hm  dA m À dC m and gm  dC m À dB m.
+
+D. Coquin, P. Bolon / Pattern Recognition Letters 22 (2001) 1483±1502
+
+1487
+
+Fig. 3. Dissimilarity between two images.
+
+Â p 1=p The Lp-norm de®ned by khkp  . mPV jhmj  Â Ã1=E E We then have  mPV jdA m À dC mj Â E Ã1=E  kgkE and khk and mPV jdC m À dB mj Â E E Ã1=E jdA m À dB mj  kh  gkE . mPV Using Minkowski's inequality kh  gkE 6 khkE  kgkE , with 1 6 E < I, we have DA; B 6 DA; C  DC; B and triangle inequality is valid. 4.3. Implementation In order to reduce the computational complexity, Euclidean distances dA v and dB v are approximated by means of a 3D local distance operator. A distance transformation image (Borgefors, 1984) is computed, with a 3 Â 3 Â 3 local distance operator on a parallelepipedic grid. The distance transformation is calculated with integer coecients, on the two sides of the reference surface. It should be noticed that since images are digitized, their representations may be nonconnected sets, as far as 26-connectivity is concerned. This does not introduce any singularity, since the distance transform is de®ned on the whole volume V  S Â G and all the voxels of volume V are taken into account in the dissimilarity calculation. Sequential or parallel algorithms can be used (Rosenfeld and Pfaltz, 1966).
+
+4.4. Parametrization The voxel size is characterized by three parameters H, L and P (Fig. 1(a)). H and L values depend on the spatial sampling period of the data. Parameter P depends on the weight of gray level dierences with respect to spatial distortions (Fig. 4). Special case: H ; L ) P The cost of spatial displacements is very large with respect to that of displacements along the gray level axis G. The minimal path between fB and fA is vertical. Hence, we have jdA m À dB mj  jfA s À fB sj  jgA À gB j: 6
+
+Only gray level dierences are taken into account (see Appendix A).
+
+5. Experimental results In this section we compare the properties of the W±B±O dissimilarity and those of the new operator. Since it is a classical measurement, we compare them with the RMS criterion. We consider spatial displacements, gray level variations and shape distortions. If the dissimilarity between two
+
+1488
+
+D. Coquin, P. Bolon / Pattern Recognition Letters 22 (2001) 1483±1502
+
+Fig. 4. Distances between images.
+
+images has to be minimized with respect to a group of transformation, it may be desirable that the dissimilarity measure be proportional to the control parameter value. In this section, we considered simple transformations such as spatial translations and gray level shifts. The results can be explained by means of a phenomenological model introduced in Appendix C. It is more dicult to analyze rotations because of the spatial discretization and interpolation processes. Further studies about transformations such as rotation, zooming, . . ., have to be considered. In order to make the comparisons easier, measurements are normalized on a 0±100% scale.
+
+100% is the dissimilarity between a white image Awhite (maximum gray level) and a black image Ablack (minimum gray level). Let DA; AH  be the dissimilarity between two images A and AH , the normalized dissimilarity is then de®ned as DN A; AH   DA; AH  : DAwhite ; Ablack  7
+
+5.1. Eect of a spatial shift The reference image is horizontally shifted to the left by increasing vectors (Fig. 5).
+
+Fig. 5. Original image and shifted images.
+
+D. Coquin, P. Bolon / Pattern Recognition Letters 22 (2001) 1483±1502
+
+1489
+
+Fig. 6. Dissimilarity measurement versus shift magnitude.
+
+Fig. 6 displays the normalized dissimilarity between the shifted image and the reference images as a function of the shift magnitude. It can be noticed that the variation of the new dissimilarity D measure is linear. This is not the case for both RMS and W±B±O Dg criterion which tend towards a saturation value for large shift magnitude. 5.2. Constant gray level increase The second experiment consists of an iterative increase of 10 gray levels on image. The
+
+results are obtained by comparing each modi®ed image with the original undistorted image (Fig. 7). The original image Fig. 7(a) is available at http://www.inrialpes.fr/movi/pub/Images/ index.html. Fig. 7(b) shows synthetic images. The original image is a white noise, uniformly distributed with standard deviation r  5 and mean value m  128. It can be noticed of Fig. 8 that the RMS error variation is linear, as well as that of the new dissimilarity measure D. This is not the case for the W±B±O measure Dg . Such a linear or quasi-linear behavior is obtained for lower gray level increases (see Appendix B). As mentioned in Section 3.2, parameter c plays a signi®cant role. In (Wilson et al., 1997) the authors adapted the c value to the image size. For 64 Â 64 images, they recommended using c  4. In our experiment, the image size is 128 Â 128. Parameter c is set to 8. It should be noticed that the linear behavior is achieved if most of voxels are far from both image surfaces, e.g. if the gray level increase is low or the image contrast is low (see Appendix C).
+
+Fig. 7. Original images and gray level translated images.
+
+1490
+
+D. Coquin, P. Bolon / Pattern Recognition Letters 22 (2001) 1483±1502
+
+Fig. 8. Dissimilarity measurement versus gray level variation.
+
+5.3. Combination of constant gray level increase and spatial shift The linear behavior of the new dissimilarity operator can be observed by combining spatial and gray level distortions. Fig. 9 shows the reference image and three distorted images. The distortion consists of a spatial translation to the left by d pixels and a gray level increase by d gray level units. Fig. 10 displays the dissimilarity between the distorted images and the reference image as a function of the distortion parameter d.
+
+The linearity range is greater for operator D than for both the RMS and W±B±O Dg criteria. It should be noticed that the slope of the dissimilarity curve depends on the processed image. 5.4. Sensitivity to shape distortion In this section, we study the eect of a shape distortion introduced by camera rotation. The image sequence is composed of 78 views of an object. The camera turns around the object. The whole rotation is slightly greater than 360°. This sequence was elaborated by Patrick Gros and is
+
+Fig. 9. Original image and distorted images.
+
+D. Coquin, P. Bolon / Pattern Recognition Letters 22 (2001) 1483±1502
+
+1491
+
+Fig. 10. Dissimilarity measurement versus shift magnitude, and gray level increase.
+
+available at http://www.inrialpes.fr/movi/pub/ Images/index.html. Fig. 11 shows some images from this sequence. It should be noted that im1 is quite similar to im68. However image im33 displays the opposite side of the object. Image im12 and im47 are similar too, although they correspond to opposite sides. The dierence between im12 and im47 is located in the lower part of the object (Fig. 12). Image im12 presents a hole, which corresponds to dark pixels. This region is similar to the corresponding zone in image im1. Image im47 presents a planar facet composed of high value pixels. This is the reason for which the dissimilarity between im1 and im47 is greater (Fig. 13).
+
+Fig. 13 displays the dissimilarity measures against the image number. The reference image is im1. In our experiments exponent E was set to 2. For E ranging from 1 to 8, it was experienced that the results are fairly insensitive to this parameter. 5.5. In¯uence of ratio P =H Fig. 14 shows the in¯uence of ratio P =H on the dissimilarity measurement. It can be shown, as described in Section 4.4, that the dissimilarity measure tends towards the RMS measure as ratio P =H tends to zero. For the lowest value (P =H  0:1), the curve obtained is similar to that of the RMS criterion.
+
+Fig. 11. Original image im1 and several images stemmed from the sequence.
+
+1492
+
+D. Coquin, P. Bolon / Pattern Recognition Letters 22 (2001) 1483±1502
+
+Fig. 12. Dierence between original image im1, images im12 and im47.
+
+Fig. 13. Camera rotation. Dissimilarity measurement versus image number: (open square) new operator D; (open triangle) RMS; (open diamond) W±B±O Dg c  8.
+
+As P =H ratio increases, the geometrical deformations have more weight than the dierence between gray levels. If we want that the dissimilarity operator is sensitive to both geometrical and gray level distortions, a value of P =H greater than 1 has to be used. Of course, the best choice is application dependent, according to whether gray level distortions or geometrical distortions are regarded as the most important criterion. There is no uniformly best P =H value. This raises the question of the dimension. In which units are distances mea-
+
+sured? In fact, there is not a simple and de®nitive answer. If only gray level distortions are considered, the distance units might be Watts (power) or Joules (energy). If only translations are considered, it may be Meters. In our case, we consider arbitrary units, weighting both spatial and gray level distortions. In fact, the solution could be to consider not a distance, obtained for a given operator parametrization, but a signature, e.g. the set of distances, obtained for a given operator parametrization. Such an approach was used in (Coquin
+
+D. Coquin, P. Bolon / Pattern Recognition Letters 22 (2001) 1483±1502
+
+1493
+
+Fig. 14. New dissimilarity operator. In¯uence of ratio P =H . P =H values 0.1; 1; 20.
+
+et al., 1995, 1997) but it makes comparisons more dicult. 5.6. Sensitivity to noise Sensitivity to noise depends on the P =H ratio. If P =H tends to 0, the new operator behaves like the RMS (see Section 4 and Appendix A). Its sensitivity to noise is high. For larger P =H values, the new operator is sensitive to spatially coherent distortions. Hence, its sensitivity to noise is reduced provided that the noise correlation width is less than the size of the features of interest. This can be seen by considering the following experiment. Let A be a reference image having a constant gray level. Let B1 and B2 be two distorted versions of A. Image B2 is obtained by adding a constant gray level 1 to image A. Image B2 is obtained by adding a random zero mean unit variance binary white noise to image A. The non-normalized dissimilarity measures are given in Table 1. It can be seen that increasing the P =H ratio decreases the sensitivity to noise. 5.7. Application to database characterization Image indexing and image retrieval systems hae to be tested by applying them to image databases.
+
+Table 1 Sensitivity to noise RMS dA; B1 dA; B2 1 1 D with P =H  0:1 1 1 D with P =H  1 0.8 1
+
+Results actually depend on both processing systems and database content. In fact, if the performance assessment depends on a classi®cation rate, results are sensitive to within-class homogeneity and between-class diversity. Good performances obtained with a test database having a low withinclass homogeneity and a low between-class diversity are more signi®cant than those obtained with a database having a large within-class homogeneity and a large between-class diversity. These characteristics can be evaluated by using the distances between the images of the test database. A simpli®ed example of two databases is given below. Fig. 15 displays 25 images gathered in two databases. Database 1 consists of 2 classes: 10 images resulting from Food and Agriculture bases. Database 2 consists of 3 classes: 15 images resulting from Couples, Children and Nature bases. A database is composed of Nc class Ck ; k  1; 2; . . . ; Nc . Each class Ck is composed of images Iik , i  1; 2; . . . ; cardCk .
+
+1494
+
+D. Coquin, P. Bolon / Pattern Recognition Letters 22 (2001) 1483±1502
+
+Fig. 15. Two databases.
+
+Let DIik ; Ijk  be the distance between image Iik and image Ijk of class Ck . The center of class Ck is  the image I k such that Gk  I k PCk DI k ; Ijk = j cardCk  is minimal. The homogeneity of class Ck can be de®ned by H k  1=Gk . The within-class homogeneity of the whole database is  k H H  Nkc : The between-class diversity of the database can be de®ned by Nc  DI k ;I j  Dm  k1Nc NjTck : À1
+
+With the simpli®ed database of Fig. 15, we have H1  0:2; Dm1  22:9 and H2  0:31; Dm2  8:8: Databases can be compared with respect to the dimensionless coecient r  Dm Á H . This coecient measures how easy the discrimination between classes is. With this example we have: database 1: r1  Dm1 Á H1 % 4:6; database 2: r2  Dm2 Á H2 % 2:7. In this example, the classi®cation results obtained with database 2 are more signi®cant that those obtained with database 1. Using W±B±O operator and RMS criterion gives the following results:
+
+D. Coquin, P. Bolon / Pattern Recognition Letters 22 (2001) 1483±1502 Table 2 Computation time (CPU in s) Image size 256Â256 192Â128 128Â128 64Â64 W±B±O Dg c  4 89.90 33.39 21.97 5.68 D 36.90 14.07 9.41 2.48 Speedfactor 2.43 2.37 2.33 2.29
+
+1495
+
+r1WBO % 1:96; r1RMS % 2:25;
+
+r2WBO % 2:17 and r2RMS % 2:43:
+
+new dissimilarity is compared with previously published ones and with the classical RMS operator. We have shown in various examples that the new operator has a linear behavior with respect to continuous distortions such as gray level variations and geometrical shifts. Because of its sensitivity to gray level variations and geometrical distortions, this operator can be helpful in dierent situations such as: image database characterization, image ®ltering operation assessment, digital elevation model and range image comparison, etc. Acknowledgements The authors are indebted to Dr. Piero Zamperoni (1939±1998) for valuable, helpful and friendly discussions about image comparison. They wish to thank Professor R. Mohr from INRIA RhoneAlpes, Dr. P. Gros from IRISA and Mr. Ph. Bigard from GoodShoot for providing the data and helpful discussions, within the framework of Region Rhone-Alpes project ACTIV. Appendix A. Special case: H; L ) P Let us consider a 3D local distance operator on parallelepipedic grid. Chamfer mask coecients dijk (Fig. 16) are given by (Coquin et al., 1994; Coquin and Bolon, 1995): d100 with dijk  Tijk Á L q  2 2 2 Tijk  iL  jH   kP  ; p À2H  2H 1  k d100  with k 1 1 k  2 T110 À H 2  2 T111 À T110 2 : L p
+
+With both criteria, the two databases are almost equally signi®cant. As can be seen in Fig. 13, results obtained with RMS and W±B±O operator are similar. As mentioned in Wilson et al. (1997), the RMS criterion is not the best one as soon as feature distortions are concerned. Hence, it should not be regarded as a reference. It should be noticed that, these results are given as illustrative examples. This study should be conducted with greater databases. This is beyond the scope of the paper. 5.8. Computation time Compared with the W±B±O Dg operator, the time required to compute the new dissimilarity is decreased by a factor greater or equal to 2.3. The speed factor actually depends on both image content and image size. Typical values obtained with Sun Workstation Sparc Ultra 10.333 MHz, are shown in Table 2. Distance maps are stored using 16 bit words, with an integer scaling factor. It should be noticed that the values are obtained without algorithmic optimization.
+
+A:1
+
+A:2
+
+6. Conclusion In this paper, an application to gray-scale images of the binary metric developed by Baddeley (1992) is introduced. It aims at combining both intensity variations and geometrical distortions. These two contributions can be weighted by means of a tuning parameter namely the ratio P =H . This
+
+These coecients are function of displacement d100 and are given by d010  H Á d110 d011 d100 d100 ; d001  P Á ; L L d100 d100 ; d101  T101 Á ;  T110 Á L L d100 d100 ; d111  T111 Á :  T011 Á L L
+
+A:3
+
+1496
+
+D. Coquin, P. Bolon / Pattern Recognition Letters 22 (2001) 1483±1502
+
+Fig. 16. Operator 3 Â 3 Â 3 in a parallelepipedic gride: (a) voxel characteristics and (b) elementary displacements.
+
+Hence, we have p L2 2 k   2 À 1  2 P
+
+p 2 since L ) P then P =L ( 1 and k %  2 À 1  0:1715, then     p k k d100  d010 % L 1 À ; d110 % L 2 1 À ; 4 4 p   L2  P 2 k %L 1À d001 % P ( L; d101  d100 L 4     p k k d011  d101 % L 1 À ; d111 % L 2 1 À : 4 4 A:5 The distance between two voxels is the length of the shortest path between them. A path is composed of a ®nite number of elementary displacements. The length of an elementary displacement is dijk , according to its direction. Since P ( L, any path containing a non-vertical elementary dis-
+
+2r 32  p P2 2À 2 L2
+
+A:4
+
+placement is longer than a vertical path composed of a ®nite number of vertical elementary displacements (elementary length  d001 ). Let A (resp. B) be the subset of S Â G representing the picture function fA (resp. fB ) (Fig. 17). The distance between voxel v  s; g and set A is dA m  jfA s À gj Á P A:6 If we set P  1, L  H  I and if the total number of voxels is high with respect to the number of voxel lying between set A and set B, the distance between image A and image B is  1 jdA m À dB mjE DA; B % cardS Â G mPSÂG 4 DA; B % 4 51=E ; A:7 51=E ;
+
+ 1 E jfA s À fB sj cardS Â G sPS gPG
+
+A:8
+
+Fig. 17. Distance between two images.
+
+D. Coquin, P. Bolon / Pattern Recognition Letters 22 (2001) 1483±1502
+
+1497
+
+ 1 E DA;B % jfA s À fB sj cardS sPS
+
+4
+
+51=E : A:9
+
+d Ã s; g; CfA  
+gH ;jgÀgH j 6 c
+
+inf
+
+minmaxfds; XgH A; jg À gH jg; c B:2
+
+If exponent E  2, then DA; B % RMSA; B. is equal to Appendix B. Example of constant gray level variation With a simple example, we study the behavior of the W±B±O measure and the new D measure. This study points out the in¯uence of voxels located outside the image surfaces on the linear behavior of the dissimilarity operator. In the following, the distorted image B is obtained by adding the constant gray level h to image A. Both images A and B have constant gray level. B.1. Dg metric (Wilson et al. 1997) Let fA and fB be two picture functions having the same number of possible gray levels. Let CfA and CfB be the subgraphs of fA and fB , respectively. The gray-level metric Dg is then de®ned, for 1 6 E < I, as Dg CfA ; CfB  4  
+gPG
+
+&
+
+d Ã s; g; CfA  
+
+jg À gH j if jg À gH j 6 c c else:
+
+B:3
+
+Therefore  1 Dg A; B  jdA À dB j2 2 cardG N sPS gPG 4 51=2
+
+if exponent E  2 n 2 Dg A; B  21  22  32  . . .  c À 1  É1=2  c2 g  1 À c=card G here with c  8 and h  10 Dg A; B  1:36:
+
+B:4
+
+B:5
+
+B:6
+
+If image Ablack is equal to 0 (black image) and image B  Awhite is equal to 255 (white image) then with c  8: Dg Awhite ; Ablack   7:94 B:7
+
+1 cardS Á cardG sPS 51=E
+E
+
+jd Ã s;g; CfA  B:1
+
+the normalized dissimilarity DNg is then de®ned as DNg A; B  Dg A; B  17:1%: Dg Awhite ; Ablack  B:8
+
+À d Ã s;g;CfB j
+Ã
+
+;
+
+If c  4 the normalized dissimilarity DNg is equal to where d s; g;CfA   inf gH ;jgÀgH j 6 c minmaxfds; XgH A;jg À gH jg;c is a distance function which gives the shortest distance between a point s;g P S Â G and the subgraph of fA . And XgH A  fs P S;fA s PgH g is the upper-level set at graylevel gH . Example. Let us consider two images A and B which have constant gray levels. For example a reference image A, (picture function fA with constant gray level  0) and a test image B, (picture function fB with constant gray level h  10), then DNg A; B  Dg A; B  18:6%: Dg Awhite ; Ablack  B:9
+
+Since the images have constant gray-levels, parameter c does not signi®cantly modify the dissimilarity measure (see Fig. 18). B.2. Application of Baddeley metric to gray level images Let A and B be the images to be compared. The distance between A and B is de®ned by
+
+1498
+
+D. Coquin, P. Bolon / Pattern Recognition Letters 22 (2001) 1483±1502
+
+Fig. 18. Normalized dissimilarities versus constant gray level variations.
+
+4 DA; B 
+
+ 1 E jdA m À dB mj cardV  mPV
+
+51=E B:10
+
+with 1 6 E < I, voxel v  s; g, and cardV  is the number of pixel in the volume V  S Â G on which we can compute this dissimilarity. Image A is an image with constant gray level  0 and image B is an image with constant gray level h.
+Table 3 Some values of the dierence between image A and image B W±B±O operator Gray level: g 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 0 dA  d Ã s; g; CfA  8 8 8 8 8 8 8 8 8 8 8 8 7 6 5 4 3 2 1 0 dB  d Ã s; g; CfB  8 8 7 6 5 4 3 2 1 0 0 0 0 0 0 0 0 0 0 0
+
+Table 3 shows the dierence between measures (W±B±O with c  8 and D) on calculation of the absolute dierence jdA À dB j between the two images A and B. It should be noticed that the contribution of voxels located above the two image surfaces (e.g. g P 10) is equal to the gray level distortion h. The average contribution of voxels located between the two surfaces is proportional to h with a proportionality factor a < 1.
+
+New operator jdA À dB j 0 0 1 2 3 4 5 6 7 8 8 8 7 6 5 4 3 2 1 0 dA v À dA s; g 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 0 dB v À dB s; g 9 8 7 6 5 4 3 2 1 0 1 2 3 4 5 6 7 8 9 10 jdA À dB j 10 10 10 10 10 10 10 10 10 10 8 6 4 2 0 2 4 6 8 10
+
+D. Coquin, P. Bolon / Pattern Recognition Letters 22 (2001) 1483±1502
+
+1499
+
+Fig. 19. Curvature parameter.
+
+Fig. 20. Curvature parameter as function of the gray level variation.
+
+If we take exponent E  2, DA; B is given by s   2 2 g<h 2g À h  gPh h : B:11 DA; B  cardG If image Ablack is equal to 0 (black image) and image B  Awhite is equal to 255 (white image) DAwhite ; Ablack   147:8 B:12
+
+To characterize the dissimilarity curve linearity, we calculate a curvature parameter de®ned as    j:di   g À dj : B:14 Cd i  max jPf0;1;2;...ig di This parameter is the normalized vertical distance between the distance function curve and the linearized curve (Fig. 19). It can be noticed (Fig. 20) that the new dissimilarity measure has a more linear behavior than that of Wilson et al. For a gray-level variation equal to 100, the curvature parameter is less than 5%, whilst that of W±B±O operator is larger than 20%. Appendix C. Constant gray level distortion, and spatial distortion In this appendix we consider a simpli®ed image model consisting of plateaus separated by sharp transitions. The typical transition height is T. The typical number of transitions is m. S is the image support, G is the set of gray levels.
+
+the normalized dissimilarity DN is then de®ned as DN A; B  DA; B  6:7%: DAwhite ; Ablack  B:13
+
+B.3. Comparison between the two operators The reference image A has constant gray level 0. The distorted image B has constant gray level h. Fig. 18 shows the normalized dissimilarities obtained with the W±B±O operator (c  4 and c  8), the new dissimilarity D and the RMS, as a function of distortion parameter h.
+
+1500
+
+D. Coquin, P. Bolon / Pattern Recognition Letters 22 (2001) 1483±1502
+
+Fig. 21. Gray level distortion, A: reference image, B and BH : distorted images.
+
+C.1. Gray level distortion Let A be the reference image. Let B be a distorted version of A obtained by adding a constant gray level h (Fig. 21). According to the results given in Appendix B, voxels m which are located far from surfaces A and B are such that jdA m À dB mj  h. Conversely, for voxels located near or between surfaces, the absolute value of the distance dierence is less than h. Let N1 be the number of those voxels. Let ah (with 0 6 a < 1 be the average distance dierence for those voxels. Coecient a actually depends on the number of transitions, on their height and on their shape. Let N2 be the number of far voxels, with N1  N2  cardG Â cardS. The dissimilarity between image A and image B is given by 4 51=E  1 E DA;B  jdA m À dB mj cardV  mPV N1 ah  N2 hE  N1  N2 4
+E
+
+Hence, we have 4 51=E H H N1 ah  dE  N2 h  dE H DA; B   H H N1  N2  1=E N1 aE  N2  h  d N1  N2 !1=E kdaE À 1 Â 1 : N1 aE  N2
+
+C:3
+
+By the ®rst-order Taylor expansion, we can show that the dissimilarity increment is given by DA; BH  À DA; B  gd À Khd with N1 aE  N2 g N1  N2
+1 !E
+
+C:4
+
+and
+
+K
+
+k1 À aE  : EN1 aE  N2 
+
+51=E : C:1
+
+Let us consider a small increase d in the gray level distortion. Let BH be the new distorted image. The number of voxels considered as near (resp. far) from the surfaces are then
+H N1  N1  kd H N2  N2 À kd with
+
+k  cardS:
+
+C:2
+
+For lower values of gray level distortion h, N2 % cardG Â cardS then coecient K % 1= cardG Á E is small with respect to 1. The dissimilarity increment is gd. Hence, the dissimilarity variation is linear with respect to the gray level distortion h. Coecient g is less than 1. It is decreasing function of the average transition magnitude T. This means that a gray level increase by 1 is regarded as more important if T is low than if T is large. For large values of the gray level distortion h, the dissimilarity increment is decreased. This explains the curvature of the dissimilarity measurement as a function of the distortion parameter.
+
+D. Coquin, P. Bolon / Pattern Recognition Letters 22 (2001) 1483±1502
+
+1501
+
+C.2. Spatial shift distortion Let A be the reference image. Let B be the image obtained by shifting image A be D pixels. Let BH be the image obtained by an additional shift of d pixels (Fig. 22). Like in Section C.1, the dissimilarity between image A and image B can be given by  1 E DA;B  jdA m À dB mj cardV  mPV 4 51=E E N1 bD  N2 DE  N1  N2 4 51=E
+
+DA; BH  À DA; B  ld À CDd with l N1 bE  N2 N1  N2 !1=E and C
+
+C:7
+
+mT 1 À bE  : EN1 bE  N2 
+
+Like in the case of a gray level increase, the dissimilarity operator is linear with respect to the shift magnitude if this magnitude is small. The proportionality coecient is less than 1. Appendix D. Integer coecients The integer coecients used in this study are given in Table 4. The other coecients are obtained taking symmetries into account. Appendix E. Eect of video inversion Let A and B be two images represented by their surface sets. Let AH and BH be their video inverse. With the new operator, we have DA; B  DAH ; BH .
+
+C:5
+
+with 0 6 b < 1. In fact, N1 ; N2 ; b depend on the transition height T and the number of voxels between two transitions. Parameter N2 is the more larger than T is high. If the spatial shift magnitude is increased by d, we have
+H N1  N1  mT d; H N2  N2 À mT d:
+
+C:6
+
+Using a ®rst-order Taylor expansion, the dissimilarity increment is given by
+
+Fig. 22. Spatial shift distortion, A: reference image, B and BH distorted images.
+
+Table 4 Integer coecients P =H 0.1 1 20 D100 108 16 16 D010 108 16 16 D001 11 16 313 D110 153 23 22 D101 108 23 313 D011 108 23 313 D111 153 28 314
+
+1502
+
+D. Coquin, P. Bolon / Pattern Recognition Letters 22 (2001) 1483±1502
+
+As de®ned in Section 4, 4 DA; B 
+1 cardV 
+
+References 51=E
+E
+
+
+mPV
+
+jdA m À dB mj
+
+:
+
+In fact, the Euclidean distance is invariant with respect to symmetry in the gray level domain. We have the same property if local distance operators are used, provided that their coecients are symmetrical with respect to the horizontal plane. This is what is obtained following (Borgefors, 1984; Coquin et al., 1994; Verwer, 1991). Let us consider the voxel m  s; g. Let voxel am P A be such that dA m  dm; am. Let mH  s; gH  be the symmetrical of voxel m with respect to a given horizontal plane (i.e. constant gray level). Let aH be the symmetrical of voxel a with respect to the horizontal plane. We then have dA m  dm; am  dmH ; aH mH   dAH mH : Since each voxel m can be associated with its symmetrical mH we obtain 51=E  1 H H E DA; B  jdA m  À dB m j cardV  mH PV 4 51=E  1 E H H  jd m À dB mj : cardV  mPV A Hence DA; B  DAH ; BH . If subgraph image representations are used, voxels m and their symmetrical mH do not play the same role. It can easily be shown that invariance with respect to video inversion cannot be guaranteed. 4
+
+Baddeley, A.J., 1992., in: An Error Metric for Binary Images. Robust Computer Vision, Wichmann, Karlsruhe, pp. 59± 78. Borgefors, G., 1984. Distance transformations in arbitrary dimensions. CVGIP 27, 321±345. Coquin, D., Chehadeh, Y., Bolon, Ph., 1994. 3D local operator on parallele pipedic grid. In: Proc. 4th Discrete Geometry for Computer Imagery, Grenoble, France, pp. 147±156. Coquin, D., Bolon, Ph., 1995. Discrete distance operator on rectangular grids. Pattern Recognition Lett. 16, 911±923. Coquin, D., Bolon, Ph., Chehadeh, Y., 1995. Oprateurs de e distance 3D ± Application  la comparison d'images. In: a Proc. 15th colloque GRETSI, Juan-Les-Pins, France, pp. 761±764. Coquin, D., Bolon, Ph., Chehadeh, Y., 1997. Evaluation quantitative d'images ®ltres. In: Proc. 16th colloque e GRETSI, vol. 2, Grenoble, France, pp. 1351±1354. Di Ges , V., Starovoitov, V., 1999. Distance-based functions u for image comparison. Pattern Recoginition Lett. 20, 207±214. Dubuisson, M.P., Jain, A.K., 1994. A modi®ed Hausdor distance for object matching. In: Proc. 12th Internat. Conf. on Pattern Recognition, Jerusalem, Israel, pp. 566±568. Huttenlocher, D.P., Klanderman, G.A., Rucklidge, W.J., 1993. Comparing images using the Hausdor distance. IEEE Trans. Pattern Anal. Machine Intell. 15 (9), 850±863. Jacobs, D.W., Weinshall, D., 2000. Classi®cation with nonmetric distances: image retrieval and class representation. IEEE Trans. Pattern Anal. Machine Intell. 22 (6), 583±600. Rosenfeld, A., Pfaltz, J., 1966. Sequential operations in digital picture processing. J. ACM 13, 471±494. Verwer, B., 1991. Local distances for distance transformations in two and three dimensions. Pattern Recognition Lett. 12, 671±682. Wilson, D.L., Baddeley, A.J., Owen, R.A., 1997. A new metric for grey-scale image comparison. Internat. J. Comput. Vision 24 (1), 5±18. Zamperoni, P., Starovoitov, V., 1996. On measures of dissimilarity between arbitrary gray-scale images. Internat. J. Shape Modeling 2 (2&3), 189±213.
+

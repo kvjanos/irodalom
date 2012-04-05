@@ -1,0 +1,179 @@
+letter
+Identifying distinct classes of bladder carcinoma using microarrays
+Lars Dyrskjøt1, Thomas Thykjaer1,2, Mogens Kruhøffer3, Jens Ledet Jensen4, Niels Marcussen5, Stephen Hamilton-Dutoit5, Hans Wolf3 & Torben F. Ørntoft1
+© 2003 Nature Publishing Group http://www.nature.com/naturegenetics
+
+Published online 9 December 2002; doi:10.1038/ng1061
+
+Bladder cancer is a common malignant disease characterized by frequent recurrences1,2. The stage of disease at diagnosis and the presence of surrounding carcinoma in situ are important in determining the disease course of an affected individual3. Despite considerable effort, no accepted immunohistological or molecular markers have been identiﬁed to deﬁne clinically relevant subsets of bladder cancer. Here we report the identiﬁcation of clinically relevant subclasses of bladder carcinoma using expression microarray analysis of 40 well characterized bladder tumors. Hierarchical cluster analysis identiﬁed three major stages, Ta, T1 and T2-4, with the Ta tumors further classiﬁed into subgroups. We built a 32-gene molecular classiﬁer using a cross-validation approach that was able to classify benign and muscle-invasive tumors with close correlation to pathological staging in an independent test set of 68 tumors. The classiﬁer provided new predictive information on disease progression in Ta tumors compared with conventional staging (P < 0.005). To delineate non-recurring Ta tumors from frequently recurring Ta tumors, we analyzed expression patterns in 31 tumors by applying a supervised learning classiﬁcation methodology, which classiﬁed 75% of the samples correctly (P < 0.006). Furthermore, gene expression proﬁles characterizing each stage and subtype identiﬁed their biological properties, producing new potential targets for therapy.
+
+Parallel gene-expression monitoring is a powerful tool for analyzing relationships between tumors, discovering new tumor subgroups, assigning tumors to pre-deﬁned classes, identifying co-regulated or tumor stage–speciﬁc genes and predicting disease outcome4–17. In a recent study of bladder cancer, we identiﬁed functional groups of genes whose co-regulation formed the basis for separating bladder tumors into superﬁcial and muscleinvasive tumors18. Here, we used microarrays to analyze gene expression and to predict tumor classes in 40 bladder tumors from a clinical specimen bank holding more than 35,000 samples selected on the basis of disease course, stage, grade, concomitant carcinoma in situ (CIS) and recurrence frequency (number of new tumors per year; Table 1 and Web Table A online). We labeled RNA from tumors and from four normal tissue samples and hybridized it to Affymetrix oligonucleotide microarrays. We then subjected the 1,767 genes (26%) that were expressed at dif-
+
+ferent levels in tumor tissue versus normal urothelium to a twoway hierarchical cluster analysis. This separated all 40 tumors according to conventional pathological stages and grades with only a few exceptions (Fig. 1a). The distinct separation of the tumor groups according to stage with practically no overlap between groups was also shown by multidimensional scaling analysis (Fig. 1b). To reduce the number of genes needed for class prediction, we identiﬁed the 88 genes that varied most between tumor samples (s.d. ≥ 4) and that were considered to be cancer-related by the Cancer Genome Anatomy Project (CGAP; at the US National Cancer Institute). Hierarchical clustering using only these genes was almost identical to that using the 1,767 genes (Fig. 1c), indicating that the tumor clustering does not simply reﬂect larger amounts of stromal components in the invasive tumor samples. Many cell types are present in the biopsy samples, however, and the speciﬁc origin of the transcript cannot be determined. The clustering of the 1,767 genes identiﬁed several characteristic proﬁles that differed between the tumor groups (Fig. 1d). Cluster A was highly expressed in all the Ta grade 3 tumors (Fig. 2) and contains genes encoding eight transcription factors and other nuclear genes related to transcriptional activity. Cluster C contains genes that were upregulated in Ta grade 3 tumors with high recurrence rate and CIS and in T2+ and some T1 tumors. This cluster showed a tight co-regulation of genes related to cellcycle control and mitosis (Fig. 2), and thus may be associated with increased cellular proliferation and may serve as new targets for small-molecule therapy19. Cluster F showed a tight cluster of genes related to keratinization (Fig. 2). Two tumors (875-1 and 1178-1) highly expressed these genes, and a re-evaluation of the pathology slides indicated that these were the only two samples to show squamous metaplasia, a characteristic not infrequently seen in invasive bladder tumors by light microscopy. Cluster G contains genes related to angiogenesis and connective tissue that were upregulated in T2+ tumors and in the Ta grade 3 tumors with CIS that clustered in the invasive branch (Fig. 2). Increased transcription of these genes may indicate a profound remodeling of the stroma, and thus they may also serve as new targets for drug therapy20. Notably, these genes most clearly separated the Ta grade 3 tumors surrounded by CIS from all other Ta grade 3 tumors. This
+
+1Molecular Diagnostic Laboratory, Department of Clinical Biochemistry, Aarhus University Hospital, Skejby, DK-8200 Aarhus N, Denmark. 2Aros Applied Biotechnology, SciencePark Aarhus, Gustav Wiedsvej, Aarhus C, Denmark. 3Department of Urology, Aarhus University Hospital, Skejby, Aarhus N, Denmark. 4Department of Theoretical Statistics, Department of Mathematical Sciences, Ny Munkegade, Aarhus C, Denmark. 5University Institute of
+
+Pathology, Aarhus University Hospital, Aarhus C, Denmark. Correspondence should be addressed to T.F.Ø. (e-mail: orntoft@kba.sks.au.dk).
+
+90
+
+nature genetics • volume 33 • january 2003
+
+letter
+indicates that analysis of stroma-remodeling genes in Ta tumors could replace the present invasive procedure for diagnosing CIS. Clusters B, D, E, H, I and J contain genes related to nuclear proteins, cell adhesion, growth factors, stromal proteins, immune system and proteases, respectively (see Web Fig. A online). A summary of the stage-related gene expression is shown in Table 2. The gene clusters are based on tumor biopsy samples, which contain contributions from many cell types as well as malignant cells. An objective prediction of classes of bladder tumors using a limited set of genes could be of potential clinical use. We therefore built a maximum-likelihood classiﬁer using only those tumors (35 of 40) that showed a group-speciﬁc expression pattern (see Web Fig. B online). We evaluated the classiﬁer using a ‘leave one out’ cross-validation scheme11,12 and selected for classiﬁcation those predictive genes that showed the largest possible separation of the three groups. Each tumor was classiﬁed according to its proximity to the mean of the three groups (Fig. 3a). We tested the classiﬁer’s performance using 1–200 genes in cross-validation loops, and obtained the best correlation to pathologic staging by using a 38-gene cross-validation scheme (see Web Fig. C online). We selected 32 genes that were used in at least 75% of the crossvalidations (27 times) to constitute our ﬁnal classiﬁer model (see Web Table B online). Notably, some of the Ta tumors surrounded by CIS were classiﬁed as T2, thus adding new information to clinical and pathologic classiﬁcation.
+
+© 2003 Nature Publishing Group http://www.nature.com/naturegenetics
+
+Table 1 • Clinical data on disease courses and results of molecular classiﬁcation Sample Previous tumors Tumor analyzed Ta gr2 Ta gr2 Ta gr2 Ta gr2 Ta gr2 Ta gr3 Ta gr3 Ta gr3 Ta gr3 Ta gr3 Ta gr3 Ta gr3 Ta gr3 Ta gr3 Ta gr3 5 Ta, 1 T1 7 Ta, 2 T1 1 Ta, 2 T1 2 T1 Ta gr3 Ta gr3 Ta gr3 Ta gr3 T1 gr3 T1 gr3 T1 gr3 T1 gr3 T1 gr3 T1 gr3 T1 gr3 T1 gr3 T1 gr3 T1 gr3 T1 gr3 T2+ gr4 T2+ gr? T2+ gr3 T2+ gr3 T2+ gr3 T2+ gr3 T2+ gr3 T2+ gr3 T2+ gr3 T2+ gr3 Subsequent tumors Carcinoma in situa no no no no no no no no no no subsequent visit sampling visit sampling visit sampling visit sampling visit sampling visit previous visit sampling visit sampling visit no no sampling visit no no no no no no subsequent visit sampling visit no nd nd nd nd no nd nd no nd Reviewed histologyb Ta gr3 Classiﬁerc
+
+Ta grade II tumors – no progression 709-1 968-1 934-1 928-1 930-1 989-1 1264-1 876-5 669-7 716-2 1070-1 956-2 1062-2 1166-1 1330-1 747-7 112-10 320-7 967-3 625-1 847-1 1257-1 919-1 880-1 812-1 1269-1 1083-2 1238-1 1065-1 1134-1 1164-1 1032-1 1117-1 1178-1 1078-1 875-1 1044-1 1133-1 1068-1 937-1
+aCarcinoma
+
+1 Ta
+
+Ta Ta Ta Ta/T1 Ta Ta Ta Ta Ta Ta Ta T2 Ta Ta T2 Ta Ta Ta Ta T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T2 T2 T2 T2 T2 T2 T2 T2 T1
+
+Ta grade III tumors – no prior T1 tumor or CIS 3 Ta 4 Ta 2 Ta 1 Ta 1 Ta 1 T1
+
+4 Ta 5 Ta 1 Ta
+
+Ta gr2
+
+Ta grade III tumors – no prior T1 tumor but CIS in selected site biopsies
+
+Ta grade III tumors – a prior T1 tumor and CIS in selected site biopsies 3 Ta 2 Ta, 4 T1 2 Ta 1 T1
+
+T1 grade III tumors – no prior muscle-invasive tumor
+
+4 Ta
+
+1 Ta
+
+no review no review no review T2 gr3 T2+ gr3 no review
+
+1 Ta, 1 T2+ 3 T1
+
+T2+ grade III/IV tumors – only primary tumors
+
+1 T2+
+
+no review
+
+in situ detected in selected site biopsies at the time of sampling tumor tissue for the arrays or at previous or subsequent visits. bTumors were reviewed by a single uropathologist, and any difference from the routine classiﬁcation is listed. cMolecular classiﬁcation in the training set using 38 genes in cross-validation loops. nd, not determined.
+
+nature genetics • volume 33 • january 2003
+
+91
+
+letter
+We applied the classifier to an independent test set of 68 samples (see Web Table C online) analyzed on a different oligonucleotide array platform with other probes and different probe-set format. In light of the different array format, it was notable that the classifier ‘correctly’ classified (that is, included the histopathological classification) 84% of the Ta tumors, 50% of the T1 tumors and 74% of the T2+ tumors (see Web Table D online). Although some tumors from all stages were classified differently from conventional histopathological classification, this seems at least for Ta tumors to provide additional predictive information. Samples that the classifier grouped as T1 or T2 but that were classified histopathologically as Ta had a significantly (P < 0.005, Fisher’s exact test) higher likelihood of disease progression or solid-tumor growth compared with those classified correctly (Table 3). This predictive property of the gene set may have considerable clinical
+
+© 2003 Nature Publishing Group http://www.nature.com/naturegenetics
+
+a
+
+c
+
+d
+
+b
+
+Fig. 1 Two-way hierarchical clustering and multidimensional scaling analysis of gene expression data from 40 bladder tumor biopsy samples. a, Tumor cluster dendrogram based on the 1,767-gene set. The presence of CIS is noted after the sample names. Tumor recurrence rates are shown to the right of the dendrogram as + and ++, indicating medium and high recurrence rates, respectively; no sign indicates no recurrence or moderate recurrence. b, Two-dimensional plot of multidimensional scaling analysis of the 40 tumors based on the 1,767-gene set. The color code identiﬁes the tumor samples from the cluster dendrogram (Fig. 1a). c, Tumor cluster dendrogram based on 88 cancer-related genes from CGAP. d, Two-way cluster analysis diagram of the 1,767-gene set. Each row in the diagram represents a gene and each column a tumor sample. The color saturation represents differences in gene expression across the tumor samples; yellow indicates higher than the median expression (black), and blue indicates lower than median expression. The color intensity indicates degree of gene regulation. The sidebars to the right of the diagram represent gene clusters a–j. Normal 1–3 on the left side indicate the three normal biopsy samples, and normal 4 indicates the pool of biopsy samples from 37 individuals. There were two principal branches, one containing the superﬁcial Ta tumors and the other containing the invasive T1 and T2+ tumors. In the superﬁcial branch, two sub-clusters of tumors were identiﬁed, one containing eight tumors that had frequent recurrences and one containing three of the ﬁve Ta grade 2 tumors that had no recurrences. In the invasive branch, four Ta grade 3 tumors clustered tightly with the muscle-invasive T2+ tumors. These tumors showed concomitant CIS in the surrounding mucosa, indicating that this sub-fraction of Ta tumors had some of the more aggressive features of muscle-invasive tumors.
+
+92
+
+nature genetics • volume 33 • january 2003
+
+letter
+istry, and compared our molecular classiﬁer to the expression of the tumor stage–related proteins p53, Her2 and Ki-67. We immunostained a bladder tumor tissue array (n = 137) for Smad6 and cyclin G2 (Ta/T1 classiﬁers). Cyclin G2 was expressed at a lower level in T2 than in Ta tumors at both the RNA (P < 0.0006) and the protein levels (P < 0.0009). Fewer samples in the T2 group stained strongly for Smad6 than in the Ta group (see Web Fig. D online). For both cyclin G2 and Smad6, individual samples did not always show a correlation between RNA and protein level, as previously addressed21. The molecular tumor classiﬁcations correlated signiﬁcantly to the expression of Ki-67 by immunohistochemistry (P < 0.02), but not signiﬁcantly to p53 or Her2 staining (see Web Figs. E and F online). We further tested an outcome predictor to determine if it was able to identify the likelihood of recurrence in individuals with superficial Ta tumors (see Web Table E online). We found that the optimal number of genes in cross-validation loops was 39 (75% of the samples were correctly classified, P < 0.006; see Web Fig. G and Web Table F online). From this group, we selected 26 genes (Fig. 3b) that were used in at least 75% of the cross-validation loops to constitute our final recurrence predictor. We tested the strength of the predictive genes by permutation analysis (see Web Table G online). Our data on expression patterns that classify the benign and muscle-invasive bladder carcinomas can identify subgroups of bladder cancer such as Ta tumors with surrounding CIS, Ta tumors with a high probability of progression as well as recurrence and T2 tumors with squamous metaplasia. This could have implications for epithelial cancers in general, as these may be subdivided into a larger number of subclasses than has previously been expected. We found that the matrix-remodeling gene cluster was specifiFig. 2 Enlarged view of gene clusters A, C, F and G. The dendrogram at the top is identical to Fig. 1a. Cluster A, tran- cally expressed in tumors with scription factors and other nuclear genes; cluster C, genes involved in proliferation and cell-cycle control; cluster F, gene the worst prognosis, namely expression pattern and corresponding area with squamous metaplasia in urothelial carcinoma (yellow color indicates genes upregulated in samples 1178-1 and 875-1, the only two samples with squamous cell metaplasia); cluster G, genes the T2 tumors and tumors involved in angiogenesis and matrix remodeling. surrounded by CIS. For some
+nature genetics • volume 33 • january 2003 93
+
+importance. Stage T1, which is an intermediate stage having both superficial and submucosa invasive components, seems difficult to classify using expression profiling. We also tested whether the protein products of the classifying genes had similar classifying potential using immunohistochem-
+
+© 2003 Nature Publishing Group http://www.nature.com/naturegenetics
+
+letter
+Table 2 • Summary of stage-related gene expression for functional gene clustersa Tumor stage Ta gr2 Ta gr3 T1 gr3 T2 gr3 Ta gr3 + CIS
+aFor
+
+Transcription ↑ ↑↑↑ ↑b ↑ ↑↑↑
+
+Nuclear processes nc ↑↑ nc nc ↑↑
+
+Proliferation nc ↑↑ ↑↑b ↑↑↑ ↑↑↑
+
+Matrix remodeling nc nc nc ↑↑↑ ↑↑↑
+
+Extracellular matrix ↓↓ ↓↓ ↓ ↑ ↑
+
+Immune system ↓ ↓ ↑b ↑ ↑
+
+a detailed description of gene clusters, see Web Fig. A online. bAn increase in gene expression was only found in about half of the samples analyzed. nc, no change.
+
+© 2003 Nature Publishing Group http://www.nature.com/naturegenetics
+
+of these genes, new small-molecule inhibitors already exist22. Introducing the presented classifiers for stage, progression and recurrence as well as the CIS-defining gene set into clinical routine requires a three-year prospective study, which we are currently carrying out based on custom microarrays holding the informative gene sets.
+
+High Yield RNA Transcript Labelling Kit (Enzo). We used biotin-labeled CTP and UTP (Enzo) and unlabeled NTPs in the reaction. After the in vitro transcription reaction, we removed the unincorporated nucleotides using RNeasy columns (Qiagen). Array hybridization and scanning. We fragmented 15 µg of cRNA at 94 °C for 35 min in a fragmentation buffer containing 40 mM Tris-acetate pH 8.1, 100 mM potassium acetate and 30 mM magnesium acetate. Before hybridization,we heated the fragmented cDNA in a 6×SSPE-T hybridization buffer (1 M NaCl, 10 mM Tris pH 7.6, 0.005% Triton) to 95 °C for 5 min and then to 45 °C for 5 min before loading onto the Affymetrix probe array cartridge (HuGeneFL). We then incubated the probe array for 16 h at 45 °C at constant rotation (60 r.p.m.). We carried out the washing and staining procedure in the Affymetrix Fluidics Station. We washed the probe array ten times in 6×SSPE-T at 25 °C and then four times in 0.5×SSPE-T at 50 °C. We stained the biotinylated cRNA with a streptavidin-phycoerythrin conjugate (ﬁnal concentration 2 µg µl–1; Molecular Probes) in 6×SSPE-T for 30 min at 25 °C and then washed it ten times in 6×SSPE-T at 25 °C. We scanned the probe arrays at 560 nm using a confocal laser-scanning microscope (Hewlett Packard GeneArray Scanner G2500A). We analyzed the readings from the quantitative scanning using the Affymetrix Gene Expression Analysis Software. We then ampliﬁed the signals using normal goat IgG as blocking reagent (ﬁnal concentration 0.1 mg ml–1; Sigma) and biotinylated goat antibody against streptavidin (ﬁnal concentration 3 µg ml–1; Vector Laboratories). We stained the samples with a streptavidin-phycoerythrin conjugate (ﬁnal concentration 2 µg µl–1; Molecular Probes) in 6×SSPE-T for 30 min at 25 °C and washed it 10 times in 6×SSPE-T at 25 °C. We then subjected the arrays to a second scan under similar conditions as described above.
+
+Methods
+Biological material. We acquired 66 bladder tumor biopsy samples after the amount of tissue necessary for routine pathology examination had been removed. We froze the tumor samples immediately after surgery and stored them at –80 °C in a guanidinium thiocyanate solution. We graded each tumor according to previously published criteria23, and a single pathologist then re-evaluated them. For normal urothelial reference samples, we used a pool of biopsy samples (from 37 individuals) as well as three single bladder biopsy samples from individuals with prostatic hyperplasia or urinary incontinence. Informed consent was obtained in all cases, and protocols were approved by the scientific ethical committee of Aarhus county. RNA puriﬁcation and cDNA preparation. We isolated total RNA from crude tumor biopsy samples using a Polytron homogenizer and the RNAzol B RNA isolation method (WAK-Chemie Medical GmbH). We used 10 µg total RNA as starting material for the cDNA preparation. We carried out the ﬁrst- and second-strand cDNA synthesis using the SuperScript Choice System (Life Technologies) according to the manufacturer’s instructions, except we used an oligo-dT primer containing a T7 RNA polymerase promoter site. We prepared labeled cRNA using the BioArray
+
+a
+
+b
+
+Fig. 3 Molecular classiﬁcation of bladder tumor stages and identiﬁcation of genes that predict recurrence. a, Molecular classiﬁcation of tumor samples in the training set using 38 predictive genes in each cross-validation loop. Each classiﬁcation is based on the proximity to the mean in the three classes. Samples marked with an asterisk were not used to build the classiﬁer. The scale indicates the distance from the samples to the classes in the classiﬁer, measured in weighted squared Euclidean distance. b, Gene expression patterns of the 26 genes that we found to be optimal for prediction of superﬁcial tumor recurrence. The best predictors of recurrence are listed at the top and bottom of the diagram. For each gene, the number of times it was used in the 31 crossvalidation loops is listed to the right together with the Unigene (Ug) cluster number (see Web Table G online).
+
+94
+
+nature genetics • volume 33 • january 2003
+
+letter
+Table 3 • Prediction of upstaging for stage Ta tumors using the molecular classiﬁer Sample 815-1 861-1 898-1 368-4 669-1 747-3 833-2 368-7 576-6 576-7 997-1 997-2 837-2 794-3 150-6 865-1 1083-1 825-3 941-4 112-2 795-13 686-3 347-7 679-2 1336-2
+aMolecular
+
+Histopathology Ta gr2 Ta gr2 Ta gr2 Ta gr2 Ta gr2 Ta gr2 Ta gr3 Ta gr3 Ta gr2 Ta gr2 Ta gr2 Ta gr2 Ta gr2 Ta gr2 Ta gr3c Ta gr2 Ta gr2 Ta gr3 Ta gr3c Ta gr3 Ta gr2 Ta gr2 Ta gr3 Ta gr2 Ta gr1
+
+Molecular classiﬁera T1 Ta Ta Ta Ta T1/Ta Ta Ta Ta Ta Ta Ta Ta Ta T2/T1 Ta/T1 T1 Ta T1/Ta Ta/T1 Ta/T1 T1/Ta Ta T1/Ta Ta
+
+Upstagingb
+
+the sample value to the group mean, standardized by the variance. Thus, we calculated a distance to each of the three groups and classiﬁed the sample as belonging to the closest group. When calculating these distances, we estimated the group means and the variances from all the samples in the training set excluding the sample being classiﬁed. Validation of the tumor-stage classiﬁer. We validated the performance of the classiﬁer using another set of bladder tumor expression data obtained from customized oligonucleotide Affymetrix GeneChips carrying PM probes only. First, we translated all accession numbers on both oligonucleotide microarrays into Unigene clusters and selected those gene probes present on both arrays (4,416 probe-sets). To make comparisons between the two microarray types, we used only the PM probe values from the original data set. We rescaled all the log (average PM) values and used the pool of normal bladder biopsy samples from 37 individuals, which were analyzed on both array platforms, to calculate log fold-change expression values. We recalculated the group means and the variances for each gene used in the classiﬁer and based the classiﬁcation on 29 genes from the optimal classiﬁer in the cross-validation step for the original data set. We calculated the distances to each of the three groups for the new samples and classiﬁed them as belonging to the closest group. Recurrence prediction using a supervised-learning method. We generated Average Difference values using the Affymetrix GeneChip software and set all values below 20 to 20 to avoid very low and negative numbers. We only included genes that had a ‘Present’ call in at least seven samples and genes that showed intensity variation of max–min > 100 and max/min > 2. The values were log-transformed and rescaled. We used a supervisedlearning method essentially as described11. We selected genes using t-test statistics and cross-validation and classiﬁed samples as described above. Immunohistochemistry. We prepared tumor tissue microarrays essentially as described26, with four representative 0.6-mm parafﬁn cores from each study case. We carried out immunohistochemical staining using standard highly sensitive techniques after appropriate heat-induced antigen retrieval. Primary polyclonal goat antibodies against Smad6 (S-20) and cyclin G2 (N-19) were from Santa Cruz Biotechnology. Antibodies to p53 (monoclonal DO-7) and Her-2 (polyclonal anti-c-erbB-2) were from Dako A/S. Ki-67 monoclonal antibody (MIBI) was from Novocastra Laboratories. An experienced pathologist who was unaware of array results scored the staining intensity at four levels (negative, weak, moderate and strong), considering both color intensity and number of stained cells. GEO accession numbers. Array data was deposited at the Gene Expression Omnibus (National Center for Biotechnology Information) with accession numbers GSM2474 through GSM2544. The array data is also found in series with accession number GSE89 (tumor stage classiﬁcation) and GSE88 (recurrence prediction).
+
+© 2003 Nature Publishing Group http://www.nature.com/naturegenetics
+
+solid tumor T1 tumor 5 mo later T1 tumor 2 wk later T1 tumor 5 mo later T2 tumor 6 mo later T1 tumor 6 mo later T1 tumor 4 mo later T1 tumor 6 mo later T1 tumor 5 mo later T2 tumor 30 mo later T1 tumor 5 mo later
+
+classiﬁcation of independent test samples using the 32-gene classiﬁer. Two classiﬁcations are listed when the difference between the distances to the two closest groups is below 5%. bIndividuals who developed a higher stage tumor later in the disease course. cSolid Ta tumors have an unfavorable disease course. All other Ta tumors in the table are papillomas.
+
+Class discovery using hierarchical clustering. We scaled all microarray results to a global intensity of 150 units using the Affymetrix GeneChip software. Other ways of array normalization exist24, but using the dCHIP approach did not change the expression proﬁles of the obtained classiﬁer genes in this study (results not shown). For hierarchical cluster analysis and molecular classiﬁcation procedures, we used expression-level ratios between tumors and the normal urothelium reference pool, which were calculated using the comparison analysis implemented in the Affymetrix GeneChip software. To avoid expression ratios based on saturated gene probes, we used the antibody-ampliﬁed expression data for genes with a mean Average Difference value across all samples below 1,000 and the nonampliﬁed expression data for genes with mean Average Difference value across all samples equal to or above 1,000. We applied different ﬁltering criteria to the expression data to avoid including in the data analysis those genes that did not vary or that were not highly expressed. First, we selected only genes whose expression was signiﬁcantly different between the normal reference pool and at least three tumor samples. Second, we selected only genes with at least three ‘Present’ calls across all samples. Third, we eliminated genes with variation of less than 2 s.d. across all samples. The ﬁltered gene set contained 1,767 genes. We carried out two-way hierarchical agglomerative cluster analysis using the Cluster software25. We used average linkage clustering with a modiﬁed Pearson correlation as similarity metric. Genes and arrays were median-centered and normalized to the magnitude of 1 before cluster analysis. We used the TreeView software for visualization of the cluster analysis results25. We carried out multidimensional scaling on median-centered and normalized data using an implementation in the SPSS statistical software package. Tumor-stage classiﬁer. We based the classiﬁer on the log-transformed expression-level ratios. For these transformed values, we used a normal distribution with the mean dependent on the gene and the group (Ta, T1 and T2) and the variance dependent on the gene only. For each gene, we calculated the variation within the groups (W) and the three variations between two groups (B(Ta/T1), B(Ta/T2), B(T1/T2)) and used the three ratios B/W to select genes that had at least one high B/W ratio. To classify a sample, we calculated the sum over the genes of the squared distance from
+
+Note: Supplementary information is available on the Nature Genetics website.
+Acknowledgments
+
+We thank K.Y. Jonsdottir for computational assistance, H. Steen, B. Pytlick, J.C. Djurhuus, B. Stougaard and B. Devantié for excellent assistance, and the staff at the Departments of Urology, Clinical Biochemistry and Pathology at Aarhus University Hospital. We acknowledge support from the Karen Elise Jensen Foundation, The Danish Cancer Society, EOS Biotechnology, the John and Birthe Meyers Foundation, The Institute of Experimental Clinical Research, The University and County of Aarhus and the Danish Research Council.
+Competing interests statement
+
+The authors declare competing ﬁnancial interests. Details accompany the paper on the Nature Genetics website (http://www.nature.com/naturegenetics). Received 9 October; accepted 6 November 2002.
+1. Pisani, P., Parkin, D.M., Bray, F. & Ferlay, J. Estimates of the worldwide mortality from 25 cancers in 1990. Int. J. Cancer 83, 18–29 (1999).
+
+nature genetics • volume 33 • january 2003
+
+95
+
+letter
+2. 3. 4. 5. 6. 7. 8. 9. Wolf, H. et al. Bladder tumors. Treated natural history. Prog. Clin. Biol. Res. 221, 223–255 (1986). Cheng, L. et al. Survival of patients with carcinoma in situ of the urinary bladder. Cancer 85, 2469–2474 (1999). Golub, T.R. et al. Molecular classiﬁcation of cancer: class discovery and class prediction by gene-expression monitoring. Science 286, 531–537 (1999). Khan, J. et al. Classiﬁcation and diagnostic prediction of cancers using geneexpression proﬁling and artiﬁcial neural networks. Nat. Med. 7, 673–679 (2001). Perou, C.M. et al. Molecular portraits of human breast tumors. Nature 406, 747–752 (2000). Alizadeh, A.A. et al. Distinct types of diffuse large B-cell lymphoma identiﬁed by gene-expression proﬁling. Nature 403, 503–511 (2000). Ross, D.T. et al. Systematic variation in gene expression patterns in human cancer cell lines. Nat. Genet. 24, 227–235 (2000). Takahashi, M. et al. Gene-expression proﬁling of clear cell renal cell carcinoma: gene identiﬁcation and prognostic classiﬁcation. Proc. Natl. Acad. Sci. USA 98, 9754–9759 (2001). Sorlie, T. et al. Gene expression patterns of breast carcinomas distinguish tumor subclasses with clinical implications. Proc. Natl. Acad. Sci. USA 98, 10869–10874 (2001). Shipp, M.A. et al. Diffuse large B-cell lymphoma outcome prediction by geneexpression proﬁling and supervised machine learning. Nat. Med. 8, 68–74 (2002). van’t Veer, L.J. et al. Gene-expression proﬁling predicts clinical outcome of breast cancer. Nature 415, 530–536 (2002). Alon, U. et al. Broad patterns of gene expression revealed by clustering analysis of tumor and normal colon tissues probed by oligonucleotide arrays. Proc. Natl. Acad. Sci. USA 96, 6745–6750 (1999). Luo, J. et al. Human prostate cancer and benign prostatic hyperplasia: molecular dissection by gene-expression proﬁling. Cancer Res. 61, 4683–4688 (2001). Notterman, D.A., Alon, U., Sierk, A.J. & Levine, A.J. Transcriptional geneexpression proﬁles of colorectal adenoma, adenocarcinoma, and normal tissue examined by oligonucleotide arrays. Cancer Res. 61, 3124–3130 (2001). 16. Perou, C.M. et al. Distinctive gene expression patterns in human mammary epithelial cells and breast cancers. Proc. Natl. Acad. Sci. USA 96, 9212–9217 (1999). 17. Dhanasekaran, S.M. et al. Delineation of prognostic biomarkers in prostate cancer. Nature 412, 822–826 (2001). 18. Thykjaer, T. et al. Identiﬁcation of gene expression patterns in superﬁcial and invasive human bladder cancer. Cancer Res. 61, 2492–2499 (2001). 19. Seymour, L. Novel anti-cancer agents in development: exciting prospects and new challenges. Cancer Treat. Rev. 25, 301–312 (1999). 20. Fox, S.B., Gasparini, G. & Harris, A.L. Angiogenesis: pathological, prognostic, and growth-factor pathways and their link to trial design and anticancer drugs. Lancet Oncol. 2, 278–289 (2001). 21. Ørntoft, T.F. et al. Genome-wide study of gene copy numbers, transcripts, and protein levels in pairs of non-invasive and invasive human transitional cell carcinomas. Mol. Cell. Proteomics 1, 37–45 (2002). 22. Kerr, J.S., Slee, A.M. & Mousa, S.A. Small molecule alpha(v) integrin antagonists: novel anticancer agents. Expert Opin. Investig. Drugs 9, 1271–1279 (2000). 23. Bergkvist, A., Ljungqvist, A. & Moberger, G. Classiﬁcation of bladder tumors based on the cellular pattern. Preliminary report of a clinical–pathological study of 300 cases with a minimum follow-up of eight years. Acta Chir. Scand. 130, 371–378 (1965). 24. Li, C. & Hung, W.W. Model-based analysis of oligonucleotide arrays: model validation, design issues and standard error application. Genome Biol. 2, RESEARCH0032 (2001). 25. Eisen, M.B., Spellman, P.T., Brown, P.O. & Botstein, D. Cluster analysis and display of genome-wide expression patterns. Proc. Natl. Acad. Sci. USA 95, 14863–14868 (1998). 26. Kononen, J. et al. Tissue microarrays for high-throughput molecular proﬁling of tumor specimens. Nat. Med. 4, 844–847 (1998).
+
+© 2003 Nature Publishing Group http://www.nature.com/naturegenetics
+
+10.
+
+11. 12. 13.
+
+14. 15.
+
+96
+
+nature genetics • volume 33 • january 2003
+

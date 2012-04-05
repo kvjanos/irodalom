@@ -1,0 +1,147 @@
+Pattern Recognition 33 (2000) 1383}1393
+
+Model-based segmentation of nuclei
+Ge Cong*, Bahram Parvin
+Information and Computing Science Division, Lawrence Berkeley National Laboratory, MS 50B-2239, 1 Cyclotron Road, Berkeley, CA 94720, USA Received 16 December 1998; accepted 29 April 1999
+
+Abstract A new approach for the segmentation of nuclei observed with an epi-#uorescence microscope is presented. The proposed technique is model based and uses local feature activities in the form of step-edge segments, roof-edge segments, and concave corners to construct a set of initial hypotheses. These local feature activities are extracted using either local or global operators and corresponding hypotheses are expressed as hyperquadrics. A neighborhood function is de"ned over these features to initiate the grouping process. The search space is expressed as an assignment matrix with an appropriate cost function to ensure local and neighborhood consistency. Each possible con"guration of nucleus de"nes a path and the path with least overall error is selected for "nal segmentation. The system is interactive to allow rapid localization of large numbers of nuclei. The operator then eliminates a small number of false alarms and errors in the segmentation process. 2000 Pattern Recognition Society. Published by Elsevier Science Ltd. All rights reserved.
+Keywords: Segmentation; Grouping; Hyperquadric; Medical image processing; Shape recovery
+
+1. Introduction Automatic delineation of cell nuclei is an important step in mapping functional activities into structural components in cell biology. This paper examines delineation of individual nucleus that are observed with an epi#uorescence microscope. The nuclei that we are dealing with are in mammary cells. These cells cover the capillaries that carry milk in the breast tissues. The nuclei of interest reside in a thin layer that surround a particular type of capillary in the tissue. The intent is to build the necessary computational tools for large-scale population studies and hypothesis testing. These nuclei may be clumped together, thus, making quick delineation infeasible. At present stage, we are working on 2D crossing-section images of the tissue which are obtained by focusing the optical system at speci"c locations along the z-axis. Thus, we can assume that the nuclei abut but do not overlap
+
+* Corresponding author. Tel.: #510-486-4158; fax: #510486-6363. E-mail address: gcong@george.lbl.gov (G. Cong).
+
+each other. An example is shown in Fig. 1(a). Previous e!orts in this area have been focused on thresholding, local geometries, and morphological operators for known cell size [1,2]. Others have focused on an optimal cut path that minimizes a cost function in the absence of shape, size, or other information [3}7]. In this paper, we propose a new approach that utilizes both step-edge and roof-edge boundaries to partition a clump of nuclei in a way that is globally consistent. In this context, images are binarized and boundaries } corresponding to step edges } are recovered. Next, concave corners are extracted from polygonal approximation of the initial boundary segments. These corners provide possible cues to where two adjacent nuclei may come together. Thresholding separates big clumps consisting of several nuclei squeezed together. The boundaries between every two adjacent nuclei inside one clump are not detected by thresholding since they have higher intensities, as shown in Fig. 1(b) and (c). Thus, crease segments are detected [8}11] which provide additional boundary conditions for the grouping process, as shown in Fig. 1(d). These crease segments correspond to trough edges and are treated as common boundaries between adjacent nuclei. False creases may be extracted in the process.
+
+0031-3203/00/$20.00 2000 Pattern Recognition Society. Published by Elsevier Science Ltd. All rights reserved. PII: S 0 0 3 1 - 3 2 0 3 ( 9 9 ) 0 0 1 1 9 - 3
+
+1384
+
+G. Cong, B. Parvin / Pattern Recognition 33 (2000) 1383}1393
+
+Fig. 1. An example of nuclei with the results of global and local operations: (a) original image; (b) threshold image; (c) boundary objects; and (d) local troughs.
+
+However, since our algorithm need not use all the segments provided, false crease segments can be discarded in the grouping stage in favor of the global optimization. A unique feature of our system is in hyperquadric representation of each hypothesis and the use of this representation for global consistency. The main advantage of such a parameterized representation } as opposed to polygonal representation } is better stability in shape description from partial information. In this fashion, each step-edge boundary segment belongs to one and only one nucleus while each roof-edge boundary segment is shared by two and only two nuclei. These initial hypotheses and their localized inter-relationship provides the basis for search in the grouping step. This is expressed in terms of an adequate cost function and minimized through dynamic programming. The "nal result of this computational step is then shown to a user for veri"cation and elimination of false alarms. In the next section, we will brie#y review each step of the representation process and parameterization of each hypothesis in terms of hyperquadric. This will be fol-
+
+lowed by the details of the grouping protocol, results on real data, and concluding remarks.
+
+2. Representation The initial step of the computational process is to collect su$cient cues from local feature activities so that a set of hypotheses } not all of them correct } can be constructed for consistent grouping. These initial steps include thresholding, detection of concave points from boundary segments, extraction of crease segments from images, and hyperquadric representation of each possible hypothesis. 2.1. Thresholding Binary thresholding extracts the clump patterns from the original image. The corresponding threshold can be obtained through analysis of the intensity histogram or contrast histogram. As shown in Fig. 2, since background
+
+G. Cong, B. Parvin / Pattern Recognition 33 (2000) 1383}1393
+
+1385
+
+Fig. 2. Thresholding.
+
+Fig. 3. Detection of concave corners.
+
+always corresponds to the "rst peak in the intensity histogram, intensity analysis select the "rst valley following this peak as the threshold. In the contrast analysis, optimum threshold corresponds to the peak in the contrast histogram which is the accumulation of local contrast at each edge point. Thresholding is a valid approach for #uorescence images because of absence of any shading artifact. 2.2. Polygonal approximation The next step is to partition the clump silhouettes into segments that are partial nucleus boundaries. Often the location on the boundary between two adjacent nuclei is signaled by a concave point, thus, a reliable corner detector is needed. These corners are localized by the concave vertices of the polygonal approximation of the original contours [1,12] and the concavity is determined by the turning angle between adjacent line segments. The arcs of the clump boundaries between every two adjacent corners are de"ned as the `boundary segmentsa. Since polygonal approximation just selects some `feature pointsa from the original curve as new vertices, all the corners are guaranteed to be on the original boundaries. An example of this step of the process is shown in Fig. 3. 2.3. Detection of crease boundaries This step detect the common boundaries between every two squeezed nuclei in one clump which can be modeled as crease features. In grey images, crease points can be de"ned as local extremes of the principal curvature along the principal direction [8}11]. It is well known that due to noise, scale, "nite di!erential operators, and thresholds, it is very di$cult to detect complete creases as shown in Fig. 1(d). Images are enhanced through a variation of nonlinear di!usion [13] to improve localization of crease points. The principal curvature k is then
+
+computed as the solution of the following Eq. [14] (EG!F)k!(EN#G¸!2FM)k #(¸N!M)"0 (1)
+
+Where E, F, G, ¸, M, N are the xrst and second fundamental forms: E"1#f , V F"f f , V W G"1#f , W ¸"f , VV M"f , VW N"f . WW The principal direction (dx : dy) is given by the following Eq. [14]: (EM!¸F) dx#(EN!¸G) dx dy #(FN!MG) dy"0. (2)
+
+Crease points are detected and linked to form `crease segmentsa as shown in Fig. 1(d). 2.4. Hyperquadric model A brief introduction to hyperquadric "tting is included. A more detailed description can be found in [15}17]. A 2D hyperquadric is a closed curve de"ned by: , G "A x#B y#C "AG"1. G G G (3)
+
+Since '0, Eq. (3) implies that G "A x#B y#C ")1, ∀i"1, 2,2, N, G G G (4)
+
+1386
+
+G. Cong, B. Parvin / Pattern Recognition 33 (2000) 1383}1393
+
+which corresponds to a pair of parallel line segments for each i. These line segments de"ne a convex polytope (for large ) within which the hyperquadric is constrained to lie. This representation is valid across a broad range of shapes which need not be symmetric. The parameters A and B determine the slopes of the bounding lines and, G G along with C , the distance between them. determines G G the `squarenessa of the shape. Hyperquadric can model both convex and concave shapes, thus, we do not assume that the nuclei is convex in our approach. 2.4.1. Fitting problem Assume that m data points p "(x , y ), j"1, 2,2, m H H H from n segments (m" L m ) are given. The cost funcG G tion is de"ned as K 1 , " (1!F (p ))# Q, (5) H H G ""
+F (p )"" H H H G where F (p )" , "A x #B y #C "AG, 
+ is the gradient H H G H G G G H operator, is the regularization parameter and Q is the G constraint term [17]. The parameters A , B , C , are G G G G calculated by minimizing using the Levenberg}Marquard non-linear optimization method [18] from a suitable initial guess [17]. Several examples of hyperquadric "tting to an initial set of partial segments are shown in Fig. 4.
+Fig. 4. Fitting results for hyperquadrics.
+
+unique. Each possible solution is measured by the `goodness criteriaa proposed in Section 3.3 and the one with minimum cost determines the segmentation. 3.1. Neighborhood box A neighborhood box, which is de"ned over a region for each b , is used to construct the  , as shown in Fig. 5. G G Suppose that p and p are the end points of b and r is   G the line segment connecting them with l"#r# as the length. The neighborhood box is then de"ned as the combination of a square that extends r and the region enclosed by b . The length of the square edge is a pre-set G number ¸ unless l'¸ where the length is set to l. Any segment b , j"1,2, n or c , j"1,2, n that reH @ H A sides in the neighborhood box is included in  . When G ¸ is properly selected, all the boundary and crease segments of are guaranteed to be in the neighborhood G box, thus, -  . G G 3.2. Search strategy Our next step is to compute from  subjected to G G the consistence criterion. Since every segment in  has G some possibility to be in , the solution is not unique. G However, the construction of  reduces greatly the G searching space. The optimal segmentation is computed by measuring di!erent solutions based on global evolution criteria. The key data structure in our approach is the Assignment Matrix M. Each row of M indicates a possible nucleus. For the clump under investigation, we can construct up to n nuclei. Thus, M has n rows. Each column @ @ of M indicates a boundary or crease segment. Since each crease may be shared by two nuclei, we assign two columns for it. Thus, M has n #2n columns. Let @ A s "b , 1)j)n , H H @ "s @ "c , 1)j)n , s@ L >H\ L >H H A (6)
+
+3. Grouping for nuclei Let each clump be represented by n boundary seg@ ments b , i"1,2, n and n crease segments c , G @ A G i"1,2, n . We assume that there are at most n nuclei in A @ the clump because each nucleus should have at least one boundary segment detected to indicate its existence. The nucleus correspondent to the index of b is de"ned as G G a set of boundary and crease segments belonging to the ith nucleus. Note that does not necessarily include G b and may be empty. All the segments in a certain is G G "tted by the hyperquadric as the actual shape of the nucleus. To delineate the nuclei in one clump, we need to "nd the assignment of all b , i"1,2, n and c , G @ G i"1,2, n to , i"1,2, n . According to their characA G @ ters, each b belongs to one and only one while each G G c belongs to two di!erent nuclei (common boundary) or G not a single nucleus (false crease). This is called the consistence criterion. Thus, two or more boundary segments may be assigned to the same while some other G are un"lled. G To assign the segments, we de"ne a new set  for each G such that -  . It is assumed that detecting  is G G G G trivial and  contains all the segments that have certain G possibilities to be part of the ith nucleus. Computing from  is in fact subject to local, adjacency, and global G G constraint. It is under-constrained and the solution is not
+
+G. Cong, B. Parvin / Pattern Recognition 33 (2000) 1383}1393
+
+1387
+
+Fig. 5. Neighborhood function.
+
+ "+b , b ,,     "+b , c , b ,,      "+b , c , b ,,      "+b , b ,. (8)    The ith row of M represents all possible segments that may be part of a nucleus. The jth column of M indicates all possible nuclei that s may belong to. The main conH straint is to enforce assigning a boundary segment in one and only one nucleus and sharing a crease segment between two di!erent nuclei or not using this segment at all for any nucleus. According to this consistence criterion, a `patha in M is de"ned as a routine from left to right with the so-called `boundary parta and `crease parta. The boundary part passes one and only one `1a for each boundary segment column. For each pair of crease segment columns s @ and s @ which are correL >H\ L >H spondent to the same crease segment, the crease part passes either one `1a in each column but di!erent rows or does not pass any `1a at all. Thus, each path is a segmentation of the clump with the correspondent assignments of . In the path, every boundary segment is assigned to G a nucleus while some crease segments may not be used which enables us to discard the false creases. For example, path I in Fig. 7 indicates that "+b ,,  "+b , c , b ,,     "+b , b ,,    "+b ,,   "+c ,,   "
+, (9)  , i"1, 22 are then "tted by hyperquadrics each of G which is evaluated by the criteria proposed in the next section. Thus, the nuclei segmentation problem is equivalent to "nding a best path with minimum cost. For example, the best path for Fig. 6 is Path II as shown in Fig. 7, i.e.,  "+b , c , b ,,    "+b , c , b ,,     "+b , b ,,    "
+,  "
+,  "
+. (10)  The actual search process is based on dynamic programming [19,20], where the local cost function is de"ned in the next section. The dynamic programming 
+
+Fig. 6. An example of boundary and crease segments.
+
+Fig. 7. Assignment matrix for features of Fig. 6.
+
+M is determined by 1 if s 3  , H G m " GH 0 otherwise. (7)
+
+An example for construction of M for feature segments of Fig. 6 is shown in Fig. 7, where we assume that  "+b , c , b , b ,,      "+b , c , b , b ,,     
+
+1388
+
+G. Cong, B. Parvin / Pattern Recognition 33 (2000) 1383}1393
+
+algorithm is essentially a multi-stage optimization technique where at each stage, or each iteration, the size of the path is increased by one set of feature segments. This process is repeated for each starting point in the assignment matrix, and the path with least cost is selected as "nal hypothesis. 3.3. Evaluation criteria Although nuclei may have completely di!erent morphology, we have some general information about their shapes and properties. This information enables us to compare di!erent hyperquadrics, get rid of the undesirable ones, and reduce false alarms. The `goodnessa criterion includes four terms: area A, shape S, overlap O and error C. Each is evaluated by its representative function E , E , E and E . The cost of the local hyperquadric is  1 ! then given by E "E #E #E #E . The cost of one 2  1 ! path is the summation of costs of the entire set of hypotheses. The transition cost between two adjacent hypotheses is simply an exclusive consistency measure. E , E ,  1 E and E are computed as follows: ! 1. E . A is the area of the hyperquadric. A nucleus  should neither be bigger than (A ) nor smaller than @ (A ). Q 0, E " 1!e\ \@ N  1!e\ Q\ N if A )A)A , Q @ if A'A , @ if A(A , Q (11)
+
+2. E . S de"ned as an aspect ratio as measured by the 1 ratio of minor to major axes as shown in Fig. 8(a). E is 1 de"ned to favor perfect circles: E "1!e\ \1 N1. (12) 1 3. E . A hyperquadric may not always be enclosed by the nuclei clump. An overlap measure is de"ned as the ratio of area inside the clump to the total area of the hyperquadric. E is de"ned to favor larger values of O as shown in Fig. 8(b): E "1!e\ \- N-. (13) 4. E . The error C is de"ned as C" /m, where is the ! error in Eq. (5) of the hyperquadric "tting process and m is the total number of points: (14) E "1!e\!N! ! where , , , are weighting factors for each  1 - ! criterion. 3.4. Post-processing Two kinds of errors may occur in the "tting process. These include a "t that spans outside of the clumped boundary (background inclusion) and one that encloses other nuclei as well. The "rst problem is solved through a simple `ANDa operation. The second type of error could be either due to representation of the same nucleus with two di!erent hyperquadric or a simple overlap between representation of two separate nuclei, as shown in Fig. 9. The "rst case can be easily resolved through a test in the proximity in the
+
+where we choose A "¸, A " ¸. @ Q 
+
+Fig. 8. Evaluation criteria. (a) Shape rate; (b) Overlap rate.
+
+G. Cong, B. Parvin / Pattern Recognition 33 (2000) 1383}1393
+
+1389
+
+Fig. 9. Di!erent types of error in the "t: (a) same nucleus is represented by two objects and part of background; and (b) overlap between two representations of nuclei.
+
+Fig. 10. Contour dynamic: (a) Two contours are squeezed together; (b) Contour dynamic; (c) Stable state.
+
+center of mass. The second case uses a simple model to express dynamic behavior of the boundary as shown in Fig. 10(a). Let two elastic contours C , C be squeezed   against each other. The stable boundary between them will be a!ected by the rebound force that corresponds to the energy of deformation. The rebound force F at any point on the deformed contour is proportional to its displacement d from the original position and perpendicular to the new boundary, as shown in Fig. 10(b), F" d. And the deformation energy is given by e"  d ds, where , are elastic parameters. At equi* librium, F "F along ¸ and the deformation energy   should be minimum, as shown in Fig. 10(c). Then it is not di$cult to prove that every point on ¸ must have the same distance from its original positions on C and C .   Hence, we use a protocol based on distance transform to partition squeezed hyperquadrics. Let region R contain h hyperquadrics h , i"1,2, h with some overlap G where the distance transformations, D (x, y), for each G hyperquadric is computed. Then each point (x, y)3R is assigned to ith nucleus if D (x, y)*D (x, y), ∀j" G H 1,2, h as shown in Fig. 11(a) and (b). 3.5. Experimental results and discussions The proposed protocol has been tested on real data obtained from a #uorescence microscope. The results computed by our approach as well as the `correcta seg-
+
+mentations generated manually by skilled operator interaction are presented in Figs. 12}16. Comparisons between the two types of results are summarized in the following Table 1. `Manuala column presents the numbers of nuclei detected by the skilled operator and those in `Algorithma are numbers of nuclei detected by our algorithm. `Rejecteda are the di!erences between the proceeded columns. Analysis of the output of our algorithm is given in Table 2. `Bad locationa indicates the numbers of nuclei with incorrect partial boundary locations; `Fuseda are the numbers of nuclei that are fused to other ones; `Fragmenteda, the numbers of nuclei that are fragmented into two or more small shapes. The `Acceptablea column gives us the numbers of nuclei correctly detected by our algorithm and `Reliabilitya are the percentages of acceptable nuclei to all detected ones. As we can see, the nuclei lying on the boundaries of the original images are rejected since most of their boundary segments cannot be provided. In Fig. 15, one nucleus is fragmented into two small shape because of the false crease information. The absence of crease segment as well as the fact that, in some situations, a bigger nucleus is `bettera than two very small ones according to our criteria, leads to the fusion of nuclei in Figs. 15 and 16. `Bad locationa happens in Figs. 12 and 13 and 16 because the boundary information is not strong enough to enhance
+
+1390
+
+G. Cong, B. Parvin / Pattern Recognition 33 (2000) 1383}1393
+
+Fig. 11. Steps in resolving the overlap problem between multiple nuclei: (a) two nuclei; (b) three nuclei.
+
+Fig. 12. Segmentation results: (a) original image; (b) correct segmentation; (c) our segmented nuclei.
+
+Fig. 13. Segmentation results: (a) original image; (b) correct segmentation; (c) our segmented nuclei.
+
+G. Cong, B. Parvin / Pattern Recognition 33 (2000) 1383}1393
+
+1391
+
+Fig. 14. Segmentation results: (a) original image; (b) correct segmentation; (c) our segmented nuclei.
+
+Fig. 15. Segmentation results: (a) original image; (b) correct segmentation; (c) our segmented nuclei.
+
+1392
+
+G. Cong, B. Parvin / Pattern Recognition 33 (2000) 1383}1393
+
+Fig. 16. Segmentation results: (a) original image; (b) correct segmentation; (c) our segmented nuclei. Table 1 Numbers of nuclei detected by the two methods Figure index 12 13 14 15 16 Manual 10 11 4 12 14 Algorithm 7 7 4 9 12 Rejected 3 4 0 3 2
+
+range of shapes from partial boundary information. The assignment matrix, on the other hand, converts the segmentation problem into a constrained optimization problem. Our approach aims for global consistency, and as a result, it is less error prone and generates a few false alarm for "nal veri"cation by an operator.
+
+Acknowledgements Authors thank Dr. Mary Helen Barcellos-Ho! and Mr. Sylvain Costes for motivating the problems, valuable discussion, and providing the data used in this experiment. This work is supported by the Director, O$ce of Energy Research, O$ce of Computation and Technology Research, Mathematical, Information, and Computational Sciences Division, and O$ce of Biological and Environmental Research of the U. S. Department of Energy under contract No. DE-AC03-76SF00098 with the University of California. The LBNL publication number is 643205.
+
+the concavity. Since our approach seeks a global solution, it is possible that some local incorrect segmentations be the cost for a better global optimization. In all of the experiments, the hyperquadric has four terms, N"4. The evaluation parameters are ¸"45, "200, "5, "0.5 and "1. These numbers  1 ! are obtained based on a priori information in the speci"c application domain.
+
+4. Conclusion We have presented a new approach for segmentation of nuclei based on partial geometric information. Two key issues are hyperquadric "tting and assignment matrix. Hyperquadric representation can model a broad References
+[1] M. Sonka, V. Hlavac, R. Boyle, Image Processing Analysis and Machine Vision, Chapman & Hall, London, 1995.
+
+Table 2 Detailed analysis of our results Figure index 12 13 14 15 16 Bad location 1 1 0 0 1 Fused 0 0 0 1 1 Fragmented 0 0 0 1 0 Acceptable 6 6 4 7 10 Reliability (%) 88 88 100 77 83
+
+G. Cong, B. Parvin / Pattern Recognition 33 (2000) 1383}1393 [2] H. Talbot, I. Villalobos, Binary image segmentation using weighted skeletons, SPIE Image Algebra Morphol. Image Process. 1769 (1992) 393}403. [3] J. Leu, H. Yau, Detection of the dislocations in metal crystals from microscopic images, Pattern Recognition 24 (1) (1991) 41}56. [4] S. Ong, H. Yeow, R. Sinniah, Decomposition of digital clumps into convex parts by contour tracing and labelling, Pattern Recognition Lett. 13 (1992) 789}795. [5] J. Liang, Intelligent splitting the chromosome domain, Pattern Recognition 22 (1989) 519}532. [6] Y. Jin, Jayasooriah, R. Sinniah, Clump splitting through concavity analysis, Pattern Recognition 15 (1994) 1013}1018. [7] W. Wang, Binary image segmentation of aggregates based on polygonal approximation and classi"cation of concavities, Pattern Recognition 31 (10) (1998) 1502}1524. [8] O. Monga, N. Ayache, P. Sander, From voxel to intrinsic surface features, Image Vision Comput. 10 (6) (1992). [9] O. Monga, S. Benayoun, O. Faugeras, From partial derivatives of 3D density images to ridge lines, Proceedings of the Conference on Computer Vision and Pattern Recognition, 1992, pp. 354}359. [10] J. Thirion, A. Gourdon, The 3D matching lines algorithm, Graph. Model Image Process. 58 (6) (1996) 503}509. [11] J. Thirion, New feature points based on geometric invariants for 3D image registration, Int. J. Comput. Vision 18 (2) (1996) 121}137.
+
+1393
+
+[12] R. Gonzalez, R. Woods, Digital Image Processing, Addison-Wesley, Reading, MA, 1992. [13] P. Saint-Marc, J. Chen, G. Medioni, Adaptive smoothing: A general tool for early vision, IEEE Trans. Pattern Anal. Mach. Intell. 13 (6) (1991) 514}530. [14] D. Struik, Lectures on Classical Di!erential Geometry, Dover Publications, New York, 1988. [15] S. Han, D. Goldgof, K. Bowyer, Using hyperquadric for shape recovery from range data, Proceedings of the IEEE International Conference on Computer Vision, 1993, pp. 292}296. [16] A. Hanson, Hyperquadrics: smoothly deformable shapes with convex polyhedral bounds, Comput. Vision, Graphics, Image Process. 44 (1988) 191}210. [17] S. Kumar, S. Han, D. Goldgof, K. Boeyer, On recovering hyperquadrics from range data, IEEE Trans. Pattern Anal. Mach. Intell. 17 (11) (1995) 1079}1803. [18] W. Press, S. Teukollsky, W. Vetterling, B. Flannery, Numerical Recipes in C, Cambridge Uni. Press, Cambridge, England, 1992. [19] B. Parvin, C, Peng, W. Johnston, M. Maestre, Tracking of tubular molecules for scienti"c applications, IEEE Trans. Pattern Anal. Mach. Intell. 17 (1995) 800}805. [20] R. Bellman, Dynamic Programming, Princeton University Press, Princeton, NJ, 1957.
+
+About the Author*GE CONG received the BS degree in electrical engineering from Wuhan University, Wuhan, China in 1992 and the Ph.D degree in computer science from Institute of Automation, Chinese Academy of Sciences in 1997. He is currently a sta! scientist in Lawrence Berkeley National Laboratory. His research interests include computer vision, pattern recognition and bioinformatics. About the Author*BAHRAM PARVIN received his Ph.D. in Electrical Engineering from University of Southern California in 1991. Since then he has been on the sta! at the Information and Computing Sciences Division at Lawrence Berkeley National Laboratory. His areas of research include computer vision and collaboratory research. He is a senior member of IEEE.
+

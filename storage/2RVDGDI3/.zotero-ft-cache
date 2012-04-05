@@ -1,0 +1,429 @@
+Journal of Food Engineering 74 (2006) 268–278 www.elsevier.com/locate/jfoodeng
+
+A comparison of seven thresholding techniques with the k-means clustering algorithm for measurement of bread-crumb features by digital image analysis
+Ursula Gonzales-Barron, Francis Butler
+Received 8 July 2004; accepted 7 March 2005 Available online 23 May 2005
+
+*
+
+Biosystems Engineering Department, University College Dublin, National University of Ireland, Earlsfort Terrace, Dublin 2, Ireland
+
+Abstract The suitability of seven thresholding methods (six algorithms: isodata, Otsu, minimum error, moment-preserving, Pun and fuzzy; and a manual method) to consistently segment bread crumb images was investigated in comparison with the previously reported k-means clustering technique. Thresholding performance was assessed by two criteria: uniformity and busyness of the binary images. Crumb features (cell density, mean cell area, cell uniformity and void fraction) were computed for each optimal threshold on 135 bread slice images. Slight variations in threshold led to substantial variations in crumb feature values, with cell uniformity and void fraction being more sensitive than the others. The manual method was inadequate for quantiﬁcation of cell uniformity and void fraction. The fuzzy, Otsu, isodata and moment-preserving methods yielded good and consistent binary images. Although the fuzzy method showed relatively higher amount of busyness than the other methods, it was able to perform well on images with large void areas. Ó 2005 Elsevier Ltd. All rights reserved.
+Keywords: Image analysis; Bread; Thresholding; Crumb features
+
+1. Introduction Bread baking is a traditional process in which water, enzyme activity, starch, protein properties and heat are the principal factors that ultimately determine bread quality. Its texture is related to its geometric and mechanical properties, which heavily depend on its cellular structure (Tan, Zhang, & Gao, 1997). Due to the diﬃculty of describing bread crumb grain, baking technologists have normally only manually categorised experimental samples. Lately, with the rapid development of image-processing technology, several research groups have investigated the feasibility of adapting dig-
+
+*
+
+Corresponding author. Tel.: +353 1 706 7473; fax: +353 1 475 2119. E-mail address: f.butler@ucd.ie (F. Butler).
+
+ital image analysis for crumb grain analysis. Smolarz, van Hecke, and Bouvier (1989) used mathematical morphology to deﬁne structural elements of extruded biscuits and to discriminate biscuit types. Bertrand, ´ Le Guerneve, Marion, Devaux, and Robert (1992) and Zayas (1993) extracted discriminative image texture features applying a spatial and spectral approach (twodimensional Haar transform) and a statistical approach (co-occurrence matrix probabilities), respectively. Working on the frequency domain, Wang and Coles (1993) and Rogers, Day, and Olewnik (1995) correlated textural features obtained from fast Fourier transform to panellists scores. Sapirstein, Roller, and Bushuk (1994) implemented a segmentation technique to classify monochrome images of bread slices into cells and background based on adapting a cluster analysis method known as the k-means algorithm. However, other segmentation
+
+0260-8774/$ - see front matter Ó 2005 Elsevier Ltd. All rights reserved. doi:10.1016/j.jfoodeng.2005.03.007
+
+U. Gonzales-Barron, F. Butler / Journal of Food Engineering 74 (2006) 268–278
+
+269
+
+techniques are available and may be suitable for measurement of bread-crumb features. Segmentation partitions an image into distinct regions that are meant to correlate strongly with objects in the image (Eﬀord, 2000). Image segmentation techniques are generally based on either discontinuity or similarity of grey level (GL) values. Thresholding, which lies on the second group, assumes that the object and background pixels can be distinguished by selection of an optimal GL value. Therefore, such selection is critical to ensure successful crumb cells—background partition and subsequent computation of crumb grain features. The objective of this study was to assess the performance of manual threshold selection and six automated thresholding algorithms (isodata, Otsu, minimum error, Pun, moment-preserving and fuzzy) in comparison to the k-means clustering method by two measures of thresholding evaluation (uniformity and busyness) and by quantiﬁcation of bread-crumb features (cell density, mean cell area, cell uniformity and void fraction).
+
+University of Texas Health Science Centre, San Antonio, Texas), the centre of each image (slice) was cropped to a square of 535 · 535 pixels (representing 40 · 40 mm2 of the slice area) and converted to grey-level image (eight bits). 2.2. Thresholding techniques A digital image is a two-dimensional discrete function f(x, y) which has been digitised both in spatial coordinates and magnitude of feature value. A digital image is viewed as a 2-D matrix whose row and column indices identify a small square area of the image called a pixel. Image segmentation is the ﬁrst step of image analysis which aims at either a description of an image or a classiﬁcation. Hundreds of segmentation techniques are present in the literature and almost all are ad hoc in nature (Fu & Mui, 1981). However, there is no single method that can be considered good for all images, nor are all methods equally good for a particular type of image (Pal & Pal, 1993). Image thresholding, which extracts the object from the background in an image, is one of the most common applications in image analysis (Young, Gerbrands, & van Vliet, 1998). In general, the threshold is located at the obvious and deep valley in the histogram of frequencies (Sonka, Hlavac, & Boyle, 1999). However, problems arise when the valley is not so obvious or when the histogram is unimodal (as for bread crumb images, Fig. 1B). The exact value of the threshold has considerable eﬀect on the boundary position and therefore on the overall size of the extracted objects (Castleman, 1996). Fig. 2 illustrates how bread-crumb features such as cell size uniformity and void fraction vary considerably with the grey level selected for binarisation. Because of the sensitivity of the subsequent measurements to the threshold value, an optimal, or at least consistent, method to establish the threshold is required. In this work, eight thresholding techniques, widely used in image analysis, have been assessed for bread-crumb images.
+
+2. Materials and methods 2.1. Image acquisition The bread used was from a study (Keehan, Gallagher, & Gormley, 2003) investigating the baking characteristics of organic ﬂours. Fifteen white bread loaves were sliced transversely using an electric slicer to obtain 15mm thick slices. Nine central slices of each loaf were scanned on one side using a ﬂatbed scanner (Sharp JX-330, Sharp Corporation, California, USA) with 350 dpi of resolution, and the images (135 in total) were saved in TIFF format. VVScan NT scanning software (Krystek EDV-Beratung, Hamburg, Germany) allowed the brightness and lightness to be adjusted to À1 and 30 for each colour plane (RGB), respectively. Using Image Tool software (UTHSCSA Image Tool v.2.0,
+
+Fig. 1. A typical bread-crumb grey-level image of 40 · 40 mm ﬁeld of view (A) and its histogram of frequencies (B). The threshold was manually selected (shown by the arrow) on the valley or dip closest to the mean grey level value.
+
+270
+140 120
+
+U. Gonzales-Barron, F. Butler / Journal of Food Engineering 74 (2006) 268–278
+0.5 0.45
+
+Cell size uniformity
+
+Void fraction
+
+100 80 60 40 20 0 115 120 125 130 135
+
+0.4 0.35 0.3 0.25 115 120 125 130 135
+
+(A)
+
+Grey level thre shold value
+
+(B)
+
+Grey level threshold value
+
+Fig. 2. Variation of cell size uniformity and void fraction with grey level threshold for a bread-crumb sample (Fig. 1A).
+
+(a) Manual method: This simple way to locate a threshold consists of ﬁnding each of the peaks of the histogram of frequencies and then the valleys between them. In this work, the suitable threshold picked out was the one corresponding to the local minimum frequency value immediately left adjacent to the mean grey level value of the image. This procedure is illustrated on a typical histogram of frequencies in Fig. 1B. This analysis was performed independently for each image and the threshold selected based on the entire image was veriﬁed for randomised 178 · 178-pixel sub-images, as carried out by Crowley, Grau, and Arendt (2000). (b) Isodata algorithm: This simple iterative technique for choosing a threshold was developed by Ridler and Calvard (1978). Initially, a guess is made at a possible value for the threshold. From this, the mean values of pixels in the two categories (objects and background) produced using this threshold are calculated. The threshold is repositioned to lie exactly half way between the two means. Mean values are calculated again and a new threshold is obtained, and so on until the threshold stops changing value. Let the histogram of pixel values be denoted by h(0), h(1) . . . h(L À 1), where h(i) speciﬁes the number of pixels in an image with greyscale value i and L À 1 is the maximum pixel value (255). The initial guess at t is set to the median pixel value. Then, for values less or equal to t, the mean pixel value (l1) is calculated by , t t X X l1 ¼ i Á hðiÞ hðiÞ ð1Þ
+i¼0 i¼0
+
+analysis and maximises the Ôbetween-class varianceÕ r2 ðkÞ of the GL histogram to give the best separation B of classes. Let the pixels of a given image be represented in L grey levels [0,1,2, . . . ,L À 1]. The number of pixels at level i is denoted by h(i) and the total number of pixels by N. The grey level histogram is normalised and considered as a probability distribution. The probability of occurrence of each grey level p(i) is pðiÞ ¼ hðiÞ ; N pðiÞ P 0;
+LÀ1 X i¼0
+
+pðiÞ ¼ 1
+
+ð3Þ
+
+The zeroth- (x(t)) and the ﬁrst-order cumulative moments of the histogram up to the tth level (l(t)), and the total mean level (lT) of the original picture are calculated. xðtÞ ¼
+t X i¼0 t X i¼0 LÀ1 X i¼0
+
+pðiÞ
+
+ð4Þ
+
+lðtÞ ¼
+
+i Á pðiÞ
+
+ð5Þ
+
+lT ¼
+
+i Á pðiÞ
+
+ð6Þ
+
+The optimal threshold t* is r2 ðtÃ Þ ¼ max r2 ðtÞ B B
+t2GL
+
+ð7Þ
+
+where r2 ðtÞ ¼ B ½lT xðtÞ À lðtÞ2 xðtÞ½1 À xðtÞ ð8Þ
+
+whereas, for values greater than t, the mean pixel value (l2) is given by , LÀ1 LÀ1 X X l2 ¼ i Á hðiÞ hðiÞ ð2Þ
+i¼tþ1 i¼tþ1
+
+The t value is re-estimated as the integer part of the mean of l1 and l2. This is repeated until t stops changing. (c) OtsuÕs algorithm: This method (Otsu, 1979) is one of the most popular techniques of optimal thresholding (Nixon & Aguado, 2002). It is based on discriminant
+
+(d) Minimum error algorithm: In this method, developed by Kittler and Illingworth (1986), the GL histogram is viewed as an estimate of the probability density function of the mixture population comprising of the grey levels of the objects and background (j = 1, 2). Each of the components is normally distributed with mean m(j) and standard deviation r(j) and a probability P(j). However, these parameters are not usually known and instead a criterion function J(t) is used.
+
+U. Gonzales-Barron, F. Butler / Journal of Food Engineering 74 (2006) 268–278
+
+271
+
+J ðtÞ ¼ 1 þ 2½P 1 ðtÞLnr1 ðtÞ þ P 2 ðtÞLnr2 ðtÞ À 2½P 1 ðtÞLnP 1 ðtÞ þ P 2 ðtÞLnP 2 ðtÞ where P 1 ðtÞ ¼
+t X i¼0 LÀ1 X i¼tþ1 t 1 X i Á pðiÞ P 1 ðtÞ i¼0
+
+ð9Þ
+
+H 0b ¼ À
+
+t X i¼0
+
+pðiÞloge pðiÞ
+
+ð20Þ
+
+H 0w ¼ À pðiÞ ð10Þ
+
+LÀ1 X i¼tþ1
+
+pðiÞloge pðiÞ
+
+ð21Þ
+
+P 2 ðtÞ ¼
+
+pðiÞ ¼ 1 À P 1 ðtÞ
+
+ð11Þ
+
+m1 ðtÞ ¼
+
+ð12Þ
+
+where H 0b and H 0w are measures of the a posteriori information associated with the black and white pixels after the thresholding. Knowing the a priori entropy of the GL histogram, Pun (1980) proposed an algorithm to determine the optimal threshold by maximising the upper bound of the a posteriori entropy H 0 ¼ H 0b þ H 0w
+0
+
+ð22Þ
+
+LÀ1 1 X m2 ðtÞ ¼ i Á pðiÞ P 2 ðtÞ i¼tþ1 t 1 X 2 ½i À m1 ðtÞ Á pðiÞ P 1 ðtÞ i¼0 LÀ1 1 X 2 ½i À m2 ðtÞ Á pðiÞ P 2 ðtÞ i¼tþ1
+
+ð13Þ
+
+Maximising H is equivalent to maximising the following evaluation function: f ðtÞ ¼ H ðtÞ loge P ðtÞ H T loge maxfp0 ; . . . ; pt g   H ðtÞ loge ð1 À P ðt þ 1ÞÞ þ 1À H T loge maxfptþ1 ; . . . ; pLÀ1 g
+t X i¼0
+
+r1 ðtÞ ¼
+
+ð14Þ
+
+ð23Þ
+
+r2 ðtÞ ¼
+
+ð15Þ
+
+with respect to t, where H ðtÞ ¼ À pðiÞloge pðiÞ ð24Þ
+
+The optimal threshold t* is obtained by J ðtÃ Þ ¼ min J ðtÞ
+t2GL
+
+ð16Þ HT ¼ À
+
+LÀ1 X i¼0
+
+(e) K-means clustering algorithm: This approach (adapted from Hartigan, 1975) considers the values in the two regions of the histograms (background and foreground pixels) as two clusters. The objective is to pick a threshold such that each pixel on each side of the threshold is closer in intensity to the mean of all pixels on that side of the threshold than the mean of all pixels on the other side of the threshold. In other words, let l1(t) be the mean of all pixels less than the threshold and l2(t) be the mean of all pixels greater than the threshold. The aim is to ﬁnd a GL value that meets the following criteria: 8i P t : ji À l1 ðtÞj > ji À l2 ðtÞj and 8i < t : ji À l1 ðtÞj < ji À l2 ðtÞj ð18Þ For each potential boundary, a partition error (PE), which is a measure of clustering eﬃciency, is determined. PEðtÞ ¼
+LÀ1 X ½hðiÞði À lðtÞÞ i¼0
+
+pðiÞloge pðiÞ
+
+ð25Þ
+
+P ðtÞ ¼
+
+t X i¼0
+
+pðiÞ
+
+ð26Þ
+
+(g) Moment-preserving algorithm: In this method (Tsai, 1985), the threshold value is computed deterministically in such a way that the moments of an image to be thresholded are preserved in the binary image. The jth moment m(j) is calculated as mðjÞ ¼
+LÀ1 1 X j i hðiÞ N i¼0
+
+ð17Þ
+
+j ¼ 1; 2; 3.
+
+ð27Þ
+
+The threshold value t* is obtained from the GL histogram of the image by choosing t* as the p0-tile, where p0 is given by z À m1 ð28Þ p0 ¼ 2 ðc1 À 4c0 Þ1=2 and m1 m3 À m2 2 m2 À m2 1 m1 m2 À m3 m2 À m2 1
+
+ð19Þ c0 ¼ c1 ¼
+
+ð29Þ ð30Þ
+
+Finally, the t value that holds the lowest PE will be regarded as the optimal threshold. (f) Entropic method (Pun method): This algorithm uses the entropy of the GL histogram by applying information theory. Let t be the value of the threshold and deﬁne two a posteriori entropies:
+
+1 1=2 z ¼ fðc2 À 4c0 Þ À c1 g 1 2
+
+ð31Þ
+
+272
+
+U. Gonzales-Barron, F. Butler / Journal of Food Engineering 74 (2006) 268–278
+
+(h) Fuzzy thresholding algorithm: Huang and Wang (1995) applied fuzzy set theory to partition an image space by minimising the measure of fuzziness of the image. This measurement can be expressed by terms such as entropy, index of fuzziness and index of nonfuzziness. In the notation of fuzzy set, the image set I = f(x, y) of size M · N can be written as I ¼ fðf ðx; yÞ; lI ðf ðx; yÞÞÞg ð32Þ The membership function lI(f(x, y)) can be viewed as a characteristic function that represents the fuzziness of a (x, y) pixel in I. lI ðf ðx; yÞÞ ¼
+1 1þjf ðx;yÞÀl0 ðtÞj=C 1 1þjf ðx;yÞÀl1 ðtÞj=C
+
+(a) Region uniformity: The uniformity of a feature over a region (Levine & Nazif, 1985) is inversely proportional to the variance of the values of that feature at every pixel belonging to that region. A large variance indicates a large spread from the mean of the feature value across the region. Let f(x, y) be the GL of the pixel (x, y), Ri the segmented region i, and Ai the number of pixels in Ri (i = 1,2). For a given threshold value t, the non-uniformity measure U(t) is U ðtÞ ¼ where r2 þ r2 1 2 C ðf ðx; yÞ À li Þ f ðx; yÞ Ai ð41Þ
+2
+
+ð39Þ
+
+if f ðx; yÞ 6 t ð33Þ if f ðx; yÞ > t
+
+r2 ¼ i
+
+X P
+
+ð40Þ
+
+ðx;yÞ2Ri
+
+where the average grey levels l0(t) and l1(t) can be regarded as the target values of the background and the object for a given threshold value t; and C is a constant value such that 0.5 6 lI(f(x, y)) 6 1. , t t X X l0 ðtÞ ¼ i Á hðiÞ hðiÞ ð34Þ
+i¼0 LÀ1 X i¼tþ1 i¼0
+
+li ¼
+
+ðx;yÞ2Ri
+
+, i Á hðiÞ
+
+l1 ðtÞ ¼
+
+LÀ1 X
+
+hðiÞ
+
+ð35Þ
+
+i¼tþ1
+
+The measure of fuzziness that was used in this work was the entropy E(I) by using the ShannonÕs function S(l(xi)) (Huang & Wang, 1995). The optimal threshold can then be determined by minimising the measure of fuzziness E(X). SðlI ðiÞÞ ¼ ÀlI ðiÞ ln½lI ðiÞ À ½1 À lI ðiÞ ln½1 À lI ðiÞ ð36Þ EðIÞ ¼
+Ã LÀ1 X 1 SðlI ðiÞÞhðiÞ MN ln 2 i¼0
+
+C = a normalisation factor. Therefore, the lower U(t) value, the greater the uniformity in the binary image. (b) Busyness measure: Weszka and Rosenfeld (1978) introduced one method of computing the amount of busyness or roughness in a binary image based on the grey-level co-occurrence matrices (Haralick, Shanmugam, & Dinstein, 1973). These matrices contain elements that are counts of the number of pixel pairs for speciﬁc grey levels. For GL i and j, the co-occurrence matrix M is Mði; jÞ ¼
+N N XX x¼1 y¼1
+
+ðP ðx; yÞ ¼ iÞ ^ ðP ðx0 ; y 0 Þ ¼ jÞ
+
+ð42Þ
+
+where the coordinates x 0 , y 0 are the oﬀsets given by the speciﬁed distance d and inclination a by y 0 ¼ y þ d sinðaÞ; x0 ¼ x þ d cosðaÞ 8ðd 2 1; maxðdÞÞ ^ ða 2 0; 2pÞ ð43Þ
+
+ð37Þ ð38Þ
+
+t ¼ arg min EðX Þ
+t2GL
+
+2.3. Methods to assess thresholding techniques performance One important concern in image thresholding is the segmentation eﬀectiveness. One of the most diﬃcult problems in evaluating the performance of global thresholding algorithms is choosing a meaningful performance criterion due to the diﬃculty in selecting a reasonable standard of comparison and the diﬃculty in interpreting the results in a meaningful and unbiased way (Lee, Chung, & Park, 1990). Two common performance evaluation criteria, region uniformity and busyness measure were employed in the present study as measures to evaluate the thresholding techniques.
+
+The four co-occurrence matrices (d = 1; a = 0, 45, 90, 135) are then averaged and normalised. Given a threshold t of an image, the measure of busyness B(t) is computed by summing those entries of the co-occurrence matrix representing the percentage of object-background adjacencies: BðtÞ ¼
+t LÀ1 X X i¼0 j¼tþ1
+
+Mði; jÞ
+
+ð44Þ
+
+If pores and background are not strongly textured and have rather simple compact shapes, then noise points in the object and background of the thresholded image and strong irregularities in the object background border are undesirable. Busyness is therefore a criterion that involves spatial information, in contrast to other programmed methods that only take into account
+
+U. Gonzales-Barron, F. Butler / Journal of Food Engineering 74 (2006) 268–278
+
+273
+
+information from the histogram, ignoring spatial details (Weszka & Rosenfeld, 1978). If B(t) is relatively high for a given optimal threshold, we would expect the thresholded image to contain a large number of noise points or jagged edges. Conversely, a low B(t) would indicate that the optimal threshold chosen results in a smooth picture. 2.4. Crumb features calculation The manual threshold value was selected from the histogram of frequencies according to the procedure described above. The automated algorithms for image thresholding were programmed in Matlab 6.12 (The MathWorks Inc., Natick, Mass, USA). For each threshold method, a binary image was obtained from the greyscale image using the calculated threshold value. The crumb grain features extracted from the binary images were: (i) cell density (number of cells/cm2), (ii) mean cell area in mm2, (iii) cell uniformity (the ratio between the number of cells lower than 5 mm2 to the number of cells higher than 5 mm2), and (iv) void fraction (the fraction of the total area corresponding to the bread pores). Computer processing time for complete analysis of a single crumb bread image was approximately 18, 16, 7, 7, 6, 5, 3 s, for minimum error, fuzzy, moment-preserving, k-means, isodata, Pun, and Otsu, respectively, on a Dell 1 GHz 128 MB PC (Intel Celeron processor). Uniformity and busyness measures were calculated in Matlab 6.12 (The MathWorks Inc., Natick, Mass, USA) from binary images produced by the automated algorithms. Two images per loaf (30 images in total) were randomly selected to estimate the uniformity and busyness measures and average values were determined for each algorithm. 2.5. Statistical evaluation Regression analysis on optimal threshold was conducted between k-mean clustering and every other technique using Minitab version 13.1 (Minitab Inc., State College, PA, USA). The regressions on optimal threshold values of every method with k-means were compared using a F-test for error mean squares (a = 0.05). Regression analysis for the crumb features extracted was performed between k-means clustering and every other technique.
+
+3. Results and discussion Fig. 3 shows the binary images obtained from Fig. 1A by the eight thresholding techniques. Diﬀerences between the thresholding techniques are apparent from visual inspection of the images. The greater fraction of black pore areas in the image generated by the Pun method
+
+(Fig. 3H) indicated that this method overestimated the void fraction. Conversely, the minimum error technique (Fig. 3A) appeared to underestimate the void fraction. The isodata algorithm was sensitive to the presence of dark areas (large pores) in the bread-crumb image. When very large pores were present in the image, the histogram of frequencies of grey level produced another peak or a local mode in the histogram of frequencies (Fig. 4). When it occurred, the isodata algorithm tended to partition the histogram at a lower grey level, as it picked out the optimal threshold between modes. This is because the isodata method is an algorithm that has the tendency to split the histogram in approximately the same number of pixels in the two categories (Glasbey & Horgan, 1995). Because the computation of optimal threshold value was aﬀected by changes in the histogram shape (local modes), it was liable to be lower in magnitude as the number or size of relatively large pores increased. However, such sensitivity was diminished when large pores were present by dividing the image into 25 107 · 107-pixels sub-images and computing optimal threshold for each sub-image. The median of this 5 · 5 optimal threshold matrix was regarded as the new optimal threshold. Nevertheless, if the FOV considered were larger (consequently, greater probability of tonality variations in objects and background), it would be recommendable to work with local or adaptive thresholds (Castleman, 1996). The minimum error algorithm was also sensitive to the presence of large dark pores in the images. This drawback was also lessened by subdividing the FOV into 25 regions. The minimum error algorithm considers a distribution that is a mixture of two Gaussians distributions. Probabilities, mean and variances of pixel values are estimated for each category and the threshold is set as the closest GL corresponding to the minimum probability between the maxima of two normal distributions, which results in minimum error segmentation (the smallest number of pixels is mis-segmented). For the case of the Otsu algorithm, despite the possibility of coming across a multimodal objective function pointed out by Kittler and Illingworth (1985), this function always behaved well for the crumb images histograms, i.e., it presented only one maximum point corresponding to optimal threshold. Unlike the minimum error algorithm, the parameters required in the Otsu algorithm are the zeroth and the ﬁrst order accumulative moments because the second order accumulative moments (variances) constitute the measure of discriminant criteria. The Otsu, moment-preserving and k-means clustering (also based on discriminant analysis) methods allowed working with a global threshold due to their very low sensitivity to the presence of a local mode corresponding to dark areas. The fuzzy algorithm, although based on diﬀerent assumptions, were unbiased by dark large pores in the image.
+
+274
+
+U. Gonzales-Barron, F. Butler / Journal of Food Engineering 74 (2006) 268–278
+
+Fig. 3. Binary images of Fig. 1A, thresholded by: minimum error (A, t* = 118); Otsu (B, t* = 120); isodata (C, t* = 121); moment-preserving (D, t* = 122); k-means clustering (E, t* = 123); manual method (F, t* = 125); fuzzy measure (G, t* = 126); and PunÕs algorithm (H, t* = 131), showing their respective cell density (D) in cells/cm2, mean cell area (M) in mm2, void fraction (V), and cell uniformity (U) values.
+
+The manual thresholding method had the lowest coeﬃcient of correlation (R = 0.959) with k-means clustering for optimal threshold values (Tables 1 and 2).
+
+Fig. 5 shows the scatter plot for optimal threshold values obtained by the manual method and the fuzzy method (which had the highest correlation) compared
+
+U. Gonzales-Barron, F. Butler / Journal of Food Engineering 74 (2006) 268–278
+
+275
+
+Fig. 4. A bread-crumb image containing three very large cells (A) showing how they aﬀect the histogram shape (B). The peak produced is indicated by the arrow.
+
+Table 1 Intercept, slope, standard error of estimates and coeﬃcient of correlation values from regressions between k-means clustering method with every other method for optimal threshold values Method Manual Isodata Otsu M. error Pun Moment Fuzzy Intercept (st. error) 5.079 10.702 0.259 9.933 13.047 4.734 1.987 (2.943) (1.338) (1.296) (1.640) (1.887) (1.520) (2.204) Slope (st. error) 0.963 0.905 0.975 0.889 0.963 0.955 1.009 (0.0247) (0.0113) (0.0109) (0.0138) (0.0159) (0.0128) (0.0181) R 0.959 0.990 0.992 0.984 0.982 0.988 0.995
+
+to the optimal threshold obtained by the k-means clustering technique. The drawback of the manual method arose from the fact that the same values of optimal threshold were assigned to images that presented diﬀerences in brightness (mean grey level). Fig. 5A indicates how the manual method thresholded several images at the same grey level values while the k-means method was able to select distinct threshold values. The manual method also had the lowest R value (0.813) and the lowest slope (0.854) for mean cell area regressions (Table 4). In the case of void fraction (Table 6), there was no correlation between manual method
+
+and k-means clustering method results. Overall the manual method was found to be an unsuitable method for determining optimal threshold values for bread slices. The optimal threshold computed by Pun was much higher than the one selected by k-means as its intercept had the highest value (13.047) of all techniques while the slope for the optimal threshold values was close to 1 (0.963) (Table 1). As a consequence, the Pun method had the lowest correlation of all automated thresholding methods (Table 2). As the Pun method had a higher optimal threshold value, the crumb features extracted were consequently aﬀected. For cell density, the Pun method exhibited the lowest R-value (0.918), the lowest slope (0.661) and the highest intercept (14.682) with the highest standard error of estimates. For mean cell area, the Pun method had the lowest R values after the manual method (0.856). The intercept for cell uniformity regression was the highest (18.4) and the slope and R values were the lowest ones (0.369; 0.531, respectively). For void fraction, the analysis of variance for the regression between Pun and k-means was not signiﬁcant. After the Pun method, the minimum error presented the lowest coeﬃcient of correlation with k-means for optimal threshold values (0.984). The slope (Table 1) of this regression was the lowest (0.889) amongst all
+
+Table 2 F-test comparisons on the regressions of every thresholding method with the k-means method showing directionality of diﬀerences of optimal threshold values t-Value Isodata Otsu M.error Pun Moment Fuzzy < 0.05. < 0.01. *** P < 0.001.
+** P *P
+
+Manual I > M*** O > M*** ME > M*** P > M*** MP > M*** F > M***
+
+Isodata O > I* I > ME* I > P** I > MP* F > I*
+
+Otsu
+
+Min. error
+
+Pun
+
+Moment
+
+O > ME** O > P** O > MP* F > O*
+
+ME > P* MP > ME* F > ME**
+
+MP > P* F > P***
+
+F > MP**
+
+276
+160
+
+U. Gonzales-Barron, F. Butler / Journal of Food Engineering 74 (2006) 268–278
+160
+
+125
+
+Fuzzy optimal threshold
+
+Manual threshold
+
+125
+
+R = 0.959
+90 80 120 160
+
+R = 0.995
+90 80 120 160
+
+(A)
+
+k-means clustering optimal threshold
+
+(B)
+
+k-means clustering optimal threshold
+
+Fig. 5. Optimal threshold values computed by the manual and fuzzy methods plotted against optimal threshold values obtained by the k-means clustering method.
+
+Table 3 Intercept, slope, standard error of estimates and coeﬃcient of correlation values from regressions between k-means clustering method with every other method for cell density Method Manual Isodata Otsu M. error Pun Moment Fuzzy Intercept (st. error) 3.757 (1.059) 1.468 (0.577) À2.513 (0.986) 0.851 (1.271) 14.682 (1.468) À0.823 (0.706) 5.234 (0.974) Slope (st. error) 0.931 0.977 1.033 0.982 0.661 1.010 0.898 (0.0178) (0.0097) (0.0166) (0.0214) (0.0247) (0.0119) (0.0164) R 0.976 0.993 0.983 0.969 0.918 0.991 0.978
+
+Table 5 Intercept, slope, standard error of estimates and coeﬃcient of correlation values from regressions between k-means clustering method with every other method for cell size uniformity Method Manual Isodata Otsu M. error Pun Moment Fuzzy Intercept (st. error) 8.760 1.076 1.421 À0.331 18.400 À2.562 8.747 (2.414) (1.521) (2.618) (3.557) (2.310) (1.962) (1.658) Slope (st. error) 0.757 0.981 1.071 1.144 0.369 1.098 0.707 (0.0534) (0.0337) (0.0580) (0.0787) (0.0511) (0.0434) (0.0367) R 0.775 0.930 0.849 0.784 0.531 0.910 0.858
+
+Table 4 Intercept, slope, standard error of estimates and coeﬃcient of correlation values from regressions between k-means clustering method with every other method for mean cell area Method Manual Isodata Otsu M. error Pun Moment Fuzzy Intercept (st. error) 0.116 À0.085 À0.072 À0.126 0.287 À0.066 0.087 (0.0354) (0.0156) (0.0116) (0.0221) (0.0327) (0.0187) (0.0159) Slope (st. error) 0.854 1.132 1.052 1.113 0.935 1.090 0.967 (0.0530) (0.0234) (0.0174) (0.0331) (0.0489) (0.0280) (0.0238) R 0.813 0.973 0.982 0.946 0.856 0.959 0.962
+
+Table 6 Intercept, slope, standard error of estimates and coeﬃcient of correlation values from regressions between k-means clustering method with every other method for void fraction Method Manuala Isodata Otsu M. error Puna Moment Fuzzy
+a
+
+Intercept (st. error) 0.424 À0.042 À0.160 0.031 0.430 À0.102 0.122 (0.0573) (0.0351) (0.0245) (0.0458) (0.0303) (0.0358) (0.0225)
+
+Slope (st. error) À0.081 (0.1494) 1.112 (0.0913) 1.345 (0.0639) 0.830 (0.1194) 0.145 (0.0788) 1.250 (0.0932) 0.772 (0.0586)
+
+R 0.045 0.726 0.877 0.511 0.158 0.758 0.753
+
+Regressions with these methods were not signiﬁcant.
+
+methods and the intercept was moderately high (9.933). The minimum error method performed adequately for cell density (Table 3) and mean cell area (Table 4). However, it performed poorly for cell uniformity (R = 0.784, Table 5) and void fraction (R = 0.511, Table 6). The poor performance of the minimum error may be due to the underlying assumption of the method that the distribution of background and pores grey levels follow normal distributions, when in practice this might not be the case. The optimal threshold values of the remaining techniques (isodata, Otsu, moment-preserving and fuzzy) correlated well with k-means clustering (Table 1). Results for cell density (Table 3) and mean cell area (Table 4) were similar for the four methods. The coeﬃcients of correlation for cell size uniformity and void fraction
+
+(Tables 5 and 6) were much lower than the ones for the other crumb features. Otsu and fuzzy methods had lower correlations than isodata and moment-preserving for cell size uniformity. The Otsu method presented the highest correlation with k-means clustering for void fraction, while the isodata, moment-preserving and fuzzy methods were comparable. When the bread-crumb image was composed of very large pores that modiﬁed the ordinary histogram shape, the fuzzy method was the only method capable of segmenting consistently the pores without being aﬀected by the presence of another mode in the histogram of frequencies. The fuzzy method binarised the crumb images at a higher grey level (as shown in Fig. 3G) and this tendency was maintained regardless of the pore size.
+
+U. Gonzales-Barron, F. Butler / Journal of Food Engineering 74 (2006) 268–278
+Uniformity Busyness
+
+277
+
+Isodata
+
+Otsu
+
+kMin.error means
+
+Pun
+
+Moment
+
+Fuzzy
+
+Fig. 6. Uniformity and busyness measures of thresholding performance for the diﬀerent thresholding methods (mean values for 30 randomly selected images).
+
+The minimum error and Otsu methods presented the lowest busyness measures (0.65 and 0.66) since they tended to partition the image in a lower optimal threshold value. Producing a lower optimal threshold value leads to a shrinking of features and a reduction in perimeter and consequently a lessening in raggedness for crumb images. The moment-preserving (B(t) = 0.71) and isodata (B(t) = 0.70) methods were similar in busyness to k-means (0.72) while the fuzzy method showed a higher busyness measure (0.76). Again, the Pun method showed the highest busyness measure (0.82) due to its tendency to connect objects causing a denser and jagged binary image (Fig. 3H).
+
+Performance measures
+
+0.82
+
+0.59 0.72
+
+0.59 0.70
+
+0.59 0.66
+
+0.59 0.65
+
+0.60 0.71
+
+0.64
+
+0.59
+
+0.76
+
+4. Conclusions Fig. 6 shows the results of uniformity and busyness measures for all the methods. Isodata, Otsu, minimum error, moment and fuzzy methods presented on average the same degree of uniformity (0.59) as k-means clustering. The only method that had a higher uniformity value was Pun (0.64), indicating its poorer ability to uniformly segment bread crumb images. This suggests that the pores segmented by the Pun method presented a higher grey level variance (a large spread from the mean of the feature value across the region). The Pun method assumes that an image is the outcome of an L-symbol source, and maximises an upper bound of the total a posteriori entropy of the partitioned image (Eqs. (22) and (23)). This assumption seems to be not suitable for bread crumb images. On the whole, the performance in uniformity of Otsu and isodata was similar to that of k-means. This was not surprising as Sahoo, Soltani, and Wong (1988) stated that Otsu is a uniformity-oriented method since the uniformity is computed as a measure within each region independent of the surroundings and determines the optimal threshold by minimising the variance of the segmented region (Eq. 8). Equally, it is not surprising to ﬁnd the isodata method comparable to the Otsu method in uniformity, because the main principle behind the iterative thresholding schemes of Ridler and Calvard (1978) can be deﬁned as a special case of the classical BayesÕ discrimination rule. Under the assumption that objects and background pixels are normally distributed within the same variance and that the prior probabilities for objects and background pixels are the same, BayesÕ formula reduces to the computation of optimal threshold in Ridler and Calvard (1978). Fuzzy method was as good as k-means in uniformity performance, in spite of segmenting the image at a higher grey level value. This is because of fuzzy logicÕs ability to deal with ambiguous data. The moment-preserving method (uniformity = 0.60 in Fig. 6) turned out to be a uniformity-oriented method as was earlier explained by Lee et al. (1990) on their images. Because threshold selection can strongly aﬀect breadcrumb features values even with slight variations in optimal threshold, the performance of seven thresholding methods was evaluated in comparison to the previously used k-means clustering technique. The manual method was found to be unreliable for the quantiﬁcation of cell size uniformity and particularly for void fraction. PunÕs entropic method was not suitable as it tended to binarise the image on a very high threshold value, generating binary images of poor uniformity and high busyness. The Pun method, of all the automated methods, showed the poorest R-values when correlated with k-mean clustering for optimal threshold values and for all crumb features. The minimum error method was strongly inﬂuenced by small changes in the histogram shape caused by the presence of very large pores in the bread crumb image. It produced images consisting of smaller pore size which caused more discrepancy with k-means results especially in cell size uniformity and void fraction. Because each technique is based on a particular assumption, the Otsu, fuzzy, isodata and moment-preserving methods resulted in optimal threshold values that were slightly diﬀerent from each other. In general terms, these methods generated good and consistent binary images in terms of thresholding performance measures and crumb features computed. The isodata and moment-preserving algorithms produced binary images of comparable quality to k-means in uniformity and busyness. Although the isodata method presented a trend slightly more similar to k-mean clustering than the moment-preserving algorithm, the isodata method may be more sensitive to local modes (arising from large pores) in the histogram than the moment-preserving method. The Otsu method produced binary images with a high degree of uniformity. It also correlated slightly better to k-means clustering for optimal threshold values and void fraction than did the isodata and moment-preserving methods. Even though fuzzy had a relatively high busyness measure, fuzzy was the algorithm that
+
+278
+
+U. Gonzales-Barron, F. Butler / Journal of Food Engineering 74 (2006) 268–278 Kittler, J., & Illingworth, J. (1986). Minimum error thresholding. Pattern Recognition, 19(1), 41–47. Lee, S. U., Chung, S. Y., & Park, R. H. (1990). A comparative performance of several global thresholding techniques for segmentation. Computer Vision, Graphics, and Image Processing, 52, 171–190. Levine, M. D., & Nazif, A. M. (1985). Dynamic measurement of computer generated image segmentations. IEEE Transactions on Pattern Analysis and Machine Intelligence, 7(2), 155–164. Nixon, M., & Aguado, A. (2002). Feature extraction & image processing. Oxford: Newnes. Otsu, N. (1979). A threshold selection method from grey-level histograms. IEEE Transactions on Systems, Man and Cybernetics, 9(1), 62–66. Pal, N. R., & Pal, S. K. (1993). A review on image segmentation techniques. Pattern Recognition, 26(9), 1277–1294. Pun, T. (1980). A new method for grey-level picture thresholding using the entropy of the histogram. Signal Processing, 2(3), 223–237. Ridler, T. W., & Calvard, S. (1978). Picture thresholding using an iterative selection method. IEEE Transactions on Systems, Man and Cybernetics, 8(8), 630–632. Rogers, D. E., Day, D. D., & Olewnik, M. C. (1995). Development of an objective crumb grain measurement. Cereal Foods World, 40(7), 498–501. Sahoo, P. K., Soltani, S., & Wong, K. C. (1988). A survey of thresholding techniques. Computer Vision, Graphics and Image Processing, 41, 233–260. Sapirstein, H. D., Roller, R., & Bushuk, W. (1994). Instrumental measurement of bread crumb grain by digital image analysis. Cereal Chemistry, 71(4), 383–391. Smolarz, A., van Hecke, E., & Bouvier, J. M. (1989). Computerized image analysis and texture of extruded biscuits. Journal of Texture Studies, 20, 223–234. Sonka, M., Hlavac, V., & Boyle, R. (1999). Image processing, analysis and machine vision. CA: Brooks/Cole Publishing. Tan, J., Zhang, H., & Gao, X. (1997). SEM Image processing for food structure analysis. Journal of Texture Studies, 28, 657–672. Tsai, W. H. (1985). Moment-preserving thresholding: a new approach. Computer Vision, Graphics and Image Processing, 29, 377–393. Wang, J., & Coles, G. D. (1993). Image processing methods for determining bread texture. In Proceedings of the ﬁrst New Zealand conference on image and vision computing (pp. 125–132), Auckland. Weszka, J. S., & Rosenfeld, A. (1978). Threshold evaluation techniques. IEEE Transactions on Systems, Man, and Cybernetics, 8(8), 622–629. Young, I. T., Gerbrands, J. J., & van Vliet, L. (1998). Fundamentals of image processing. The Netherlands: Delft University of Technology. Zayas, I. Y. (1993). Digital image texture analysis for bread crumb grain evaluation. Cereal Food World, 38(10), 760–766.
+
+best correlated to k-means clustering on optimal threshold values and had the advantage of being not biased by the presence of very large pores in the bread crumb images. Acknowledgement This work was funded by the Irish Department of Agriculture through the Food Institutional Research Measure. The Authors wish to acknowledge Ms. Emer Gallagher and Ms. Denise Keehan, Teagasc, The National Food Centre, Dunsinea, Castleknock, Dublin, Ireland, who supplied the loaves used in this study. The Authors wish also to acknowledge Dr. Roberto ´ Quevedo Leon, Department of Food Science and Technology, Universidad de Los Lagos, Chile, for his assistance with the Otsu method. References
+´ Bertrand, D., Le Guerneve, C., Marion, D., Devaux, M., & Robert, P. (1992). Description of the textural appearance of bread crumb by video image analysis. Cereal Chemistry, 69(3), 257–261. Castleman, K. R. (1996). Digital image processing. New Jersey: Prentice-Hall. Crowley, P., Grau, H., & Arendt, E. K. (2000). Inﬂuence of additives and mixing time on crumb grain characteristics of wheat bread. Cereal Chemistry, 77(3), 370–375. Eﬀord, N. (2000). Digital image processing, a practical introduction using JAVA. Harlow: Addison-Wesley. Fu, K. S., & Mui, J. K. (1981). A survey on image segmentation. Pattern Recognition, 13(1), 3–16. Glasbey, C. A., & Horgan, G. W. (1995). Image analysis for the biological sciences. Chichester: John Wiley & Sons. Haralick, R. M., Shanmugam, K., & Dinstein, I. (1973). Textural features for image classiﬁcation. IEEE Transactions on Systems, Man, and Cybernetics, 3(6), 610–621. Hartigan, J. A. (1975). Clustering algorithms. New York: Wiley. Huang, L. K., & Wang, M. J. (1995). Image thresholding by minimising the measures of fuzziness. Pattern Recognition, 21(1), 41–51. Keehan, D., Gallagher, E., & Gormley, T. R. (2003). Evaluating the baking potential of organic ﬂours. In Proceedings: 12th World Congress of Food Science and Technology, IFT, Chicago, Illinois. Kittler, J., & Illingworth, J. (1985). On threshold selection using clustering criteria. IEEE Transactions on Systems, Man & Cybernectics, 15(5), 652–655.
+

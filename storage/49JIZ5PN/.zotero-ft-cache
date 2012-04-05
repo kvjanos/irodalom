@@ -1,0 +1,373 @@
+Pattern Anal Applic (2007) 10:301–319 DOI 10.1007/s10044-007-0069-7
+
+THEORETICAL ADVANCES
+
+Segmentation of microscope images of living cells
+Anna Korzynska Æ Wojciech Strojny Æ Andreas Hoppe Æ David Wertheim Æ Pawel Hoser
+
+Received: 29 November 2005 / Accepted: 27 January 2007 / Published online: 12 April 2007 Ó Springer-Verlag London Limited 2007
+
+Abstract This paper describes a segmentation method combining a texture based technique with a contour based method. The technique is designed to enable the study of cell behaviour over time by segmenting brightﬁeld microscope image sequences. The technique was tested on artiﬁcial images, based on images of living cells and on real sequences acquired from microscope observations of neutrophils and lymphocytes as well as on a sequence of MRI images. The results of the segmentation are compared with the results of the watershed and snake segmentation methods. The results show that the method is both effective and practical. Keywords Segmentation Á Microscope images Á Texture Á Edge detection Á Cell movement
+
+1 Introduction Quantiﬁcation of cell behaviour from microscope images is important for many biomedical studies for example in haematology, cancer research and wound healing [1–4]. Both direct and indirect methods can be used for quantitative studies of cell behaviour. Indirect methods involve measuring features from a fraction of the cell population.
+
+A. Korzynska (&) Á W. Strojny Á P. Hoser Institute of Biocybernetics and Biomedical Engineering, Polish Academy of Sciences, ul.Ksiecia Trojdena 4, 02-109 Warszawa, Poland e-mail: Anna.Korzynska@ibib.waw.pl A. Hoppe Á D. Wertheim Faculty of Computing, Information Systems and Mathematics, Kingston University, Penrhyn Road, Kingston upon Thames, Surrey KT1 2EE, UK
+
+For direct methods assessment is made by quantifying the behaviour of each individual cell. The direct observation method was proposed by Abercrombie in 1953 [5], who documented the behaviour of the ﬁbroblast culture, then carried out a frame by frame study of each object and measured the mean speed of the ﬁbroblast movement. More recent investigations have involved using cameras connected to computers to acquire images of cell behaviour [6–12]. In these studies cell area [13], cell shape [14, 15], cell extension and retraction zone [9, 16], cell dispersion or compactness [17] and cell position on the plane [18] can be assessed. These features are used to study cell movement, cell area and shape changes [1, 19] and to calculate the population motility index [1, 3, 20, 21]. Some studies of cell behaviour are based on the operator pointing out the cell position and/or cell outline [22] and others are based on automatic or semiautomatic cell outline detection [8, 9, 23–25]. The former technique is usually used in studies involving a high density of cells in which cells may be in contact with one another. The latter technique uses image processing methods to ﬁnd cells on static images in order to assess cell behaviour. Image segmentation can be a difﬁcult part of the direct automatic and semiautomatic cell behaviour studies. The direct method is used when it is important to measure cell area and shape. Automatic segmentation of living cell images is possible with ﬂuorescent images, because of the cell colour or its brightness on a black background [17]. Some segmentation methods are suitable for phase contrast images which produce a strong halo that simpliﬁes the contour of the cells [13, 14]. Two semiautomatic methods for brightﬁeld microscopy cell segmentation have been described by Hoppe et al. [26] and Korzynska [27–31]. It was felt that the two methods are complementary [32] and thus in this paper we describe
+
+123
+
+302
+
+Pattern Anal Applic (2007) 10:301–319
+
+a technique developed by combining these methods. This combined segmentation method has been implemented [32] and tested experimentally. This paper includes an evaluation based on artiﬁcial test images and on real-life sequences acquired from microscopic observations of cell behaviour as well as a discussion of the advantages and disadvantages of the method and its application to other types of sequential medical images.
+
+2 Characteristics of living cell images Static images of living cells acquired from bright ﬁeld microscopy by monochromatic cameras are difﬁcult and challenging to segment. They consist of an almost uniform grey background with a few objects of complex shape surrounded by a black belt and/or halo (Fig. 1a). The inner part of the cell is composed of various size spots which are, in most cases, darker or brighter than the background grey level. There are some regions in the inner part of the cell in which the background grey levels are observed. Bright ﬁeld microscope images are obtained with light transmission. The transmission image arises as a result of light absorption at each point of the image. The inherent feature of imaging of this type makes its lateral resolution more than one micrometer, but the depth of the ﬁeld of the vision is neither great enough to view the whole depth of the cell in the specimen nor shallow enough to view
+Fig. 1 Cell Behaviour Monitoring System applied to the ﬁrst frame from the neutrophil movement sequence. The image and the object characteristic features: a line proﬁle through a well-deﬁned cell border-right, and not welldeﬁned cell border-left, b a spot darker than cytoplasm, c a spot brighter than cytoplasm, d disappearing contrast between cell and background, e lamellopodium, f another type of pseudopodia-uropodium, I manually selected contour in the ﬁrst frame of the sequence, II reference area in the background manually selected in the ﬁrst frame of the sequence, III result of texture segmentation, IV ﬁnal result of segmentation, presented as superimposed boundary, V ﬁnal result of segmentation, presented as a binary map
+
+isolated points along only one surface [33]. So the grey level of each pixel integrates information of light absorption produced by cellular structures at different depths along the light path. This information is distorted as a result of light diffusion. There is almost no diffraction of the light effects, due to the coherent scattering on the specimen structures, but there is signiﬁcant light dispersion because of reﬂection on the cell membrane in the brightﬁeld microscope technique. The cell is a transparent object with various organelles and grains suspended in cytoplasm [34]. The cytoplasm absorbs rays of light to a certain degree. Other cell structures absorb light in various but higher degrees than the cytoplasm. So the cell body is visible as a non-uniformly composed structure of dark (darker than cytoplasm) and bright spots (Fig. 1b). Spots brighter than the background appear, because some of the cellular structures behave as a converging lens, or there is some light reﬂection on the cell surface (Fig. 1c). The cell border is visible mostly as a dark outline, emphasized by a slightly brightened up background called the halo (Fig. 1). The dark outline appears because of light reﬂection or distortion on the path of the cell membrane that is not parallel to the plane. Height and slope of this not parallel membrane part is correlated with intensity of black belt and halo. Some parts of the cell border have poor contrast with respect to the background, because in these parts the cell is ﬂattened and its membrane slope is gentle. So round cells have relatively clear cell outline with respect to the background; ﬂattened cells, in
+
+123
+
+Pattern Anal Applic (2007) 10:301–319
+
+303
+
+some parts of the border region, are almost indistinguishable from the background (Fig. 1d). Cells change their shape by deforming the overall shape of the cytoskeleton, e.g. they elongate it by developing pseudopodia, a delicate sheet-like extension of the cytoplasm. There are several types of such pseudopodia (Fig. 1f): microspike, ﬁlopodia, uropodia, lobopodia, lamellopodia [2], tenupodia and magnupodia [17], which are described for different types of cells. But the most important cell extensions are the large and broad frontal pseudopodium, called lamellopodium, approximately 1-lm thick (Fig. 1e). Lamellopodium, with regularly spaced small protrusions resembling ﬁngers along the edge, forms temporary contact with the substrate and inﬂuences cell movement direction [2, 34]. The large variety of cell shapes visible in images is associated with the movement of the pseudopodia which goes along the axis perpendicular to the plane, and hence cannot be clearly observed. The cell behaviour is observed in time as sequences of static images acquired in constant time increments. So there is contextual information, gathered from the previous frames, which can be used to identify objects even at the time they are difﬁcult to differentiate against the background in the particular static image. 2.1 Features exploited in the proposed segmentation method There are three features of microscopic images of living cells that are used in the proposed segmentation method. The most important is texture, which discriminates the cell’s area against the background area. The background area is relatively homogeneous in comparison to the cell body area as the background grey level variation is caused only by noise, while the grey level variation of cell area is also caused by light absorption, reﬂection and ampliﬁcation in the cell structures. There are two types of cell region: the cell body itself and the cell pseudopodia region. The cell body area can be discriminated from the background based on the standard deviation of the grey level ﬂuctuation, while the cell pseudopodia region, which is more transparent and homogenous, can be discriminated by a slight shift in the mean value of the grey level (Fig. 1a—right side line proﬁle, e, f). The next feature used in the segmentation method is the cell boundary gradient which is mostly well-deﬁned, except in pseudopodia regions (Fig. 1a—left side line proﬁle, b). The well-contrasted border produces a strong gradient in the gradient image. It is known that gradient-based localization of the edge is more precise and accurate than the localization based on the texture. The texture is deﬁned
+
+for a region of at least several pixels (called the block), and therefore, in the texture analysis the effective image resolution is decreased (4 times for a 2 · 2 block, 25 times for a 5 · 5 block etc.). However, with this method it is possible to detect the boundary even if the grey level gradient on the cell’s boundary is small, and the gradient method fails. The last feature used is the similarity of consecutive images in a sequence. Cell behaviour is monitored and documented in a sequence of images separated by a time increment such that the cell only slightly changes its shape and position from one static image to the next (i.e. the overlap of the cell area on two consecutive images is signiﬁcant). It is then possible to ﬁnd the new position of the cell boundary in the nearest neighbourhood of the previous position.
+
+3 Mathematical aspects: preliminaries Consider a sequence f1, f2, …, fK of length K, consisting of static images of spatial resolution N · M, each including Lmax distinct grey levels. This sequence of images has been acquired from a microscopic living cell specimen with Dt time increments. The time increment is adjusted to the dynamics of the cell’s shape and position changes in such a way that the cell border in consecutive images is located close to the previous one. Although several cells are visible in each sequence, the segmentation is performed one cell at a time. The cells are indexed by j, running from 1 to J (the total number of cells in sequence). Any cell which is not entirely contained in the ﬁrst frame is segmented from the frame on which the cell is fully visible in the image and ending where the cell partially crosses the frame border. Rejected images are replaced by black binary images. The segmentation results of the jth cell is a sequence of binary images Bj1, Bj2, BjK (Fig. 1 V), in which pixels of value 1 correspond to the cell in image fi and pixels of value 0 correspond to the background or other objects. Therefore, each static image fi is generally deﬁned as a function from the spatial domain X to the set G: f ði; jÞ : X ! G where X is the set of pairs: {i,j} i = 1, 2, …, N j = 1, 2, …, M characterizing the grid and G is the set of natural numbers {0, 1, …, Lmax} called the grey level values [35, 36]. The segmentation of static image fi is the optimal partition of X into disjoint, nonempty subsets X1, X2, XL such that:
+
+123
+
+304
+L [ l¼1
+
+Pattern Anal Applic (2007) 10:301–319
+
+Xl ¼ X
+
+ð1Þ
+
+and there is no overlapping, i.e. for all pair of subsets Xk, Xl 2{X} Xk \ Xl ¼ / if k 6¼ l
+
+The proposed combined method produces a sequence of binary images for each cell, and image Bji + 1 is constructed from fi + 1 and Bji. Additional information required to segment the very ﬁrst image in the sequence must be separately delivered by the operator and is coded as the ‘‘zero’’ binary image Bj0. 3.1 Description of proposed segmentation method
+
+Among all possible partitions the segmentation result should be the one which agrees with human perception, marked X*. This assumption is difﬁcult to translate to mathematical formulae, so it is replaced by a two-directional optimisation process, which allows keeping a number of partitions (in this investigation as many partitions as the number of cells plus one partition for background are expected) and keeping their relative localization in space or approximate shape (in this investigation, the localization of the object is not far from the previous position and the shape of the object is expected to resemble the shape in the previous frame). In the case of cell behaviour studies the above presented general approach of the static image segmentations should be developed in some aspects and simpliﬁed in others: 1. A static image is part of the sequence of images documenting the object’s dynamics. It is therefore possible to use external information about the cell appearance and location received from the previous image in the sequence (or from the operator for the very ﬁrst frame in the sequence). Since cells are placed sparsely and they are separated one from another (surrounded by the background), it is possible to decompose each of the static images into several images in such a way that in each image only one cell remains (the other objects are included into the background). The process of cell segmentation can be done for each cell separately and sequentially, which simpliﬁes the segmentation process to a twozone division: the background and other objects X1t and the cell X2t. Because microscopic images are not suitable to be segmented using one of the standard segmentation approaches (threshold, region, edge, statistic etc.), two (texture threshold and edge detection) are combined to achieve a satisfactory result. Both methods have been previously used for segmentation and both produced good results for cells with well-deﬁned borders, while in difﬁcult cases both failed when used separately. Their combination, however, turned out to be efﬁcient even in difﬁcult cases. This is because both methods are complementary in the sense that where one fails, the other usually works.
+
+The proposed combined segmentation method is performed in the following steps. The ﬁrst step of the segmentation attempts to identify at a coarse level the cell regions. Two parameters, the mean grey level (M) and the standard deviation (SD) of the grey level variation, are calculated for each texture block [37] and compared to Mref and SDref values obtained from a manually selected background reference region. They are tested according to the following inequalities:     SD À SDref  M À M ref  ! SDthr or ! Mthr ð2Þ SDref M ref Threshold values of the mean grey level and the standard deviation are denoted by SDthr and Mthr. These are the maximal relative deviations of both tested parameters in a certain texture block and background reference region. The binary image is built as follows: If (2) is satisﬁed, then B(block position) = 1 else B(block position) = 0 is used to construct binary image B. In the next step small size objects are rejected and the largest size object holes are ﬁlled in order to form a single, simply-connected region. Then image fXn is calculated as the linear combination of the source image fn and the product f  B according to equation:
+X fn ¼ ð1 À aÞfn þ afn Bjn
+
+2.
+
+ð3Þ
+
+3.
+
+The weight coefﬁcient a is adjusted to smoothen out ﬂuctuations of the grey level outside the cell. The image fXn is then gaussian-ﬁltered. The image gradient is calculated using the Prewitt simpliﬁcation of general gradient magnitude function [38]:  jrf ðx; yÞj ¼ @f @x 2  2 !1 2 @f þ @y
+
+ð4Þ
+
+which leads to the following weights ﬁlter matrices: À1 À1 À1 0 0 0 1 1 1 À1 À1 0 0 1 1 À1 0 1
+
+123
+
+Pattern Anal Applic (2007) 10:301–319
+
+305
+
+The image gradient is used to determine the position of the contour. One-dimensional subspaces called proﬁle lines (of length according to parameter L) are placed radially from the centre of the area (in this case 2p/A—where A is the angle distance between lines). The normalized cumulative Prewitt edge operator function (CPF as shown in Fig. 11) is calculated along proﬁle lines. The intersections of the cell contour with the proﬁle lines are found according to one of the following strategies: • A point where the cumulative function reaches a threshold (chosen a priori), which is a fraction of its maximal value (works only for almost rounded cancer cell [26]). The ﬁrst encountered inﬂection point of CPF, going from the centre outwards (works well for neutrophils [39]). The point with the highest curvature, called the bending point, deﬁned and described in the Appendix, which is controlled by two parameters, RmW (smoothing coefﬁcient) and H (length of the curvature controller arm).
+
+•
+
+contain any part of the cell itself, but which is as near as possible to the segmented cell (called the ‘‘reference area’’, Fig. 1 II). In the next step, the operator localises more or less precisely the cell boundary (Fig. 1 I). After the texture examination, the operator is asked to provide a point in the middle of the cell which can be used as the starting point of the proﬁle lines in the stage of the gradient analysis. The operator conﬁrms or corrects the values of the parameters proposed by the system (Fig. 1 left side panel):
+
+•
+
+•
+
+In ﬁnal step the contour is formed from the suggested points using spline interpolation [40]. 4 Segmentation procedure The proposed method is semiautomatic. The operator initialises the process of segmentation for each cell that is fully visible and does not touch the image border. The segmentation procedure is performed on consecutive images in the sequence until the selected cell is not in direct contact with the image border, or the sequence ends. Each result is then visually evaluated by the operator, and either is accepted or improved by adjusting the segmentation parameters manually. The operator can recalculate the segmentation results with new values of the parameters at any time using the back function (Fig. 1, left side panel, button ‘‘Back’’). Since images of the size of up to M = N = 2,048 pixels and with a number of grey levels of up to Lmax = 4,056 are sometimes dealt with, the calculations are performed only on the region of interest rather than on the whole image. In order to separate the region of interest, the image is divided into three regions: the region which is most likely going to belong to the background after Dt, the region which is most likely going to belong to the cell and the region where changes of the pixel status are expected, which is the region of interest, also called the ‘‘working space’’ (WS). Next all pixels from the WS are classiﬁed as cell or background in the following steps: • First, the operator is asked to select a rectangular area in the picture, about the size of the cell which does not
+
+– – SDthr default value = 0.5, threshold of standard deviation of the grey level, – – Mthr default value = 0.2, threshold of the mean value of the grey level, – – W default value = 5 · 5, texture window size, – – L default value = 150 pixels, length of the proﬁle line, – – A default value = 10, angle between the proﬁle lines, and some others that are not visible but can be found in the menu: – – RmW default value = 10, size of gaussian smoothing operator that controls the strength of smoothing, – – H default value = 30, length of the curvature controller arm, – – p default value = 30 pixels, distance by which the circumscribed rectangle around the result of processing of the previous frame is increased, – – a default value = 0.5, weight coefﬁcient of adding two images, • The values of Mref (mean of the grey levels) and SDref (standard deviation grey levels) are calculated based on the ‘‘reference area’’ in the analysed image, WS is constructed as an enlarged circumscribed rectangle (Fig. 2b) around the result of segmentation of the previous frame or the operator’s initialisation information, WS is divided into blocks, with the size of each block being set by the value of parameter W, and then each block is assigned either to the object (the cell) or the background according to the inequalities (2), based on the threshold Mthr and SDthr (Fig. 2b), and calculated for reference area values Mref and SDref, The connectivity and compactness of the selected cell region is examined (Figs. 1 III, 2c) and then the algorithm of hole ﬁlling by adding inverse binary image is used for the largest object, Prewitt gradient in the image after the gaussian ﬁltration is calculated according to (2) (Fig. 2d, shown after gamma correction to visualize the black area), The linear combination of the original image and the images resulting from texture segmentation are calcu-
+
+•
+
+•
+
+•
+
+•
+
+•
+
+123
+
+306 Fig. 2 A cell with small gaps of contrast in several border places (a). Maps of the texture block classiﬁcation with region of interest WS superimposed (b), ﬁnal result of the texture analysis segmentation (c), Prewitt gradient of the smoothed image (d), linear combination of the gradient and texture space (e), some of the radial line proﬁles superimposed on the cell in e (f), ﬁnal segmentation result (g), ﬁnal result superimposed on the result of texture analysis (h) ﬁnal result superimposed on the original cell image (i)
+
+Pattern Anal Applic (2007) 10:301–319
+
+•
+
+•
+
+•
+
+• •
+
+•
+
+lated (Fig. 2e, shown after gamma correction to visualize the black area) according to (3), The initial point for the gradient analysis is found according to the chosen strategy, i.e. as the cell’s centre of gravity in the previous image or by operator. Onedimensional tables (proﬁles) of the grey level along the lines emanating radially from the initial point (Fig. 2f) are calculated; the length, number and position of the proﬁles are set according to two parameters L and A, The results of applying the Prewitt gradient operator along the proﬁles are cumulated and normalized (Fig. 11a), The cell edge points are found where the proﬁle lines cross the cell boundary (see * in Fig. 11b and c), based on the analysis of the CPF curvature for each proﬁle, The points found are used to form an outline using the spline approach (Fig. 2g), The three previous activities (localization of the initial point and the calculation of the vertices) are repeated until the position of the cell centre becomes stable (centre does not move more than one pixel up, down right or left in a single step) (Fig. 2j, l), which is called the step of automatic adjustment, Optionally a procedure to smooth the results can be performed if necessary.
+
+are any outliers among the contour points (i.e. they are too far outside or inside in comparison with their neighbours). Their position is normalised using the median or average of the neighbouring positions. The proposed method has been implemented in MATLAB (The MathWorks US) as a preliminary testing version and in C# [Microsoft US] (Fig. 1 software interface) as a part of the Cell Behaviour Monitoring System developed in the laboratory. 4.1 Operational considerations for the developed cell segmentation software The proposed method has been implemented and tested with various sequences of images such as the movement of an artiﬁcial object and of cells. These experiments have shown that there are several general guidelines for selecting the parameter values: • if there is high noise contamination in the image, the SD parameter should be increased in relation to the default value; if some part of the cell’s border is weak, the M and W parameters should be adjusted in the following way: M decreased and the texture window size W increased to the half of the length of the weak border part; if the object is large, the L parameter, that is the length of the proﬁle lines, should be increased to the fraction of about 1.3 times the maximal object’s radius;
+
+•
+
+• If the operator requires, a post processing correction is performed. The smoothing procedure checks whether there
+
+123
+
+Pattern Anal Applic (2007) 10:301–319
+
+307
+
+•
+
+•
+
+if the object is small, the L parameter, that is the length of the proﬁle lines, and the two hidden parameters RmW and H should be decreased; in order to increase the precision of adjusting the cell’s outline to the cell’s border, parameter A should be decreased to the value of 1°.
+
+It has been observed that during the process of segmenting a single sequence, the proposed semi-automatic method hardly ever requires any interventions from the operator. Almost all of these interventions are adjustments of the texture block size W. Sometimes the value of the parameters Mthr and SDthr have to be adjusted. The other parameters of the proposed method (p and a) are pre-deﬁned and set constant. It has been observed that their inﬂuence on the result of the segmentation process is insigniﬁcant, and they can be disregarded.
+
+Canada), which connects the neighbouring pixels, if their grey level is within a certain range of tolerance of the grey level. The ‘‘ground truth’’ extraction procedure is performed using high magniﬁcation. It does not allow the whole object to be seen so that the operator focuses on connecting the background pixels. The results of this procedure are very similar to one another, but if an intensive halo is added to the object, it produces a small over-segmentation. This procedure is highly recommended as it is reproducible and independent from the operator [32], and it has also been chosen to estimate the error. The error Ed of the cell’s centre of gravity position is measured by the distance between the expected and calculated centres with an accuracy of half a pixel. 5.1 Comparison of the combined method with other segmentation methods Although there are many published segmentation methods, most are not suitable for cell microscope images, e.g. a simple threshold is not suitable because the histogram of grey levels is not bimodal. Therefore, it was decided to choose two more advanced methods: a morphological watershed method and one from the deformable contour group of methods: the snake method. The results of the combined method were compared with results using a snake method, implemented in shareware software ImageJ [41, 42] (http://rsb.info.nih.gov/ij/docs/ Online ImageJ Documentation) and the watershed method implemented in the MATLAB Image Processing Toolbox. The watershed algorithm is based on ‘‘topographical’’ interpretation of the image or gradient image in 3D space and produces a continuous object outline even if the contrast or gradient decreases in any border region. This technique is sensitive to noise, which often causes overpartition. This problem was avoided using pre-smoothing ﬁlters. However, in this technique it is not easy to incorporate some external knowledge, which is available because of the fact that the previous image approximates the localization and shape of the object. The only tool which may be implemented in watershed algorithms, so-called ‘‘markers’’, turned out to be not ﬂexible enough [41–44]. The snake algorithms construct outlines of an object as deformable polygons. The side of the polygon may be a spline rather than a straight line, to achieve a smoother shape. The energy function, deﬁned in various categories, reﬂects certain independent knowledge about the region that is to be segmented. This method can accommodate some missing or confusing border parts and can produce a closed contour and regions without holes. The technique is recommended for moving boundaries in a sequence of the images, since the deformation of the snake, from one frame to the next, is small [41, 45–47].
+
+5 Experimental results The segmentation results of several experimentally acquired sequences of images and of many artiﬁcial images were analysed and compared quantitatively by assessing the errors of object area and location. A total of 266 artiﬁcial greyscale images, of size 512 · 512 pixels with object with partly well-deﬁned borders were formed (Fig. 5). They were constructed using characteristics of images collected experimentally from several sequences of neutrophils and lymphocytes. Cell shape was simpliﬁed to a regular ellipsoid with various side extensions, with locally and gradually changing contrast that simulated cell pseudopodia located in a different directions. To simplify the error measurement, it is assumed that there is only one object in each image. Generally, however, there are more objects in the image. The cell area error E is calculated with the following formula, where: Br is the segmentation result, B is the reference object area [28, 41]: ð ð B [ Br Þ À ð B \ Br Þ Þ Â100% B
+
+E¼
+
+ð5Þ
+
+More precisely, Br is the binary image which presents the segmentation result (Fig. 2j), and B is a binary image of the so-called ‘‘ground truth’’. The ‘‘ground truth’’ is easily obtained for artiﬁcial images. For experimentally acquired images ‘‘ground truth’’ is found by connecting all the pixels around the cell in the grey levels range of the background grey levels. This procedure is done by the operator using an interactive tool, called the magic wand mask tool in Corel Photo-Paint 12 (Corel Corporation,
+
+123
+
+308
+
+Pattern Anal Applic (2007) 10:301–319
+
+The comparison of the results obtained by using our combined method and the results obtained by using snake and watershed methods, was done visually on two types of images: medical images and artiﬁcial images with inherent noise and low contrast parts. Figure 3 and Table 1 show these results. Medical images were acquired as a sequence in which any image does not differ much from the previous image (microscope bright ﬁeld images of neutrophils Fig. 3d, e and MRI images of the horizontal section of the human body Fig. 3a, b, g, h, i, j) and tested using the proposed method. The proposed method (Fig. 3a) and the snake method (Fig. 3b) seem to fail when applied to bone structure segmentation on MRI section images. The area of the bone is over-segmented in the proposed method, under-segmented for the snake method and the difference is visible in Fig. 3c. The watershed method, after connection of pieces with the criterion of the mean gray level in the gradient image (Fig. 3j), showed the best segmentation results.
+
+The proposed method produced good results for neutrophil images (Fig. 3d), while the other two exhibited a tendency to cut off the cell’s pseudopodia (Fig. 3e, g, h). In particular, the snake method produced an under-segmented area and the watershed method produced an area for which the connecting criteria is not obvious. Therefore, these pieces had to be merged together by the human operator (Fig. 3h, g). However, this still exhibited an under-segmentation in the pseudopodia region. After the quantitative comparison of area error estimated based on ‘‘ground truth’’ it appears that the new method produces some small over-segmentation, while the snake method and the watershed method under-segmented to a higher degree because of the omission of pseudopodia on the cell images. This causes an error of the cell centre position of up to 10 pixels for the snake methods and up to 6 pixels for the watershed method. Meanwhile, the extra area added to the cell area by the proposed method is very homogenously distributed around the cell, which reduces
+
+Fig. 3 Segmentation results of proposed method (a, d), snake method (b, e) and watershed method (g–j) on cell images (d, e, g, h) and MRI bone image (a, b). The microscope brightﬁeld image shows a neutrophil with large pseudopodia (fully visible in Fig. 1) (segmentation results superimposed in images e and d) and the difference between the results of the proposed and the snake segmentation methods (c, f)
+
+123
+
+Pattern Anal Applic (2007) 10:301–319 Table 1 The area error comparison for the two segmentation methods: the proposed combined and the snake methods Source image Proposed segmentation method error (%) 5 Snake segmentation method error (%) 10 23 21 5
+
+309
+
+effectiveness of the method. Thus, experimental tests were conducted on artiﬁcial images and microscope images. 5.2.1 How the values of the combined method parameters inﬂuence the segmentation results The proposed combined method uses parameters W, M, SD, L and A as described in Sects. 3 and 4 on which the segmentation result depends. The values of these parameters are adjusted by the operator using a software window left panel in Fig. 1. To test these dependences, the neutrophil image from Fig. 1 and artiﬁcial images from the fourth row in Fig. 5 were analysed. The cell area and the position of the cell centre were calculated for all of the test images by making one of the parameters variable, while others were kept constant. Then the texture analysis block size W was changed from 2 to 12, the threshold value for the mean grey level Mthr and its standard deviation SDthr were changed from 0.2 to 1, the angle distance between the two proﬁle lines A from 1° to 10° and the length of line proﬁles L from 100 or from the maximal cell diameter to 160 pixels. The results of the analysis of the cell area and the position of the cell central point for two cells from Fig. 1, the left cell (cell 1) and the
+
+Neutrophil from the middle row (Fig. 1)
+
+Neutrophil from the bottom-left row 14 (Fig. 1) MRI image-section of bone 11 Artiﬁcial images with middle level of 1 noise
+
+the error of the cell centre position to a maximum of 2 pixels, which seems to be caused by computational error rather than by false position of the cell centre. 5.2 Examination of the proposed method with artiﬁcial and microscope images There are some inherent parameters of the proposed method, which can inﬂuence the results of segmentation. These should be tested in order to examine the range of
+
+Fig. 4 The graphs of dependence of the area measurements (subimages from a to e) and of the cell centre positions (f) from: the size of the texture blocks W (a, f), the mean value of the grey level threshold M (b, f), the value of the threshold SD of standard deviation of grey levels (c, f), the length of the lines proﬁle L (d, f) and the angle between the lines proﬁle A (e, f), for two neutrophils from Fig. 1
+
+a
+
+b
+
+c
+
+d
+
+e
+
+f
+
+123
+
+310 Fig. 5 Series of the artiﬁcial test images with objects of various shapes with and without various size protrusions (each column) and with various levels of noise contamination (from the second to the ﬁfth row, with noise levels of 12, 15, 18 dB, line proﬁles of ﬁrst column images in Fig. 6) and these segmentation results superimposed on these images
+
+Pattern Anal Applic (2007) 10:301–319
+
+bottom cell (cell 2) are gathered in functions and presented in Fig. 4. The results of segmentation of the artiﬁcial objects differ from one another to such a small degree that their area error ﬂuctuates about 1%, and the centre point distance is not larger than 2 pixels. The dependence of the size of the segmented area on block size W and on the SDthr threshold of the standard deviation of the mean grey level are very weak in all the tested cases. This is because the next step of the segmentation procedure, i.e. the edge detection stage, reduces the over-segmentation produced in the earlier stages. A wider variation of the segmented area size is observed for the rest of the tested parameters. For cell 1, with the strong gradient almost around the whole cell, except for two very small gaps, the variation of the tested values appears smaller than for cell 2, because the second cell, with large pseudopodia and broad gaps is more difﬁcult to segment. The widest variations of the segmented area size are observed for variable L, but they are relatively insigniﬁcant being up to 6% for cells and up to 4% for artiﬁcial objects. The length of the line proﬁles L is crucial for the edge point detection because of the strategy described in the Appendix and because of the fact that if it is too small, it can cause a signiﬁcant error as the proﬁle lines do not
+
+reach the cell boundary. If L is longer than about 130– 160% of the maximal cell radius the background around cell grey level variation inﬂuences the result of the edge point determination. Because of the process of gradient normalization along the proﬁle lines, the detected point of the cell edge in some such cases can be slightly shifted in the direction of the cell centre, which causes a decrease in cell area. Similarly, if the line proﬁles go through or even touch another object, it can cause a signiﬁcant error in determining the edge position. In such a case a point can even be chosen outside of the cell. However the method is supposed to work with objects surrounded solely by the background. Parameter L is related to the next two parameters: the width of the smoothening operator RmW and the width of the arm of the curvature operator H. All of them should simultaneously decrease or increase, which is described in the Appendix. The distance between the reference cell centre and the centre of the area segmented with the proposed method is presented in the graph shown in Fig. 4f for all the tested parameters and for both cells. All distances in cell 1 are similar to the results of the artiﬁcial objects and not bigger than 2 pixels. For cell 2, the new segmentation method determines the centre position with an error of up to
+
+123
+
+Pattern Anal Applic (2007) 10:301–319
+
+311
+
+7 pixels. This happens because the value of parameter Mthr causes an area expansion. Parameter Mthr is connected with the detection of the pseudopodia which are detected based on the difference in the mean grey level in comparison with the background mean grey level. This dramatically changed the area of the cell with pseudopodia. A value too high for this parameter reduces the areas which were segmented by excluding pseudopodia. So to avoid an unequal inﬂuence of this parameter on the segmentation results it can be ﬁxed on the value appropriate for the weakest contrasted cell in the sequence. Large values of parameter A, which determines the angle between two proﬁle lines, cause a decrease of the cell area, particularly for the cell with pseudopodia. If there are 360°/ A proﬁle lines, the determined contour is constructed based on 360°/A path of spline lines. This line better describes the shape if A is smaller, because minor details between the two proﬁles are taken into consideration. Therefore, this parameter should be set to the value of 1° even if it signiﬁcantly increases the time of the procedure performance. There are two more parameters of the proposed method: weight coefﬁcient a (set to 0.5, which guarantees that the texture and gradient analyses should equally inﬂuence the ﬁnal result of the segmentation) and p—the width of the belt around the cell body, in which the new position of the cell boundary is expected (set to 30 pixels). It is suggested that Dt, the time increments of the sequence acquisition, should be adjusted in such a way to fulﬁl the assumption that the cell does not move far from its previous position in any two consecutive frames. The time increment has been adjusted for the segmentation of the neutrophils (Dt = 30 s or 1 min) and lymphocytes (Dt = 5 min) sequences [29, 32, 39]. This guarantees that the chosen values for parameters a and p are stable. In summary, the combined segmentation method depends on several parameters, but our examination shows that parameters W and SD inﬂuence the results of the segmentation to such a small degree that it is possible to set them constant. Parameter M should be adjusted for the most difﬁcult case in the sequence, and parameter A should be set to 1, which guarantees the highest precision of the area detection. The operator should adjust only L, RmW, H which are dependent on the cell size and the strategy of the edge point detection. 5.2.2 How initialisation inﬂuences the results of segmentation There are three preliminaries that the operator is asked to attend to in the initialization stage of the combined segmentation procedure: ‘‘reference area’’ selection (Fig. 1II), cell boundary localization (Fig. 1I) and the initial centre
+
+point in the middle of the cell. This information is required for the very ﬁrst frame only. All of them have negligible inﬂuence on the ﬁnal segmentation result if provided correctly as described below. The ‘‘reference area’’ should be chosen as near as possible to the segmented cell because of the non- uniformity of the light distribution across the image plane and over time. The region should cover a clear background (no objects) throughout the image sequence because otherwise it causes incorrect classiﬁcation of the texture block. If the region is correctly chosen, the inﬂuence of its size and position is not important because Mref and SDref do not vary with the region size or changes in its position near the cell, where the light conditions are stable. Any rough cell boundary localization should be manually outlined (Fig. 1I). This outline should be placed not far from the cell boundary preferably outside the cell. Too close to the center or an inside location of the outline can cause parts of the cell to be excluded from the analysis (p = 30 pixels distance), which results in an error in the cell detection. The outside location causes a large WS region and makes the calculation takes longer. The initial outline should not surround, go through or even touch another object, since this would cause both objects to be segmented together. If the outline is chosen correctly, the inﬂuence of its position is not important because the texture classiﬁcation criteria stabilizes the result regardless of the WS size or position. The point in the middle of the cell which is used as a line proﬁle starting point, should be located inside the cell. The contour recalculation stabilizes the center point in several iterations. 5.2.3 How noise and object shape inﬂuence the results of segmentation Let us consider the artiﬁcial images shown in the top row of Fig. 5. Each of these images contains a different shape of the simpliﬁed artiﬁcial cell with and without pseudopodia. The pseudopodia of various sizes (from very small of 10 pixels in width in the last column to 20 pixels in width in the third column to those of 40 pixels in width in the second column) are located in various directions. The borders of the objects are variously contrasted against the background (the bottom-right side of the object is weakly contrasted). The segmentation results are superimposed on the next four rows of these images. The next rows present the results of the segmentation in images with various levels of noise contamination visible in Fig 6. In the third row, there are images which express the lowest level of noise observed in the acquired sequences, and in the fourth row the highest level of the noise. In the last row the noise level equals that of MRI images’ mean noise level (Fig. 6).
+
+123
+
+312
+
+Pattern Anal Applic (2007) 10:301–319
+
+The analysis of the segmentation results shows that, at any noise level, all the cell border fragments with strong edges are segmented correctly. But all the weak edges are segmented with an error of under-segmentation. Some background area is included into the cell area in a high noise level (the ﬁrst column and the last row). Presence of the noise increases the under-segmentation error by increasing both the length and the amplitude of the ragged edges. This is visible in all of the columns in Fig. 5 (the bottom-right corner of every image). Small poorly contrasted protrusions are not included in the object area at all (the bottom-right protrusion in the last column) or included partially (the bottom-right protrusion in the two middle columns). Another segmentation error can be observed in the results of the segmentations presented in Fig. 5 in the top-left protrusions in the middle columns: several small triangle-shaped background regions have been included in the object. It happens because in these artiﬁcial images the protrusions are embedded in a relatively sharp way in comparison with the smoothed natural lamela position on the cell. Therefore, this type of error is not observed in the acquired images. There are values of mean and standard deviation of the area error for different noise contamination in Table 2. An increase of the noise level causes an increase of this error. 5.2.4 How variation of contrast and brightness inﬂuences segmentation results Let us consider the artiﬁcial image shown in the ﬁrst row and in the ﬁrst column of Fig. 5. This image was modiﬁed with a gradually varying contrast and brightness to analyse the inﬂuence of contrast and brightness manipulations on the segmentation result of the proposed method. Figure 7 shows the bottom-right part of each tested image (this is the part difﬁcult to segment because of the weak contrast). The brightness was changed using the nonlinear Gamma correction function: images on the right side using G = 1.62 for the fourth column, and G = 3.02 for the ﬁfth column, while the images on the left side, using G = 0.56 for the second column and G = 0.3 for the ﬁrst one.
+
+The contrast manipulations were done using the following formula: K¼ Imax À Imin Â100% Imax þ Imin ð6Þ
+
+where Imax it is the maximal value of the grey level and Imin it is the minimal value of the grey level in image I. The visual examination of the segmentation results of the most difﬁcult cell paths shows that the poorest results of the segmentation were obtained with the brightness increased or decreased and the contrast decreased (the top-right and top-left images in Fig. 7). The quantitative examination of these segmentation results shows that the values of the area errors Ea, for the topright and top-left corner images, are up to 5%, for others up to 2%. For all 24 images, better results were obtained when calculating the cell centre position rather than the cell area. The distance between the expected and the calculated centres exceeds 3 pixels left or right and/or to the top or to the bottom only for all the images from the last row and for two last images from the ﬁrst column. In summary, the combined segmentation method is slightly dependent on the contrast and brightness of the images which are being segmented, and it works with low contrast images. Brightﬁeld images of living cells are of low contrast but there is no need to increase the contrast for the proposed segmentation technique to work correctly. 5.2.5 How object size inﬂuences segmentation results Based on the ﬁrst object in Fig. 5, 12 artiﬁcial images with decreasing object sizes (scales: 0.25, 0.37, 0.5, 0.62, 0.75, 0.87) and increasing object sizes (scales: 1.25, 1.37, 1.5, 1.62, 1.75, 1.87, 2) were constructed. All these images have been used to examine the inﬂuence of object size on the results of the new combined segmentation method. Four of them are presented in Fig. 8. All segmented areas were similar. Adjustments to some parameters were required during segmentation of the two smallest and three largest objects. The length of the proﬁle line L was increased in the case of the large objects. The values of the two operator parameters RmW and H were decreased to RmW = 10 and H = 5 in the case of the small objects. 5.2.6 How object rotation and translation inﬂuences the results of the combined segmentation method Based on the ﬁrst object in Fig. 5, 180 artiﬁcial images with the object gradually rotated and 20 with strictly
+
+Table 2 The area error comparison for the two segmentation methods: the proposed combined and the snake methods Level of noise (dB) 0 12 13.5 15 18 Mean of the area error 0 1.381967333 1.644005385 1.644005385 3.229740924 Standard deviation of the area error 0 0.333639146 0.319341168 0.319341168 0.827104299
+
+123
+
+Pattern Anal Applic (2007) 10:301–319 Fig. 6 Line proﬁles of artiﬁcial images from the ﬁrst column of Fig. 5 with various levels of added noise (0, 12, 15, 18 dB)
+
+313
+
+controlled translation were constructed. All these images have been used to examine inﬂuence of the object rotation and translation, on the image plane, on segmentation results of the proposed method. Figure 9 is constructed using some of those images. Eleven images, among them some with rotation by a small angle in the range 1–6° and some with rotation by large angles: 10°, 30°, 45°, 90° are presented in Fig. 9, with four outlines of the segmentation results included. It can be seen that the segmentation results, produced with the new combined method, differ slightly. The quantitative examination of these segmentation results shows that the value of the area error Ea varies up to 1% and the value of the centre position error Ed is up to 1 pixel. This may be due to the rounding errors rather than any changes of the cell centre position.
+
+6 Discussion and conclusions The proposed segmentation method described in this paper combines two approaches: the texture-analysis-based approach and the gradient-detection-based approach. It integrates the advantages of the two fundamental segmentation techniques of contour-ﬁnding by detecting discontinuity in the grey level and area-ﬁnding by detecting the region’s homogeneity. Segmentation of cell pseudopodia is dependent on the sensitivity of the texture analysis and ﬁnding the exact contour of the cell body and is dependent on the accuracy of the edge analysis. The method is designed for processing a sequence of images with a single non-rigid object changing position and shape over time. The method exploits temporal and spatial contextual information and utilizes it for reducing any uncertainty in the cell border and increasing the speed
+
+123
+
+314 Fig. 7 Artiﬁcial images with a gradual variation of contrast and brightness and their segmentation results superimposed: the central image characteristic is adjusted to the experimentally acquired images and the others constructed by an increase (right hand column) or decrease (left hand column) of the brightness and by an increase (bottom row), or a decrease (top row) of the contrast as described in Sect. 5.2
+
+Pattern Anal Applic (2007) 10:301–319
+
+of segmentation. When the combined method is used to segment an object in a single image, the method is effective but inefﬁcient, because the performance gains of the method are derived from the initialization procedure performed by the human operator on the ﬁrst image of the sequence. The advantages and disadvantages of our proposed segmentation method are as follows: 1. The method is semi-automatic, because the operator initiates it and adjusts its parameters according to the segmented image and object properties, and, therefore, it is much faster, and the results are more reproducible than with any manual segmentation results.
+
+2.
+
+3.
+
+4.
+
+5.
+
+The method can cope very well with noisy images but only if the noise level does not exceed the range typical of microscopic images. The method is applicable to image sequences, and therefore, even with poorly contrasted fragments of an object’s border, it produces results with an acceptable range of area error. The outline of the segmented object varies but remains within the acceptable range and the position of the cell’s centre does not change. The object position error is small, and therefore, the method can be used for observing and quantifying the movement of a non-rigid object.
+
+Fig. 8 Artiﬁcial image with objects of various size (increased ·2, ·1.25, and decreased ·0.5, and ·0.25) and results of segmentation, superimposed on the source image
+
+123
+
+Pattern Anal Applic (2007) 10:301–319 Fig. 9 Artiﬁcial images of a rotated object (1°, 2°, 3°, 4°, 5°, 6°, 10°, 30°, 45° and 90°) and the segmentation results superimposed on the image and some outlines of the segmented area (source image, rotation of 30°, 45°, 90°)
+
+315
+
+The proposed segmentation method allows efﬁcient tracking of cell movements, which is very important in the study of cell behaviour in biology and medicine. We intend to further develop our method in order to: • Decrease the dependency on the human operator by employing a pre-segmentation stage which would preview the sequence and adjust the parameters of the method. Develop the method to deal with clustered cells, which are in contact with each other.
+
+F ði Þ ¼
+
+RmW X j¼ÀRmW
+
+wð j=RmW ÞCPFði þ jÞ
+
+ð7Þ
+
+where w(j/RmW) are the weight coefﬁcients of the smoothening operator, and RmW is its width. Let r be parametrization of the curve: r : ½0; T  ! R2 or of the broken line (Fig. 10): r : N ! R2 ð9Þ ð8Þ
+
+•
+
+Acknowledgement We are grateful for the support received from the British Council in the form of the travel grant no. WAR 341/235, which allowed us to exchange ideas and jointly develop the combined method.
+
+then rðtÞ 2 R2 ; Â Ã rðtÞ ¼ rx ðtÞ; ry ðtÞ ð10Þ
+
+Appendix To determine the intersection of the cell’s contour with the line of the proﬁle, the point of the highest curvature of the graph of the Cumulated normalized Prewitt gradient operator Function (called CPF) is calculated. The point of the highest curvature is called the bending point. This is done in three steps, ﬁrst, the CPF is smoothened F applying a polynomial approximation of discretized Gaussian convolution:
+
+In the second step, the curvature of the smoothened CPF graph is calculated. For a continuous and differentiable curve, the value of the curvature is deﬁned to be the inverse of the radius of the second order tangent circle at a given point (Fig. 10). Unfortunately, this deﬁnition fails in our case, since the cumulated gradient function is a non-differentiable broken line. A convenient approximate expression for curvature has, therefore, to be derived: K Ã ðt; H Þ ¼ 4 xn yp À xp yn þ xp ys À xs yp þ xs yn À xn ys ðx2 þ y2 þ x2 þ y2 À 2xp xn À 2yp yn Þ3=2 p p n n ð11Þ where xp = rx(t–H) xs = rx(t) xn = rx(t + H) yp = ry(t–H) ys = ry(t) yn = ry(t + H) H width of curvature operator (in t parameter space) r the parameterisation of curve in plane (function)
+
+Fig. 10 The approximation of the curvature for broken line
+
+123
+
+316
+
+Pattern Anal Applic (2007) 10:301–319
+
+In our case, (9) is applied to the graph. This amounts to substituting rx(t) = t, and ry(t) = F (t) in (9). The fact that a discrete set of the values is given in equally spaced points also has to be taken into account. Therefore, H is regarded as the distance between two consecutive points in the curvature operator. It should be noted that operator K* may also be used for numerical calculation of the curvature of a smooth curve on a plane: it can be shown that if r(t) is a curve of the class C2 then lim K Ã ðt; H Þ ¼ _y € _ x€ À xy _ _ ðx2 þ y2 Þ3=2 ðtÞ ¼ KðtÞ ð12Þ
+
+H!0
+
+Finally, in the last step, the point of a certain curvature (e.g. maximum curvature point), hence the intersection of the cell’s contour with the proﬁle line is obtained based on the bending operator analysis. Because of the width of the operator arm, the H parameter, the maximum of the bending operator is slightly moved to the last almost vertical path of the s-shaped typical proﬁle line (Fig. 11a), so the strategy for the ﬁnding that point is to determine the t
+
+for which the bending operator value reaches the value of the standard deviation of the bending operator calculated for all points along the part of the line proﬁle. The part is chosen from the point distanced of H from 0 to the point distanced of H from the end of the proﬁle line, it means for discrete points set H, H + 1, …, L–H. If there are several such points, the strategy of one point determination is following: t is the ﬁrst nearest point of the tmax point, while tmax is the point value of K* attains its maximum. The ﬁrst is determined according to the order of analysis which starts from tmax and goes along proﬁle lines in the cell’s central point direction. In Fig. 11a, there are the cumulated normalized Prewitt gradient function of pixels along 36 proﬁle lines placed radially from cell’s center point (see some of them in Fig. 2f) in 10° angle distance on the cell 1 shown in Figs. 1 and 2. Most of these functions are s-shaped but there are a few in the form of the raising wavy line. Both types of functions are shown in Fig. 11 respectively in path b and c (dashed line). The s-shaped function is typical of a well deﬁned cell border part (b) while the raising wavy function is typical of barely visible or not visible cell contour (c).
+
+Fig. 11 Curvature analysis of the cumulated normalized Prewitt gradient function (CPF): a 36 functions on the combined graph; these are the cumulated normalized Prewitt gradient function of pixels along 36 proﬁle lines placed radially from the cell center point from 10° angle distance on cell 1 shown in Figs. 1 and 2 and b the s-shaped function, indicated by a dashed line, with the bending operator function of the pixels along a proﬁle line, indicated by a continuous
+
+line, and with the straight vertical line, which shows the value of the bending operator standard deviation, indicated by dotted line, c the increasing function with the bending operator function and with the straight vertical line showing the value of the bending operator standard deviation—all indications similar to subimage b indicators. The stars on the proﬁle lines show the position of the edge found according to the strategy described in the text
+
+123
+
+Pattern Anal Applic (2007) 10:301–319
+
+317 phase contrast microscopy. In: Kurzynski M, Puchala E, Wozniak M, Zolnierek A (eds) Computer recognition systems. Springer, Berlin, pp 627–634 Smereka M (2005) Detection of ellipsoidal shapes using contour grouping. In: Kurzynski M, Puchala E, Wozniak M, Zolnierek A (eds) Computer recognition systems. Springer, Berlin, pp 443– 450 Killich T, Plath PJ, WeiX, Bultmann H, Rensing L, Vicker MG (1993) The locomotion, shape and pseudopodial dynamics of unstimulated dictostelium cell are not random. J Cell Sci 106:1005–1013 Francis K, Ramakishna R, Holloway W, Palsson BO (1998) Two new pseudopod morphologies displayed by the human hematopoietic KG1a progenitor cell line and by primary human CD34+ cells. Blood 92(10):3616–3623 Curtis ASG (1998) Cell activation and adhesion. J Cell Sci 87:609–611 Lazarides E, Revel JP (1979) The molecular basis of cell movement. Sci Am 8:88–100 Lackie JM (1986) Cell movement ind cell behaviour. Allen & Unwin, London Walmod OS, Hartman-Petersen R, Berezin A, Prag S, Kiselyov VV, Berezin V, Bock E (2001) Evaluation of individual-cell motility. Methods Mol Biol 161:59–83 Zama N, Katow H (1988) A method of quantitative analysis of cell migration using a computerized time-lapse videomicroscopy. Zool Sci 5:53–60 Soll DR, Voss E (1998) Two- and three-dimensional computer system for analysing how animal cells crawl. In: Soll DR, Wessels D (eds) Motion analysis of living cells. Wieley-liss, New York, pp 25–52 Bhargava MM, Li Y, Joseph A, Jin L, Rosen EM, Goldberg ID (1993) HGF-SF: effects on motility and morphlogy of normal and tumor cells. In: Golberg ID, Rosen EM (eds) Hepatocyte growth FACTOR-scatter fector and C-met receptor. Birkhausser Verlag, Basel, pp 341–349 Thuston G, Spadinger I, Palcic B (1991) Computer automation inmeasurment and analysis of cell motility in vitro. In: Goldberg ID (eds) Cell motility factors. Birkhausser Verlag, Basel, pp 206– 222 Hoppe A, Wertheim D, Jiang WG, Williams R, Harding K (1999) Interactive image processing system for assessment of cell movement. Med Biol Eng Comput 37(4):419–423 Korzynska A (2001) Computer aided neutrophil granulocytes movement and shape assessment. Ph.D. thesis, Prace Instytutu Biocybernetyki i Inzynierii Biomedycznej, 57, Warsaw (Polish) Korzynska A (1993) A method of cells’ movement investigation. In: Kulikowski JL (ed) Selected topics in biomedical image processing. Polish Academy of Sciences, Warsaw Korzynska A, Nechay A, Bernatowska-Matuszkiewicz E, Skopczynska H (1996) Comparison of chosen movement parameters of neutrophils in healthy children and the Chediak–Higashi’s syndrome patient; signal investigation. In: Abstrakty III Konferncji Naukowej: Wybrane Zagadnienia z Immunologii Klinicznej, Warsaw, pp 18 Korzynska A (1996) Analysis of some parameters in selected phases of cell’s motility: an image of normal and disordered crawling movement of human neutrophils in computer aided video enhanced microscopy. In: Proceedings of Cytokinematics’96 Korzyska A, Nechay A, Mazur P, Pietka D, Kowal M (1997) Computer aided microscopy system on investigation of cell’s motility. In: Book of Abstract of 4th European Conference on Engineering and Medicine, Warszawa, pp 360–361 Korzynska A, Hoppe A, Strojny W, Wertheim D (2003) Segmentation of neutrophil images using texture analysis and a
+
+Both types of functions are shown with the bending operator function of the pixels along the proﬁle line (continuous line) and with straight vertical lines which show the value of the bending operator standard deviation (dotted line). The boundary points are marked as stars in both Fig. 11b and c. The values of the RmW and H parameters according to the length proﬁle lines L = 160 pixels have been examined. To do this a special tool has been developed in MATLAB. The interface of the tool allows adjusting the values of both parameters with a bar under observation of the position of the cell’s edge for a chosen line or for all proﬁle lines. In the case of moving neutrophil image sequences, the 30 pixels distance of the H arm and the 10 pixels distance of the width of the smoothing operator RmW are chosen experimentally for the length of the proﬁle lines L = 160 pixels. According to the analysis in Sect. 15 for small rounded cells, all the parameters should be shorten proportionally, e.g. in the case of the smallest artiﬁcial object (Fig. 8) the following values were used: L = 100, RmW = 5 and H = 16.
+
+15.
+
+16.
+
+17.
+
+18. 19. 20. 21.
+
+22.
+
+References
+1. Bary D (2002) Cell movement. Garland, New York 2. Pollack Gerald H (2001) Cells, gels and the engines of life, 2001. Ebner & Sons, Seattle 3. Soll DR, Wessels D (1998) Motion analysis of living cells. Wiley-Liss, New York 4. Stossel TP (1993) On the crawling of animal cells. Science 260:1086–1094 5. Abercrombie M, Heaysman JEM (1953) Observation on the social behaviour of cells in tissue culture. Speed of movement of chick heart ﬁbroblasts in relation to their mutual contacts. Exp Cell Res 5:111–131 6. Doroszewski J, Nowak-Wyrzykowska M, Stoowska L (1993) The method of moments as applied to the study of granulocytes’ shape and movement. Mater Med Polonia 2:87–92 7. Kowalczynska HM, Nowak-Wyrzykowska M, Kolos R, Dobkowski J, Kaminski J (2005) Fibronectin adsorption and arrangement on copolymer surfaces and their signiﬁcance in cell adhesion. J Biomed Mater Res A 72(2):228–36 8. Litniewaski J, Bereiter-Hahn J (1990) Measurment of cells in culture by scanning acustic microscopy. J Microsc 158:95–107 9. Madeja Z, Kupiec M, Korohoda W (1998) Morphometric analysis of LPS-stimulated humane monocytes computer-assisted image analysis. Folia Biol 46(3–4):123–128 10. Soll DR (1995) The use of computer in understanding how animal cells crawl. Int Rev Cytol 163:43–104 11. Warchol W, Warchol JB, Filipiak K, Karas Z, Jaroszyk F (1996) Analysis of spermatozoa movement using a video imaging technique. Histochem bell Biol 10:521–526 12. Zylicz M, Bocian K, Korczak-Kowalska G (2005) Regulatory cells: their development, mechanisms and effects of action, and their potential use in transplantation. Postepy Hig Med Dosw (Online) 59:160–71 13. Zicha D, Dann G (1995) An image processing system for cell behaviour studies in subconﬂuent cultures. J Microsc 179:11–21 14. Miroslaw L, Chorazyczewski A, Buchholz F, Kittler R (2005) Correlation-based method for automatic mitotic cell detection in
+
+23.
+
+24.
+
+25.
+
+26.
+
+27.
+
+28.
+
+29.
+
+30.
+
+31.
+
+32.
+
+123
+
+318 contour based technique. In: Abstract book of KOSYR2003, Wroclaw, pp 29–33 Russ JC (1995) Image processing handbook, 2nd edn. CRC Press, Boca Raton, Ann Arbor, London, Tokyo Alberts B, Bray D, Lewis J, Raff M, Roberts K, Watson JD (1994) Molecular biology of the cell, 3rd edn. Garland Publishing Inc., New York & London Fu KS, Mui JK (1981) A survey on image segmentation. Pattern Recognit 13:3–16 Pham DL, Chenyang X, Prince JL (2000) Current methods in medical image segmentation. Annu Rev Biomed Eng 2:315–337 Haralik RM, Shanmugan K, Dinstein I (1793) Textual Features for image Clssiﬁcation. IEEE Trans Syst Man Cybern 3(6):610–621 Prewitt JMS (1970) Object enhancement and extraction. In: Lipkin BS, Rosenfeld A (eds) Picture processing and psychopictorics. Academic, New York, pp 75–149 Korzynska A (2002) Neutrophils’ movement in vitro. Ann NY Acad Sci 972:139–143 Ahlberg JH, Nilson EN, Wash JL (1967) The theory of splines and their applications. Academic, New York Nguyen HT, Worring M, van den Boomgaard R (2003) Watersnakes: energy-driven watershed segmentation. IEEE Trans Pattern Anal Mach Intell 25(3):330–342 Jung CR, Scharcanski J (2005) Robust watershed segmentation using wavelets. Image Vis Comput 23:661–669 Gonzalez Rafael C, Woods Richard E (2001) Digtal image processing. Prentice-Hall, New Jersy Bovik A (ed) (2000) Handbook of video & image processing. Academic, London Tang J, Acton ST (2004) Vessel boundary tracking for intravital microscopy via multiscale gradient vector ﬂow snakes. IEEE Trans Biomed Eng 51(2):316–324 Kass M, Witkin A, Terzopolous D (1987) Snakes: active contour models. Int J Comput Vis 1:321–331 Xu C, Prince JL (1998) Snakes, shapes, and gradient vector ﬂow. IEEE Trans Image Process 7(3):359–369
+
+Pattern Anal Applic (2007) 10:301–319 Wojciech Pawel Strojny received M.S. degree from Warsaw University of Technology in 2001. He specialized at Information Technology and Electronics Department with image processing. Since 2002 he worked for Institute of Biocybernetics and Biomedical Engineering, Department of Biomedical Information Processing Methods, Laboratory of Image Information Processing Systems. His research interests include image processing and computers vision. Andreas Hoppe received his degree in Information Technology from the University of Applied Sciences, Hannover, Germany in 1997 and in 2001 his Ph.D. in Biomedical Image Processing from the University of Glamorgan in collaboration with the University of Wales College of Medicine, Cardiff, UK. He is currently a senior lecturer in the Faculty of Computing and Mathematics, Kingston University, and works in bioimaging research within the Digital Imaging Research Centre at Kingston University, UK. His current research focuses on the development of novel image segmentation and analysis techniques in light microscopy. This includes cell motility analysis, cell structure segmentation and multi-dimensional image restoration, analysis and visualisation. David Wertheim is a Reader in the Faculty of Computing, Information Systems and Mathematics at Kingston University. His main areas of research are in medical and biological image and signal processing.
+
+33. 34.
+
+35. 36. 37.
+
+38.
+
+39. 40. 41.
+
+42. 43. 44. 45.
+
+46. 47.
+
+Author Biographies Anna Korzynska received her M.Sc. in Computer Science from the Jagiellonian University, Krakow, Poland and her Ph.D. from the Institute of Biocybernetics and Biomedical Engineering, Polish Academy of Sciences, Warsaw, Poland (IBBE PAS). She participated in projects on image ﬁltering and ultrasound heart image analysis at the institute. She is currently an Associate Professor and the Head of the Laboratory of Image Information Processing Systems at IBBE PAS. Her areas of interest include enhancement and segmentation of microscopic images of cells and analysis of cell behavior. She is the author of more than 60 papers and conference publications.
+
+123
+
+Pattern Anal Applic (2007) 10:301–319 Pawel Hoser studied Physics at the Warsaw University between 1986 and 1989, Poland. In 1995 he received his M.Sc. in Mathematics from the Warsaw University. Between 1995 and 1999 he was a Research Assistant at the Department of Neurophysiology of the Nencki Institute of Experimental Biology, Warsaw,
+
+319 Poland. He investigated the problem of automatic analysis of neuron potentials. Since 1999 he has been a Research Assistant at the Department of Image Processing at the Institute of Biocybernetics and Biomedical Engineering, Warsaw, Poland. His recent research concerns systems of automatic contour detection of heart chambers in series of ultrasound images.
+
+123
+

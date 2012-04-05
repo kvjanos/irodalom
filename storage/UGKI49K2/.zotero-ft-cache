@@ -1,0 +1,413 @@
+Nature Methods
+
+Two-color nanoscopy of three-dimensional volumes by 4Pi detection of stochastically switched fluorophores
+Daniel Aquino, Andreas Schönle, Claudia Geisler, Claas v Middendorff, Christian A Wurm, Yosuke Okamura, Thorsten Lang, Stefan W Hell & Alexander Egner
+
+Supplementary Figure 1 Supplementary Figure 2 Supplementary Figure 3 Supplementary Figure 4 Supplementary Figure 5 Supplementary Figure 6 Supplementary Figure 7 Supplementary Figure 8 Supplementary Note 1 Supplementary Note 2
+
+Modified Babinet-Soleil compensators Gain in information obtained from higher order moment evaluation Modulation frequency as a function of moment order Phase pairs in ϕ0/ϕ3-space Localization precision in the focal plane as a function of photon counts Additional rings of labels around tubulin Dye classification in s-p-space Validation of dye classification Theory and Implementation of the Position Estimators 4Pi-SMS microscope system parts list
+
+Nature Methods: doi:10.1038/nmeth.1583
+
+Supplementary Figures
+
+a
+quartz np > ns BK7 np = ns φa(d)
+
+a a
+
+a a
+
+ap as
+
+ap
+
+as
+
+d
+
+b
+BK7 np = ns quartz np > ns φb
+
+b b
+
+bp bs
+
+bp
+
+bs
+
+bp
+
+bs
+
+d
+
+Supplementary Figure 1 | Pair of modiﬁed Babinet-Soleil compensators as used behind the two objective lenses a and b. While compensator a consists of a parallel BK7 plate and two quartz wedges, compensator b consists of a parallel quartz plate and two BK7 wedges. By varying the thickness of the plate made up by the two quartz wedges, we can precisely tune the phase delay behind the lens a to achieve ∆ϕs − ∆ϕp = π/2. By varying the thickness of the variable BK7 plate made up of the two BK7 wedges behind lens b, we are able to correct the overall dispersion within the 4-Pi triangle.
+
+1
+
+Nature Methods: doi:10.1038/nmeth.1583
+
+a
+
+z y
+
+b
+
+z y
+
+Supplementary Figure 2 | Well-deﬁned ﬂuorophore localization by employing moments of higher orders illustrated by means of the data underlying Fig. 2g: (a) By considering the relative intensities of the detection channels only, molecular events from outside the area close to the coverslip (255 nm, green line) are falsely back projected into it. (b) By exploiting the high NA detection through including the 3rd central moment of the image into the analysis this ambiguity can be lifted, while preserving the high localization precision. Scale bars: (a,b) 200 nm in x-direction and z-direction.
+
+2
+
+Nature Methods: doi:10.1038/nmeth.1583
+
+a
+y
+
+w0
+
+w1
+
+w2
+
+w3
+
+w4
+
+x
+
+b
+1.1
+
+k l /k0
+1
+
+0
+
+1
+
+l-th moment
+
+2
+
+3
+
+4
+
+Supplementary Figure 3 | The modulation speed of the moments Ml increases with their order. (a) Illustration of the weighting functions wl used for the calculation of the moments Ml . (b) Spatial modulation frequency kl along the optic axis of the diﬀerent moments Ml (z) extracted from measuring a bead scanned along z. kl was determined by ﬁtting the reduced moments deﬁned in equation (14) with b cos(kl z − ϕ0 ). The modulation is faster for higher moment orders l which emphasize the outer parts of the emitter’s image. From a single phase kl z the z-position can not be unambiguously inferred as a shift by 2π/kl reproduces the same value. However by measuring at least two phases this ambiguity is lifted allowing localization over a much larger range of z-values.
+
+3
+
+Nature Methods: doi:10.1038/nmeth.1583
+
+3 500 2 400 300 1 200 100 0 0
+
+−100 −1 −200 −300 −2 −400 −3 −3 −2 −1 −500
+
+ϕ0
+
+0
+
+1
+
+2
+
+3
+
+Supplementary Figure 4 | Phase pairs ϕ0 /ϕ3 for the measurement shown in Fig. 1e. At each axial location 300 independent measurements were performed. The axial marker position is then estimated by determining the point on the gauge curve that minimizes the distance D(z) deﬁned in equation (20). Note that in a properly aligned setup, the focal plane (z = 0) is unambiguously deﬁned by ϕ0 = ϕ3 .
+
+4
+
+Nature Methods: doi:10.1038/nmeth.1583
+
+z (nm)
+
+ϕ3
+
+20
+
+18
+
+σx σy σz
+
+16
+
+14
+
+12
+
+σ(nm)
+
+10
+
+8
+
+6
+
+4
+
+2
+
+0 0
+
+2000
+
+4000
+
+6000
+
+8000
+
+10000
+
+12000
+
+N
+Supplementary Figure 5 | Localization precision of an emitter in the focal plane as a function of its brightness. We performed 300 independent measurements for each emitter brightness and determined the average number of photons detected per measurement, Nph and the standard deviation σx , σy and σz of the lateral and axial coordinates were determined by our algorithm. The data is 2 2 well described by σ = [2σ0 /N + σvib ]1/2 , where σ0 is the error due to the localization process and σvib is a standard deviation related to residual instabilities of the setup. The factor of 2 in the formula accounts for excess noise introduced by the electron ampliﬁcation within the EMCCD. We determined σvib /σ0 to be 1.5/184, 2.0/197 and 2.6/93 nm in the x, y and z-directions respectively.
+
+5
+
+Nature Methods: doi:10.1038/nmeth.1583
+
+a
+
+b
+
+c
+
+d
+
+e
+
+z x’
+
+0.8 31.7 nm counts/r (1/nm) counts/r (1/nm) 0.6 0.4 0.2 0 0 50 100 r (nm)
+
+2 23.1 nm counts/r (1/nm) 1.5 1 0.5 0 0 50 100 r (nm)
+
+3 29.7 nm counts/r (1/nm) 2 1 0 0 50 100 r (nm)
+
+0.8 28.9 nm 0.6 0.4 0.2 0 0 50 100 r (nm) counts/r (1/nm)
+
+1.5 36.8 nm 1 0.5 0 0 50 100 r (nm)
+
+500
+
+f
+y a
+
+300
+
+x
+
+e 100 z (nm) 2 d
+
+−100
+
+−300
+
+c 1
+
+−500
+
+b
+
+Supplementary Figure 6 | Additional rings of labels around tubulin. (a-e) x’z histogram image of the distribution of labels located within the rectangles indicated in (f). The upper row shows the x’z histogram images, the second row exhibits the same images smoothed with a Gaussian (σ = 3.2 nm) for better visibility. The bottom row shows the respective radial-position histograms centered at the ring center shown in the upper row. The ring radius (heuristically) calculated by ﬁtting the function ax2 exp[−(x/b)2 ] to the histogram (black line) and using the maximum (indicated by the red arrows). The ring-like structure is due to the fact that only the surface of the tubules was labeled. (f ) Like Fig 3a, extended by boxes indicating the regions of (a-e). The rings shown in the main text are indicated by the boxes 1 and 2. The mean ﬁt radius of all rings is 29.7 ± 4.1 nm. Scale bars: (a-e) 50 nm, (f) 1µm.
+
+6
+
+Nature Methods: doi:10.1038/nmeth.1583
+
+a
+1500
+
+np
+
+500
+
+90% 80% 70% 60% 0 500 1500
+
+0 ns
+
+b
+1500
+
+np 500
+Atto 532 Atto 565
+
+0 0 500 ns 1500 100% 90% 80% np 70% 500 60% 50% 0 500 ns 1500 confidence
+
+c
+1500
+
+0
+
+Supplementary Figure 7 | Dye classiﬁcation in s-p-space. Data is from the gauge measurements used for Fig. 4 in the manuscript. (a) Smoothed and normalized histograms containing the events from the Atto532-labelled sample (cyan) and those from the Atto 565-labelled sample (red). These distributions estimate the probabilities p[ns , np ; ν] of species ν = Atto532, Atto565 producing an event with np photons in the p-polarized channels and ns photons in the s-polarized channels. (b) Classiﬁcation map used in Fig. 4c of the manuscript. The cyan (red) region marks (ns , np ) values for which the estimator classiﬁes an event as stemming from an Atto532 (Atto 565) molecule. (c) Conﬁdence level, i.e. the probability of correctly assigning an event if both species have the same probability of occurring as a function of (ns , np ). Regions where the histogram dropped below a value of 0.125 (black area in b) are set to 50 %. The conﬁdence level is also indicated by contours at 60, 70, 80 and 90 percent in all panels.
+
+7
+
+Nature Methods: doi:10.1038/nmeth.1583
+
+a
+
+Atto 532
+
+Atto 565
+
+b
+
+microtubles
+y x
+
+Supplementary Figure 8 | Superresolution histogram images generated from our gauge measurements. (a) Gauge measurement for peroxysomes labeled with Atto532. We applied the derived classiﬁcation map to check for systematic cross-talk (e.g. correlated with position in the sample). The left panel shows those events classiﬁed as Atto532 and the right panel those as Atto565 (< 6 %). (b) Gauge measurement for tubulin labeled with Atto565. Again classﬁcation was performed and the right panel contains those events correctly identiﬁed as Atto565 while the left panel contains the cross-talk (< 6 %). Scale bars: (a,b) 1µm.
+
+peroxisomes
+
+8
+
+Nature Methods: doi:10.1038/nmeth.1583
+
+Supplementary Note 1: Theory and Implementation of the Position Estimators
+1 Theory
+
+As described in detail below, in the present setup, four channels are created in which the ﬁelds through the objective lenses a and b (Fig. 1a) interfere with diﬀerent relative phases. This is achieved by diﬀerent phase delays of the p (parallel to plane of incidence, Ex ) and s-polarized light in the interferometer arms. Moreover, our multi-color measurements use a dichroic mirror to make the intensity ratio between the p and the s-polarized channels dye speciﬁc and use this to identify the dye species during the measurement.
+
+1.1
+
+Dipole Orientation
+
+Unless the emitters rotate fast compared to the timescale of the ﬂuorescence emission during a single oﬀ-on-oﬀ cycle, both the intensity and polarization of the detected ﬁelds will depend on the azimuthal and polar orientations. For example, an x−oriented dipole would be detected almost exclusively in the p−polarized channels, a y−oriented one in the s−polarized channel and a dipole oriented along the z−axis would create equal intensities in both channels. To avoid the concomitant orientation-dependent bias, we introduced λ/4 plates with the crystal optical axis oriented at π/4 against the x−axis in the exit pupil of the lens. Linearly polarized light thus exhibits equal p−polarized and s−polarized parts before the beam splitter. Let a(r, φ, θp , φp , z) be the ﬁeld created by a dipole located on the optic axis at (0, 0, z) and oriented along p = (sin θp cos φp , sin θp sin φp , cos θp ) at position r = (r cos φ, r sin φ) in the exit pupil of the lens. Here, 0 ≤ r ≤ sin α and α is the semi-aperture angle of the lens. The ﬁeld in the exit pupil after passing the λ/4 plate is then given by A = eıπ/4 1 ı a ı 1 (1)
+
+Using the cylindrical symmetry of the lens and the mirror symmetry about the dipole’s projection into the image plane, one can show that the two polarization components are related by As (φp + φ, φp ) = ıe−2ıφp Ap (φp − φ, φp ). (2)
+
+Thus, the s-polarized ﬁeld is the p-polarized ﬁeld mirrored about the polar dipole orientation and multiplied by a constant phase that depends on the dipole orientation. Therefore, the intensity ratio in the two channels as well as the ratio and z-dependence of the (cylindrically symmetric) weighted moments introduced below are independent of the polar orientation of the dipole. We note that the polar orientation changes the form of a but not its phase. Nevertheless, it generates images with the center of mass shifted away from the geometric focus for moderate tilts and ring-like images for z-oriented dipoles [1]. For completely static dipoles, a minor inﬂuence on the analysis described below 9
+
+Nature Methods: doi:10.1038/nmeth.1583
+
+can therefore not be excluded and a careful quantiﬁcation of this eﬀect will be the subject of further studies. We also note that the eﬀect is not limited to the axial position estimation, and should be assessed for 2-dimensional SMS experiments as well.
+
+1.2
+
+Coherent detection
+
+If the two arms denoted by a and b are identical and if we ignore a constant phase for the p-polarization, the components of A are given by Aκ a/b (r, φ, θp , φp , z) = A(r, φ, θp , φp ) exp ±ıkz 1 − r2 (3)
+
+where κ = s, p denotes the polarization component. In the absence of aberrations, A is a real function of the dipole angles and the position in the backaperture. For large focal lengths, the z-component of the electric ﬁeld in the image plane can be neglected and the ﬁelds generated through the lenses a and b, Eκ a/b , are linearly polarized along κ and given by the Fourier transform of Aκ a/b . Taking into account the phase delay of ϕκ a/b in the two arms and the reﬂection at the beam-splitter, the electric ﬁelds in the images of beam-paths 1 and 2 are given by √ Eκ1 = [Eκa exp(ıπ/2) exp(ıϕκa ) + Eκb exp(ıϕκb )] / 2 (4) √ Eκ2 = [Eκa exp(ıϕκa ) + Eκb exp(ıϕκb ) exp(ıπ/2)] / 2. Because the imaging system is aplanatic, the lateral dependence of the ﬁeld only depends on the axial position of the emitter and its lateral position (x, y) relative to the point of detection. We denote the phase diﬀerences between both arms for each polarization as, ∆ϕκ = ϕκb − ϕκa (5)
+
+and remark that they can be adjusted independent of beam-path and polarization using the mirrors of the cavity or the beam-splitter and the compensator in arm a. The setup is adjusted such that the phase of Eκ a/b (x, y, 0) is equal for all (x, y) and over the whole emission spectrum. This can be ensured by proper alignment of the triangular cavity and by using the Babinett Soleil compensator in arm b respectively. We note that due to equation (3), we ideally have Eκa (x, y, z) = Eκb (x, y, −z). However, this symmetry may be broken in the presence of aberrations induced for example by the sample, uncompensated variations in the cover glass thickness when imaging with water immersion lenses or simply by a refractive index mismatch between the immersion medium and the sample. For the success of our z−estimation this symmetry is not mandatory because we use a gauge procedure to compensate for deviations. Extracting the ∆ϕκ -dependence, the intensities in the four channels can be reduced to the following formula
+∗ Iκ 1/2 = |Eκa |2 /2 + |Eκb |2 /2 ± 2|Eκa Eκb | cos[ϕκ (z) − ∆ϕκ ]
+
+(6)
+
+where the z-dependent phase is given by
+∗ cos[ϕκ ] = − [Eκa Eκb ]/(|Eκa ||Eκb |) ∗ sin[ϕκ ] = − [Eκa Eκb ]/(|Eκa ||Eκb |)
+
+(7)
+
+10
+
+Nature Methods: doi:10.1038/nmeth.1583
+
+The ﬁelds and the phase depend on (x, y, z) and we use its z-dependence to estimate the axial position of our emitter.
+
+1.3
+
+Moment-based estimator
+
+The setup resembles of course that of a simple interferometric position monitor. Indeed if lenses of very low numerical aperture are used, the square root in equation (3) can be set to unity and we have
+∗ ∗ [Eκa Eκb ](x, y, z) = [Eκa Eκb ](x, y, 0) exp(−2ıkz)
+
+(8)
+
+and thus only the phase is z-dependent in equations (7) with ϕκ (x, y, z) = 2kz (9)
+
+It is immediately obvious that this will only allow estimation in a layer of thickness λ/2 due to the periodic nature of the intensity variations. All approaches which do not take the high numerical aperture into account are at best similarly limited and deliver false estimates in the worst case. In order to extract unambiguous z-estimates we have to use the fact that our objective lenses have high focusing angles. Therefore the z-dependent oscillation of the intensity in the back-aperture will depend on the distance from the optic axis and the same will be true in the Fourier transform, i.e. in the image of the emitter on the camera. While the exact dependence is not readily derived in closed form, it can be inferred from equation (3) that the central part of A and thus the outer rings of E oscillate faster. In order to use this fact we deﬁne the weighted moment operator Ml acting on an intensity distribution I(r) by Ml [I](z) = dxdy exp[−R2 /2σ 2 ]Rl I(x, y, z). (10)
+
+with R = x2 + y 2 . We will use the moments Mlκ 1/2 = Ml [Iκ 1/2 ] of an emitter’s intensity distribution as parameters for the determination of its z-position. We note that our particular choice of weighted moments has proven successful but may not be the optimum choice for all applications. While we believe that cylindrical symmetry should be maintained as it ensures a certain robustness against tilt and rotation of the emitters, we are certain that alternative weighting functions can be used in equation (10) to derive valid estimators. For instance, one could imagine ring-like weights with diﬀerent diameters exploiting the very same features of the detection PSFs as our approach. A more detailed analysis would be a worthwhile subject for further studies. Applying the moment operator Ml on the intensities deﬁned in equation (6), we can write
+∗ Mlκ 1/2 (z) = Ml [|Eκa |2 + |Eκb |2 ]/2 ± |Ml [Eκa Eκb ]| cos[ϕlκ − ∆ϕκ ].
+
+(11)
+
+where ϕlκ is determined analogous to ϕκ . While all quantities now vary with z, the envelope and modulation strength vary due to the aberrations introduced by the square-root factor in equation (3) and thus quite slowly while the phase function exhibits a much stronger dependence on z with a period of approximately half a wavelength. Importantly, the period of the phase functions depends on l which allows us to resolve the ambiguity occurring in layers thicker than λ/2. 11
+
+Nature Methods: doi:10.1038/nmeth.1583
+
+This is in agreement with former theoretical studies [2] which show that the PSF contains enough information to uniquely identify positions within a much thicker layer. z-estimation will be based on a gauge measurement and the amplitudes in (11) may slightly change due to spectral changes eﬀecting a change in relative transmission in the s and p polarized channels and due to aberrations and the averaging over a larger or smaller emission spectrum aﬀecting the modulation depth. Robustness can thus be increased by using relative values mlκ (z) = [Mlκ1 (z) − Mlκ2 (z)]/Mlκ (z) = blκ (z) cos[ϕlκ (z) − ∆ϕκ ] where the total moment for each polarization direction is deﬁned as Mlκ (z) = Mlκ1 (z) + Mlκ2 (z) (13) (12)
+
+and the relative modulation strength, blκ (z), is implicitely deﬁned. Note that the mlκ remain unchanged if the detection eﬃciency of s versus p-polarized light varies. In experiments, ∆ϕs − ∆ϕp is tuned to π/2 to maximize the information content [2], while the absolute phase ∆ϕ = ∆ϕs is often unknown and may drift between experiments. The z-Information is predominantly contained in the phase ϕlκ which is independent of the polarization and varies fast with z. It is therefore advantageous to further decrease the amount of parameters by deﬁning cl (z) = mls (z)/ρl (z) = cos[ϕl (z) − ∆ϕ] (14) sl (z) = mlp (z)/ρl (z) = sin[ϕl (z) − ∆ϕ] where ρl (z) = [mls (z)2 + mlp (z)2 ]1/2 . (15) The quantities cl (z) and sl (z) will be used for z-estimation (see below) and are called reduced moments in the rest of this document. The impact of employing further moments in contrast to solely analyzing the intensity can be seen in Supplementary Fig. 2. We note explicitly that the dependence of ϕl (z) on z deviates slightly from a linear relationship even in an ideal setup. Importantly, as long as these deviations are the same for both gauge and real measurement, they will merely lead to a slightly changing localization precision over the zrange.
+
+1.4
+
+Multicolor Experiments
+
+Analogous to the method described for multi-color GSDIM microscopy earlier [3], we separate diﬀerent dye species ν based on a characteristic emission ratio into the detection channels. Because our z-estimator is based on four instead of three channels (which are suﬃcient for mere z estimation), multi-color detection can be added to it by a simple modiﬁcation which ensures that the relative intensities of the s- and p-polarized channels (the ratio of the sums of the two channels of each polarization is z-independent) varies between molecular species. Here, we add a dichroic mirror at an angle where the transmission characteristics strongly depend on the polarization direction. As the dichroic mirror does not split the images but just attenuates one of the polarizations more, the two channels are naturally aligned. Consequently, no algorithm for
+
+12
+
+Nature Methods: doi:10.1038/nmeth.1583
+
+alignment of the two channels has to be applied to the data. Lateral chromatic aberrations are neglected here, since the spectral shift between the used dyes is only about 30 nm. However, if necessary the chromatic aberrations can be corrected as already shown in former studies [4]. The edge of the dichroic mirror is chosen at a position such that s and p polarized light is transmitted with signiﬁcantly diﬀerent relative eﬃciencies for the dye species involved in the measurement. Note that z-estimation as described above is not aﬀected by this measure as it is designed to explicitly takes this into account. Now let ps (ν) and pp (ν) = 1 − ps (ν) be the probability that a photon emitted by a dye of species ν is detected in the s or p-polarized channels, respectively. The ratio of ps and pp is then independent of the dye’s orientation due to the λ/4 plates and given by the ratio of the total transmission eﬃciency for the two polarization directions, which is speciﬁc for the dye’s emission spectrum. We can then develop a maximum-likelihood estimator for the species ν if we are given the probabilities p[ns , np ; ν] of species ν producing an event (ns , np ) where the nκ are the M0κ calculated from the detected intensity distributions and normalized and discretized such that they estimate the actual number of s and p polarized photons registered by the detector. We have p[ns , np ; ν] = 1
+ns ,np
+
+(16)
+
+Assuming that all species have equal a-priori probability to be present at a given position, we estimate the species of an event in a mixed sample by νE (ns , np ) = arg max p[ns , np ; ν].
+ν
+
+(17)
+
+where the nκ are now the values calculated from the detected event. Obviously the estimation is less reliable in the overlap region and one can calculate a conﬁdence level for each value pair (ns , np ) given by c(ns , np ) = p[ns , np ; νE (ns , np )]/
+ν
+
+p[ns , np ; ν].
+
+(18)
+
+which essentially gives the probability of picking the correct type under the assumption that both have equal probability of occurring. Cross-talk can be reduced by excluding events that are likely to produce false assignments (events for which the conﬁdence level is low). To this end we introduce a conﬁdence threshold C. If, indeed, all species have the same a-priori probability of occurring, the conﬁdence level gives the probability of a correct estimate and obviously discarding events with c(ns , np ) < C will thus reduce the cross-talk. The cross-talk matrix and thus the cross-talk in real measurements is readily estimated from the gauge measurements: cνµ =
+ns ,np
+
+θ[c(ns , np ) − C]δννE (ns ,np ) p[ns , np ; µ].
+
+(19)
+
+Inhomogeneous broadening usually widens the distributions p[ns , np ; ν] beyond the theoretically expected values when assuming a ﬁxed expected ratio of s and p polarized light. Similar to the z-determination, one can attempt to assess these eﬀects theoretically but it has proven much more reliable to use gauge 13
+
+Nature Methods: doi:10.1038/nmeth.1583
+
+measurements. Supplementary Fig. 7a depicts p[ns , np ; ν] extracted from the gauge measurement used for Fig. 4 of the manuscript. To minimize the eﬀect of shot-noise on the estimator the histograms (consisting of 800x800 bins) were smoothed with a Gaussian (FHWM 24 bins). The resulting estimator and conﬁdence level is depicted in 7b and c, respectively. Regions where the smoothed and added histograms from the gauge measurement dropped below a value of 0.125 were also excluded. The cross-talk estimation from this gauge measurement is obtained by simply classifying the events contained in the gauge measurement with the estimator and quantifying the false assignments. In Fig. 4 of the manuscript we used a conﬁdence threshold of C = 80 % resulting in < 6 % false assignments for both Atto565 and Atto532, while about 40 % of the events are discarded due to the threshold. In order to check the reliability of this method and of our cross-talk estimates, we performed cross-validation of additional gauge measurements on two Atto532 and three Atto565 samples. We extracted 6 estimators by pairing every Atto532 measurement with every Atto565 measurement and for each of them we checked the cross talk it produces when classifying the gauge measurements at 80 % conﬁdence threshold. The cross-talk values found were 5 % ± 1 % for Atto532 (number of estimates n = 12) and 8 % ± 1% for Atto565 (n = 18). The small variation conﬁrms the validity of our approach and the diﬀerence to the values found for the gauge measurement shown in Fig. 4 of the manuscript is rooted in the fact that the setup had been re-aligned, slightly changing the detection eﬃciencies of the dyes.
+
+2
+
+Implementation of the Position Estimators
+
+The estimation of the axial position is implemented in a collection of MATLAB macros as follows: The acquired frames are background corrected by a Gaussian ﬁlter and the positions of events are estimated independently in each channel as described in former studies [5]. In short: relevant image segments are identiﬁed by applying a count threshold to the frame. The quadratic segment is then multiplied with an initially centered, normalized Gaussian of equal FWHM as the PSF. In each iteration the center of mass of the product of the Gaussian with the background-corrected image is calculated and used as the center for the Gaussian in the next iteration. An event is listed if this iteration converges, i.e. if in less than 100 iterations the displacement of two consecutive iterations becomes less than 10−5 of the pixel size, otherwise the event is discarded. Prior to actual measurements, we determine the three aﬃne transformations that register channel 2-4 with channel 1. This is done by recording a ﬂuorescent bead distribution, applying the localization algorithm, cutting out four quadrants of each camera frame and determine the aﬃne transformations that best co-localize the identiﬁed positions. To this end we apply three starting transformations to channels 2-4 which have to be a fair estimates of the actual transformations. For each bead (event in channel 1) we then identify the three positions (in channels 2-4) that correspond to it by identifying the events which lie closest to it after back-transformation. Assuming that the assignment is correct for a majority of beads, the correct transformations are then found by minimizing the mean square distance and iterating the whole process if necessary (bad initial guesses and/or dense bead distributions). We remark that the
+
+14
+
+Nature Methods: doi:10.1038/nmeth.1583
+
+transformations may be calculated from the actual data itself but using beads to obtain master transformations turned out to be more reliable and accurate due to the better SNR of the images. The relative movement of the four channels between calibration measurements was controlled and turned out to be negligible. When analyzing the data, quadruples of events in the four channels are identiﬁed as above, the center of the event is calculated as the weighted mean of the centers in the four channels. Using the common center, the weighted moments from equation (10) are calculated and recorded for each channel. The data is corrected for the detection eﬃciency of the individual channels which are determined without the dichroic used for multi-color imaging and the z-dependent reduced moments clk and slk deﬁned by equation (14) and the phases ϕlk , for l = 0, 3 are computed for each event k. Our estimator is then based on a reverse-lookup in a calibration curve acquired by scanning ﬂuorescent beads along z (over 1.2 microns around the focal plane with steps of 40nm) and interpolating the recorded moments along z (resulting in a calibration curve clG (z), slG (z) with steps of 0.4nm). As mentioned above, the absolute phase common to all moments deﬁned in equation (14) can diﬀer between gauge curve and experiments. The gauge curve can be corrected for this by applying a common phase shift to both ϕ0,G and ϕ3,G and using the fact that each absolute phase will result in a characteristic 2d-histogram over the axes ϕ0 and ϕ3 to determine the correct shift: We use the phase shift which maximizes the product of the 2d-histograms determined from the gauge measurement with the histogram from the actual measurement. The z-estimate is then obtained by minimizing the distance of an event k to the z-gauge curve:
+2 Dk (z) = l=0,3 2 wl (clG (z) − clk )2 + (slG (z) − slk )2 ,
+
+(20)
+
+The weights wj are chosen according to the experimental uncertainty of the two phase parameters, in our case w0 and w3 are 1/0.35 respectively. Potential common drifts (of all 4 channels together) in space are corrected by cross-correlating packages of 10,000 frames. If the setup is correctly aligned, the axial position z = 0 is deﬁned by the z plane in which ϕ0 = ϕ3 for all wavelenghts but the PSF still scales with the wavelength. Because the mean wavelength of the dye, λ, will usually diﬀer from the mean wavelength of the gauge measurement, λG , z-positions have to be corrected by scaling the phase-focus-centered z values with the ratio of the mean wavelengths λ/λG . To visualize the data we use color coding of the z information. To this end we calculate the mean z value for each pixel of our xy-histogram images and assign a color based on a z-colormap. The colormap is created by identifying four z positions with speciﬁc colors and by linearly interpolating between them. The z positions of the speciﬁc colors are deﬁned by the 0/0.33/0.66/1-quantiles of the cumulative z distribution to maximize the dynamical contrast. The color intensity reﬂects the event counts in a bin. For visibility purpose we saturated some pixels of the 2D-histogram images.
+
+15
+
+Nature Methods: doi:10.1038/nmeth.1583
+
+Supplementary Note 2: 4Pi-SMS microscope system parts list
+EMCCD camera: Objective lenses: λ/4-plates: Babinet-Soleil compensator: Cavity dichroics: Multicolor dichroic: Notch ﬁlter: Bandpass ﬁlter Bandpass ﬁlter (multicolor) Polarizing beamsplitter Beamsplitter Lenses: IXON-Plus DU-897, Andor Technology 63X PL APO N.A. 1.20 water immersion, Leica Achromatic Quartz MgF2 λ/4-plate, Bernhard Halle Nachﬂ. custom-made Babinet-Soleil compensator, Bernhard Halle Nachﬂ. zt620-140rb 22.5◦ , AHF Analysentechnik 555dcxr, Chroma Single Notch Filter 532 nm - U grade, AHF Analysentechnik HQ 560/40, AHF Analysentechnik Brightline 582/75-25, Semrock Broadband Polarizing Cube Beamsplitters, Newport Broadband Non-Polarizing Beamsplitter Cube, Newport Lead-free 400-700 nm cemented achromatic lenses, CVI Melles Griot (L1,L2,L3: f=350,140,300) Rectangular aperture, Owis
+
+Apertures:
+
+References
+[1] Engelhardt, J. et al. Molecular orientation aﬀects localization accuracy in superresolution far-ﬁeld ﬂuorescence microscopy. Nano Letters 11, 209–213 (2011). [2] v. Middendorﬀ, C., Egner, A., Geisler, C., Hell, S. W. & Schönle, A. Isotropic 3D nanoscopy based on single emitter switching. Optics Express 16 (2008). [3] Bossi, M. et al. Multicolor far ﬁeld ﬂuorescence nanoscopy through isolated detection of distinct molecular species. Nano Letters 8, 2463–2468 (2008). [4] Pertsinidis, A., Zhang, Y. & Chu, S. Subnanometre single-molecule localization, registration and distance measurements. Nature 466, 647–651 (2010). [5] Egner, A. et al. Fluorescence nanoscopy in whole cells by asynchronous localization of photoswitching emitters. Biophys. J. 93, 3285–3290 (2007).
+
+16
+
+Nature Methods: doi:10.1038/nmeth.1583
+

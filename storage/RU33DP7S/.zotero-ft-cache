@@ -1,0 +1,26 @@
+Spatiotemporal Dynamics of the Growth of Pollen Tubes Using GFP-tagged RIC4 Videos
+Albert Cruz1, Bir Bhanu1 and Zhenbiao Yang2
+1
+
+Center for Research in Intelligent Systems, University of California, Riverside, CA 92521, USA 2 Dept. of Botany and Plant Sciences, University of California, Riverside CA 92521, USA
+
+Abstract ROP1, a Rho family GTPase enzyme, activates the downstream target RIC4. RIC4 is an accurate reporter of ROP1 activity, which is periodically localized at the apex of the plasma membrane in pollen tubes. It allows the positive feedback relationship between pollen tube growth and ROP1 activity to be established based on its observed behavior. It regulates the growth of filamentous actin that directly affects pollen tube growth. However, the displacement of the plasma membrane and frequency of oscillation of the localization of RIC4 at the tip have not been quantified. Most current studies of pollen tubes are done by analyzing the limited amount of data by hand. As a result, pollen tube growth patterns are still not thoroughly understood. The proposed research develops computer algorithms to analyze laser microscopy videos of pollen tubes with GFP-tagged RIC4. This research develops: (1) A modified forward wavefront region growing algorithm to address non-rigid movement and dynamic localization with a change in angle of the displacement vectors associated with the growth. (2) An algorithm for oscillation analysis that verifies the periodicity of RIC4 localization. It generates a signal for centroid movement corresponding to fluorescence and allows frequency domain analysis. Four videos of 120 to 240 frames of pollen tube growth are used to verify the oscillating model of pollen tube growth by: (a) Relating changes in the direction of displacement to concentrations of GFP-tagged RIC4, (b) Analyzing in the frequency domain the concentration of GFP-tagged RIC4 and finding a consistent signal for verifying periodicity, and (c) Verifying that the tip growth lags behind the oscillation of RIC4 at the tip. The results of algorithms will be shown by several videos. Using automatic methods, this research shows the spatiotemporal relationship of RIC4 localization and pollen tube growth. These methods can be applied to analyze laser microscopy videos of mutations or other data that are fluorescently tagged with CFP, GFP, YFP or DsRed. References 1. Hwang, J.U., Gu, Y., Lee, Y.J., and Yang Z. (2005). Oscillatory ROP GTPase activation leads the oscillatory polarized growth of pollen tubes. Mol. Biol. Cell 16, 5385–5399. 2. Bhanu, B. and Burger, W. (1987). Approximation of Displacement Fields Using Wavefront Region Growing. Computer Vision, Graphics and Image Processing 41, 306-322.
+
+(1)
+
+(2B)
+
+Figure 1: Four pairs of sample frames (1) from GFP tagged RIC4 video. Analyzed in this research: three 120 frame videos and one 240 frame video of over expressed RIC4 stabilized with LatB. These frames highlight difficulties posed by the research. All images are corrupted by noise. Videos have random, mobile objects that are not the pollen tube. Tube movement is nonrigid.
+
+Figure 2: Overcome non-rigid movement issues with a modified Wavefront growing algorithm. Propagate displacement vectors forward to border of the pollen tube in the next frame. (2A) The result of a single frame with its corresponding displacement vectors. The red border indicates the region (2B) expanded to see the motion vectors. The previous border is shown in gray, with displacement vectors mapped to points on the next border, shown in white.
+
+(2A)
+
+Figure 3: Quantify enzyme activity by (1) automatic registration of the image frames, (2) thresholding using histogram analysis to report only fluorescing pixels and (3) calculating the centroid. Record the centroid distance from the apex of the pollen tube to obtain a waveform. This waveform accurately reflects the RIC4 fluorescence and, therefore, ROP1 activity. (1A) Six frames of pollen tubes from the same video are paired with their thresholded result. The red dot indicates the centroid, with the red arrow measuring the distance from the tube apex. (1B) The resulting waveform generated from the video of the samples.
+
+(2B)
+
+(3A)
+
+(3B)
+

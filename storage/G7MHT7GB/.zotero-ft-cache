@@ -1,0 +1,156 @@
+[30]
+
+plate::vision and plate::explorer
+
+589
+
+Williams, R. G., Kandasamy, R., Nickischer, D., Trask, O. J., Laethem, C., Johnston, P. A., and Johnston, P. A. (2006). Generation and characterization of a stable MK2‐EGFP cell line and subsequent development of a high‐content imaging assay on the Cellomics ArrayScan platform to screen for p38 mitogen‐activated protein kinase inhibitors. Methods Enzymol. 414 (this volume). Yu, H., West, M., Keon, B. H., Bilter, G. K., Owens, S., Lamerdin, J., and Westwick, J. K. (2003). Measuring drug action in the cellular context using protein‐fragment complementation assays. Assay Drug Dev. Technol. 1, 811–822. Zhou, J., and Cidlowski, J. A. (2005). The human glucocorticoid receptor: One gene, multiple proteins and diverse responses. Steroids 70, 407–417.
+
+[30] High‐Throughput Measurements of Biochemical Responses Using the Plate::Vision Multimode 96 Minilens Array Reader
+By KUO‐SEN HUANG, DAVID MARK , and FRANK ULRICH GANDENBERGER
+Abstract
+
+The plate::vision is a high‐throughput multimode reader capable of reading absorbance, ﬂuorescence, ﬂuorescence polarization, time‐resolved ﬂuorescence, and luminescence. Its performance has been shown to be quite comparable with other readers. When the reader is integrated into the plate::explorer, an ultrahigh‐throughput screening system with event‐ driven software and parallel plate‐handling devices, it becomes possible to run complicated assays with kinetic readouts in high‐density microtiter plate formats for high‐throughput screening. For the past 5 years, we have used the plate::vision and the plate::explorer to run screens and have generated more than 30 million data points. Their throughput, performance, and robustness have speeded up our drug discovery process greatly.
+Introduction
+
+In the mid‐ to late 1990s pharmaceutical companies began to invest heavily in high‐throughput screening (HTS) technologies to speed up their drug discovery processes. Early HTS platforms, typically built around track‐mounted articulate robots, could handle just one task at a time and achieve throughputs of only 20,000 compounds per day. They were not fast enough to keep pace with the increasing size of compound libraries and number of screening targets. Furthermore, because many of them could
+METHODS IN ENZYMOLOGY, VOL. 414 Copyright 2006, Elsevier Inc. All rights reserved. 0076-6879/06 $35.00 DOI: 10.1016/S0076-6879(06)14030-6
+
+590
+
+measuring biological responses with automated microscopy
+
+[30]
+
+not be applied to high‐density microtiter plate formats (e.g., 1536 well), reagent costs became an increasing issue. To optimize and speed up its HTS efforts, Roche approached Carl Zeiss (Jena, Germany), a company specialized in optics and micromechanics, to build an ultrahigh‐throughput screening (uHTS) system. The goal was to design an easy‐to‐operate screening platform for parallel handling of miniaturized samples with throughputs greater than 100,000 compounds per day. The outcome of this cooperation was the plate::explorer, a uHTS system capable of screening >200,000 compounds per day in 96‐, 384‐, and 1536‐well formats. One of the key elements in the plate::explorer system is the plate::vision, a high‐throughput multimode microtiter plate reader equipped with quasiconfocal optics capable of reading 96 wells simultaneously.1
+Instrumentation
+
+Plate::Vision Prior to the introduction of the plate::vision, two kinds of readers were used in high‐throughput drug discovery. One was the single‐well reader, which measured one well at a time. The other was the image reader, which acquired a picture of an entire microtiter plate and then evaluated the image for light intensities resulting from individual wells. With single‐well readers, the optical pathway could be kept rather simple (as just a single well needed to be illuminated and light from only one well needed to be collected and measured). As a result, these readers offered excellent sensitivity. However, because they only read one well at a time and the microtiter plate needed to move under the optical head for each read, the throughput was limited. In contrast, image readers could realize extremely high throughputs (in excess of 1 million wells per day) with a single plate being read in just a few seconds. However, signal quality could be compromised by cross talk between neighboring wells and by background ﬂuorescence from the plate material. As a result, the sensitivity of image readers was limited. To combine the advantages of both single‐well and image readers while circumventing the obstacles of each, Zeiss came up with a solution where 96 wells are illuminated simultaneously through a minilens array (Fig. 1). Because only 96 wells are illuminated at a time and because each of the minilens objectives generates a deﬁned focus located in the center of the illuminated well, there is no optical cross talk between adjacent
+1
+
+Since January 2005, both plate::explorer and plate::vision are sold, serviced, and further developed by lab automation specialist Evotec Technologies, Hamburg, Germany.
+
+[30]
+
+plate::vision and plate::explorer
+
+591
+
+FIG. 1. Minilens array for ‘‘structured illumination’’ (in a 384‐well plate every 4th and in a 1536h‐well plate every 16th well are illuminated) and the resulting detection volumes for three main detection modes.
+
+wells and almost no interference with background ﬂuorescence from the plate material. This results in a reader with sensitivity as good as the single‐ well readers and throughputs as high as the image readers. For example, it takes only about 30 s to read a 1536‐well microtiter plate. This translates into a throughput that comfortably exceeds 1 million wells per day, limiting the prospect that plate reading will become a bottleneck in the foreseeable future. Furthermore, using an array with 96 objectives allows plate reading to be synchronized with parallel liquid handling, for example, with 96 channel pipettors. That way, all wells in a microplate are treated equally, which generates high‐quality results and enables multipoint readouts where individual wells are read multiple times to produce a time series. Optical Setup. The optical pathway of the plate::vision follows that of an inverted microscope (Fig. 2). Inside the reader housing, the optical light
+
+592
+
+measuring biological responses with automated microscopy
+
+[30]
+
+FIG. 2. Optical setup of the plate::vision.
+
+path is folded twice, which keeps the overall instrument compact and enables easy integration into robotic environments. Light from a 300‐W high‐pressure xenon arc lamp or a pulsed 355‐nm Nd: YAG laser (for time‐resolved ﬂuorescence measurements) is ﬁrst passed through two ﬁlter wheels ﬁtted with attenuation ﬁlters and subsequently through a ﬁlter slider that can hold up to eight ﬁlter cubes. Each ﬁlter cube combines the necessary excitation, emission, and dichroic ﬁlters/mirrors in an easy‐to‐exchange metal housing. Both attenuation and ﬂuorescence ﬁlter settings can be changed by the reader software. This enables sequential measurements at different wavelengths or with different readout methods. The excitation light is then guided via two mirrors onto a large telescope lens, which expands and homogenizes the light beam to illuminate the minilens array (which is roughly the same size as a microtiter plate). With a microtiter plate placed on top of the microlens array, the 96 miniaturized microscopy objectives, each having an aperture of approximately 0.5, will focus the light into the well, producing a quasiconfocal detection zone, which (in the case of ﬂuorescence) has a volume of about 10 nl. With such a small fraction of the sample participating in the measurement process, the reader sensitivity becomes independent of the microtiter plate format. Thus, assays can be miniaturized to high‐density microtiter plates without compromising data quality. Furthermore, as microtiter plates are measured from the bottom, artifacts originating from bubbles at the liquid surface or meniscus effects are effectively avoided. This ‘‘structured illumination’’ approach (in a 384‐well plate every 4th, and in a 1536‐well plate every 16th well are illuminated) further eliminates the strong background signal originating from the plate bottom.
+
+[30]
+
+plate::vision and plate::explorer
+
+593
+
+To enable screening of cell‐ or bead‐based assays, the z height of the focal zone can be adjusted inside the well. Combined with the x/y‐scanning function of the microplate stage, the height adjustment allows the reader to actively scan the wells and maximize the signal generated from beads or adherent cells while facilitating the diagnosis of artifacts caused by dye molecules sticking to the well bottom or by an uneven distribution of cells or beads. All this can be done without sacriﬁcing readout speed. Because different measurement modes have different requirements with respect to shape and size of the detection volume, different minilens arrays are used for optimizing the optical path for the individual application (Fig. 1). For time‐resolved ﬂuorescence (TRF) and luminescence, where signal quality can be inﬂuenced by meniscus effects, an array that produces a narrow beam of light is used. However, for absorbance measurements, an array creating a large focal volume for efﬁcient light collection is used. Light collected from the sample is guided onto either a À30 CCD camera (512 Â 512 pixel, 12 bit) for ﬂuorescence and luminescence measurements or a time‐gated À20 ‐intensiﬁed CCD camera (16 bit) for TRF measurements. The resulting images are automatically evaluated for intensity values originating from individual wells. For absorbance measurements, a photodiode array consisting of 96 individual photodiodes located over the microtiter plate is used. Readout Methods. The plate::vision has been designed to support almost all major assay formats (ﬂuorescence, luminescence, absorbance, and TRF) used in HTS laboratories. TRF measures ﬂuorophores with lifetimes in the microsecond range. These ﬂuorophores [typically Europium(III) chelates] are measured with some time delay after a deﬁned excitation pulse, when most of the compound‐associated autoﬂuorescence and background ﬂuorescence originating from the assay solution or the plate material have largely decayed. The long‐lived acceptor emission minimizes the short‐lived background ﬂuorescence and improves the signal‐to‐noise ratio signiﬁcantly. TRF is applicable both in heterogeneous (e.g., DELFIA from PerkinElmer) and in homogeneous (e.g., LANCE from PerkinElmer) formats. In a typical homogeneous LANCE format, one biomolecule is labeled with a europium chelate donor ﬂuorophore and the binding partner with an appropriate acceptor dye (e.g., allophycocyanin). When the two ﬂuorophores are in close proximity, a time‐resolved ﬂuorescence resonance energy transfer (TR to FRET) from the europium chelate (excitation at approximately 340 to 360 nm, emission typically at 615 nm) to the allophycocyanin (emission at 665 to 670 nm) is detected. Because plate::vision utilizes a pulsed 355‐nm laser light source, it can read TRF with high sensitivity and speed. Typically, it only takes less than
+
+594
+
+measuring biological responses with automated microscopy
+
+[30]
+
+1 min to ﬁnish reading a 384‐well microtiter plate. In contrast, single‐well readers take 10 to 20 min for the same measurement. With its powerful parallel readout concept, the plate::vision is an ideal instrument for high‐throughput kinetic readouts. Because it takes less than 10 s to read absorbance of a 384‐well plate, HTS assays can be carried out with kinetic readouts, which are more accurate than end‐point assays. Time‐course experiments can also provide a wealth of additional information and minimize artifacts generated from the reader or compounds. Plate::Explorer The traditional approach for plate transport in high‐throughput screening systems relies on single‐arm robots to pick up and transfer plates among incubators, liquid handlers, and readers. These systems have limited throughputs because only one plate can be handled at a time. To address this problem, Zeiss developed a new concept for parallel plate handling. Drawing on experience from semiconductor processing, Zeiss engineers also designed a compact turntable/conveyor belt system that moves plates quickly from one device/workstation to the next. With this concept, up to ﬁve different devices (liquid handlers, plate washers, incubators, readers, etc.) are assembled to form a workstation. Within a workstation, microtiter plates are moved by turntables. Each turntable can hold up to four microtiter plates. Using turntables, plate handling can be parallelized with empty turntable positions acting as buffer positions for devices that are temporarily unable to accept plates. A workstation has its own power supply and computer to operate independently. To create a high‐throughput screening system, multiple workstations can be joined via a bidirectional conveyor belt. With this modular approach, typically 10 to 100 assay plates can be processed in an hour, depending on the number of workstations and steps in the assay protocol. The system has been shown to be robust for daily HTS operations. Typically, more than 1000 plates can be processed without any mechanical errors. All plate transfer tasks are controlled by intuitive software (plate::works), which controls various plate::explorer devices via one common graphical user interface. Using plate::works, screening runs can be ‘‘programmed’’ by simple ‘‘drag and drop’’ operations.
+Measurements of Biochemical Responses
+
+Absorbance Assays Absorbance assays have been used widely for measuring biological activity. They can be set up easily by monitoring absorbance changes of physiological substrates or products. Although absorbance assays are not as sensitive as
+
+[30]
+
+plate::vision and plate::explorer
+
+595
+
+other methods, they do not require expensive antibodies or ﬂuorophores for detection. In many cases, assay signals can also be monitored by kinetic readouts, which increase sensitivity and decrease interference by colored compounds. They can be carried out in high‐density microtiter plates (e.g., 1536‐well plates) to save reagent costs and increase throughputs. In order to run an absorbance assay with kinetic readouts in a high‐ density format, a high‐throughput reader is required. We have routinely used the plate::vision for absorbance assays in 1536‐well plates. Typically, it takes only 0.1 s to complete reading 96 wells simultaneously and 2 s if the time for stage movement and data integration is included. The total reading time for a 1536‐well plate is approximately 32 s. When the reader is integrated into the plate::explorer system, it becomes possible to run absorbance assays with kinetic readouts for HTS. Data can be exported and entered into ActivityBase2 directly for calculating reaction rates based on linear regression curve ﬁts of the time‐dependent enzyme reaction. We describe here an absorbance assay for screening ATPase (e.g., motor protein) inhibitors. One of the most common assays for measuring ATPase activity is an NADH‐coupled enzyme assay utilizing pyruvate kinase and lactate dehydrogenase, as indicated by the scheme shown here:
+ATPase ATP À !ADP þ Pi Pyruvate ADP þ Phosphoenopyruvate À kinase ! Pyruvate þ ATP Lactate dehydrogenase Pyruvate þ NADH À ! Lactate þ NAD
+
+Because NADH has a high molar absorption coefﬁcient at 340 nm, ATPase activity can be monitored by the decrease of absorbance of NADH. We have implemented a high‐throughput screening method with kinetic readouts onto the plate::explorer system consisting of six workstations (Fig. 3). Individual components of the system have been described previously (Huang and Vassilev, 2005). A microtiter plate centrifuge module has been added to the system. When assays are carried out in 1536‐well plates, air bubbles generated during liquid pipetting can interfere with accurate reading. We found that brief centrifugation of the assay plate removes air bubbles efﬁciently. One of the advantages of the plate::explorer system is the parallel process design of the software and hardware, which allows multiple assays to be run on the system simultaneously. A ﬂowchart of a process in which we ran dual ATPase assays with kinetic readouts is shown in Fig. 4. The assays are run in a 1536‐well format to save reagent costs. Because the Cybi‐well pipettor has a 384‐well pipetting head, each
+2
+
+ActivityBase is a trademark of IDBS. It is a database managing biological and chemical information.
+
+596
+
+measuring biological responses with automated microscopy
+
+[30]
+
+FIG. 3. A diagram of the plate::explorer system. Individual components of the system have been described previously (Huang and Vassilev, 2005) except for the addition of the microtiter plate centrifuge made by Hettich (Germany) to the system.
+
+ATPase is run in one quadrant of the 1536‐well plate (two quadrants are used for two ATPases). The 384‐well plates containing test compounds in columns 3 to 24 (2 l per well, 1 mM in dimethyl sulfoxide) are placed in the HW1 plate lift, and 1536‐well assay plates are placed in the LW1 plate lift. The compound plates are then transported to the Cybi‐drop in LW1, and 30 l/well of buffer A (25 mM PIPES, pH 7.0, 2 mM MgCl2, 2 mM EGTA, 0.1 mM EDTA, 25 mM KCl, and 1 mM dithiothreitol) is added by
+
+[30]
+
+plate::vision and plate::explorer
+
+597
+
+FIG. 4. ATPase assay ﬂowchart on the plate::explorer system. SP 384 represents a compound plate in 384‐well format. AP 1536 represents a 1536‐well assay plate.
+
+the Cybi‐drop. Columns 1 and 2 contain assay buffer only, and columns 3 and 24 contain test compounds. Samples are mixed three times with the 384 pipettor, and 3 l/well is transferred to quadrants A1 and B2 of the 1536‐ well assay plate. Enzyme solution containing ATPase I,3 pyruvate kinase, and lactate dehydrogenase in buffer A is added to quadrant A1 (3 l/well) of columns 1 to 48 and mixed. The assay plate is then moved to the Cybi‐ well 384 pipettor in LW2. Enzyme solution containing ATPase II, pyruvate kinase, and lactate dehydrogenase is added to quadrant B2 (3 l/well) of columns 1 to 48 and mixed. The assay plate is then moved to the Cybi‐well 384‐well pipettor in RW1. The substrate solution containing ATP is added to quadrants A1 and B2 (3 l/well) in columns 5 to 48. Buffer without ATP is added to the top set of wells in columns 1 to 4 as a background and KH2PO4 (30 M) is added to the bottom set of the wells as an inhibitor control. After mixing, the plate is centrifuged brieﬂy (2000 rpm, 1 min) to remove air bubbles. The plate is incubated with a lid on at 37 in an I30 incubator with 80% humidity (less than 5% of the sample volume evaporates when a lidded 1536 well‐plate is incubated for 1 h). The assay plate is read kinetically on the plate::vision in RW1 every 7.5 min. By using the aforementioned process, we achieved a maximum throughput of 65,000 compounds per day for two enzymes, corresponding to 756,000 data points. The Z0 factor, a measurement for the quality of an assay (Zhang et al., 1999), is shown for each assay plate in Fig. 5. The average Z0 factors for the entire batch of screening plates (over 2500 compound plates) are 0.78 and
+3
+
+ATPase I and II are general terms for two related ATPase enzymes.
+
+598
+
+measuring biological responses with automated microscopy
+
+[30]
+
+FIG. 5. Z0 factors from assay plates of ATPase screens.
+
+0.82 for ATPase I and II, respectively (an assay is considered to be good when the Z0 factor is above 0.5). The frequency distribution of each ATPase screen is shown in Fig. 6. In both cases, compounds that caused greater than 35% inhibition were selected for hit conﬁrmation. TRF Assays TRF assays using lanthanide chelates (e.g., Eu3þ, Tb3þ, and Sm3þ) as ﬂuorophores have been used for biochemical and cell‐based assays. These ﬂuorophores exhibit an intense and long‐lived ﬂuorescence emission, making it possible to measure ﬂuorescence after a time delay (100 to 1000 s). Homogeneous assays based on TR‐FRET have been particularly useful for high‐throughput screening. They do not involve washing steps and permit the measurement of interactions between two molecules in solution under physiological conditions. Although the TR‐FRET assay is sensitive, it takes a much longer time to read a TR‐FRET assay signal than other reading modes (e.g., absorbance or prompt ﬂuorescence). Typically, it requires readings of time‐delayed (50 to 400 s) ﬂuorescence signals at two different emission wavelengths (donor and acceptor emissions). The assay signals are then calculated by the ratio of acceptor‐to‐donor ﬂuorescence intensity. Therefore, a fast reader is critical in running a TR‐FRET assay for high‐throughput screening. Table I compares the speed and sensitivity of different readers. Z0 factors are very similar between the plate::vision and ViewLux. Z0 values in both are slightly lower than in the Victor V. However, the Victor V is much slower than the other two readers.
+
+[30]
+
+plate::vision and plate::explorer
+TABLE I SENSITIVITY AND SPEED Plate::vision‘ 0.805 4.3 5.8 13.9 0.9 min 3.6 min
+
+599
+
+COMPARISON Sensitivity
+a
+
+OF
+
+OF
+
+DIFFERENT READERS ViewLuxb 0.798 3.5 7.0 20 1.8 min 2.8 min Victor Vc 0.857 4.1 11.0 181 20 min 76 min
+
+Z0 factor % CV (signal) % CV (blank) Signal/blank ratio Speed (per plate) 384‐well plate 1536‐well plate
+a
+
+Sensitivity was determined using 100 pM of Eu‐labeled streptavidin and 50 pM of biotin‐ labeled allophycocyanin on 384‐well microtiter plates. b ViewLux‘ is an ultrahigh‐throughput microplate imager from PerkinElmer. c Victor V is a multilabel, multitask plate reader from PerkinElmer.
+
+FIG. 6. Frequency distribution of ATPase screens.
+
+We have routinely run screens for kinases, phosphatases, nuclear receptors, and protein–protein interactions in the TR‐FRET assay format on the plate::explorer system and achieved throughputs of greater than 100,000 data points per day (deﬁned as a 20‐h run) by using 1536‐well assay plates. Examples of screening inhibitors of protein–protein interactions have been described previously (Huang and Vassilev, 2005). Fluorescence Intensity (FI) and Fluorescence Polarization (FP) Assays Fluorescence intensity assays are sensitive, low cost, and easily applicable to high‐throughput screening. We have developed a high‐throughput assay for screening heparanase inhibitors (Huang et al., 2004). Although the assay involves multiple pipetting and washing steps, the parallel process
+
+600
+
+measuring biological responses with automated microscopy
+
+[30]
+
+design of the plate::explorer system and the high‐speed plate::vision have made it possible to screen more than 25,000 compounds per day. The sensitivity of the reader is very comparable with many other readers (e.g., Victor V, Envision, and ViewLux). Highly ﬂuorescent compounds and quenching compounds interfere with the FI assays. In addition to TR‐FRET assays, FP assays using red‐shifted ﬂuorescent dyes (e.g., rhodamin red) can minimize compound interference. FP is a simple, homogeneous, and relatively low‐cost assay. Because two measurements (parallel and perpendicular ﬂuorescence intensities) are required for calculating polarization for each data point, the reading time is longer than in FI assays. A high‐throughput reader can increase the throughput of an FP assay greatly, particularly in high‐density microtiter plate formats. A new FP assay utilizing IMAP beads has been developed (Molecular Devices). Because it does not require speciﬁc antibodies for detection, it is widely applicable for screening for inhibitors of kinases and phosphatases (Gaudet et al., 2003). It is also very compatible with high‐throughput robotics and can be applied to the 1536‐well format. We have evaluated the performance of the plate::vision in FP reading in IMAP assays and found that it is comparable with that of other readers, for example, ViewLux, Envision (PerkinElmer), and Acquest (Molecular Devices). Because the plate::vision reads signals from the bottom of the microtiter plates, we have been using black glass‐bottom plates to avoid the light polarization that occurs in polystyrene plates. More recently, we found that  clear (black clear bottom) polystyrene microtiter plates from Greiner Bio‐One can also be used for FP reading on the plate::vision. The Z0 factor (about 0.8 for an assay with a 100‐mP change) is very similar to that for glass plates.
+Acknowledgments
+We thank John L. Myer, Xiaolei Zhang, Kathie Huang, and Janna Holmgren for their contributions.
+
+References
+Gaudet, E. A., Huang, K.‐S., Zhang, Y., Huang, W., Mark, D., and Sportman, J. R. (2003). A homogeneous ﬂuorescence polarization assay adaptable for a range of protein serine/ threonine and tyrosine kinases. J. Biomol. Screen. 8, 164–175. Huang, K.‐S., Holmgren, J., Reik, L., Lucas‐McGady, D., Robert, J., Liu, C.‐M., and Levin, W. (2004). High‐throughput methods for measuring heparanase activity and screening potential antimetastatic and anti‐inﬂammatory agents. Anal. Biochem. 333, 389–398. Huang, K.‐S., and Vassilev, L. T. (2005). High throughput screening for inhibitors of the Cks1‐ Skp2 interaction. Methods Enzymol 399, 717–728. Zhang, J.‐H., Chung, T. D. Y., and Oldenburg, K. R. (1999). A simple statistical parameter for use in evaluation and validation of high throughput screening assays. J. Biomol. Screen. 2, 67–73.
+

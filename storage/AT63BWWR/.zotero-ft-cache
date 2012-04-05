@@ -1,0 +1,986 @@
+COMPUTER
+
+VISION,
+
+GRAPHICS,
+
+AND
+
+IMAGE
+
+PROCESSING
+
+29,100-132
+
+(1985)
+
+SURVEY Image Segmentation Techniques
+ROBERT M. HARALICK
+Machine Vision International,
+
+AND LINDA
+Ann Arbor,
+
+G. SHAPIRO
+Michigan 48104
+
+Received May 26,1982; revised June 25,1984 There are now a wide variety of image segmentation techniques, some considered general purpose and some designed for specific classes of images. These techniques can be classified as: measurement space guided spatial clustering, single linkage region growing schemes, hybrid linkage region growing schemes, centroid linkage region growing schemes, spatial clustering schemes, and split-and-merge schemes. In this paper, each of the major classes of image segmentation techniques is defined and several specific examples of each class of algorithm are described. The techniques are illustrated with examples of segmentations performed on real images. 6 1985 Academic Press, Inc.
+
+1. INTRODUCTION
+
+What should a good image segmentation be? Regions of an image segmentation should be uniform and homogeneous with respect to some characteristic such as gray tone or texture. Region interiors should be simple and without many small holes. Adjacent regions of a segmentation should have significantly different values with respect to the characteristic on which they are uniform. Boundaries of each segment should be simple, not ragged, and must be spatially accurate. Achieving all these desired properties is difficult because strictly uniform and homogeneous regions are typically full of small holes and have ragged boundaries. Insisting that adjacent regions have large differences in values can cause regions to merge and boundaries to be lost. As there is no theory of clustering, there is no theory of image segmentation. Image segmentation techniques are basically ad hoc and differ precisely in the way they emphasize one or more of the desired properties and in the way they balance and compromise one desired property against another. Image segmentation techniques can be classified as: measurement space guided spatial clustering, single linkage region growing schemes, hybrid linkage region growing schemes, centroid linkage region growing schemes, spatial clustering schemes, and split and merge schemes. As can be observed from this brief typology, image segmentation can be viewed as a clustering process. The difference between image segmentation and clustering is that in clustering, the grouping is done in measurement space. In image segmentation, the grouping is done on the spatial domain of the image and there is an interplay in the clustering between the (possibly overlap100 0734-189X/85 $3.00
+Copyright 8 1985 by Academic Press, Inc. All rights of reproduction in any fom reserved.
+
+IMAGE
+
+SEGMENTATION
+
+TECHNIQUES
+
+101
+
+ping) groups in measurement space and the mutually exclusive groups of the image segmentation. The single linkage region growing schemes are the simplest and most prone to the unwanted region merge errors. The hybrid and centroid region growing schemes are better in this regard. The split and merge technique is not as subject to the unwanted region merge error. However, it suffers from large memory usage and excessively blocky region boundaries. The measurement space guided spatial clustering tends to avoid both the region merge errors and the blocky boundary problems because of its primary reliance on measurement space. But the regions produced are not smoothly bounded, and they often have holes, giving the effect of salt and pepper noise. The spatial clustering schemes may be better in this regard, but they have not been well enough tested. The hybrid linkage schemes appear to offer the best compromise between having smooth boundaries and few unwanted region merges. The remainder of the paper briefly describes the main ideas behind the major image segmentation techniques and gives example results for several of them. Some of the techniques can produce some very small regions. In most of our examples, we have eliminated the small regions in the results we show. When small regions are eliminated, a statement of the fact is made in the description of the results. Additional image segmentation surveys can be found in Zucker [51], Riseman and Arbib [44], Kanade [21], and Fu and Mui [9].
+2. MEASUREMENT SPACE GUIDED SPATIAL CLUSTERING
+
+This technique for image segmentation uses the measurement space clustering process to define a partition in measurement space. Then each pixel is assigned the label of the cell in the measurement space partition to which it belongs. The image segments are defined as the connected components of the pixels having the same label. The accuracy of the measurement space clustering image segmentation process depends directly on how well the objects of interest on the image separate into distinct measurement space clusters. Typically the process works well in situations where there are a few kinds of distinct objects having widely different gray tone intensities (or gray tone intensity vectors, for multiband images) and these objects appear on a near uniform background. Clustering procedures which use the pixel as a unit and compare each pixel value with every other pixel value can require excessively large computation time because of the large number of pixels in an image. Iterative partition rearrangement schemes, such as ISODATA, have to go through the image data set many times and, if they do so without sampling, can also take excessive computation time. Histogram mode seeking, because it requires only one pass through the data, probably involves the least computation time of the measurement space clustering techniques, and it is the one we discuss here. Histogram mode seeking is a measurement space clustering process in which it is assumed that homogeneous objects on the image manifest themselves as clusters in measurement space. Image segmentation is accomplished by mapping the clusters back to the image domain where the maximal connected components of the mapped back clusters constitute the image segments. For single band images, calculation of this histogram in an array is direct. The measurement space clustering can be accomplished by determining the valleys in this histogram and declaring the clusters
+
+102
+
+HARALICK
+
+AND SHAPIRO
+
+FIG. 1. This is an enlarged raw mineral ore section: the bright areas are grains of pyrite; the gray areas constitute a matrix of pyrorhotite; the black areas are holes.
+
+HISTOORAfl ImAoE3. CNP Low SUH OF FREQUENClES DATA VALW =
+
+OF
+
+UEAN
+PROBAB 0.049
+
+TY
+
+IMXII’KJH PROB&-Y-g2 0. iwE+ FLAOB BPECIFIED: HM
+
+HIQH
+
+DATA
+
+129900 =
+
+VALUE
+
+=
+
+253
+
+O..594E+O3
+
+l
+
+0.039
+
+z : l l : : l * l * :: t* l * l * l * :: l * l * :: ::* *+* +I)+
+
+: .:
+0. 029
+l * l * :: l * l ** *** l ** l Wb* l *** l *** l *** l *** l *** *+** .**o *Hi l *** l **** ***** l **** l **** l ***** ***H***+********
+
+0.019
+
+0. 009
+H l * ::**. ~***---+***H+***************
+
+****
+l **** ***WI .** l
+
+47
+
+70
+
+94 DATA
+
+117 VALUES
+
+141
+
+165
+
+188
+
+212
+
+235
+
+FIG. 2. This is a histogram of the image of Fig. 1. The three nonoverlapping modes correspond to the black holes, the pyrorhotite, and the pryrite.
+
+IMAGE
+
+SEGMENTATION
+
+TECHNIQUES
+
+103
+
+FIG. 3. Fig. 2.
+
+This
+
+shows
+
+the segmentation
+
+of the image
+
+of Fig. 1 using
+
+the measurement
+
+space clusters
+
+of
+
+to be the intervals of values between valleys. A pixel whose value is in the i th interval is labeled with index i and the segment it belongs to is one of the connected components of alI pixels whose label is i. Figure 1 shows an example image which is the right kind of image for the measurement space clustering image segmentation process. It is an enlarged image of a polished mineral ore section. The width of the field is about 1 mm. The ore is from Ducktown, Tennessee, and shows subhedral to enhedral pyrite porophyroblests (white) in a matrix of pyrorhotite (gray). The black areas are holes. Figure 2 shows the histogram of this image. The valleys are no trouble to find. The first cluster is from the left end to the first valley. The second cluster is from the first valley to the second valley. The third cluster is from the second valley to the right end. Assigning
+
+FIG. 4. homogeneous
+
+This shows an image region segmentation
+
+similar in some respects may not be appropriate.
+
+to the image
+
+of Fig.
+
+1, but
+
+one
+
+in which
+
+104
+
+HARALICK
+
+AND SHAPIRO
+
+to each pixel the cluster index of the cluster to which it belongs and then assigning a unique gray tone to each cluster label yields the segmentation shown in Fig. 3. This is a virtually perfect segmentation. Figure 4 shows an example image which one might think is the right kind of image for measurement space clustering image segmentation, but it is not as ideal as the first image. Figure 5 shows its histogram which also has three modes and two valleys, and Fig. 6 shows the boundaries of the corresponding segmentation. Notice the multiple boundary area. It is apparent that the boundary between the grain and background is in fact shaded dark and there are many such border regions which show up as dark segments. In this case, we do not desire the edge borders to be separate regions and although the segmentation procedure did exactly as it should have done, the results are not what we desired. Segmentation into homogeneous regions is not necessarily a good solution to a segmentation problem. Figure 7 shows an image of a section of an F-15 bulkhead. It is clear that the image has distinct parts such as webs and ribs. Figure 8 shows the histogram of this image. It has two well separated modes. The narrow one on the right with a long left tail corresponds to specular reflection points. The main mode has three valleys on its left side and two valleys on its right side. Defining the depth of a valley to be the probability difference between the valley bottom and the lowest valley side and
+
+HIwoouNl
+
+OF
+
+Irwl.
+
+CR Lou 8Ufl OF FREQUEN&lES DATA vu HIW rlAx1lum PRO8AILIT~~IY-70 FLAOB
+0.136003
+
+MWALUE
+l l l :: l * l * l ** l ** H4t l x* l **** w*** ******
+
+= 0.13oE+04
+
+255
+
+mEAN= FpOFJ~I~ITY
+
+SPECIFIED:
+
+Hll
+
+I
+
+:
+i
+
+it
+
+0.0697
+
+: : : :
+
+,**
+I** ,** ,** Mw* ,+** ,*** ,I)** ,**+ ,*** Mb** Mb** ,,H ,,H ,*H* Mb*** ,**** ,**** ,+**** ,***** W(WIHO wH**++*+***H+*
+
+l
+
+l *
+
+l
+
+jIIIII~IIIII;IIIII~IIIII .66 109 212 236
+
+FIG.
+
+5.
+
+This
+
+shows the histogram of the image in Fig. 4
+
+IMAGE
+
+SEGMENTATION
+
+TECHNIQUES
+
+105
+
+FIG.
+
+6.
+
+Tbis
+
+shows
+
+the segmentation
+
+produced
+
+by clustering
+
+the histogram
+
+of Fig.
+
+5.
+
+eliminating the two shallowest valleys produces the segmentation shown in Fig. 9. The problem in the segmentation is apparent. Since the clustering was done in measurement space, there was no requirement for good spatial continuation and the resulting boundaries are very noisy and busy. Separating the main mode into its two most dominant submodes produces the segmentation of Fig. 10. Here the boundary noise is less, and the resulting regions more satisfactory, but the detail provided is much less. Ohlander [36] refines the clustering idea in a recursive way. He begins by defining a mask selecting all pixels on the image. Given any mask, a histogram of the masked image is computed. Measurement space clustering enables the separation of one mode of the histogram from another mode. Pixels on the image are then identified
+
+FIG.
+
+7.
+
+This
+
+is an image
+
+of a section
+
+of an F-1.5 bulkbead
+
+106
+
+HARALICK
+
+AND
+
+SHAPIRO
+OF
+
+HISTOORAM MDRKJ3. SUE
+
+8UH OF FREOUE;b&IES = 18Dooo LOW DATA VALUE = HIOH DATA VALUE = MAXIIlUIl PROBAILITY - 0.089 MEAN = 0. wPE+02 VARIANCE 0. 133lz*o4 PROBAB: 0.0877
+
+a55
+
+TY
+
+FLAW
+
+SPECIFIED:
+
+UN
+
+0.0697
+
+l I) l l l l * l * ** H+ Et l +** l ++* **** *Wt* *wt. WI** **** ***I l ***** l ***** 0 *a*+** l ******** l *+***o** ******I)** l *******+ * ..I ***+*** .** l i******* I* l ****,*****+* l ****.******* + l *a* l ************ +* l *. l *** H*********I*I** **~~~)*HIII*****II**~**~*~~ l *~*)****~******~~**~~~~~** l *~~)********,***).I(*c**~**=~~~ ++******(HI*****~~**~*~***~** l *.~~**l)******(*~~*~~~~~~~**~~ **~~~~***+*~*~*H~~~*~~~***~~~~~~* l *++*.*+*******4w****~**************** ****O~**),*****i*~*~~~~~~*~~********~**~*~=***~**********=**
+
+0.0317
+
+0.0337
+
+l *:
+
+0.0157
+
+* * : l l
+
+IIIII~IIIII~IIIII~III~I~IIIII~IIIII~IIIII~IIIII~IIIII~IIIII
+6 58 80 103 DATA 125 VALVES 147 170 192 214 236
+
+FIG.
+
+8.
+
+This
+
+is a histogram
+
+of the bulkhead
+
+image
+
+of Fig.
+
+7.
+
+FIG.
+
+9.
+
+This
+
+is the segmentation
+
+of the bulkhead
+
+induced
+
+by a measurement
+
+space
+
+clustering
+
+into
+
+5
+
+clusters.
+
+IMAGE
+
+SEGMENTATION
+
+TECHNIQUES
+
+107
+
+FIG. 10.
+clusters.
+
+This
+
+is the segmentation
+
+of the bulkhead
+
+induced
+
+by a measurement
+
+space clustering
+
+into
+
+3
+
+FIG. 11.
+
+Depicts
+
+the recursive
+
+histogram
+
+directed
+
+spatial
+
+clustering
+
+scheme
+
+of Ohlander.
+
+108
+
+HARALICK
+
+AND
+
+SHAPIRO
+
+FIG. image.
+
+12.
+
+Shows
+
+the results
+
+of the histogram
+
+directed
+
+spatial
+
+clustering
+
+when
+
+applied
+
+to the bulkhead
+
+with the cluster to which they belong. If there is only one measurement space cluster, then the mask is terminated. If there is more than one cluster, then each connected component of all pixels with the same cluster is, in turn, used to generate a mask which is placed on a mask stack. During successive iterations the next mask in the stack selects pixels in the histogram computation process. Clustering is repeated for each new mask until the stack is empty. Figure 11 illustrates this process which we call recursive histogram directed spatial clustering. Figure 12 illustrates the boundaries of a recursive histogram directed spatial clustering technique applied to the bulkhead image of Fig. 7. It produces a result with boundaries being somewhat busy and many small regions in areas of specular reflectance. Figure 13 illustrates the results of performing an 8-connected
+
+FIG. 13. Shows on the segmentation
+
+the results of performing of Fig. 12.
+
+an I-connected
+
+shrink
+
+operation
+
+followed
+
+by a fill operation
+
+IMAGE
+
+SEGMENTATION
+
+TECHNIQUES
+
+109
+
+FIG. 14.
+
+Shows a second image of the F-15 bulkhead from a slightly different viewpoint
+
+shrink operation followed by a fill operation on the segmentation of Fig. 12. The tiny regions are removed in this manner, but several important long, thin regions are also lost. For purposes of comparison, both here and later in the paper, Fig. 14 illustrates a second image of the F-15 bulkhead, taken from a slightly different viewpoint. Figure 15 illustrates the recursive histogram directed spatial clustering technique for the image of Fig. 14, and Fig. 16 shows the result after the shrink and fill. For ordinary color images, Ohta, Kanade, and Sakai [38] suggest that histograms not be computed individually on the red, green, and blue (R, G, and B) color variables, but on a set of variables closer to what the Karhunen-Loeve transform would suggest. They suggest (R + G + B)/3, (R - B)/2, and (2G - R - B)/4.
+
+FIG. 15. Fig. 14.
+
+Shows the results of the histogram directed spatial clustering scheme applied to the image of
+
+110
+
+HARALICK
+
+AND
+
+SHAPIRO
+
+FIG.
+
+16.
+
+Shows
+
+the results
+
+of the shrink
+
+and fill operations
+
+on the segmentation
+
+of Fig. 15.
+
+2.1. Thresholding If the image contains a bright object against a dark background and the measurement space is l-dimensional, measurement space clustering amounts to determining a threshold such that all points smaller than or equal to the threshold are assigned to one cluster and the remaining points are assigned to the second cluster. In the easiest cases a procedure to determine the threshold need only examine the histogram and place the threshold in the valley between the two modes. Unfortunately, it is not always the case that the two modes are nicely separated by a valley. To handle this kind of situation a variety of techniques can be used to combine the spatial information on the image with the gray tone intensity information to help in threshold determination. Chow and Kaneko [7] suggest using a threshold which depends on the histogram determined from the spatially local area around the pixel to which the threshold applies. Thus, for example, a neighborhood size of 33 by 33 or 65 by 65 can be used to compute the local histogram. Chow and Kaneko avoided the local histogram computation for each pixel’s neighborhood by dividing the image into mutually exclusive blocks, computing the histogram for each block, determining an appropriate threshold for each histogram, and then spatially interpolating the threshold values to obtain a spatially adaptive threshold for each pixel. Weszka, Nagel, and Rosenfeld [48] suggest determining a histogram for only those pixels having high Laplacian magnitude. They reason that there will be a shoulder of the gray tone intensity function at each side of the boundary. The shoulder has high Laplacian magnitude. A histogram of all shoulder pixels will be a histogram of all interior pixels just next to the interior border of the region. It will not involve those pixels in between regions which help make the histogram valley shallow. It will also have a tendency to involve equal numbers of pixels from the object and from the background. This makes the two histogram modes about the same size. Thus the valley seeking method for threshold selection has a better chance of working on the new histogram.
+
+IMAGE
+
+SEGMENTATION
+
+TECHNIQUES
+
+111
+
+Weszka and Rosenfeld [49] describe one method for segmenting white blobs against a dark background by threshold selection based on busyness. For any threshold, busyness is the percentage of pixels having a neighbor whose thresholded value is different from their own thresholded value. A good threshold is that point near the histogram valley between the two peaks which minimizes the busyness. Watanabe [46] suggests choosing a threshold value which maximizes the sum of gradients taken over all pixels whose gray level equals the threshold value. Kohler [24] suggests a modification of the Watanabe idea. Instead of choosing a threshold which maximizes the sum of gradient magnitudes taken over all pixels whose gray tone intensity equals the threshold value, Kohler suggests choosing that threshold which detects more high contrast edges and fewer low contrast edges than any other threshold. Kohler defines the set E(T) of edges detected by a threshold T to be the set of all pairs of neighboring pixels one of whose gray tone intensities is less than or equal to T and one of whose gray tone intensities is greater than T;
+
+E(T) = {((i,j),(k,l))~(l)pixels(i,j)and(k,Z)areneighbors
+(2)min{Z(i,j),Z(k,Z)} I T< max{Z(i,j),Z(k,Z)}}.
+
+The total contrast C(T) of edges detected by threshold T is given by
+
+tin{ IZ(i, 1) C(T)=Ki,j),(k,O)EQT) j) - TI,IZ(k, - TI} c
+The average contrast of all edges detected by threshold T is then given by C(T)/#E(T). The best threshold Tb is determined by that value is maximizes C(T,)/#EU’,). M&ram and Herman [30] reason that pixels which are in between regions probably have in-between gray tone intensities. If it is these pixels which are the
+
+FIG. 17. magnitude.
+
+Illustrates
+
+how the threshold
+
+of the Panda
+
+and Rosenfeld
+
+technique
+
+depends
+
+on the gradient
+
+112
+
+HARALICK
+
+AND
+
+SHAPIRO
+
+FIG. 18.
+Gaussian filter
+
+Shows with
+
+a FLIR a sigma
+
+image from the NATO of 1.5 and neighborhood
+
+data base. To reduce size of 15.
+
+noise
+
+it was filtered
+
+with
+
+a
+
+cause of the shallow valleys, then it should be possible to eliminate their effect by only considering pixels having small gradients. They take this idea further and suggest that by ex amining clusters in the 2-dimensional measurement space consisting of gray tone intensity and gradient magnitude, it is even possible to determine multiple thresholds when more than one kind of object is present. Panda and Rosenfeld [39] suggest a related approach for segmenting a white blob against a dark background. Consider the histogram of gray levels for all pixels which have small gradients. If a pixel has a small gradient, then it is not likely for it to be an edge. If it is not an edge, then it is either a dark background pixel or a bright blob
+
+FIG. 19.
+
+Shows
+
+the FLIR
+
+image
+
+of Fig.
+
+17 thresholded
+
+at gray tone intensity
+
+159 (a) and 190 (b).
+
+IMAGE
+
+SEGMENTATION
+
+TECHNIQUES
+
+113
+
+FIG.
+
+20.
+
+Shows
+
+the pixels
+
+of the FLIR
+
+image
+
+having
+
+large gradient
+
+magnitude.
+
+pixel. Hence, the histogram of all pixels having small gradients will be bin&al and for pixels with small gradients, the valley between the two modes of the histogram is an appropriate threshold point. Next consider the histogram of gray levels for all pixels which have high gradients. If a pixel has a high gradient, then it is likely for it to be an edge. If it is an edge separating a bright blob against a dark background and if the separating boundary is not sharp but somewhat Muse, then the histogram will be unimodal, the mean being a good threshold separating the dark background pixels from the bright blob pixels. Thus Panda and Rosenfeld suggest determining two thresholds; one for low gradient pixels and one for high gradient
+
+FIG. 21. Shows a scattergram of the gray tone intensity-gradient measurement Fig. 17. The gray tone intensity is the y axis and the gradient is the x axis. Notice tone intensity distribution for small gradient magnitude.
+
+space for the image of the nicely bimodal gray
+
+114
+
+HARALICK
+
+AND SHAPIRO
+
+FIG.
+
+22. Shows the segmentation of the image in Fig. 17 using the Panda and Rosenfeld scheme.
+
+pixels. By this means they perform the clustering in the two dimensional measurement space consisting of gray tone intensity and gradient. The form of the decision boundary in the two dimensional measurement space is shown in Fig. 17. Figure 18 illustrates a FLIR image from the NATO data base which one might think has the right characteristics for this type of segmentation algorithm. Figures 19a and 19b illustrate the FLIR image thresholded at 159 and 190, respectively. Figure 20 shows the pixels having a large gradient magnitude, where the gradient is computed as the square root of the sum of the squares of the linear coefficients arising from a gray tone intensity cubic fit in a 7 X 7 window. Figure 21 shows the horseshoe shaped cluster in the 2-dimensional gray tone intensity-gradient space where the gray tone intensities and the gradient values have been equal interval quantized. Figure 22 illustrates the resulting segmentation. Notice that because there is a bright object with a slightly darker appendage on top, the assumption of a homogeneous object on a dark background is not met. The result is that only the boundary of the appendage is picked up. A survey of threshold techniques can be found in We&a [47]. 2.2. Multidimensional Measurement Space Clustering
+
+For multiband images such as LANDSAT or Thematic Mapper, determining the histogram in a multidimensional array is not feasible. For example, in a six band image where each band has intensities between 0 and 99, the array would have to have 1006 = 101’ locations. A large image might be 10,000 pixels per row by 10,000 rows. This only constitutes lo8 pixels, a sample too small to estimate probabilities in a space of 1012 values were it not for some constraints of reality: (1) there is typically a high correlation between the band-to-band pixel values, and (2) there is a large amount of spatial redundancy in image data. Both these factors create a situation in which the lo8 pixels can be expected to contain only between lo4 and lo5 distinct 6-tuples. Based on this fact, the counting required for the histogram is easily done by hashing the 6-tuples into an array.
+
+IMAGE
+
+SEGMENTAnON
+
+TECHNIQUES
+
+11.5
+
+Clustering using the multidimensional histogram is more difficult than univariate histogram clustering. Goldberg and Shlien [ll, 121 threshold the multidimensional histogram to select all N-tuples situated on the most prominent modes. Then they perform a measurement space connected components on these N-tuples to collect together all the N-tuples in the tops of the most prominent modes. These measurement space connected sets form the cluster cores. The clusters are defined as the set of all iV-tuples closest to each cluster core. An alternate possibility (Narendra and Goldberg [34]) is to locate peaks in the multidimensional measurement space and region growing around them, constantly descending from each peak. Their region growing then includes all successive neighboring N-tuples whose probability is no higher than the N-tuple from which it is growing. Adjacent mountains meet in their common valleys. Rather than accomplish the clustering in the full measurement space, it is possible to work in multiple lower order projection spaces and then reflect these clusters back to the full measurement space. Suppose, for example, that the clustering is done on a four band image. If the clustering done in bands 1 and 2 yields clusters cl, c2, cj and the clustering done in bands 3 and 4 yields clusters cq and c5 then each possible 4-tuple from a pixel can be given a cluster label from the set {(cl, cJ, Cc,, cd, (c2, cd, (c2, cd, (c3, c4),(c3, ~1). A 4-tuple (xl, x2, x3, x4) gets the cluster label (c,, cd) if (xi, x2) is in cluster c2 and (x,, x4) is in cluster cd.
+3. REGION GROWING
+
+3.1. Single Linkage Region Growing
+
+Single linkage region growing schemes regard each pixel as a node in a graph. Neighboring pixels whose properties are similar enough are joined by an arc. The image segments are maximal sets of pixels all belonging to the same connected component. Single linkage image segmentation schemes are attractive for their simplicity. They do, however, have a problem with chaining, because it takes only one arc leaking from one region to a neighboring one to cause the regions to merge. The simplest single linkage scheme delines “similar enough” by pixel difference. Two neighboring pixels are similar enough if the absolute value of the difference between their gray tone intensity values is small enough. Bryant (1979) defines similar enough by normalizing the difference by the quantity (square root of 2) times the root mean square value of neighboring pixel differences taken over the entire image. For pixels having vector values, the obvious generalization is to use a vector norm of the pixel difference vector. Instead of using Euclidean distance, Asano and Yokoya [l] suggest that two pixels be joined together if the absolute value of their difference is smaIl enough compared to the average absolute value of the center pixel minus neighbor pixel for each of the neighborhoods the pixels belong to. The ease with which unwanted region chaining can occur with this technique limits its potential on complex or noisy data.
+3.2. Hybrid Linkage Region Growing
+
+Hybrid single linkage techniques are more powerful than the simple single linkage technique. The hybrid techniques seek to assign a property vector to each pixel where the property vector depends on the K x K neighborhood of the pixel. Pixels
+
+116
+
+HAR4LICK
+
+AND SHAPIRO
+
+which are similar are similar because their neighborhoods in some special sense are similar. Similarity is thus established as a function of neighboring pixel values and this makes the technique better behaved on noisy data. One hybrid single linkage scheme relies on an edge operator to establish whether two pixels are joined with an arc. Here an edge operator is applied to the image labeling each pixel as edge or non-edge. Neighboring pixels, neither of which are edges, are joined by an arc. The initial segments are the connected components of the non-edge labeled pixels. The edge pixels can either be left assigned as edges and be considered as background or they can be assigned to the spatially nearest region having a label. The quality of this technique is highly dependent on the edge operator used. Simple operators such as the Roberts and Sobel operators may provide too much region linkage, for a region cannot be declared as a segment unless it is completely surrounded by edge pixels. Haralick and Dinstein [15], however, do report some success using this technique on LANDSAT data. They perform a region growing of the edge pixels in order to close gaps before performing the connected components operator. Perkins [41] uses a similar technique. Haralick [17, 181 discusses a very sensitive zero-crossing of second directional derivative edge operator. In this technique, each neighborhood is least squares fitted with a cubic polynomial in two variables. The first and second partial derivatives are easily determined from the polynomial. The first partial derivatives at the center pixel determine the gradient direction. With the direction fixed to be the gradient direction, the second partials determine the second directional derivative. If the gradient is high enough and if in the gradient direction, the second directional derivative has a negatively sloped zero-crossing inside the area of the pixel, then an edge is declared in the center pixel of the neighborhood. Figure 23 shows the edges resulting from the second directional derivative zero-crossing operator using a gradient threshold of 4, a 9 x 9 neighborhood, and a zero-crossing radius of 0.85. The edges are well placed and a careful examination of
+
+FIG. 23. Shows the second directional derivative 4, a 9 x 9 neighborhood and a zero-crossing radius
+
+zero-crossing operator using a gradient threshold of of 0.85 applied to the bulkhead image of Fig. 14.
+
+IMAGE
+
+SEGMENTATION
+
+TECHNIQUES
+
+117
+
+pixels on perceived boundaries which are not classified as edge pixels will indicate the step edge pattern to be either nonexistent or weak. A connected components operation applied to the non-edge pixels accomplishes the initial segmentation. After the connected components operation, the edge pixels are assigned to their spatially closest component by a region filling operation. Figure 24 shows the boundaries from the region filled image. Obviously, there are some regions which have been merged together. However, those boundaries which are present are placed correctly and they are reasonably smooth. Lowering the gradient threshold of the edge operator could produce an image with more edges and thereby reduce the edge gap problem. But this solution does not really solve the gap problem in general. Although the connected components of the non-edge pixels of the edge operator do not yield an adequate segmentation, the edges can be used in combination with other segmentation techniques to improve the segmentation derived from those techniques. For example, the Ohlander technique discussed in Section 2 segments on the basis of measurement space clusters, but can lose some important edges. Such a segmentation will be improved if the edges can be used to refine it. To this end, we started with the Ohlander segmentation of Fig. 15 and overlaid the binary edge image shown in Fig. 24. This was achieved by starting with a symbolic image of the segmentation (where the value of each pixel is its region number) and multiplying this image on a pixel by pixel basis with the binary edge image. The resultant image has pixels with value zero where the edges were, and all the rest of the pixels still show their region numbers. We then applied a connected components operator to the non-edge pixels of this image, and removed small regions. The result is shown in Fig. 25. Note that Fig. 25 shows a better segmentation than Fig. 15 because several important straight lines that were missing have been put in. However, this technique does not always work as well. Figure 26 shows the same approach applied to the Ohlander segmentation of Fig. 13. This image had more specular reflection and there
+
+FIG. 24. Shows a hybrid linkage region growing scheme in which any pair of neighboring pixels, neither of which are edge pixels can link together. The resulting segmentation consists of the connected components of the non-edge pixels and where edge pixels are assigned to their nearest connected component. This result was obtained from the edge image of Fig. 23.
+
+118
+
+HARALICK
+
+AND
+
+SHAPIRO
+
+FIG. 25. Shows the results of overlaying an edge image on the segmentation (Fig. 15) of the bulkhead image of Fig. 14, applying a comxcted components operator, and removing small regions.
+
+were many extraneous edges which were put back into the segmentation. These do not seem to improve the segmentation at all. Yakimovsky [50] assumes regions are normally distributed and uses a maximum likelihood test to determine edges. Edges are declared to exist between pairs of contiguous and exclusive neighborhoods if the hypothesis that their means are equal and their variances are equal has to be rejected. For any pair of adjacent pixels with mutually exclusive neighborhoods R, and R, having Nr and N2 pixels, respectively,
+
+FIG. 26. Shows the result of overlaying an edge image on the segmentation (Fig. 13) of the bulkhead image of Fig. 7, applying a connected components operator, and removing small regions.
+
+IMAGE
+
+SEGMENTATION
+
+TECHNIQUES
+
+119
+
+the maximum likelihood technique computes the mean
+
+and the scatter
+
+s;= c (X-X,)’
+XER,
+
+as well as the grand mean
+
+x=
+and grand scatter
+
+1
+Nl+N2
+c x XER 1 VR *
+
+s*=
+The likelihood
+
+c
+XER~VR~
+
+(x-Q2.
+
+ratio test statistic T is given by
+
+T = [s2/W1 + N2)lN1+N2
+
+b,2/NIl y
+
+h2/N21
+
+N* .
+
+Edges are declared between any pair of adjacent pixels when the T statistic from their neighborhoods is high enough. As Ni and N2 get large, 210gT is asymptotically distributed as a chi-squared variate with 2 degrees of freedom. If it can be assumed that the variances of the two regions are identical, then the statistic
+
+has an F distribution with 1, and iVi + N2 - 2 degrees of freedom under the hypothesis that the means of the regions are equal. For an F value which is sufficiently large, the hypothesis can be rejected and an edge declared to exist between the regions. Haralick [16] suggests fitting a plane to the neighborhood around the pixel, and testing the hypothesis that the slope of the plane is zero. Edge pixels correspond to pixels between neighborhoods in which the zero-slope hypothesis has to be rejected. To determine a roof or V-shaped edge, Haralick suggests fitting a plane to the neighborhoods on either side of the pixel and testing the hypothesis that the coefficients of fit are identical. If the hypothesis is rejected, then a roof edge is declared. Another hybrid technique first used by Levine and Leemet [25] is based on the Jarvis and Patrick [20] shared nearest neighbor idea. Using any kind of reasonable
+
+120
+
+HARALICK
+
+AND
+
+SHAPIRO
+
+notion for similarity, each pixel examines its K X K neighborhood and makes a list of the N pixels in the neighborhood most similar to it. Call this list the similar neighbor list, where we understand neighbor to be any pixel in the K x K neighborhood. An arc joins any pair of immediately neighboring pixels if each pixel is in the other’s shared neighbor list and if there are enough pixels common to their shared neighbor lists; that is, if the number of shared neighbors is high enough. To make the shared neighbor technique work well each pixel can be associated with a property vector consisting of its own gray tone intensity and a suitable average of the gray tone intensity of pixels in its K X K neighborhood. For example, we can have (x, a) and (y, b) denote the property vectors for two pixels if x is the gray tone intensity value and a is the average gray tone intensity value in the neighborhood of the first pixel and y is the gray tone intensity value and b is the average gray tone intensity value in the neighborhood of the second pixel. Similarity can be established by computing
+S = wl(x - y)’ + w2(x - b)2 + w3(y - LI)~,
+
+where wi, w2, and w3 are nonnegative weights. The pixels are called similar enough for small enough values of s. Pong et al. [43] suggest an approach to segmentation based on the facet model of images. The procedure starts with an initial segmentation of the image into small regions. Each region with associated property vector is considered a unit. In a series of iterations, the property vector of a region is replaced by a property vector that is a function of its neighboring regions. Then adjacent regions having similar final property vectors are merged. This gives a new segmentation which can then be used as input to the algorithm. Thus a sequence of coarser and coarser segmentations are produced. Useful variations are to prohibit merging across strong edge boundaries or when the variance of the combined region would become too large. Figures 27,28, and 29 illustrate the results of the Pong approach on the image of Fig. 7 for one, two, and three iterations, respectively. Figure 30 illustrates the result of removing regions of size 25 or fewer pixels from the segmentation of Fig. 29.
+
+FIG.
+
+27.
+
+Shows
+
+one interation
+
+of the Pong algorithm
+
+on the bulkhead
+
+image
+
+of Fig. 7.
+
+IMAGE
+
+SEGMENTATION
+
+TECHNIQUES
+
+121
+
+FIG.
+
+28.
+
+Shows
+
+the second
+
+iteration
+
+of the Pong algorithm.
+
+3.3. Centroid Linkage Region Growing
+
+In centroid linking region growing, in contrast with single linkage region growing, pairs of neighboring pixels are not compared for similarity. Rather, the image is scanned in some predetermined manner such as left-rig& top-bottom. The value of a pixel is compared to the mean of an already existing but not necessarily completed neighboring segment. If its value and the mean value of the segment are close enough, then the pixel is added to the segment and the mean of the segment is updated. If there is more than one region which is close enough, then it is added to the closest region. However, if the means of the two competing regions are close enough, the two regions are merged and the pixel is added to the merged region. If no neighboring region has its mean close enough, then a new segment is established
+
+FIG.
+
+29.
+
+Shows
+
+the third
+
+iteration
+
+of the Pong
+
+algorithm.
+
+122
+
+HARALICK
+
+AND SHAPIRO
+
+FIG. 30. Shows the segmentation obtained by removing regions smaller than size 25 from the segmentation of Fig. 29.
+
+having the given value of the pixel as its first member. Figure 31 illustrates the geometry of this scheme. Keeping track of the means and scatters for all regions as they are being determined does not require large amounts of memory space. There cannot be more regions active at one time than the number of pixels in a row of the image. Hence, a hash table mechanism with the space of a small multiple of the number of pixels in a row can work well. Another possibility is a single band region growing technique using the T-test. Let R be a segment of N pixels neighboring a pixel with gray tone intensity y. Define the mean x and scatter S* by
+
+x=$ (r,C)ER c I(r,c)
+and
+
+s* = c (I(r,c)-x)“. (r,c)=R
+
+FIG. 31. Illustrates the region growing geometry for the one pass scan left-right, top-bottom region growing. Pixel i belongs to region Ri whose mean is X,, i = 1, 2, 3, and 4. Pixel y is added to a region Rr if by a T-test the difference between y and Fj is small enough. If for two regions Ri and Rj, the difference is small enough, and if the difference between q and xj is small enough, regions Ri and Rj are merged together, and y is added to the merged region. If the difference between zi and yj is significantly different, then y is added to the closest region.
+
+IMAGE
+
+SEGMENTATION
+
+TECHNIQUES
+
+123
+
+Under the assumption that all the pixels in R and the test pixel y are independent and identically distributed normals, the statistic
+
+T= w-w q (Y- x)*/s* l’* [ (* +
+and
+
+has a TN _ i distribution. If T is small enough y is added to region R and the mean and scatter are updated using y. The new mean and scatter are given by
+
+1
+
+If T is too high the value y is not likely to have arisen from the population of pixels in R. If y is different from all of its neighboring regions then it begins its own region. A slightly stricter linking criterion can require that not only must y be close enough to the mean of the neighboring regions, but that a neighboring pixel in that region must have a close enough value to y. This combines a centroid linkage and single linkage criterion. The next section discusses a more powerful combination technique, but first we want to develop the concept of “signiticantly high.” To give a precise meaning to the notion of too high a difference, we use an ~1level statistical significance test. The fraction cxrepresents the probability that a T statistic with N - 1 degrees of freedom will exceed the value t,-,(a). If the observed T is larger than t, _ i( a), then we declare the difference to be significant. If the pixel and the segment really come from the same population, the probability that the test provides an incorrect answer is (r. The significance level (Y is a user-provided parameter. The value of tNel(a) is higher for small degrees of freedom and lower for larger degrees of freedom. Thus, region scatters considered to be equal, the larger a region is, the closer the value of a pixel has to be to the mean of the region in order to merge into the region. Figure 32 plots tM( a) as a function of M, the number of degrees of freedom for a few different values of (Y. Note that all regions initially begin as one pixel in size. To avoid the problem of division by 0 (for S* is necessarily 0 for l-pixel regions and 0 for regions having identically valued pixels) a small positive constant can be added to S*. One convenient way of determining the constant is to decide on a prior variance V > 0
+
+Knimm
+FIG. 32. significance Illustrates level. how the T-test threshold
+
+DEGREES@F!XEDCU changes as a function
+
+3G.m of its degrees of freedom for a fixed
+
+124
+
+HARALICK
+
+AND
+
+SHAPIRO
+
+and an initial segment size N. The initial scatter for a new l-pixel region is then given by NV and the new initial region size is given by N. This mechanism keeps the degrees of freedom of the T-statistic high enough so that a significant difference is not the huge difference required for a T-statistic with a small number of degrees of freedom. Figure 33 illustrates the resulting segmentation on the bulkhead image of Fig. 14 for a 0.2% significance level test after all regions smaller than 25 pixels have been removed. Pavlidis [40] suggests a more general version of this idea. Given an initial segmentation where the regions are approximated by some functional fit guaranteed to have a small enough error, pairs of neighboring regions can be merged if for each region, the sum of the squares of the differences between the fitted coefficients for this region and the corresponding averaged coefficients, averaged over both regions, is small enough. Pavlidis gets his initial segmentation by finding the best way to divide each row of the image into segments with a sufficiently good fit. He also describes a combinatorial tree search algorithm to accomplish the merging which guarantees a best result. Kettig and Landgrebe [22] successively merge small image blocks using a statistical test. They avoid much of the problem of zero scatter by considering only cells containing a 2 X 2 block of pixels. Gupta, Kettig, Landgrebe, and Wintz [13] suggest using a T-test based on the absolute value of the difference between the pixel and the nearest region as the measure of dissimilarity. Kettig and Landgrebe [22] discuss the multiband situation leading to the F-test and report good success with LANDSAT data. Nagy and Tolaba [33] just examine the absolute value between the value of a pixel and the mean of a neighboring region formed already. If this distance is small enough, the pixel is added to the region. If there is more than one region, then the pixel is added to that region with smallest distance. The Levine and Shaheen scheme [26] is similar. The difference is that Levine and Shaheen attempt to keep regions more homogeneous and try to keep the region scatter from getting too high. They do this by requiring the differences to be more
+
+FIG. 33. Shows the one pass centroid significance level of 0.2% was used.
+
+linkage
+
+segmentation
+
+of the bulkhead
+
+image
+
+of Fig.
+
+14. A
+
+IMAGE
+
+SEGMENTATION
+
+TECHNIQUES
+
+125
+
+sign&ant before a merge takes place if the region scatter is high. For a user specified value 8, they define a test statistic T, where
+
+T= IY - Km,l -(l - W%m,)~If T < 0 for the neighboring region R in which ]y - xl is the smallest, then y is added to R. If T > 0 for the neighboring region in which ]y - x] is the smallest, then y begins a new region. Readers of the Levine and Shaheen paper should note that there are misprints in the formulas given for region scatter and region scatter updating. Brice and Fennema [2] accomplish the region growing by partitioning the image into initial segments of pixels having identical intensity. They then sequentially merge all pairs of adjacent regions if a significant fraction of their common border has a small enough intensity difference across it. Simple single-pass approaches which scan the image in a left-right, top-down manner are, of course, unable to make the left and right sides of a V-shaped region belong to the same segment. To be more effective, the single pass must be followed by some kind of connected components merging algorithm in which pairs of neighboring regions having means which are close enough are combined into the same segment. This is easily accomplished by using the two pass label propagation logic of the Lumia et al. [52] connected components algorithm. After the top-bottom, left-right scan, each pixel has already been assigned a region label. In the bottom-up, right-left scan, the means and scatters of each region can be recomputed and can be kept in a hash table. Whenever a pair of pixels from different regions neighbor one another, a T-test can check for the significance of the difference between the region means. If the means are not significant, then they can be merged. A slightly stricter criterion would insist not only that the region means be similar, but also that the neighboring pixels from the different regions must be similar enough. Figure 34 shows the resulting segmentation of the bulkhead image for a 0.2% significance level after one bottom-up, right-left merging pass and after all regions smaller than 25 pixels have been removed.
+
+FIG. 34. Shows the two pass centroid level of 0.2% was used on both passes.
+
+segmentation
+
+of the bulkhead
+
+image
+
+of Fig. 14. A significance
+
+126
+
+HARALICK
+
+AND
+
+SHAPIRO
+
+One potential problem with region growing schemes is their inherent dependence on the order in which pixels and regions are examined. A left-right, top-down scan does not yield the same initial regions as a right-left, bottom-up scan or for that matter a column major scan. Usually, however, differences caused by scan order are minor.
+4. HYBRID LINKAGE COMBINATION TECHNIQUES
+
+The previous section mentioned the simple combination of centroid linkage and single linkage region growing. In this section we discuss the more powerful hybrid linkage combination techniques. The centroid linkage and the hybrid linkage can be combined in a way which takes advantage of their relative strengths. The strength of the single linkage is that boundaries are placed in a spatially accurate way. Its weakness is that edge gaps result in excessive merging. The strength of centroid linkage is its ability to place boundaries in weak gradient areas. It can do this because it does not depend on a large difference between the pixel and its neighbor to declare a boundary. It depends on a large difference between the pixel and the mean of the neighboring region to declare a boundary. The combined centroid hybrid linkage technique does the obvious thing. Centroid linkage is only done for non-edge pixels, that is, region growing is not permitted across edge pixels, or, putting it another way, edge pixels are not permitted to be assigned to any region and cannot link to any region. Thus if the parameters of centroid linkage were set so that any difference, however large, between pixel value and region mean was considered small enough to permit merging, the two pass hybrid combination technique would produce a connected components segmentation of the non-edge pixels. As the difference criterion is made more strict, the centroid linkage will produce boundaries in addition to those of the edges. Figure 35 illustrates a one pass scan combined centroid and hybrid linkage segmentation scheme using a significance level test of 0.2%. Edge pixels are assigned
+
+FIG. 35. Shows the one pass combined centroid and hybrid image of Fig. 14. A significance level of 0.2% was used.
+
+linkage
+
+segmentation
+
+of the bulkhead
+
+IMAGE
+
+SEGMENTATION
+
+TECHNIQUES
+
+127
+
+FIG. 36. Shows the two pass combined centroid and hybrid linkage segmentation of the bulkhead image of Fig. 14. A significance level of 0.2% was used on both passes.
+
+to their closest labeled neighbor and regions having fewer than 25 pixels are eliminated. Notice that the resulting segmentation is much finer than that shown in Figs. 33 and 34. Also the dominant boundaries are nicely curved and smooth. Figure 36 illustrates the two pass scan combined centroid and hybrid linkage region growing scheme using a significance level test of 0.2%. The regions are somewhat simpler because of the merging done in the second pass.
+
+5. SPATIAL
+
+CLUSTERING
+
+It is possible to determine the image segments by simultaneously combining clustering in measurement space with spatial region growing. We call such a technique spatial clustering. In essence, spatial clustering schemes combine the histogram mode seeking technique with a region growing or a spatial linkage technique. Haralick and Kelly [14] suggest that segmentation be done by first locating, in turn, all the peaks in the measurement space histogram, and then determining all pixel locations having a measurement on the peak. Next, beginning with a pixel corresponding to the highest peak not yet processed, both spatial and measurement space region growing are simultaneously performed in the following manner. Initially, each segment is the pixel whose value is on the current peak. Consider for possible inclusion into this segment a neighbor of this pixel (in general, the neighbors of the pixel we are growing from) if the value of a neighbor (an N-tuple for an N band image) is close enough in measurement space to the value of the pixel and if its probability is not larger than the probability of the value of the pixel we are growing from. Matsumoto, Naka, and Yamamoto [27] discuss a variation on this idea. Milgram [28] defines a segment for a single band image to be any connected component of pixels, all of whose values lie in some interval I and whose border has a higher coincidence with the border created by an edge operator than for any other
+
+128
+
+HARALICK
+
+AND SHAPIRO
+
+interval I. The technique has the advantage over the Haralick and Kelly technique [14] in that it does not require the difficult measurement space exploration done in climbing down a mountain. However, it does have to try many different intervals for each segment. Extending it to efficient computation in multiband images appears difficult. However, Milgram does report good results in segmenting white blobs against a black background. Milgram and Kahl [29] discuss embedding this technique into the Ohlander [36] recursive control structure. Minor and Sklansky [31] make more active use of the gradient edge image than Milgram, but restrict themselves to the more constrained situation of small convexlike segments. They begin with an edge image in which each edge pixel contains the direction of the edge. The orientation is so that the higher valued gray tone is to the right of the edge. Then each edge sends out for a limited distance a message to nearby pixels and in a direction orthogonal to the edge direction. The message indicates what is the edge direction of the sender. Pixels which pick up these messages from enough different directions must be interior to a segment. The spoke filter of Minor and Sklansky [31] counts the number of distinct directions appearing in each 3 x 3 neighborhood. If the count is high enough they mark the center pixel as belonging to an interior of a region. Then the connected components of all marked pixels are obtained. The gradient guided segmentation is then completed by performing region growing of the components. The region growing must stop at the high gradient pixels, thereby assuring that no undesired boundary placements are made. Burt, Hong, and Rosenfeld [4] describe a spatial clustering scheme which is a spatial pyramid constrained ISODATA kind of clustering. The bottom layer of the pyramid is the original image. Each successively higher layer of the pyramid is an image having half the number of pixels per row and half the number of rows of the image below it. Initial links between layers are established by linking each parent pixel to the spatially corresponding 4 X 4 block of child pixels. Each pair of adjacent parent pixels has 8 child pixels in common. Each child pixel is linked to a 2 x 2 block of parent pixels. The iterations proceed by assigning to each parent pixel the average of its child pixels. Then each child pixel compares its value with each of its parent’s values and links itself to its closest parent. Each parent’s new value is the average of the children to which it is linked, etc. The iterations converge reasonably quickly and for the same reason the ISODATA iterations converge. If the top layer of the pyramid is a 2 x 2 block of great-grandparents, then there are at most 4 segments which are the respective great-grandchildren of these 4 greatgrandparents. Pietikainen and Rosenfeld [42] extend this technique to segment an image using textural features.
+6. SPLIT AND MERGE
+
+The split method for segmentation begins with the entire image as the initial segment. Then it successively splits each current segment into quarters if the segment is not homogeneous enough. Homogeneity can be easily established by determining if the difference between the largest and smallest gray tone intensities is small enough. Algorithms of this type were first suggested by Robertson [45] and Khnger [23]. Kettig and Landgrebe [22] try to split all nonuniform 2 X 2 neighborhoods before beginning the region merging. Fukada [lo] suggests successively splitting a
+
+IMAGE
+
+SEGMENTATION
+
+TECHNIQUES
+
+129
+
+region into quarters until the sample variance is small enough. Efficiency of the split and merge method can be increased by arbitrarily partitioning the image into square regions of a user selected size and then splitting these further if they are not homogeneous. Because segments are successively divided into quarters, the boundaries produced by the split technique tend to be squarish and slightly artificial. Sometimes adjacent quarters coming from adjacent split segments need to be joined rather than remain separate. Horowitz and Pavlidis [19] suggest a split and merge strategy to take care of this problem. Muerle and Allen [32] suggest merging a pair of adjacent regions if their gray tone intensity distributions are similar enough. They recommend the Kolmogorov-Smimov test. Figure 37 illustrates the result of a Horowitz and Pavlidis type split and merge segmentation of the bulkhead image of Fig. 7. Chen and Pavlidis [6] suggest using statistical tests for uniformity rather than a simple examination of the difference between the largest and smallest gray tone intensities in the region under consideration for splitting. The uniformity test requires that there be no significant difference between the mean of the region and each of its quarters. The Chen and Pavlidis tests assume that the variances are equal and known. Let each quarter have K pixels, Xii be the jth pixel in the ith region, Xi be the mean of the ith quarter and X.. be the grand mean of all the pixels in the 4 quarters. Then in order for a region to be considered homogeneous, Chen and Pavlidis require that
+lxi,X..I I E, i = 1,2,3,4.
+
+We give here the F-test for testing the hypothesis that the means and variances of the quarters are identical. The value of the variance is not assumed known. Under the assumption that the regions are independent and identically distributed normals,
+
+FIG. 37. Shows a split and merge segmentation of the bulkhead image of Fig. 7
+
+130
+
+HARALICK
+
+AND
+
+SHAPIRO
+
+the optimal test is given by the statistic F which is defined by
+K 5
+‘= 4
+iFl k;l
+
+(Xi,--
+
+x..)2/3
+
+K
+
+i=l
+(xi/c xi.)2/4(K ‘1.
+
+distribution. If F is too high the region is declared not uniform. has m F3,4(K-1) The data structures required to do a split and merge on images larger than 512 x 512 are extremely large. Execution of the algorithm on virtual memory computers results in so much paging that the dominant activity may be paging rather than segmentation. Browning and Tanimoto [3] give a description of a split and merge scheme where the split and merge is first accomplished on mutually exclusive subimage blocks and the resulting segments are then merged between adjacent blocks to take care of the artificial block boundaries.
+It 7. CONCLUSION
+
+We have briefly surveyed the common techniques of measurement space clustering, single linkage, hybrid linkage, region growing, spatial clustering, and split and merge used in image segmentation. We have noted that they can be made more powerful if they are based on some kind of statistical test for equality of means. Not discussed as part of image segmentation is the fact that it might be appropriate for some segments to remain apart or to be merged not on the basis of the gray tone distributions, but on the basis of the object sections which they represent. The use of this kind of semantic information in the image segmentation process is essential for higher level image understanding and it is in this area that we recommend further study.
+REFERENCES 1. T. 2. C. 3. J. 4. P. Asano and N. Yokoya, Image segmentation schema for low-level computer vision, Puttern Recognition 14, 1981, 267-273. Brice and C. Fennema, Scene analysis using regions, Art$cial Intelligence 1, 1970, 205-226. D. Browning and S. L. Tanimoto, Segmentation of pictures into regions with a tile by tile method, Pattern Recognition 15, 1982, l-10. J. Burt, T. H. Hong, and A. Rosenfeld, Segmentation and estimation of image region properties through cooperative hierarchical computation, IEEE Trans. Systems Man Cybernet. SMC-11, 1981. Bryant, On the clustering of multidimensional pictorial data, Pattern Recognition 11, 1979, 115-125. C. Chen and T. Pavlidis, Image segmentation as an estimation problem, Comput. Graphics Image Process. 12, 1980, 153-172. K. Chow and T. Kaneko, Boundary detection of radiographic images by a thresholding method, in Frontiers of Pattern Recognition (S. Watanabe, Ed.), pp. 61-82, Academic Press, New York, 1972. Coleman and H. C. Andrews, Image segmentation and clustering, Proc. IEEE 67,1979, 773-785. S. Fu and J. K. Mui, A survey on image segmentation, Pattern Recognition 13, 1981, 3-16. Fukada, Spatial clustering procedures for region analysis, Pattern Recognition 12, 1980, 395-403. Goldberg and S. !&hen, A clustering scheme for muhispectral image, IEEE Trans. Systems Man Cybernei. SMC-8,1978, 86-92. Goldberg and S. Shhen, A Four-Dimensional Histogram Approach to the Clustering of LANDSAT Data, in Machine Processing of Remotely Sensed Data, IEEE CH 1218-7 MPRSD, Purdue University, West Lafayette, Indiana, June 21-23, 1977, pp. 250-259.
+
+5. J. 6. P. 7. C. 8. 9. 10. 11. G. K. Y. M.
+
+12. M.
+
+IMAGE
+
+SEGMENTATION
+
+TECHNIQUES
+
+131
+
+13. J. N. Gupta, R. L. Kettig, D. A. Landgrebe, and P. A. Wit&, Machine boundary finding and sample classification of remotely sensed agricultural data, in Machine Processing of Remotely Sensed Data, IEEE 73 CHO 8342GE, Purdue University, West Lafayette, Indiana, October 16-181973, pp. 4B-25-4B-35. 14. R. M. Harahck and G. L. Kelly, Pattern recognition with measurement space and spatial clustering for multiple image, Proc. IEEE 57,1%9, 654-665. 15. R. M. Harahck and I. Dinstein, A spatial clustering procedure for multi-image data, IEEE Trans. Circuits and Systems CAS-22, 1975, 440-450. 16. R. M. Harahck, Edge and region analysis for digital image data, Comput. Graphics Zmage Process. 12. 1980, 60-73; in Zmage Modeling (A. Rosenfeld, Ed.), pp. 171-184, Academic Press, New York, 1981. 17. R. M. Harahck, Zero-crossing of second directional derivative edge operator, in Proceedings of the Society of Photo-Optical Instrumentation Engineers Technical Symposium East, Arlington, Virginia, Vol. 336, May 3-7, 1982. 18. R. M. Harahck, Digital step edges from zero crossing of second directional derivative, IEEE Trans. Pattern Anal. Mach. Intell, PAMl-6, 1984, 58-68. 19. S. L. Horowitz and T. Pavlidis, Picture segmentation by a tree traversal algorithm, J. Assoc. Comput. Mach. 23,1976, 368-388. 20. R. A. Jarvis and E. A. Patrick, clustering using a similarity measure based on shared near neighbors, IEEE Trans. Comput. C-22,1973,1025-1034. 21. T. Kanade, Region segmentation: Signal vs. semantics, Comput. Graphics Image Process. 13, 1980, 279-297. 22. R. L. Kettig and D. A. Landgrebe, Computer classification of multispectral image data by extraction and classification of homogeneous objects, The Laboratory for Application of Remote Sensing, LARS Information Note 050975, Purdue University, West Lafayette, Indiana, 1975. 23. A. Klinger, Data structures and pattern recognition, Proceedings of the First International Joint Conference on Pattern Recognition, Washington, D.C., October 1973, pp. 497-498. 24. R. KohIer, A segmentation system based on thresholding, Comput. Graphics Image Process. 15, 1981, 319-338. 25. M. D. Levine and J. Leemet, A method for non-purposive picture segmentation, Proceedings of the Third Zntern&ional Joint Conference on Pattent Recognition, 1976. 26. M. D. Levine and S. I. Shaheen, A modular computer vision system for picture segmentation and interpretation, IEEE Trans. Patten Anal. Mach. Zntell. PAMI-3,198l. 27. K. Matsumoto, M. Naka, and H. Yamanoto, A new clustering method for LANDSAT images using local maximums of a multidimensionaI histogram, in Machine Processing of Remotely Sensed Data, IEEE CH 1637-8 MPRSD, Purdue University, West Lafayette, Indiana, June 23-26,1981, pp. 321-325. 28. D. L. M&ram, Region extraction using convergent evidence, Comput. Graphics Image Process. 11. 1979,1-12. 29. D. L. MiIgram and D. J. KahI, Recursive region extraction, Comput. Graphics Image Process. 9,1979. 82-88. 30. D. L. Milgram and M. Herman, Clustering edge values for threshold selection, Comput. Graphics Image Process. 10,1979, 272-280. 31. L. G. Minor and J. Skhutsky, The detection and segmentation of blobs in infrared images, IEEE Trans. Systems Man Cybernet. SMC-II, 1981,194-201. 32. J. Muerle and D. AIlen, Experimental evaluation of techniques for automatic segmentation of objects in a complex scene, in Pictorial Pattern Recognition (G. Cheng et al., Eds.), pp. 3-13, Thompson, Washington, D.C., 1968. 33. G. Nagy and J. Tolaba, Nonsupervised crop classification through airborne multispectral observations, IBM J. Res. Develop. 16, 1972,138-153. 34. P. M. Narendra and M. Goldberg, A non-parametric clustering scheme, for LANDSAT, Pattern Recognition 9,1977, 207-215. 35. P. M. Narendra and M. Goldberg, Image segmentation with directed trees, IEEE Trans. Pattern Anal. Mach. Intel/. PAMI-2,1980,185-191. 36. R. Ohlander, Analysis of Natural Scenes, PhD dissertation, Carnegie-Mellon University, Pittsburgh. Pa., 1975. 37. R. Ohlander, K. Price, and D. R. Reddy, Picture segmentation using a recursive region splitting method, Comput. Graphics Image Process. 8, 1978, 313-333.
+
+132
+Image Process. 13,1980,222-241.
+
+I-IAULICK
+
+AND SHAPIRO for region segmentation, Comput.
+Graphics
+
+38. Y. Ohta, T. Kanade, and T. Sakai, Color information
+
+39. D. P. Panda and A. Rosenfeld, Image segmentation by pixel classification in (gray level, edge value) space, IEEE Trans. Compvt. C-27, 1978, 875-879. 40. T. Pavlidis, Segmentation of pictures and maps through functional approximation, Comput. Graphics Image Process. 1,1972,360-372. 41. W. A. Perkins, Area segmentation of images using edge points, IEEE Trans. Pattern Anal. Mach. Intell. PAMI-2, 1980, 8-15. 42. M. Pietikainen and A. Rosenfeld, Image segmentation by texture using pyramid node linking, IEEE Trans. Systems Man Cybernet. SMC-11, 1981. 43. T. C. Pong, L. G. Shapiro, L. T. Watson, and R. M. Haralick, Experiments in segmentation using a facet model region grower, Comput. Vision Graphics Image Process. 25, 1984. 44. E. Riseman and M. Arbib, Segmentation of static scenes, Comput. Graphics Image Process. 6, 1977, 221-276. 45. T. V. Robertson, Extraction and classification of objects in multispectral images, Machine Processing of Remotely Sensed Data, IEEE 73 CHO 837-ZGE, Purdue University, West Lafayette, Indiana, October 16-18,1973, pp. 3B-27-3B-34. 46. S. Watanabe and the CYBEST group, An automated apparatus for cancer prescreening: CYBEST, Computer Graphics Image Process. 3, 1974, 350-358. 47. J. S. Weszka, A survey of threshold selection techniques, Comput. Graphics Image Process. 7, 1978,
+259-265.
+
+J. S. Weszka, R. N. Nagel, and A. Rosenfeld, A threshold selection technique, IEEE Trans. Comput. C-23 1974,1322-1326. 49. J. S. We&a and A. Rosenfeld, Threshold evaluation techniques, IEEE Trans. Systems Man Cybernet. SMC-8,1978, 622-629. 50. Y. Yakimovsky, Boundary and object detection in real world image, J. Assoc. Comput. Mach. 23, 1976, 599-618. 51. S. Zucker, Region growing: Childhood and adolescence, Comput. Graphics Image Process. 5, 1976,
+48. 382-399. 52.
+
+R. Lumia, L. G. Shapiro, and 0. Zemiga, A new connected components algorithm for virtual memory computers, Comput. Vision Graphics Image Process., 22 (2), 1983, 287-300.
+

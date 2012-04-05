@@ -1,0 +1,431 @@
+Curve-Skeleton Applications
+
+Nicu D. Cornea, Deborah Silver, Rutgers University, New Jersey Patrick Min John Cabot University, Rome, Italy
+
+Types of skeletons Skeleton in 2D
+• Locus of centers of maximal inscribed disks • Medial axis (Blum, 1967) • Set of curves
+
+Skeleton in 3D
+• Surface patches + curves • Medial surface
+
+Sometimes we want a “line-like” 1D skeleton in 3D
+
+2
+
+The curve-skeleton “Compact” 1D representation of 3D objects
+• Call it curve-skeleton (Svensson et.al., 2002) • Idea used earlier in the first thinning algorithms
+
+Related to the medial surface
+• Reduce surface patches to curves
+
+Also known as centerline
+
+3
+
+Motivation
+1D representation useful in many applications
+• Virtual navigation, data analysis, animation, etc. • Reduced dimensionality • Simpler algorithms
+
+Issues:
+• No formal definition • Defined as “I know it when I see it” - In terms of desirable properties – application specific • Large number of algorithms • Fine-tuned to specific applications • Demonstrated on small set of test objects • Unclear how general • Algorithm classification • Existing classifications cannot accommodate some algorithms – Some algorithms use techniques from several different classes » Ex: distance order thinning
+4
+
+Goal/Outline of presentation Analysis of desirable properties of curve-skeletons
+• Extracted from the literature • Help in defining the curve-skeleton
+
+Overview of applications Overview of algorithms
+• Classification based on implementation
+
+Implementation & comparison of different methodologies
+• same set of objects
+
+Guide for future uses of curve-skeletons
+
+5
+
+Curve-skeleton properties found in literature
+General properties
+• • • • • • Centered Homotopic Connected Invariant under isometric transformations Robust Notations: Thin • O – discrete 3D object
+
+Application specific
+• Reconstruction • Reliability • Junction detection and component-wise differentiation
+
+• Sk(O) – curve-skeleton of object O
+
+Properties of the skeletonization process
+• Efficient, hierarchic, handle point sets
+6
+
+3D Object Representations
+
+Polygonal mesh
+• Vertices and polygons
+
+Volume
+• Voxels on a discrete grid
+
+Unorganized point sets
+• Points with no connectivity information
+http://www.cs.utexas.edu/users/amenta/powercrust/unions.html
+
+7
+
+Curve-skeleton properties (general) …
+1. Centered
+• Curves centered within the object
+
+2. Homotopic - preserve original object’s topology
+• (Kong and Rosenfeld, 1989): Same number of • Connected components – 6,18 or 26-connectivity • Tunnels – donut hole • Cavities – empty space inside object • Cavities in a 1D curve ? • In a strict sense, curve-skeletons cannot preserve topology • Relaxed definition for curve-skeleton homotopy • Same number of connected components • At least one loop around each cavity and tunnel
+
+3. Connected
+• Sk(O) should be connected if O is connected. • Consequence of homotopy
+8
+
+Curve-skeleton properties (general) … 4. Invariant under isometric transformations
+• Skeleton of transformed object = transformed skeleton of original object • Sk(T(O)) = T(Sk(O))
+
+5. Robust
+• Weak sensitivity to noise
+
+6. Thin
+• 1D – one voxel thick in all directions
+9
+
+Curve-skeleton properties (app. specific) … 7. Reconstruction
+• Ability to recover the original object from the curve-skeleton • Compression applications • In general not possible
+
+8. Reliable
+• Every boundary point is visible from at least one curve-skeleton location. • Can be checked with a line of sight computation. • Ensures “reliable” inspection of a 3D object (virtual endoscopy). • First introduced by He et.al. in 2001.
+
+10
+
+Curve-skeleton properties (app. specific) … 9. Junction detection and component-wise differentiation
+• Distinguish the different logical components of the object • Different components of the curve-skeleton • Logical components / Mesh Decomposition • No precise definition – Tal and Katz, 2003; Katz and Pizer, 2003 • Necessary condition: curve-skeleton junctions need to be identified • Animation, object decomposition
+
+11
+
+Properties of curve-skeletonization process Efficient
+• reduced computational complexity
+
+Hierarchical
+• can generate a set of skeletons of different complexities • same algorithm used for different applications
+
+Operate on various object representations
+• Polygonal, voxelized, point clouds
+12
+
+Curve-skeleton properties Not all properties are essential to all applications Some properties may be conflicting
+• Thinness and reconstruction • Reliable and robust
+
+13
+
+Curve-skeleton applications Virtual navigation and virtual endoscopy Computer graphics - animation Medical applications
+• Segmentation, registration, quantification of anatomical structures, surgical planning, radiation treatment, curved planar reformation, stenosis detection, aneurism and vessel wall calcification detection, deforming volumes
+
+Analysis of scientific data
+• Vortex core extraction, Feature Tracking, Plume visualization
+
+Matching and retrieval, Morphing Mesh decomposition, Mesh repair, Surface reconstruction CAD, Collision detection
+14
+
+Curve-skeleton applications … Virtual navigation and virtual endoscopy
+• Collision-free path through a scene or inside an object • virtual camera translated along the skeleton path
+
+Hong et.al., 1997
+
+Perchet et.al., 2004
+
+• Medical applications: • Colonoscopy, bronchoscopy, angioscopy • Reliability ensures that the physician has the possibility to fully examine the interior of the organ • Exploits the centeredness property
+15
+
+Curve-skeleton applications … Traditional computer graphics – animation
+• Maya, 3D Studio Max • Bloomenthal, 2002; • IK (inverse-kinematics) skeleton • a 1D representation of the animated object • manipulated by the animator • IK skeleton transformations transferred to object polygons • usually created manually by the animator • Recent attempts to automate the process
+
+Character Studio
+
+Wade and Parent, 2002
+
+Katz and Tal, 2003
+
+16
+
+Curve-skeleton applications …
+More medical applications
+• Segmentation and quantification of anatomical structures • extract skeletons from tubular objects in medial images: – Blood vessels, nerve structures • Surgical planning, radiation treatment
+
+Frangi et.al., 1999
+
+Stenosis, aneurism and vessel wall calcification detection
+• Nystrom et.al., 2001; Sorantin et.al., 2002, Straka et.al., 2004 flattening of 3D structures
+Pizer et.al., 1999
+
+Curved planar reformation
+•
+
+Kanistar et.al., 2002, 2003
+
+Sorantin et.al., 2002
+
+17
+
+Curve-skeleton applications …
+Even more medical applications
+• Deforming volumes • unwinding convoluted structures for easy inspection – colon straightening • Registration • aligning two images of the same patient taken with different imaging modalities (MRI, CT, MRA) – Use of curve-skeleton reduces the dimensionality of the problem
+
+Silver and Gagvani, 2002
+
+Aylward et.al., 2003
+
+18
+
+Curve-skeleton applications …
+Analysis of scientific data
+• Complex topologies can be easily explained using line drawings • Vortex core extraction • Feature tracking • Plume visualization
+
+Banks and Singer, 1994
+
+Vrolijk et.al., 2003 Santilli et.al., 2004
+
+19
+
+Curve-skeleton applications …
+Matching and retrieval
+• Given a query object, find similar objects in a database • Curve-skeleton used as shape descriptor • Can allow part-matching • can provide registration of the part in the larger object
+
+Cornea et.al., 2005 Sundar et.al., 2003
+
+Morphing
+• Smoothly transform one object into another • Curve-skeleton used to control the transition process • Correspondences between object parts are specified on the skeletons
+Blanding et.al., 2000
+
+Lazarus and Verrroust, 1998
+
+Zhao et.al., 2003
+
+20
+
+Curve-skeleton applications … Mesh decomposition
+• Decompose a polygonal mesh into meaningful components • Curve-skeleton drives the decomposition process • Inverse approach • Curve skeleton extracted from mesh decomposition results – Katz and Tal, 2003
+
+Brunner and Brunnet, 2004
+
+Mesh repair
+• Leymarie, 2003
+
+Surface reconstruction
+• Verroust et.al., 2000; Amenta et.al., 2001
+Li et.al., 2001
+
+21
+
+Curve-skeleton applications … CAD
+• dimensional reduction of various engineering problems • Suresh, 2003
+
+Collision detection
+• Improve efficiency of the process
+
+Gagvani and Silver, 2000
+
+General data structure for graphical objects
+
+Webster et.al., 2005 Pizer et.al., 1999
+
+22
+
+Curve-skeletonization algorithms General algorithms which use only the 3D shape Previous classifications based on theory
+• 1. 2. 3. 4. Some algorithms do not fall clearly in one of the categories Pure Thinning and boundary propagation Using a distance field Geometric methods Using general-field functions
+
+Classification based on underlying implementation
+
+Implemented the “core” part of each of these classes
+• Code and test objects available at: • http://www.caip.rutgers.edu/~cornea/CurveSkelApp
+23
+
+Curve-skeletonization algorithms ... 1. Pure thinning Iteratively remove simple points from the boundary
+• Simple point = a point that can be removed without changing topology. • Stops when no more simple points exist
+
+Removal conditions implemented as templates (3x3x3 or larger)
+Palagyi and Kuba, 1999
+
+24
+
+Curve-skeletonization algorithms ... 1. Pure thinning Special simple points are kept to preserve object geometry
+• Surface and curve endpoints
+
+Several flavors
+• Directional • voxels removed in one direction at a time • Fully parallel • all simple points removed at once • Non-directional • one voxel removed at one step
+
+Two approaches
+• Get surface skeleton then continue to thin to a curve-skeleton • Get curve-skeleton directly
+
+Palagyi and Kuba, 1999
+
+25
+
+Curve-skeletonization algorithms ... 2. Using a distance field Distance transform – distance to closest boundary voxel
+D ( P ) = min ( d ( P , Q ))
+P∈O Q∈B ( O )
+
+Ridges of the distance function (incl. local max, saddles)
+• Locally centered voxels
+
+Wade and Parent, 2002
+
+26
+
+Curve-skeletonization algorithms ... 2. Using a distance field General structure of a distance field-based algorithm
+• Find voxel candidates (ridges) • Distance ordered thinning • Gradient searching • Divergence • Geodesic front propagation • Threshold bisector angle • Prune • Cluster • Connect • MST, shortest path • Some algorithms maintain connectivity while pruning
+Gagvani and Silver, 1999
+
+27
+
+Curve-skeletonization algorithms ... 3. Geometric methods Usually apply to objects represented by polygonal meshes
+• continuous space
+
+Medial surface approaches
+• Voronoi diagram based (Amenta, et.al.) • generator elements – boundary elements (points, polygons) • Cores and m-reps (Pizer) • position, radius, orientations, object angle • Shock scaffold (Leymarie) • shock curves
+
+Non-medial surface approaches
+• Level sets of geodesic graph (Verroust et.al. 2000) Amenta et.al., 2001 • Edge contraction (Li et.al. 2001) • Using the mesh decomposition results (Katz and Tal, 2003)
+28
+
+Curve-skeletonization algorithms ... 4. Using general-field functions
+Generalized potential field function
+• function is a sum of potentials generated by boundary elements
+
+Visible repulsive force function
+• Newtonian potential function using visibility
+
+Electrostatic field function
+• electrostatically charged boundary
+
+Radial basis function
+• boundary samples source of radial basis functions
+
+Cornea et. al., 2005
+
+Averaging
+• Less sensitive to noise
+
+Detect sinks in the resulting field and connect them
+• Force-following, active contours
+Chuang et.al., 2000
+
+29
+
+Experimental results Implementation – “core” of each class Implemented the “core” part of each algorithm class
+• Core = First step of each class of algorithms • no post-processing • used to classify the algorithms
+
+Thinning
+• Curve-thinning templates from Palagyi and Kuba, 1999
+
+Distance field
+• Distance function filtering by Gagvani and Silver, 1999
+
+Geometric
+• Power Crust, Amenta et.al., 2001
+
+General field
+• Core skeleton using generalized potential field, Chuang et.al., 2000.
+30
+
+Experimental results …
+Test Object Distance Field Thinning Geometric Potential Field
+
+Thin block (204x132x260)
+
+Monster (54x87x75)
+
+continued on next slide …
+
+31
+
+Experimental results …
+Test Object Distance Field
+Mushroom (80x87x59)
+
+Thinning
+
+Geometric
+
+Potential Field
+
+Colon
+(204x132x260)
+
+Twist (100x87x58)
+
+32
+
+Experimental results …
+Test Object Distance Field Thinning Geometric Potential Field
+
+Chess piece (40x39x87)
+
+Chess piece with 10% noise on the surface (39x38x86)
+
+Objects and code available at: http://www.caip.rutgers.edu/~cornea/CurveSkelApp/index.html#Downloads 33
+
+Experimental results … Running time vs. Nr. object voxels
+
+Running Time (Log scale)
+8 7 Log(Time (ms)) 6 5 4 3 2 1 7,500
+Distance Field
+
+29,002
+
+35,690 47,746 Nr. Object Voxels
+Thinning Geometric
+
+83,410
+
+827,710
+
+Potential Field
+
+34
+
+Discussion of comparison results
+No single method is good for everything Distance field and geometric methods do not produce a curve-skeleton directly
+• Need additional pruning and connectivity steps • Sensitive to noise
+
+Thinning and potential field directly produce curve-skeletons
+• Thinning • Fast but more sensitive to noise and not very smooth • Potential field is too slow
+
+Not a totally fair comparison of different methodologies !
+• Only implemented the “core” of each methodology • Additional post-processing steps change the results significantly
+
+Goal: To show which methodology takes us closer to a curve-skeleton in the first step
+• Gives an idea about how much post-processing needed to get a curveskeleton
+35
+
+Discussion of the various methodologies
+Thinning
+Centered Homotopy Connected Transf. Invariance Robust Thin Reconstruction* Reliable Junction detection Efficiency Hierarchic Handle Point Sets
+yes possible no
+
+Distance field
+
+Geometric
+
+General field
+
+36
+
+Conclusions Compiled a list of desirable properties of curve-skeletons Reviewed some applications Classification of algorithms
+• based on implementation
+
+Comparison of methodologies Guide for future use of curve-skeletons
+• Think about the required properties • Then choose the appropriate methodology
+
+37
+
+Future work Develop algorithms to check properties Challenge
+• Test future algorithms on large databases of general objects (for example, The Princeton Shape Benchmark Database: http://shape.cs.princeton.edu/benchmark/ ).
+
+38
+
+Acknowledgements This work is supported in part by NSF 0118760 and NSF EIA-0205178. We would also like to thank Dr. Raman Balasubramanian and Xiaosong Yuan for their help
+
+39
+

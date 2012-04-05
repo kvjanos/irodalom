@@ -1,0 +1,30 @@
+1
+
+Sample Scoring through Immunohistochemistry
+Hang Chang1,2 , Rosa Anna DeFilippis3 , Thea D. Tlsty3 , and Bahram Parvin1
+1 2
+
+Lawrence Berkeley National Laboratory, Berkeley, CA 94720
+
+Institute of Automation, Chinese Academy of Sciences, Beijing, China
+3
+
+Department of Pathology, University of California, San Francisco
+
+Abstract Unlike ﬂuorescent images, immunohistochemistry staining provides a rapid mechanism for visualizing various complexes and organelles. However, this method of sample preparation is rarely used for quantitative analysis. We demonstrate that through careful background correction, segmentation of nuclear regions, and decomposition of color signal, images can be scored and index for their contents. The method is applied to a cell culture model that is grown from primary tissue and labeled for fat contents in individual cells. Scoring of color images is initiated from background correction and delineation of nuclear regions that are labeled by hematoxylin stain. These regions are extracted through an application of the elliptic feature detection to locate potential candidates that are ﬁltered further for intensity and shape features. Detection of nuclear regions is essentially a cascade of ﬁlters and constraints that produces only a small amount of false positive. To extract and associate the target complex to each nuclear region, we represent the target signature with multiple models (for signal complex and background) and estimate the model parameters. This is followed by an application of the graph cut method for subsequent signal decomposition, in which an objective energy function incorporating both signal model ﬁtness and neighborhood information is constructed and minimized. Color signal decomposition also enables reﬁnement of the nuclear shape and morphology. Finally, signal complexes are associated to each nuclear region following region-based Voronoi tessellation. We have applied our method to a dataset of cell culture models that are grown from patient biopsies with promising results. A sample result is shown below.
+
+December 10, 2007
+
+DRAFT
+
+2
+
+(a)
+
+(b)
+Fig. 1. contour. (a)Original image. (b) Delineation results. Red: protein complex; Yellow contour: voronoi partition; Green: nuclear
+
+December 10, 2007
+
+DRAFT
+

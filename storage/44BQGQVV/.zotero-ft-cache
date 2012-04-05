@@ -1,0 +1,161 @@
+Dose Finding in Drug Development
+Series Editor M. Gail, K. Krickeberg, J. Samet, A. Tsiatis, W. Wong
+
+Statistics for Biology and Health
+Borchers/Buckland/Zucchini: Estimating Animal Abundance: Closed Populations. Burzykowski/Molenberghs/Buyse: The Evaluation of Surrogate Endpoints Everitt/Rabe-Hesketh: Analyzing Medical Data Using S-PLUS. Ewens/Grant: Statistical Methods in Bioinformatics: An Introduction. 2nd ed. Gentleman/Carey/Huber/Izirarry/Dudoit: Bioinformatics and Computational Biology Solutions Using R and Bioconductor Hougaard: Analysis of Multivariate Survival Data. Keyﬁtz/Caswell: Applied Mathematical Demography, 3rd ed. Klein/Moeschberger: Survival Analysis: Techniques for Censored and Truncated Data, 2nd ed. Kleinbaum/Klein: Survival Analysis: A Self-Learning Text. 2nd ed. Kleinbaum/Klein: Logistic Regression: A Self-Learning Text, 2nd ed. Lange: Mathematical and Statistical Methods for Genetic Analysis, 2nd ed. Manton/Singer/Suzman: Forecasting the Health of Elderly Populations. Martinussen/Scheike: Dynamic Regression Models for Survival Data Moy´ : Multiple Analyses in Clinical Trials: Fundamentals for Investigators. e Nielsen: Statistical Methods in Molecular Evolution Parmigiani/Garrett/Irizarry/Zeger: The Analysis of Gene Expression Data: Methods and Software. Salsburg: The Use of Restricted Signiﬁcance Tests in Clinical Trials. Simon/Korn/McShane/Radmacher/Wright/Zhao: Design and Analysis of DNA Microarray Investigations. Sorensen/Gianola: Likelihood, Bayesian, and MCMC Methods in Quantitative Genetics. Stallard/Manton/Cohen: Forecasting Product Liability Claims: Epidemiology and Modeling in the Manville Asbestos Case. Therneau/Grambsch: Modeling Survival Data: Extending the Cox Model. Ting: Dose Finding in Drug Development Vittinghoff/Glidden/Shiboski/McCulloch: Regression Methods in Biostatistics: Linear, Logistic, Survival, and Repeated Measures Models. Zhang/Singer: Recursive Partitioning in the Health Sciences.
+
+Naitee Ting
+Editor
+
+Dose Finding in Drug Development
+With 48 Illustrations
+
+Naitee Ting Pﬁzer New London, CT 06320 naitee.ting@pﬁzer.com
+
+Series Editors:
+
+M. Gail National Cancer Institute Rockville, MD 20892 USA
+
+K. Krickeberg Le Chatelet F-63270 Manglieu France
+
+J. Samet Department of Epidemiology School of Public Health Johns Hopkins University 615 Wolfe Street Baltimore, MD 21205-2103 USA
+
+A. Tsiatis Department of Statistics North Carolina State University Raleigh, NC 27695 USA
+
+W. Wong Sequoia Hall Department of Statistics Stanford University 390 Serra Mall Stanford, CA 94305-4065 USA
+
+Library of Congress Control Number: 2005935288 ISBN-10: 0-387-29074-5 ISBN-13: 978-0387-29074-4 Printed on acid-free paper.
+C 2006 Springer Science+Business Media, Inc. All rights reserved. This work may not be translated or copied in whole or in part without the written permission of the publisher (Springer Science+Business Media, Inc., 233 Spring Street, New York, NY 10013, USA), except for brief excerpts in connection with reviews or scholarly analysis. Use in connection with any form of information storage and retrieval, electronic adaptation, computer software, or by similar or dissimilar methodology now known or hereafter developed is forbidden. The use in this publication of trade names, trademarks, service marks, and similar terms, even if they are not identiﬁed as such, is not to be taken as an expression of opinion as to whether or not they are subject to proprietary rights.
+
+Printed in the United States of America. 9 8 7 6 5 4 3 2 1 springer.com
+
+(TB/MVY)
+
+Preface
+
+This book emphasizes dose selection issues from a statistical point of view. It presents statistical applications in the design and analysis of dose–response studies. The importance of this subject can be found from the International Conference on Harmonization (ICH) E4 Guidance document. Establishing the dose–response relationship is one of the most important activities in developing a new drug. A clinical development program for a new drug can be broadly divided into four phases – namely Phases I, II, III, and IV. Phase I clinical trials are designed to study the clinical pharmacology. Information obtained from these studies will help in designing Phase II studies. Dose–response relationships are usually studied in Phase II. Phase III clinical trials are large-scale, long-term studies. These studies serve to conﬁrm ﬁndings from Phases I and II. Results obtained from Phases I, II, and III clinical trials would then be documented and submitted to regulatory agencies for drug approval. In the United States, reviewers from Food and Drug Administration (FDA) review these documents and make a decision to approve or to reject this New Drug Application (NDA). If the new drug is approved, then Phase IV studies can be started. Phase IV clinical trials are also known as postmarketing studies. Phase II is the key phase to help ﬁnd doses. At this point, dose-ranging studies and dose-ﬁnding studies are designed and carried out sequentially. These studies usually include several dose groups of the study drug, plus a placebo treatment group. Sometimes an active control treatment group may also be included. If the Phase II program is successful, then one or several doses will be considered for the Phase III clinical development. In certain life-threatening diseases, ﬂexible-dose designs are desirable. Various proposals about design and analysis of these studies are available in the statistical and medical literature. Statistics is an important science in drug development. Statistical methods can be applied to help with study design and data analysis for both preclinical and clinical studies. Evidences of drug efﬁcacy and drug safety in human subjects are mainly established on the ﬁndings from randomized double-blind controlled clinical trials. Without statistics, there would be no such trials. Descriptive statistics are frequently used to help understand various characteristics of a drug. Inferential
+
+vi
+
+Preface
+
+statistics helps quantify probabilities of successes, risks in drug discovery and development, as well as variability around these probabilities. Statistics is also an important decision-making tool throughout the entire drug development process. In clinical trials of all phases, studies are designed using statistical principles. Clinical data are displayed and analyzed using statistical models. This book introduces the drug development process and the design and analysis of clinical trials. Much of the material in the book is based on applications of statistical methods in the design and analysis of dose-response studies. In general, there are two major types of dose-response concerns in drug development— concerns regarding drugs developed for nonlife-threatening diseases and those for life-threatening diseases. Most of the drug development programs in the pharmaceutical industry and the ICH E4 consider issues of nonlife-threatening diseases. On the other hand, many of the NIH/NCI sponsored studies and some of the pharmaceutical industry-sponsored studies deal with life-threatening diseases. Statistical and medical concerns in designing and analyzing these two types of studies can be very different. In this book, both types of clinical trials will be covered to a certain depth. Although the book is prepared primarily for statisticians and biostatisticians, it also serves as a useful reference to a variety of professionals working for the pharmaceutical industry. Nonetheless, other professions – pharmacokienticists, clinical scientists, clinical pharmacologists, pharmacists, project managers, pharmaceutical scientists, clinicians, programmers, data managers, regulatory specialists, and study report writers can also beneﬁt from reading this book. This book can also be a good reference for professionals working in a drug regulatory environment, for example, the FDA. Scientists and reviewers from both U.S. and foreign drug regulatory agencies can beneﬁt greatly from this book. In addition, statistical and medical professionals in academia may ﬁnd this book helpful in understanding the drug development process, and the practical concerns in selecting doses for a new drug. The purpose of this book is to introduce the dose-selection process in drug development. Although it includes many preclinical experiments, most of doseﬁnding activities occure during the Phase II/III clinical stage. Therefore, the emphasis of this book is mostly about design and analysis of Phase II/III dose– response clinical trials. Chapter 1 offers an overview of drug development process. Chapter 2 covers dose-ﬁnding in preclinical studies, and Chapter 3 details Phase I clinical trials. Chapters 4 to 8 discuss issues relating to design, and Chapters 9 to 13 discuss issues relating to analysis of dose–response clinical trials. Chapter 14 introduces power and sample size estimation for these studies. For readers who are interested in designs involving life-threatening diseases such as cancer, Chapters 4 and 5 provide a good overview from both the nonparametric and the parametric points. In planning dose–response trials, researchers are likely to ﬁnd PK/PD and trial simulation useful tools to help with study design. Hence Chapters 6 to 8 cover these and other general design issues for Phase II studies. In data analysis of dose–response results, the two major approaches are modeling approaches and multiple comparisons. Chapters 9 and 10 cover the
+
+Preface
+
+vii
+
+modeling approach while Chapters 11 and 12 cover the multiple comparison methods. Chapter 13 discusses the analysis of categorical data in dose-ﬁnding clinical trials. Naitee Ting Pﬁzer Global Research and Development New London Connecticut Naitee.ting@pﬁzer.com
+
+Contents
+
+Preface 1 Introduction and New Drug Development Process 1.1 Introduction ............................................................. 1.2 New Drug Development Process .................................... 1.3 Nonclinical Development............................................. 1.3.1 Pharmacology .............................................. 1.3.2 Toxicology/Drug Safety .................................. 1.3.3 Drug Formulation Development ........................ 1.4 Premarketing Clinical Development................................ 1.4.1 Phase I Clinical Trials..................................... 1.4.2 Phase II/III Clinical Trials................................ 1.4.3 Clinical Development for Life-Threatening Diseases 1.4.4 New Drug Application.................................... 1.5 Clinical Development Plan ........................................... 1.6 Postmarketing Clinical Development .............................. 1.7 Concluding Remarks .................................................. Dose Finding Based on Preclinical Studies 2.1 Introduction ............................................................. 2.2 Parallel Line Assays ................................................... 2.3 Competitive Binding Assays ......................................... 2.4 Anti-infective Drugs ................................................... 2.5 Biological Substances ................................................. 2.6 Preclinical Toxicology Studies....................................... 2.7 Extrapolating Dose from Animal to Human ...................... Dose-Finding Studies in Phase I and Estimation of Maximally Tolerated Dose 3.1 Introduction ............................................................. 3.2 Basic Concepts ......................................................... 3.3 General Considerations for FIH Studies ...........................
+
+v 1 1 4 5 5 6 7 8 8 10 12 12 13 14 16 18 18 20 20 25 25 26 28
+
+2
+
+3
+
+30 30 30 32
+
+x
+
+Contents
+
+3.4
+
+3.5
+
+3.6 4
+
+3.3.1 Study Designs .............................................. 3.3.2 Population................................................... Dose Selection .......................................................... 3.4.1 Estimating the Starting Dose in Phase I ............... 3.4.2 Dose Escalation ............................................ Assessments............................................................. 3.5.1 Safety and Tolerability.................................... 3.5.2 Pharmacokinetics .......................................... 3.5.3 Pharmacodynamics........................................ Dose Selection for Phase II...........................................
+
+33 35 37 37 40 42 42 43 43 46 49 49 50 51 52 52 53 53 54 54 54 55 55 56 56 59 59 61 61 62 63 63 66 68 69 69 70 70 73 73
+
+Dose-Finding in Oncology—Nonparametric Methods 4.1 Introduction ............................................................. 4.2 Traditional or 3 + 3 Design .......................................... 4.3 Basic Properties of Group Up-and-Down Designs............... 4.4 Designs that Use Random Sample Size: Escalation and A + B Designs .................................................... 4.4.1 Escalation and A + B Designs .......................... 4.4.2 The 3 + 3 Design as an A + B Design ................ 4.5 Designs that Use Fixed Sample Size ............................... 4.5.1 Group Up-and-Down Designs........................... 4.5.2 Fully Sequential Designs for Phase I Clinical Trials ......................................................... 4.5.3 Estimation of the MTD After the Trial ................ 4.6 More Complex Dose-Finding Trials ................................ 4.6.1 Trials with Ordered Groups.............................. 4.6.2 Trials with Multiple Agents.............................. 4.7 Conclusion............................................................... Dose Finding in Oncology—Parametric Methods 5.1 Introduction ............................................................. 5.2 Escalation with Overdose Control Design......................... 5.2.1 EWOC Design.............................................. 5.2.2 Example ..................................................... 5.3 Adjusting for Covariates .............................................. 5.3.1 Model ........................................................ 5.3.2 Example ..................................................... 5.4 Choice of Prior Distributions......................................... 5.4.1 Independent Priors......................................... 5.4.2 Correlated Priors ........................................... 5.4.3 Simulations ................................................. 5.5 Concluding Remarks .................................................. Dose Response: Pharmacokinetic–Pharmacodynamic Approach 6.1 Exposure Response ....................................................
+
+5
+
+6
+
+Contents
+
+xi
+
+6.2
+
+6.3
+
+6.4 6.5 6.6
+
+6.7
+
+6.8
+
+6.9 7
+
+6.1.1 How Dose Response and Exposure Response Differ 6.1.2 Why Exposure Response is More Informative ....... 6.1.3 FDA Exposure Response Guidance .................... Time Course of Response............................................. 6.2.1 Action, Effect, and Response............................ 6.2.2 Models for Describing the Time Course of Response Pharmacokinetics....................................................... 6.3.1 Review of Basic Elements of Pharmacokinetics ..... 6.3.2 Why the Clearance/Volume Parameterization is Preferred.................................................. Pharmacodynamics .................................................... 6.4.1 Review of Basic Elements of Pharmacodynamics... Delayed Effects and Response....................................... 6.5.1 Two Main Mechanism Classes for Delayed Effects. Cumulative Effects and Response................................... 6.6.1 The Relevance of Considering Integral of Effect as the Outcome Variable.................................. 6.6.2 Why Area Under the Curve of Concentration is not a Reliable Predictor of Cumulative Response ... 6.6.3 Schedule Dependence..................................... 6.6.4 Predictability of Schedule Dependence................ Disease Progress........................................................ 6.7.1 The Time Course of Placebo Response and Disease Natural History .................................. 6.7.2 Two Main Classes of Drug Effect ...................... Modeling Methods ..................................................... 6.8.1 Analysis ..................................................... 6.8.2 Mixed Effect Models...................................... 6.8.3 Simulation................................................... 6.8.4 Clinical Trial Simulation ................................. Conclusion...............................................................
+
+73 73 73 74 74 74 75 75 76 77 77 77 78 80 80 80 81 82 82 82 83 84 84 85 85 85 86
+
+General Considerations in Dose–Response Study Designs 89 7.1 Issues Relating to Clinical Development Plan .................... 89 7.2 General Considerations for Designing Clinical Trials........... 90 7.2.1 Subject Population and Endpoints...................... 91 7.2.2 Parallel Designs versus Crossover Designs ........... 93 7.2.3 Selection of Control ....................................... 93 7.2.4 Multiple Comparisons .................................... 94 7.2.5 Sample Size Considerations ............................. 95 7.2.6 Multiple Center Studies .................................. 96 7.3 Design Considerations for Phase II Dose–Response Studies .. 96 7.3.1 Frequency of Dosing ...................................... 97 7.3.2 Fixed-Dose versus Dose-Titration Designs ........... 99 7.3.3 Range of Doses to be Studied ........................... 100
+
+xii
+
+Contents
+
+7.4 8
+
+7.3.4 Number of Doses to be Tested .......................... 7.3.5 Dose Allocation, Dose Spacing ......................... 7.3.6 Optimal Designs ........................................... Concluding Remarks ..................................................
+
+101 102 103 103
+
+Clinical Trial Simulation—A Case Study Incorporating Efﬁcacy and Tolerability Dose Response 8.1 Clinical Development Project Background........................ 8.1.1 Clinical Trial Objectives.................................. 8.1.2 Uncertainties Affecting Clinical Trial Planning...... 8.2 The Clinical Trial Simulation Project .............................. 8.2.1 Clinical Trial Objectives Used for the CTS Project . 8.2.2 The Simulation Project Objective....................... 8.2.3 Simulation Project Methods 1: Data Models and Design Options............................................. 8.2.4 Simulation Project Methods 2: Analysis and Evaluation Criteria......................................... 8.3 Simulation Results and Design Recommendations .............. 8.3.1 Objective 1: Power for Conﬁrming Efﬁcacy.......... 8.3.2 Objective 2: Accuracy of Target Dose Estimation... 8.3.3 Objective 3: Estimation of a Potentially Clinically Noninferior Dose Range.................................. 8.3.4 Trial Design Recommendations......................... 8.4 Conclusions ............................................................. Analysis of Dose–Response Studies—E max Model 9.1 Introduction to the Emax Model ...................................... 9.2 Sensitivity of the Emax Model Parameters ......................... 9.2.1 Sensitivity of the E0 and Emax Parameters............. 9.2.2 Sensitivity of the ED50 Parameter ...................... 9.2.3 Sensitivity of the N Parameter........................... 9.2.4 Study Design for the Emax Model....................... 9.2.5 Covariates in the Emax Model............................ 9.3 Similar Models ......................................................... 9.4 A Mixed Effects Emax Model ........................................ 9.5 Examples................................................................. 9.5.1 Oral Artesunate Dose–Response Analysis Example 9.5.2 Estimation Methodology ................................. 9.5.3 Initial Parameter Values for the Oral Artesunate Dose–Response Analysis Example..................... 9.5.4 Diastolic Blood Pressure Dose–Response Example. 9.6 Conclusions ............................................................. Analysis of Dose–Response Studies—Modeling Approaches 10.1 Introduction .............................................................
+
+106 106 107 107 108 109 111 111 117 120 120 121 121 124 125 127 127 129 129 130 131 131 133 134 134 135 135 137 138 139 141 146 146
+
+9
+
+10
+
+Contents
+
+xiii
+
+10.2
+
+10.3 10.4 10.5
+
+10.6 11
+
+Some Commonly Used Dose–Response Models................. 10.2.1 E max Model ................................................. 10.2.2 Linear in Log-Dose Model............................... 10.2.3 Linear Model ............................................... 10.2.4 Exponential (Power) Model.............................. 10.2.5 Quadratic Model ........................................... 10.2.6 Logistic Model ............................................. Estimation of Target Doses........................................... 10.3.1 Estimating the MED in Dose-Finding Example ..... Model Uncertainty and Model Selection........................... Combining Modeling Techniques and Multiple Testing ........ 10.5.1 Methodology................................................ 10.5.2 Proof-of-Activity Analysis in the Dose-Finding Example ................................... 10.5.3 Simulations ................................................. Conclusions .............................................................
+
+149 150 151 151 151 152 152 153 155 156 160 160 162 163 169 172 172 172 172 174 176 177 177 180 181
+
+Multiple Comparison Procedures in Dose Response Studies 11.1 Introduction ............................................................. 11.2 Identifying the Minimum Effective Dose (MinED).............. 11.2.1 Problem Formulation...................................... 11.2.2 Review of Multiple Test Procedures ................... 11.2.3 Simultaneous Conﬁdence Intervals..................... 11.3 Identifying the Maximum Safe Dose (MaxSD) .................. 11.4 Examples................................................................. 11.5 Extensions ............................................................... 11.6 Discussion ............................................................... Partitioning Tests in Dose–Response Studies with Binary Outcomes 12.1 Motivation ............................................................... 12.2 Comparing Two Success Probabilities in a Single Hypothesis 12.3 Comparison of Success Probabilities in Dose–Response Studies............................................... 12.3.1 Predetermined Step-Down Method..................... 12.3.2 Sample-Determined Step-Down Method.............. 12.3.3 Hochberg’s Step-up Procedure .......................... 12.4 An Example Using Partitioning Based Stepwise Methods ..... 12.5 Conclusion and Discussion........................................... Analysis of Dose–Response Relationship Based on Categorical Outcomes 13.1 Introduction ............................................................. 13.2 When the Response is Ordinal....................................... 13.2.1 Modeling Dose–Response ...............................
+
+12
+
+184 184 185 188 188 190 194 195 197
+
+13
+
+200 200 201 201
+
+xiv
+
+Contents
+
+13.2.2 13.3 13.4
+
+13.5 14
+
+Testing for a Monotone Dose–Response Relationship................................................. When the Response is Binary........................................ Multiple Comparisons................................................. 13.4.1 Bonferroni Adjustment ................................... 13.4.2 Bonferroni–Holm Procedure ............................ 13.4.3 Hochberg Procedure....................................... 13.4.4 Gate-Keeping Procedure ................................. 13.4.5 A Special Application of Dunnett’s Procedure for Binary Response....................................... Discussion ...............................................................
+
+203 207 210 211 211 212 212 213 213 220 220 221 223 224 227 230 233 234 236 238 243
+
+Power and Sample Size for Dose Response Studies 14.1 Introduction ............................................................. 14.2 General Approach to Power Calculation........................... 14.3 Multiple-Arm Dose Response Trial................................. 14.3.1 Normal Response .......................................... 14.3.2 Binary Response ........................................... 14.3.3 Time-to-Event Endpoint.................................. 14.4 Phase I Oncology Dose Escalation Trial........................... 14.4.1 The A + B Escalation without Dose De-Escalation. 14.4.2 The A + B Escalation with Dose De-Escalation..... 14.5 Concluding Remarks ..................................................
+
+Index
+

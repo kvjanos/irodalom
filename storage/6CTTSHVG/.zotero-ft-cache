@@ -1,0 +1,44 @@
+11th AIAA/CEAS Aeroacoustics Conference (26th AIAA Aeroacoustics Conference) 23 - 25 May 2005, Monterey, California
+
+AIAA 2005-2961
+
+Extensions of DAMAS and Benefits and Limitations of Deconvolution in Beamforming
+Robert P. Dougherty * OptiNav, Inc, Bellevue, WA, 98004
+
+The DAMAS deconvolution algorithm represents a breakthrough in phased array imaging for aeroacoustics, potentially eliminating sidelobles and array resolution effects from beamform maps . DAMAS is an iterative non-negative least squares solver. The original algorithm is too slow and lacks an explicit regularization method to prevent noise amplification. Two extensions are p roposed, DAMAS2 and DAMAS3. DAMAS2 provides a dramatic speedup of each iteration and adds regularization by a low pass filter. DAMAS3 also provides fast iterations, and additionally, reduces the required number of iterations. It uses a different regularization technique from DAMAS2, and is partially based on the Wiener filter. Both DAMAS2 and DAMAS3 restrict the point spread function to a translationally-invariant, convolutional, form. This is a common assumption in optics and radio astronomy, but may be a serious limitation in aeroacoustic beamforming. This limitation is addressed with a change of variables from (x,y,z) to a new set, (u,v,w ). The concepts taken together, along with appropriate array design, may permit practical 3D beamforming in aeroacoustics.
+
+ x
+STFT
+
+Nomenclature
+= 3D source locations = Time average, for both time domain processing and sums of STFT signals. = Short Time Fourier Transform. = Narrowband source strength at location = =
+
+ s ( x ʹ′, j )   C( x ʹ′)   w (x )  b( x)  q (x )
+
+†
+
+  psf ( x, x ʹ′)   psf ( x − x ʹ′ )  k    p k ,b k , q k  X  Y
+A γ
+
+= = Hermitian conjugate; complex conjugate transpose.  = Power-type acoustic source strength at x . = Point spread function connecting a source at = Shift-invariant or “convolutional” psf. =
+
+ x ʹ′ and time block j.  Narrowband array response vector for a source at x ' .  Narrowband array weighting vector to steer to x .  Beamform map value for the grid point x .   x ʹ′ to an image point x .
+
+() () ()
+
+= Spatial frequency in FFT-based image processing. psf, beamform map, and source strength in the spatial frequency domain . = The values of the source strengths over a grid, stacked on a vector. = The values of a beamform map, stacked on a vector. = A matrix form of the psf, as expressed in Y = = Regularization parameter for the Weiner filter. = The location of a microphone in the array.
+
+
+
+ AX
+
+ µ = (a , b,0 ) (u , v, w )
+
+= Beamforming coordinates transformed to make the psf approximately convolutional.
+
+*
+
+President, 10914 NE 18th St, Senior Member, AIAA 1 American Institute of Aeronautics and Astronautics
+
+Copyright © 2005 by the American Institute of Aeronautics and Astronautics, Inc. All rights reserved.
+

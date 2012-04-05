@@ -1,0 +1,174 @@
+Automated Parameter Selection for Optimal Biological Image Segmentation
+M. Amri Abdul -Karim1, Edward Brown 2, Mark Booth 3, Andreas Jeromin 4, Jeff Sprenger6, Murat Yuksel 1, Shivkumar Kalyanaraman1, William Shain5, Jack R. Glaser6, Badrinath Roysam 1*
+This work was supported in part by CenSSIS, the Center for Subsurface Sensing and Imaging Systems, under the Engineering Research Centers Program of the National Science Foundation (Award Number EEC- 9986821), Microbrightfield Inc., and MARA of Malaysia.
+
+L3
+
+Bio -Med
+
+Enviro-Civil
+
+S1
+
+S2 S3
+
+S4
+
+S5
+
+Department of Electrical, Computer and Systems Engineering, Rensselaer Polytechnic Institute, Troy, NY 12180 2 Edwin L. Steele Laboratory, Department of Radiation Oncology, Massachusetts General Hospital and Harvard Medical School, Boston, MA 02114 3 Center for Behavioral Neuroscience, Georgia Tech/Emory BME, Atlanta, GA 30332 4 Division of Neuroscience, Baylor College of Medicine, Houston, Texas 77030 5 The Wadsworth Center, New York State Department of Health, Albany, NY 12201 6 MicroBrightField, Inc., Williston, VT 05495
+1
+
+Validating L2 TestBEDs
+
+L1 Fundamental L1 Fundamental
+Science
+
+R2 R1 R3
+
+Abstract
+The goal of this project is to automate and simplify the ordinarily arcane task of selecting the parameters “settings ” ) for biological image analysis systems ( using the common notions of coverage and complexity. This is essential for broadening the scope of applicability of these algorithms. The p roblem of automated parameter selection is formulated as a variational optimization based on mathematical descriptions of segmentation conciseness nd a coverage, a probabilistic vesselness measure, scale, and the Minimum Description Length (MDL) principle. Of specific interest to us s the analysis of i tube- like biological objects such as tumor micro-vasculature and neurons. Next, the efficient Recursive Random Search (RRS) global optimiz ation algorithm is utilized to explore the parameter space in an effic ient and parallel manner. As an example, the resulting parameter set after 1000 RRS steps for all nine parameters of our automated tracing algorithm produces segmentation results that are within 5% of the globally optimal result, as compared to more than 300,000 steps that would be needed by an exhaustive search. Several examples representing progressively more complex search spaces a re provided to demonstrate the power and broad applicability of this method. The parameter sets that produce optimal segmentation across different biological objects and imaging modalities, using different segmentation algorithms are presented to demonstrate the generality of this approach. Instead of manually hand -tuning empirical parameters that still inevitably contain human subjectivity, users can now objectively obtain optimal segmentat ion result automatically, across a broad domain of applications.
+
+The Traditional Approach to Image Segmentation
+
+Experimental Results: Automated Tracing Algorithm [13,14]
+
+I (x )
+
+Segmentation Algorithm
+
+Segmentation
+
+ˆ f :{ I (x ), ξ } → M (x )
+Parameter Vector ξ∈Ω
+
+Input Image
+
+ˆ M ( x)
+Source: Gary Banker, Oregon Health & Science University
+
+(D) (E) (B) (C)
+
+The Automated Parameter Selection Approach to Image Segmentation
+Geometrical Model G Universal Parameter α ∈ (0,1) Size-scale σ ∈ [σ min ,σ max] Parameter Space Ω
+
+Global Optimal: Exhaustive Search, 300000 iterations
+
+(A)
+
+(B)
+
+Technical Approach
+The variational formulation for image segmentation is expressed mathematically using the Minimum Description Length (MDL) formulation [1]. This is analogous to the problem of fitting a polynomial to a set of points, where the goal is to find a trade-off between the degree of the polynomial (conciseness) and the corresponding fitting error (coverage). Let an image segmentation algorithm be a function f : { I , ?} → M that maps the object(s ) imaged in the image I to the segmented object(s ) M using a parameter vector ? ∈Ω where Ω is the space containing all possible parameter ˆ vectors. Now, the goal becomes to obtain the optimal M , called M , in terms of conciseness and coverage.
+
+I (x)
+Image
+
+Segmentation Algorithm
+
+M ( i) ( x)
+
+Segmentation Quality Assessment
+
+q ( i)
+
+f ( I (x) ξ ) Segmentation q (M (i ) ( x) α, G σ ) Quality ; , ,
+
+Global Optimization Algorithm
+
+Stop?
+
+ˆ {M( x) = M
+
+( i)
+
+(x , ξ = ξ } ) ˆ
+(i)
+
+Global LeastOptimal: Exhaustive Search, 300000 iterations
+
+(C)
+
+(D)
+
+(E)
+
+Final Output
+Recursive Random Search: 1000 iterations
+
++ ξ ← ξ (i 1 ) ∈ Ω
+
+Updated Parameters
+
+The conciseness and coverage Description Length metric, is calculated for traces that result from a full-mesh combination of two tracing parameters, maximum allowed stopping violations and contrast threshold multiplier. The traces are shown in (B), (C), (D), and (E), and the corresponding metric value is pointed in (A), where (B) is the optimal trace. (Image courtesy of Andreas Jeromin, Baylor College of Medicine, Texas)
+
+State of the Art
+Metrics for segmentation evaluation [4-10] can be either goaloriented, i.e. evaluation based on the performance of postsegmentation steps such as pattern classification [9], based on other application- defined criteria, such as the probability of false detection [6, 7, 10], or based on visual inspections [4]. Here, we restric t ourselves to the latter category, since we believe that optimality of the segmentation result should be compatible with and independent of any post-segmentation image analysis steps. The Minimum Description Length (MDL) principle [1] is chosen since it offers a systematic way to obtain an objective balance between segmentation conciseness and coverage. We present a different MDL-based formulation, i.e. compared to [11 -12], where the formulation now contains a term to account for the probability of structural presence at each pixel. This search of optimal parameters is analogous to the variational formulation for image segmentation [12].
+
+The FARSIGHT* Framework
+* Fluorescent Association Rules for multi dimensional Insight -
+
+Input Image
+
+Global Optimal
+
+Global Least- Optimal
+
+Recursive Random Search
+
+k L2 − p ( I | M ) = − log 2 P ( I | M ) + log 2 n 1442443 2 14243
+coverage conciseness
+
+Image Batch
+
+FARSIGHT/RPS FARSIGHT script (problem description) M X*,?local*, ?global*, GF*
+
+where
+
+  − log2 P ( I | M ) @µ  − log2 P ( x)  ∑   C x  x={ |x∈M , P (x)≥α } 
+
+Segment Image N from dataset
+
+Refine MX*,?local *, ?global *
+
+Since the likelihood term is not defined by the MDL principle, w use the e probabilistic Vesselness measure [2] for tube-like objects.
+
+Yes
+
+High segmentation confidence? No
+
+Applicability across two different applications
+
+Experimental Results: Simple Intensity Thresholding
+Description Length vs. Intensity Threshold 150,000 Description Length 100,000 50,000 0 0 50 100 150 200 250 Intensity Threshold
+
+References
+[1] Barron, A., J. Rissanen, and B. Yu, The minimum description length principle in coding and modeling. Ieee Transactions on Information Theory, 1998. 44(6): p. 2743-2760. [2] Frangi, A.F., et al., Multiscale Vessel Enhancement Filtering. Lecture notes in computer science, 1998(1496): p. 130. [3] Ye, T. and S. Kalyanaraman Internet Traffic Engineering - A Recursive , Random Search Algorithm for Large-Scale Network Parameter Configuration. ACM SIGMETRICS Performance evaluation review, 2003. 31(1): p. 10. [4] Heath, M.D., et al., A robust visual method for assessing the relative performance of edge-detection algorithms. IEEE Transactions on Pattern Analysis and Machine Intelligence, 1997. 19(12): p. 1338-1359. [5] Heath, M., et al., Comparison of Edge Detectors: A Methodology and Initial Study. Computer Vision and Image Understanding, 1998. 69(1): p. 38-54. [6] Bowyer, K., C. Kranenburg, and S. Dougherty, Edge Detector Evaluation Using Empirical ROC Curves. Computer Vision and Image Understanding, 2001. 84(1): p. 77-103. [7] Kanungo, T., et al., A methodology for quantitative performance evaluation of detection algorithms. IEEE Transactions on Image Processing, 1995. 4(12): p. 1667 -1674. [8] Shin, M.C., D.B. Goldgof , and K.W. Bowyer, Comparison of Edge Detector Performance through Use in an Object Recognition Task. Computer Vision and Image Understanding, 2001. 84(1): p. 160-178. [9] Trier, O.D. and A.K. Jain, Goal-directed evaluation of binarization methods. IEEE Transactions on Pattern Analysis and Machine Intelligence, 1995. 17(12): p. 1191-1201. [10] Yitzhaky , Y. and E. Peli, A method for objective edge detection evaluation and detector parameter selection. IEEE Transactions on Pattern Analysis and Machine Intelligence, 2003. 25(8): p. 1027-1033.
+
+Rapid Visualization & editing System Check edit rate
+
+Update Edits Database
+
+Input image
+
+Vesselness measure (scaled for display)
+
+Fetch next image (N + 1) from batch
+
+Too High Low Enough
+
+Then, the image is segmented using a particular set of parameters, and the resulting segmented image is evaluated using the MDL -based metric. An efficient global optimization algorithm, the Recursive Random Search [3], is used to explore the parameter space using the metric as defined using the MDL principle.
+
+Enter FARSIGHT/RUN Pipeline for the rest of the batch
+
+Description Length vs. Intensity Threshold 400,000 Description Length
+
+Conclusions
+The presented approach removes the human subjectivity factor whe n selecting parameters/settings for an image analysis system. It also reveals the practical limitations of a particular image analysis system, especially when the system is used to analyze images of kinds that it is not designed for. The broad applicability of this method is demonstrated by the ex perimental results. Essentially, all the parameters of an image analysis system are mapped onto user -friendlier terms.
+
+[11] Zhu, S.C. and A. Yuille, Region competition: Unifying snakes, region growing, and Bayes /MDL for multiband image segmentation. IEEE Transactions on Pattern Analysis and Machine Intelligence, 1996. 18(9): p. 884-900. [12] Morel, J.-M. and S. Solimini, Variational methods in image segmentation : with seven image processing experiments . Progress in nonlinear differential equations and their applications ; v. 14. 1995, Boston: Birkhèauser xvi, 245 p. . [13] Al-Kofahi, K.A., et al., Median-based robust algorithms for tracing neurons from noisy confocal microscope images. Information Technology in Biomedicine, IEEE Transactions on, 2003. 7(4): p. 302-317. [14] Abdul-Karim , M.A., et al., Automated tracing and change analysis of angiogenic vasculature from in vivo multiphoton confocal image time series. Microvasc Res, 2003. 66(2): p. 113-25.
+
+300,000 200,000 100,000 0 0 50 100 150 200 250 Intensity Threshold
+
+Illustrates the segmentation result using a global intensity threshold value for tube-like images; upper row displays the result for a neuron image (source: Natalie Dowell, Wadsworth Center, Ne York), and the lower row displays the result for a retinal w blood vessels image (source: The STARE Project). The left-most column contains the input image, the middle column contains the optimal segmentation image, and the right-most column shows plots of the description length (the concisene ss and coverage metric) versus the intensity threshold value.
+

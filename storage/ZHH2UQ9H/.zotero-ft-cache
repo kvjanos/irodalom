@@ -1,0 +1,563 @@
+REVIEW
+
+High-throughput screening assays for the identification of chemical probes
+James Inglese, Ronald L Johnson, Anton Simeonov, Menghang Xia, Wei Zheng, Christopher P Austin & Douglas S Auld
+High-throughput screening (HTS) assays enable the testing of large numbers of chemical substances for activity in diverse areas of biology. The biological responses measured in HTS assays span isolated biochemical systems containing purified receptors or enzymes to signal transduction pathways and complex networks functioning in cellular environments. This Review addresses factors that need to be considered when implementing assays for HTS and is aimed particularly at investigators new to this field. We discuss assay design strategies, the major detection technologies and examples of HTS assays for common target classes, cellular pathways and simple cellular phenotypes. We conclude with special considerations for configuring sensitive, robust, informative and economically feasible HTS assays.
+
+A variety of strategies (Fig. 1) have been used for HTS assays, including the measurement of catalytic activity from a purified enzyme1, a reconstituted complex2,3, a cellular extract4,5 or a phenotype6–9 in intact cells. Configuring assays to function within the constraints imposed by HTS differentiates an HTS assay from traditional laboratory assays, as outlined in Table 1. The 96-well microtiter plate, originally designed to facilitate serological studies in virology10, was later recognized as a suitable replacement for cuvette, tube and dish-based assays. Combined with spectrophotometric plate readers, the microtiter plate quickly became the standard for performing parallel assays for rapid preliminary evaluation of compound bioactivity. During the 1990s, the tremendous increase in chemical libraries and assays with sensitivities amenable to miniaturization further drove the parallel processing concept that today is practiced in the 96-, 384- or 1,536-microwell plate formats, among others. ‘High throughput’ is a relative term, but it is generally defined as the testing of 10,000 to 100,000 compounds per day, accomplished with mechanization that ranges from manually operated workstations to fully automated robotic systems11,12. Assays designed for the purpose of HTS attempt to integrate biological fidelity with enabling assay and screening technologies. Subsequently, understanding the pharmacological impact of the assay design is critical to the identification of biologically relevant compounds from HTS. Assay design for HTS An effective HTS strategy considers both the primary and subsequent secondary assay designs carefully. First, is the nature of the response to be measured clearly defined: does the signal increase, decrease, change in nature or location or belong to part of a more complex response? Can the response be measured via a single parameter, or is a multiparametric output possible? For example parameters that provide counter-screen
+US National Institutes of Health Chemical Genomics Center, National Institutes of Health, 9800 Medical Center Drive, Bethesda, Maryland 20892-3370, USA. Correspondence should be addressed to J.I. (jinglese@mail.nih.gov). Published online 18 July 2007; doi:10.1038/nchembio.2007.17
+
+information can guide active compound selection by differentiating selectivity among related targets13, or by distinguishing the inhibition of a cellular pathway from a cytotoxic response in a cell-based assay14–16. Second, is the stimulus dependent only on the compound being tested, or is the response to the compound conditioned by another stimulus, such as a fully efficacious concentration of agonist (when screening for an antagonist), a subefficacious concentration of agonist (when screening for a potentiator) or a permissive temperature? In conditional assays, compound activities independent of the conditional stimulus can be false positives or can act outside the pathway of interest (Fig. 1d). Third, does the duration of the response occur within seconds upon application of the stimulus, thereby requiring a rapid read (for example, a calcium transient), or within minutes or hours of the stimulus, thereby permitting endpoint or multiple time point measurements? These parameters will define the basic format of the primary HTS. Follow-up assays, also referred to as ‘secondary screens’ or ‘counter screens’, should be planned before the HTS. It is essential to view the primary HTS as the initial step of an integrated process. Follow-up tests validate compounds targeting the intended biological interaction and assist in the elimination of compounds that generate a positive signal via other mechanisms. False positives can be anticipated based on the assay design (for example, fluorescent compounds in an assay with a fluorescent readout) or eliminated by testing in an independent or ‘orthogonal’ assay that uses a different methodology or biological readout of target activity. As an example, cyclic AMP (cAMP), an important cellular second messenger, can be measured with an output response signal either directly or indirectly proportional to cellular [cAMP] (Fig. 2). cAMP assays showing inversely proportional responses to changes in [cAMP] in principle can function in an HTS-confirmatory assay sequence in which selected candidates identified in the HTS are then tested for initial validation of activity. Such ‘preliminary confirmation’ strategies using HTS assays in sequence (or parallel) can greatly lower the retesting of false positives in substantially lower throughput secondary assays that are generally more complex and designed to be a more physiological measure of the biological system under study17.
+
+466
+
+VOLUME 3 NUMBER 8 AUGUST 2007 NATURE CHEMICAL BIOLOGY
+
+REVIEW
+performance18. The Z factor’s unitless scale (ranging from 0 to 1) allows comparison of different assays and screens using the control wells (Z') and sample wells (Z) of the plate. Comparison of Z' and Z in assay validation has been used to determine compound screening concentration, as assays in which Z' > Z predict percent of actives greater than the <1% target value for single concentration screening paradigms. If compounds are absent from the sample field (for example, DMSO only), a low Z score may be diagnostic of a faulty reagent dispense or contamination problem in the sample wells, for example. An equally significant component of assay validation is assay sensitivity—the accuracy and reproducibility of potency measurements of control compounds or conditions. The minimum significance ratio (MSR, Table 2) is used to measure the reproducibility of potency values and defines the statistically significant potency range that can be measured in an assay19,20. During HTS, the MSR can be calculated from titrations of control compounds on some or all assay plates in the screen to track assay sensitivity variation, which is often an indicator of reagent stability.
+
+PEP
+
+ADP
+
+b a
+Pyruvate ATP + luciferin
+
+hν GPCR
+
+S P-γ GT
+
+hν
+
+or
+
+hν
+
+P
+
+GFP
+
+GFP P
+
+GTP-γS Eu
+
+hν
+
+c d
+
+Detection of biological responses in HTS The photon, which is created by either a fluorescent or luminescent mechanism, is the principal output in HTS assays. As the most Figure 1 Assay categories and methodologies. (a) An isolated enzyme catalyzes turnover of a widely used HTS detection modality (Table 3; profluorescent blue- or red-emitting substrate. (b) A coupled-enzyme assay in which the ATP product, see Supplementary Table 1 online for addigenerated by the pyruvate kinase–catalyzed reaction (ribbon structure), is detected by a “reporter” enzyme (firefly luciferase) to create a luminescent output (hν). (c) A membrane preparation is used to tional detail), fluorescent energy is highly measure the activity of a GPCR through the ligand-dependent activation of associated G proteins as tunable, which allows the development of a measured by the binding of a fluorescent europium (Eu3+)-labeled GTP-γS analog. (d) A phenotypic variety of fluorescent sensors21. Fluorescence assay designed to probe a signaling pathway dependent on coactivation of an extracellular receptor can be bright and occur on a timescale ranging (blue) and an intracellular protein (yellow). The intracellular protein is activated by a pharmacological from 10−9 s (for typical organic fluorophores) agent (, blue dashed arrow) as a prerequisite to revealing potentiators (compounds that are active to 10−4 s (for lanthanide cryptates), thereby only in the presence of the costimulus) of the pathway, as measured by the nuclear translocation of a GFP-labeled protein. Such potentiators could act by inhibiting proteins that repress the pathway allowing for light’s many optical properties (black dashed arrows). to be exploited by a number of detection methods22. For example, the application of plane-polarized light in fluorescence polarRegardless of the approach taken, the HTS assay protocol must be ization (FP) can be used to measure a probe’s rotational perturbasimplified from its original form (Table 1), and the following param- tions, thereby enabling simple assay designs dependent on a single eters must be optimized: (i) sufficient sensitivity to enable the identifi- labeled ligand (ref. 23, and ref. 24 and other articles in the same issue). cation of compounds with low potency or efficacy. (ii) Reproducibility Alternatively, time-resolvable fluorescent trivalent lanthanides such as and stability of the biological response between wells and plates. This Eu3+ and Tb3+ can be used to increase assay sensitivity by suppressparameter is dependent on both assay reagents and hardware (such as ing background fluorescence from assay components and library dispensers, incubators and detectors). (iii) Accuracy of the positive and compounds25,26. Further, fluorescent probes can transfer energy to negative controls as compared with the known pharmacology of the tar- other chromophores or fluorophores in assays that measure distancedependent fluorescence or fluorescence quenching via resonance energy get. (iv) Economic feasibility (frequently measured as cost per well). Validation of an assay protocol determines its suitability for HTS and transfer (FRET or QFRET) mechanisms25–27. involves two parts: performance and sensitivity18 (Fig. 3). Several staFor cellular assays in particular, chemical28,29 and genetically encoded27 tistical parameters are used to evaluate assay performance. Signal win- fluorescent probes allow customized, multiplexed or direct measurement dow and Z factor (Table 2) are calculations that gauge the fold response of events from biological components present at low concentrations30. between maximum and minimum output signals and the precision of Coupled with scanning microplate cytometers31 or microscope-based this response within a plate and across plates. The signal window mea- imaging systems, these probes are moving HTS from population-aversures the statistically significant difference between the maximum and aged outputs toward the enumeration of individual cellular events8,9, minimum signal, but it is not as reliable as Z factor for predicting assay thereby enhancing the information content obtainable from each well.
+
+NATURE CHEMICAL BIOLOGY VOLUME 3 NUMBER 8 AUGUST 2007
+
+467
+
+REVIEW
+Table 1 Differences in allowed parameters between laboratory “bench top” and HTS assays
+Parameter Protocol Assay volume Reagents Reagent handling Variables Assay container Time of measurement Output formats Reporting format
+aSpecial
+
+Bench top May be complex with numerous steps, aspirations, washes 0.1 ml to 1 ml Quantity often limited, batch variation acceptable, may be unstable Manual Many—for example, time, substrate/ligand concentration, compound, cell type Varied—tube, slide, microtiter plate, Petri dish, cuvette, animal Milliseconds to months Measurements as endpoint, multiple time points, or continuous Plate reader, radioactivity, size separation, object enumeration, images interpreted by human visual inspection “Representative” data; statistical analysis of manually curated dataset
+
+HTS Few (5–10) steps, simple operations, addition only preferred <1 µla to 100 µl Sufficient quantity, single batch, must be stable over prolonged period Robotic Compoundb, compound concentration Microtiter plate Minutes to hours Measurements typically endpoint, but also pre-read and kinetic Plate reader—mostly fluorescence, luminescence and absorbance Automated analysis of all data using statistical criteria
+
+reagent dispensers required. bIdeally available in milligram quantity with analytical verification of structure and purity.
+
+The absence of excitation light energy in the generation of a luminescence signal greatly reduces compound interference in HTS (Fig. 4). Although the signal strength can be significantly lower than fluorescence, the background is negligible, which allows luminescence-based assays to have an enormous dynamic range, on the order of 1,000 times more sensitive than equivalent fluorescence-based assays32. Both chemiluminescence and bioluminescence use a chemical reaction to create light. In the case of bioluminescence, an enzyme (typically from the firefly Photinus pyrali) generates light through its action on a luciferin substrate, analogs of which have been used to develop assays for cytochrome P450s, proteases and monoamine oxidases32. Further, the active site of the P. pyrali luciferase has been mutated to spectrally vary the luminescence33, thereby allowing the use of multiple luminescent sensors in an assay15. Luciferase reporters are prevalent in HTS assays because of convenient detection, ample sensitivity and their ubiquitous occurrence in academic research. Dual luciferase reporter assays with distinct substrate specificities, kinetics or emission maxima have been useful for identifying activities specific to the signaling pathway of interest. Frequently, the second reporter is used to normalize gene expression or discriminate cytotoxic compounds34,35. Luciferase reporters can be combined with other detection formats as well, for instance in tandem with a green fluorescent protein (GFP) reporter14, β-galactosidase or Alamar blue16 to assess cytotoxicity. The β-lactamase reporter offers particular advantages for HTS. For example, the β-lactam–coupled coumarin-fluorescein substrate, CCF4/ AM, allows a ratiometric read that helps minimize variation in cell number or substrate concentration because the emission maxima of the cleaved and intact β-lactamase substrates (460 and 530 nm, respectively) are distinct (reviewed in ref. 36). In addition, the uncleaved substrate can be used to assess cytotoxicity, as fluorescence is detected only if the substrate is taken up by living cells and de-esterified37,38. A hybrid system involving both bioluminescence and fluorescence is represented by BRET-based assays39 (Table 3 and Supplementary Table 1). Here luciferase luminescence stimulates a proximal fluorescent protein emission, thereby bypassing the need for exogenous excitation light. However, this technique may be more challenging to optimize for HTS assays because of lower S:B ratios and higher background from weakly associated target proteins40. In addition, radioactive decay in conjunction with the scintillation proximity assay (SPA) format is applicable to a host of targets41, and low-cost absorbance assays have proven reliable in measuring analytes (for example, H+ or Pi), cellular staining or cell growth. However, in microtiter plates, absorbance measurements can have low S:B ratios
+
+owing to the short path length that results from low volumes, though several assays have been implemented in 1,536-well plates42,43. Variations on the use of these technologies in the design of assays are impressive, and a discussion of each is beyond the scope of this paper. Assays suitable for HTS comprise a subset of these and must meet the requirements outlined in Table 1. The next section highlights the wellexploited assay formats. Assays for specific targets Historically, screening assays have been performed on a limited set of targets, many involving purified proteins. Approximately two thirds of therapeutic targets are comprised of enzymes and receptors44. More recently, HTS labs are increasing attention on cell-based high-content screens (HCS) that analyze biological events at subcellular resolution8,9; a 2006 survey indicated that roughly half of HTS assays are cell-based and that the use of HCS is rapidly growing, particularly in secondary screening45. The types of proteins for which drugs have been successfully developed are relatively restricted. About half of experimental and marketed drugs target five main protein families: G protein–coupled receptors (GPCRs), kinases, proteases, nuclear receptors (NRs) and ion channels46. Because of the great interest in these protein classes for drug development, many approaches and technologies (Table 3 and Supplementary Table 1) have been developed to assay these targets, and in some cases they are broadly applicable to other target classes as well. Enzymes. Enzymes are comprised of six categories: oxidoreductases, transferases, hydrolases, lyases, isomerases and ligases. They catalyze a large number of chemical transformations. In cases in which the enzyme, cofactor and substrate can be obtained in an isolated, active form, the development of an HTS assay generally hinges on the availability of reagents and technologies to enable substrate or product detection. Here, protein kinases and proteases will serve to illustrate various approaches to HTS assay design for enzymes. Protein kinases. Protein kinases mediate the most prevalent post-translational modification in cells, phosphorylate an array of targets in signaling cascades and cycles, and are important for therapeutic intervention, particularly oncology47. In this section we discuss biochemical approaches to protein kinase assays, as cell-based assays are covered in the later sections on cellular signaling. The biochemical approaches can be divided into two categories: generic assays independent of subfamily (for example, tyrosine versus serine/threonine) and antibody-based formats that detect an epitope within the phosphorylated product. The latter are generally used for a particular subfamily or specific protein kinase.
+
+468
+
+VOLUME 3 NUMBER 8 AUGUST 2007 NATURE CHEMICAL BIOLOGY
+
+REVIEW
+Protein kinases catalyze phosphoryl group transfers from ATP to hydroxyl groups of amino acid side chains of serine, threonine or tyrosine. An easily implemented assay format that has been used successfully in HTS detects ATP depletion via luciferase, an ATP-dependent photoenzyme48,49. A disadvantage of this approach is that 50% conversion of the ATP is required to achieve a two-fold S:B. This may require increased enzyme levels for sufficient signal, thus decreasing sensitivity and increasing reagent costs. Alternatively, kinase activity can be measured through ADP production. One assay format uses an ADP-specific antibody and labeled ADP to generate an FP competition binding assay to monitor ADP product formation50. A coupled enzyme strategy for ADP detection that yields a fluorescent readout has also been described51. A number of methods measure kinase activity by the detection of phosphorylated peptide. Several formats use micron-sized beads or particles to partition the product phosphopeptide from ATP substrate or peptide. Radiometric filter binding remains the standard for kinase selectivity studies. For HTS, biotinylated 33P-phosphopeptide is typically captured by streptavidin-coated SPA beads41 or scintillant-treated microtiter plates (for example, FlashPlates). In immobilized metal-ion affinity-based fluorescence polarization (IMAP), transition metal-chelated particles bind fluorescently labeled phosphopeptides with high affinity, thereby enabling an antibody-independent FP format for the detection of phosphopeptide products52. Recently IMAP has been adapted to FRET-based systems in which size limitations on the polypeptide substrate (typically <10,000 MW) are relaxed53. A similar system has been developed based on fluorescence quenching through an ironphosphate interaction54. However, for HTS the ratiometric nature of IMAP is an advantage of this system over fluorescence quenching. Antibody-based formats that detect a specific phosphorylated peptide or sequence capitalize on the many phosphospecific antibodies available and on nonseparation technologies, including TR-FRET, ALPHA and FP. Such assays are advantageous in targeting kinase activity dependent on, for example, hierarchical phosphorylation or kinase cascades55. Also, multiplexed readouts of kinase activity and cellular phosphoproteins are possible with these formats56. A unique system that assays the kinase inactive state relies on ATP binding and uses enzyme fragment complementation (EFC) for detection57. Here the general kinase inhibitor, staurosporine, is linked to a enzyme donor (ED) fragment of β-galactosidase that when displaced from the kinase ATP pocket restores β-galactosidase activity through α complementation with the acceptor enzyme (EA) component58. A final general point, illustrated with kinases, relates to assay designs that recapitulate as closely as possible the native target to uncover new mechanisms of compound action. As most biochemical kinase assays have used only the catalytic domain for HTS, ATP site–directed inhibitors are the primary class of agents identified. However, with a TR-FRET– based HTS of Akt-family kinases, Barnett et al.59 discovered a pharmacologically unique class of compounds using the full-length kinases. These compounds stabilized the inactive conformation of Akt1 and Akt2 via a site formed only in the presence of the pleckstrin homology (PH) domain of the kinase59, thereby allowing a unique mode of selectivity between Akt1 and Akt2 versus Akt3, which is not inhibited by the chemical class owing to its lack of a PH domain. Proteases. As well-established drug targets60, proteases have received considerable coverage in terms of assay formats and reagent kits. Profluorescent or FRET-based substrates are commonly used to assay proteases as purified proteins or in cell lysates. Typically, probes are coupled to a two-to-five-amino-acid peptide comprising a protease cleavage site and become fluorescent after liberation by protease cleavage13,61. Though ideally suited to HTS, a shortcoming of this approach is that the fluorogenic peptide is often insufficient in length to cover the entire binding pocket.
+
+a
+EFC
+100
+
+c
+100
+
+Gαi-coupled response
+100
+
+Gαs-coupled response
+
+Activity (%)
+
+ED
+
+50 25 0
+
+Activity (%)
+
+75
+
+75 50 25 0
+
+Activity (%) Log[compound] (M) Activity (%) Log[compound] (M) Gi AC [cAMP]
+
+EA
+
+75 50 25 0
+
+S
+
+hν
+
+Log[compound] (M)
+
+Log[compound] (M)
+
+TR-FRET hν
+
+b
+100 100 100 75 50 25 0
+
+Activity (%)
+
+75 50 25 0
+
+Activity (%) Log[compound] (M)
+
+D
+
+A
+
+75 50 25 0
+
+D
+
+A
+
+Log[compound] (M) Gs GPCR
+
+ED-labeled cAMP
+
+Acceptor-labeled cAMP
+
+Cellular cAMP
+
+GPCR
+
+AC
+
+Figure 2 Influence of assay design on the measured biological response. (a) An EFC-based competitive immunoassay illustrates an output signal that is directly proportional to intracellular [cAMP]. (b) A TR-FRET output signal is indirectly proportional to intracellular [cAMP]. (c) The resulting responses for hypothetical assay of Gi-coupled (left) and Gs-coupled (right) GPCRs are shown for the EFC (top) and TR-FRET assays (bottom) for compounds acting as either agonists (dotted lines) or antagonists (solid lines). Assays having opposing signal outputs in response to the same analyte; here [cAMP] is an example of an assay pair in which one could function in HTS and the other in folow-up confirmation and false positive detection.
+
+NATURE CHEMICAL BIOLOGY VOLUME 3 NUMBER 8 AUGUST 2007
+
+469
+
+REVIEW
+Table 2 Equations for determining assay performance or sensitivity
+Parameter Coefficient of variation Signal to noise Equation σ %CV = — × 100 µ S:N = µmax – µmin σmin µmax µmin µmax – µmin – 3(σmax + σmin) σmax (3σmax + 3σmin) µmax – µmin Comment A measure of the precision relative to the mean value, calculated for the maximum and minimum signals. An acceptable limit is <15%. A measure of the signal strength. This equation is sometimes given asa: Usually calculated using control compounds, acceptable value >2-fold. The significant signal between max and min controls, acceptable value >2-fold b.
+
+σmax2 + σmin2
+
+µmax – µmin
+
+Signal to background
+
+S:B =
+
+Signal window
+
+SW =
+
+Z' factor
+
+Z' = 1–
+
+Representation of the SW using a score where a value >0.5 represents an acceptable assay. Z' is measured in the absence of library compounds; Z is in the presence. Smallest potency ratio between two measurements that is statistically significant (with 95% confidence). Used to derive the Ki from the IC50 under conditions of competitive inhibition. Used to derive the Ki from the IC50 under conditions of competitive binding.
+
+Minimum significance ratio Cheng-Prusoff Cheng-Prusoff (ligand-binding)
+
+MSR = 102σd Ki = Ki = IC50 (1 + [S]/Km) IC50 (1 + [L]/Kd)
+
+σ, s.d. of the assay signal; µ, mean of the assay signal; σd, s.d. of the difference in log potency; max, maximum signal; min, minimum signal. aThis is a redundant description of the signal window equation. bSome assays, such as those with ratiometric data, may perform adequately with as little as a 20% change in signal (for example, see ref. 111) or with 0 < Z ′ < 0.5.
+
+Although there are numerous ways to measure endoprotease activity, assays for exoproteases that recognize C- or N-terminal residues are far less available62. The hydrolytic activity of the protease has been used to process simple chromogenic esters and amides, but assays based on these substrates generally lack sensitivity for miniaturized HTS assays. One approach is to use protease-mediated “epitope unmasking,” in which cleavage by the exoprotease reveals a binding site for a detection reagent. Here, sensitive time-resolved FRET (TR-FRET)-based formats, for example, can be applied63. Cellular FRET-based methods have been developed using fluorescent proteins or dyes linked by a protease consensus sequence. When expressed or taken up by cells, cleavage of the probe can be measured by a change in fluorescence upon activation of proteases such as caspase-3 (ref. 64) and hepatitis virus (HCV) NS2/3 (ref. 65). Similarly, cells expressing a fusion of GFP and alkaline phosphatase coupled through an NS3/4A cleavage site were used to monitor the activity of this HCV protease by the detection of secreted alkaline phosphatase66. In an approach based on cell viability, procaspase-3 was modified to contain a β-secretase cleavage motif that triggered apoptosis in 293T cells upon expression of β-secretase. β-secretase inhibitors were shown in this assay to promote cell survival67. Nuclear receptors. NRs are transcription factors that are characterized by common modular features including a DNA-binding domain (DBD) and a ligand-binding domain (LBD). NRs are regulated by endobiotic ligands such as hormones and metabolites, or through xenobiotics68. The human genome encodes ~48 NR members of known and unknown function (orphan NRs) that are actively being studied in drug discovery and basic research. Consequently, the ligand or DNA-binding properties of isolated domains, and the cellular translocation and gene transactivation properties of NRs, have been featured in assays designed for HTS (ref. 69 and other articles in the same focus issue). Classical competition binding assays for NRs can be divided into radiometric and fluorometric assays. SPA formats have been developed for NRs such as peroxisome proliferator-activated receptor70, and FP has been used for well-characterized receptors such as the steroidal NRs, in which a fluorescent conjugate of a known receptor ligand and a purified LBD are prepared71.
+
+Using GFP fusions of NRs8, cell imaging assays have been described that measure ligand-dependent, cytoplasm-to-nucleus translocation of the glucocorticoid receptor (GR)72 or engineered NR chimeras73. Translocation assays using GFP fusions of GR have been applied to 1,536-well systems (see ref. 8; PubChem BioAssay ID (AID) 450). Additionally, EFC assay formats have been described to measure NR translocation72,74 (PubChem AID 451). However, none of the aforementioned assays can distinguish the functional effect of active compounds on NR transactivation. To distinguish between agonist and antagonistic activity of compounds, the targeting of NRs has been addressed with TR-FRET ligand-dependent coregulator recruitment assays75, constructed with either coactivators or corepressors to identify agonists and antagonists. Additionally, cell-based reporter gene assays provide among the most sensitive means to screen for functional activity. These assays fuse NR response elements to reporters such as luciferase76, β-lactamase, and secreted alkaline phosphatase (ref. 69 and other articles in the same focus issue). G protein–coupled receptors. GPCRs are targets of intensive drug development by the pharmaceutical industry, and numerous, well-established HTS assay methods exist77,78 and continue to be developed79. Technologies to measure ligand-receptor binding41,80 and the functional consequence of receptor activation77 have enabled screens that target the rich pharmacology of this receptor superfamily, including assays to differentiate full, partial and inverse agonists, antagonists and allosteric modulators81, and to identify ligands for orphan GPCRs8,82. GPCRs broadly orchestrate a wide range of cellular events and processes for which HTS assays have been configured, including guanine nucleotide exchange5,83, modulation of second messenger concentrations84,85, ion channel activity86, protein phosphorylation56, protein trafficking8,87,88, pigment dispersion89, gene transcription6 and cell proliferation90, among others. The assays have different advantages and limitations, but collectively they illustrate the sophistication possible in HTS assay design given the current state of the art. For example, GPCRs that activate intracellular Ca2+ stores can be assayed using calcium-sensitive dyes (for example, Fluo-3 and Fura-4) and rapid-inject
+
+470
+
+VOLUME 3 NUMBER 8 AUGUST 2007 NATURE CHEMICAL BIOLOGY
+
+REVIEW
+imaging platforms84. However, GPCRs not naturally coupled to [Ca2+] modulation could not be assayed by this means until the development of so-called universal adaptors, molecular engineered G proteins91 or promiscuous G proteins92, to reconfigure such GPCRs to stimulate Ca2+ signaling. Today GPCR second messengers can be assayed by the direct measurement of cAMP85 (Fig. 2) or inositol phosphate species57,93. Assays based on GPCR internalization are independent of G protein subtype, unlike second messenger formation, and have been applied successfully to analyze a number of GPCRs using either standard microtiter plate readers94 or fluorescence microscopy8,9. The use of the adaptor protein β-arrestin 2, fused with GFP, permits an assay design that generally does not require modifications to the target receptor’s N or C terminus. Such phenotypic assays enabled with automated high-content image analysis are bridging cell biology with HTS in a way that will have a major impact on chemical biology, as discussed below. Ion channels and transporters. Ion channels are membrane-spanning proteins that regulate electrochemical gradient-driven movement of inorganic ions such as Na+, K+, Ca2+ and Cl– into or out of cells. HTS technologies aimed at this target class are under rapid development95. The existence of multiple responsive states, including closed, open and inactive, to which drugs respond differently, add to the pharmacological diversity and assay development challenges96. Ligand binding, ion flux, and fluorescent probe-based assays are the established methods for ion channel HTS (Table 3 and Supplementary Table 1). Competition binding measures the affinity of the ligandchannel protein interaction but is dependent on the availability of radiolabeled ligands. As with GPCRs, binding assays do not detect the functional consequence of compound interactions with ion channels. For these reasons, cell-based functional assays are more relevant to ion channel screening at both the primary and secondary levels. The calcium-sensing fluorophores Fluo-3, Fluo-4 and Fura-2 have been used extensively in HTS for voltage- and ligand-gated channels and for GPCR-induced intracellular calcium release95. The fluorescence intensity of these probes inside cells increases proportionally with the elevation of intracellular free calcium concentration97. The addition of opaque dyes to the assay buffer eliminates the need for cell washing steps, as only intracellular fluorescence of adherent cells is detected in bottom-read measurements, thereby improving compatibility with HTS protocols95. Voltage-sensing probes track changes in membrane potential and have been used in several assay formats, such as FRET-based and positional voltage sensors98. Ion flux measurements using radioactive tracers such as 86Rb+, 45Ca2+, 22Na+ and 36Cl– are established assays of ion channel activity. However, the medium removal steps and considerable radioactivity limit this approach for HTS. Atomic absorbance spectrometry using nonradioactive tracer ions has recently permitted significant improvements to the ion flux assay for HTS99. Patch-clamp electrophysiology remains the standard for measuring ion channel activity, as the potency of certain compounds, especially those with state- or voltage-dependent mechanisms, may appear significantly less potent when using other assay methods (for example, fluorometric or rubidium ion flux). Automated patch-clamp instruments represent a remarkable development in technology, increasing throughput from approximately ten compounds per week to hundreds95,100. However, further improvements are needed in seal quality, throughput, and cost before this technology can replace other formats such as fluorescence-based assays for HTS. The broad examination of drug candidates for ion channel activity has become critical in the assessment of a candidate’s safety profile. In addition to the functional inhibition of ion channels, the folding and trafficking of ion channels represents another avenue for the development of HTS assays analogous to those developed for GPCRs. For example, an ELISA-based assay has been reported that measures the amount of cell surface hERG channel to determine drug effects on hERG channel trafficking101. Transporters, another category of transmembrane proteins, have an important role in ion, membrane potential and nutrient homeostasis. Perturbations in transporter function can result in disease and altered drug absorption, distribution, metabolism, excretion and toxicity (ADMET) properties, leading to drug resistance, for example. As a case in point, multidrug-resistance (MDR) transporters (for example, P-glycoprotein) belong to the family of ATP-binding cassette (ABC) proteins that extrude xenobiotic substances from the cell, including many drugs. Assays based on ATPase activity and fluorophore transport have been described102,103. Typical assay formats for amino acid and neurotransmitter transporters rely on radiolabeled substrates (for example, 3H-glycine) and involve multiple assay steps including medium aspirations. However, new assay methods are being developed that are suitable for HTS such as yeast heterologous expression systems104 and anion sensors105. Assays for pathways and networks, and cellular phenotypes The complexity of components and their interactions within cellular networks offers a rich source of new targets to assay using technologies to examine protein interactions, expression, distribution and stability. For instance, signaling mediated by Hedgehog, Wnt and Notch proteins uses unconventional proteins implicated in developmental and disease processes, making these pathways important therapeutic targets106 that are assayable with HTS automated fluorescence microscopy methods8. The following sections describe additional cellular assays but reveal only a glimpse of the breath of cellular processes amenable to testing by HTS assays. Transcriptional readouts. Reporter gene expression is a mainstay for detection in cellular signaling assays6 and is useful for broadly identifying compounds that modulate the pathway and isolate new targets within. However, the purposely promiscuous nature of these assays is disadvantageous if the objective is a probe of a particular component of the pathway, as ‘target decryption’ can be a formidable undertaking. A separate critical consideration resides in identifying a cell type that appropriately reflects the cellular context of the signaling pathway being assayed by the reporter; both the types and amounts of cell surface receptors and intracellular signaling components can vary widely among the commonly used engineered cell lines. Protein interactions and redistribution. Several innovative enzymatic and image-based methodologies have provided new ways to identify compounds that modulate movement and associations of protein components within living cells. These approaches fall into several general categories: reporter complementation, resonance energy transfer and protein redistribution. Low-affinity associations form the basis of protein complementation assays (PCA), in which two proteins known to associate are separately fused to N- and C-terminal halves of a bifurcated reporter protein. Upon interaction of the two sentinel proteins, the halves of the reporter (now in close proximity) reconstitute a functional enzymatic or fluorescent reporter. Commonly used PCA reporters include β-lactamase, GFP, YFP and luciferase27,40,107. This methodology is attractive because it can be adapted to many protein-protein interactions and is amenable to screening and profiling, as demonstrated with YFP-based108 and β-lactamase109 reporters. Alternatively, high-affinity β-galactosidase α complementation has been used to monitor protein movement. Here the ω fragment is targeted to a specific subcellular
+
+NATURE CHEMICAL BIOLOGY VOLUME 3 NUMBER 8 AUGUST 2007
+
+471
+
+REVIEW
+Table 3 Assay technologies
+Technology AAS Absorbance ALPHA Bioluminescence BRET Bla/CCF4 DELFIA Description Atomic absorption spectroscopy for measurements of ion transport/flux (primarily focused on K + channels with Rb+ as tracer); 96-/384-well microtiter plates enabled with, for example, the ICR 12000. Follows Beer’s Law; trans- or epi-absorbance; via fluorescence attenuation. Amplified luminescent proximity homogeneous assay; donor-acceptor beads of ~200 nm diameter; λex 680 nm (laser); singlet oxygen reacts with acceptor bead within ~200 nm distance; λem 520–620 nm. Renilla or firefly luciferases used in reporter gene assays; analogs of D-luciferin used to expand biochemical assays for proteases, P450s, monoamine oxidases. Bioluminescence resonance energy transfer; useful for protein-protein interactions; Renilla luciferase donor luminescence (480 nm) stimulates fluorescence of GFP/YFP acceptor; follows dipole-dipole interaction 1/r 6 (~5 nm maximum). FRET-based assay using β-lactamase and β-lactam-containing substrate (for example, CCF4); λex 395 nm, λem 460/530 nm; ratiometric reporter gene assays and other formats. Dissociation-enhanced lanthanide fluorescent immunoassay/time-resolved fluorescence; ELISA-like format using lanthanide chelate-labeled antibody; τf ~500 µs; separation-based enhanced fluorescence; variations using labeled ligands; extremely sensitive. Electrochemiluminescence assay. Uses microcarbon electrode plates allowing electrical oxidation of a [Ru(phen) 3]2+ label. Multiplex applications in ELISA format. Enzyme fragment complementation. Based on β-galactosidase α complementation; high-affinity complementation. Applied to both cell-free and cell-based systems. Fluorescent lifetime; time-domain method (~ns) measures the rate of fluorescent decay following excitation; promises to eliminate fluorescence compound interference; only recently applied to some microplate systems. Fluorescence polarization; polarized light reports change in probe ligand τc; fluorophores of τf ~ 5 ns needed to measure ligand of MW < 1,500 binding to a receptor of MW ≥ 10,000; widely applied, ratiometric measurement. Fluorescence resonance energy transfer; donor-acceptor pair as in EDANS-DABCYL peptides or fluorescent proteins (for example, CFP/YFP). Signal distance dependence ~5 nm maximum. Measurement of fluorescence intensity including the use of chromophores for quenching as in profluorescent protease substrates (~5 nm maximum distance); widely applied; superquenching varies in that nonequimolar amounts of donor fluorophore and quencher are used. Includes kinetic modes of detection with timescales of approximately minutes to hours. Requires fluorescent imaging plate reader or equivalent (for example, FLIPR, FDS6000, VIPR); timescale ~seconds; GPCR functional assays using Ca2+-sensitive dyes, or steady state ion channel activity using voltage-sensitive dyes. Cell-based imaging microscopy/cytometry assays; translocation, redistribution, protein-protein interactions, reporter gene assays; see below. High-throughput electrophysiology; measurement of ion channel currents with microaperture arrays such as the planar patch-clamp electrode (for example, PatchXpress 7000A, IonWorks Quattro). Protein complementation assay; recombinant split reporters (for example, GFP, luciferase, β-lactamase) fused to interacting proteins; phenotypic assays; low-affinity complementation. Scintillation proximity assay; nonseparation-based radiometric detection using solid supports; typical isotopes include or 3H.
+35S, 33P
+
+Refs. 99 42,43 56,149 32 39,150 36,38,151 25
+
+ECL EFC FLT FP FRET Fluorescence
+
+17 57,74 146 23,24 22,53 22,152
+
+Fluorescence (rapid kinetic) GFP and variants HT electrophysiology PCA SPA, FlashPlate TR-FRET
+
+84,98 27,112 98,99,153 40,108 41 25,26,53
+
+Time-resolved FRET; also known commercially as HTRF/LANCE; nonseparation-based format using a lanthanide cryptate donor fluorophore of long fluorescence lifetime (τf ~ 500 µs); detection distance ~9 nm max.
+
+τf, fluorescent lifetime; τc, rotational correlation time.
+
+region and the α-peptide-tagged translocating protein restores β-galactosidase activity once α and ω combine74. In the resonance energy transfer methods FRET and BRET (Table 3 and Supplementary Table 1), donor and acceptor (or sensor) proteins are fused to the target proteins of interest. In BRET, a signal is generated when a bioluminescent donor enzyme is brought into proximity with an acceptor fluorophore, the photon emission of which is measured39. In FRET, energy is transferred from a donor to an acceptor fluorophore when the two proteins come into close proximity, which is manifested as a change in wavelength of the emitted fluorescence. FRET-based sensors use spectrally distinct fluorescent proteins such as engineered GFP and YFP (reviewed in ref. 27). Intracellular indicators of specific kinase activity have been described using phosphorylation-activated FRET sensors engineered from fluorescent protein pairs110, or for insulin signaling via PIP3 recruitment of labeled Akt2 PH domains111. Additionally, a cell-based HTS using BRET to detect CCR5-β arrestin association identified inhibitors of CCR5-mediated signaling94. FRET, BRET, PCA and similar methods have been combined with subcellular imaging to produce highly successful and versatile HTS assays for monitoring protein movements within cells9,110. The develop-
+
+ment of technology platforms for automated cellular imaging, together with sophisticated object recognition algorithms, has made the screening of cell-based protein redistribution assays routine8,9. For instance, assays monitoring the redistribution of Akt1 (ref. 112), MAPK2 (ref. 113) and ERF1 (ref. 114) have been used for HTS. Indeed, MacDonald et al.108 report the use of 49 PCAs to monitor protein redistribution or interactions for profiling small-molecule activities. Protein stability. The addition of degradation and destabilization domains to reporter proteins has been useful for assaying a number of cell processes (such as ubiquitin-mediated degradation and the cell cycle) and enabling screening of unstable proteins such as the cis-acting viral NS2/3 protease65. For pathways in which a particular protein is controlled through degradation, destabilization domain GFP sensors allow a measure of pathway activity. For instance, fusing the degradation and localization domains of cyclin B1 onto GFP conferred onto the sensor the equivalent turnover and localization as endogenous cyclin B1, thereby allowing high-content screening for cell cycle modulators8. Similarly, fusion of the IκBα destabilization domain to luciferase was used to identify modulators of NFκB signaling15. Also, coupling of
+
+472
+
+VOLUME 3 NUMBER 8 AUGUST 2007 NATURE CHEMICAL BIOLOGY
+
+REVIEW
+the degradation domain of ornithine decarboxylase to the fluorescent protein ZsGreen was used to discover new proteosome inhibitors115. Fusing only the degradation domain of a particular protein, as opposed to the entire protein, to a sensor is advantageous in that it minimizes the pathway interference that can be caused by overexpression of the full-length protein8. Assays for rare disease targets. With over 1,800 genetic associations with human disease now known116, the number of human diseases for which molecularly based assays could be developed is large. Occasionally a rare disease is caused by mutation of an immediately druggable target, and even more rarely one that may be ameliorated by a clinically approved drug117. More commonly however, the genes responsible for rare diseases have obscure or entirely unknown functions. Some common causes of human genetic diseases are listed below and illustrate the challenge of assay development for HTS in this arena: (i) Nonsense mutations resulting in premature termination and absence of protein expression (for example, phenylketonuria, spinal muscular atrophy (SMA) and cystic fibrosis): assays to identify compounds that compensate for the defect, for example by upregulating an alternative pathway or pseudogene as in SMA118, or promoting readthrough of premature stop codons119. (ii) Missense mutations resulting in a potentially functional but misfolded or mistrafficked protein (for example, cystic fibrosis): assay needs to discover compounds that act as molecular chaperones to facilitate correct folding and trafficking of the protein to its proper location120. (iii) Synonymous mutation that introduces a new splice donor or acceptor site, thereby altering splicing and producing an abnormal protein (for example, Hutchinson-Gilford Progeria Syndrome and β-thalassemia): assays to identify compounds that alter splicing121. (iv) Motif expansion or duplication mutations that result in expression of a protein with toxic or dominant negative function (for example, Huntington’s disease): assay needs to identify molecules that downregulate the expression of the toxic protein or interfere with its function122. These urgent and challenging biological problems will be an important frontier for HTS assay development in the next decade. Assay optimization for HTS A balance between statistical performance and assay sensitivity facilitates the identification of the broadest range of compound potencies and efficacies from HTS. Assays are generally configured to measure one or more of the following changes: (i) concentration of a substance (for example, enzyme substrate or product, second messenger or reporter gene product); (ii) concentration of a receptor-ligand complex or (iii) distribution of cellular markers. In addition, different methodologies measuring the same biological process can have discordant determinations of apparent compound potency and efficacy37,123–125, which emphasizes the need for selecting the proper assay format. In general, four types of assays can be defined based on the acceptable limits of Z' factor and assay sensitivity (Fig. 3a). Conditions leading to satisfactory performance (Z' factor > 0.5) should be identified that minimally impact assay sensitivity of a control ligand or stimulus (Fig. 3a, quadrant i). With this in mind, the optimal assay will not always have the highest Z' factor, as some very robust assays (Z' scores > 0.8) can have poor sensitivity (Fig. 3a, quadrant iii). Conversely, assays with lower Z' factors may have superior sensitivity (for example, Fig. 3a, quadrants i and ii) and may be rescued for HTS using replicate or concentration-dependent formats126. Because potent compounds can be identified in poorly designed assays, the irrational exuberance of observing such high-potency or high-efficacy compounds is often displaced by the realization that the activity was artifactual in nature, and a careful analysis of the screening results ensues to identify compounds with reliable biological activity, many times with lower (µM) potency. Thus, the need for assay sensitivity is critically important to identify compounds with half-maximal inhibitory concentrations (IC50s) in the vicinity of the screening concentration, as these are false-negative candidates in assays having poor sensitivity. Ideally, HTS assays are designed with substrate (S) or ligand (L) concentrations below their Km or Kd, so that the observed potency (IC50) approximates the intrinsic potency Ki (see equations in Table 2; this relationship differs for more complex mechanisms or when determining functional activity of receptors such as Kb values127–129). Though increasing either [S] or [L] improves the overall Z' factor of the assay, doing so could potentially increase the IC50 values above the threshold used to identify actives in the screen (Fig. 3b,c), thereby preventing them from being identified as positives. Catalytic systems (for example, enzyme assays) should be designed for the minimum substrate conversion needed to achieve an acceptable Z' factor. Although shifts in IC50s can be less than two-fold for enzyme assays operating at conversions upward of 80%130, high turnover significantly affects the ability to detect inhibitors with potencies near the screening concentration (Fig. 3d–f) and lowers the assay sensitivity for enzyme activators. Many HTS technologies are inherently unable to detect low-affinity complexes (Kd ~ 1 µM) without resorting to high ligand or target concentration, or engineering in a high-affinity interaction. The various assays developed to screen for inhibitors of the protein-protein interaction between the p53 tumor suppressor protein and its negative regulator (DM2) illustrate these issues (see Supplementary Table 2 online for assay details). In one assay the measurement of a p53-DM2 interaction with a competition-binding FP assay131 required 1 µM DM2 to allow sufficient complex formation (~50% bound) for a detectable signal. This configuration limits the observable compound potency range, thereby rendering the assay unreceptive to weak compounds and making it difficult to determine the rank order of potent compounds. Conversely, high-affinity interactions resulting from enhanced avidity can increase the apparent affinity of the binding partners many fold through multiple receptor-ligand interactions. This “Velcro effect” is evident as a rightward shift in IC50 values of competing control ligands. For example, returning to the p53-DM2 interaction, Kane et al.132 developed a TR-FRET–based assay for this protein-protein interaction that required only nanomolar protein concentrations, in contrast to the micromolar level needed in the previous FP format. However, enhanced affinity due to multivalent interactions in the resulting complex (Supplementary Table 2) decreased the sensitivity of the assay as judged by the higher-than-expected IC50 of unlabeled competitor p53 protein. The potential for such avidity effects through surreptitious polyvalent interactions should always be considered carefully when examining the benefits and limitations of the assay133. Further, irrespective of affinity, assay conditions requiring a high fraction of bound ligand (for example, most FP-based assays) cannot rely on the Cheng-Prusoff correction to estimate the Kd or Ki of control or test compounds. Rather, accurate approximations can be made using equations describing the complete equilibria of the competing components134. In another biochemical format, the thermal shift assay135, which measures a ligand’s ability to stabilize a protein’s thermal denaturation, has been used to investigate compound binding to the p53 binding domain of DM2 directly. Though thermal shift technology at present is relatively lowthroughput, requiring comparatively large amounts of target protein, it is one of the few function- or ligand-independent methods to screen for small molecule–protein interactions that may provide a means to identify small molecules with protein complex disruption potential (Supplementary Tables 1 and 2).
+
+NATURE CHEMICAL BIOLOGY VOLUME 3 NUMBER 8 AUGUST 2007
+
+473
+
+REVIEW a
+1
+
+b
+100
+
+c
+
+12 10
+
+1.0 0.8
+
+Fold (IC50/Ki)
+
+Inhibition (%)
+
+i Z' factor
+0.5
+
+iii
+
+75
+
+8 6
+
+Z' factor
+
+Z' factor
+
+0.6 0.4
+
+50
+
+ii
+
+iv
+
+4
+
+25
+
+Fold
+2 0
+
+0.2 0.0 1.0
+
+0 3 10
+
+0
+
+–6
+
+–5
+
+–4
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+Fold (IC50´/IC50)
+
+Log[inhibitor] (M)
+
+Fraction bound receptor
+
+d
+100
+
+e
+Fold (IC50´/IC50)
+
+12 10 8
+
+1.0 0.8 0.6
+
+f
+
+12 10
+
+1.0 0.8
+
+Fold (IC50´/IC50)
+
+Z' factor
+
+Z' factor
+8 6
+
+Inhibition (%)
+
+75
+
+Z' factor
+
+0.6 0.4 4 2 0 0 25 50 75 100
+
+Z' factor
+
+50
+
+6 0.4 4
+
+25
+
+Fold
+2 0
+
+0.2 0.0
+
+Fold
+
+0.2 0.0
+
+0
+
+–9
+
+–8
+
+–7
+
+–6
+
+–5
+
+–4
+
+0
+
+25
+
+50
+
+75
+
+100
+
+Log[inhibitor] (M)
+
+Conversion (%)
+
+Conversion (%)
+
+Figure 3 Assay performance and sensitivity. (a) Assay performance (Z' factor) is plotted against sensitivity, as defined by the ratio of observed (IC50’) and known (IC50) values of a control compound. i, Optimal performance and sensitivity (Z' > 0.5, IC50’/IC50 < three-fold). ii, Poor performance and good sensitivity (Z' < 0.5). iii, Good performance and poor sensitivity (Z' > 0.5; IC50’/IC50 > three-fold). iv, Poor performance and sensitivity (Z' < 0.5; IC50’/IC50 > three-fold). (b) Effect of varying the [ligand]/Kd ratio for a binding assay. Concentration-response (CR) curves represent [ligand]/Kd ratios as follows: 0.10, blue; 1, green; 3, orange; 5, black; and 11, purple. IC50’ was calculated using the Cheng-Prusoff equation (Table 2), with a compound Ki = 5 µM and a ligand Kd = 10 µM. The gray box is the “observation window” representing observed activity for a 10 µM screening concentration and a hit cutoff of >30% inhibition. (c) A modeled assay in which between ~30% and 70% bound receptor yields optimal performance. (d) CR curves for an enzyme assay at different substrate conversions (10%, red; 40%, blue; 60%, green; 80%, orange; 90%, black and 98%, purple) for two reversible inhibitors (solid lines, IC 50 = 100 nM; dotted lines, IC50 = 10 µM). The observation window (gray box) indicates how shifts in IC50’ limit the identification of weak inhibitors, including potent, low-efficacy compounds (gray dotted curve). (e,f) Shifts in IC50’ were calculated as described130. Two modeled enzyme assays in which either an adequate performance (for example, two-fold S:B and %CV < 5%) is achieved at 10% conversion (e) or the equivalent performance is not reached until ~60% substrate conversion (f). Grey regions indicate areas of either poor assay performance or poor assay sensitivity (a, c, e and f).
+
+Owing to recent advances in high-throughput cellular imaging9,136, phenotypic assays now represent a viable alternative or complement to biochemical formats for protein-protein interaction HTS assays. Several cell-based assays have been used to investigate the p53-DM2 interaction108,137, and these may circumvent the affinity and ‘enhanced avidity’ concerns encountered in systems configured with isolated proteins. Reagent-coated surfaces provide both opportunities and drawbacks for HTS assays. Formats involving reagent-coated beads or surfaces enable a physical separation of a bound and free ligand, thereby eliminating filtration steps41,133, or they provide components that comprise the detection system, as in ALPHA138. However, two issues should be considered when designing heterogeneous assays using solid supports. One issue pertains to the “avidity” of the interaction mentioned above that can occur in bead-based assays in which two binding partners are coated or tethered to separate beads, which results in multiple binding sites on the solid support (for example, the Velcro effect). The other issue is the capacity of the solid support to ‘hold’ a reagent or substrate. For example, when presenting an enzyme substrate on a solid support the amount of substrate that can be coated onto a surface can limit the reaction rate, and is often compensated by increasing enzyme concen-
+
+tration to achieve a suitable signal139. The net result of increasing target concentration is to increase assay cost and decrease sensitivity140. Compound interference within HTS assays Compound-dependent assay interference is a very common cause of screening artifacts and must be ruled out before any compound activity is attributed to modulating the biological activity of interest. Here the inhibition or activation of an assay signal is not caused by the compound’s effect on the target or pathway of interest, but rather it is due to the compound’s ability to mimic that effect as a result of its physicochemical properties (for example, light absorbance) or adventitious biological activities (for example, luciferase inhibition)141,142 (Fig. 4). Cheminformatic approaches have been described that attempt to identify or remove from screening collections compounds with such problematic characteristics143, but currently prediction of such properties is not reliable, and each active compound must be assumed to be an artifact until proven otherwise. This may be particularly true for chemical genomics applications, as the allowed functionalities of a chemical probe are less strict than for a medicinal lead. Thus although the boundaries of a useful chemical series may be broader for chemical
+
+474
+
+VOLUME 3 NUMBER 8 AUGUST 2007 NATURE CHEMICAL BIOLOGY
+
+REVIEW
+genomics applications than for drug development, the potential for misleading HTS activity is perhaps even greater with ‘probe-like’ than with ‘drug-like’ compounds. Compound fluorescence and absorbance are very common causes of signal amplification or attenuation. Heterocyclic compounds that dominate screening collections most commonly fluoresce in the blue-green range, meaning that common assay sensors, such as GFP and coumarin, as well as the many profluorescent enzyme substrates that excite or emit near the blue end of the spectrum, are susceptible to this type of optical interference. Assay responses can differ in signal strength or brightness and can determine assay sensitivity to certain classes of interferences, such as attenuation of luminescence or scintillation by light-absorbing compounds142. Signal brightness becomes particularly important with regard to compound interference when incident light is used to excite a fluorophore. In this case, assays having emitted light signals that overlap with the fluorescence from compounds will show increased false positives (Fig. 4a,b). The amount of compound fluorescence is dependent on the wavelength of excitation energy used, with blue light being more problematic than red light for typical heterocyclic compound libraries142,144.
+
+a
+
+b
+Excitation light hν hν
+
+c
+
+Emission light
+
+Positives
+
+False positives
+
+Figure 4 Compound effects on assay outputs. (a–c) The effect of different types of compound interference within a library (colored slices of the pie charts) on the scoring of actives. Interfering compounds are represented as dark spots arranged as a shadow cast by assay output signal, and individual spots represent genuine actives in assays using different modes of detection (blue or red fluorescence, or luminescence). In assays in which blue spectrum excitation is used (a), significant interference from compound emission is possible, whereas for red-shifted excitation light (b), interference is typically reduced. Also shown below are example fluorescent compounds 5 and 6, excited by blue and red light, respectively. (c) Luminescence assays do not use an external excitation source, which results in negligible interference by compound fluorescence unless compounds or sample impurities absorb light (for example, inner filter effect by 6). (d) Example molecules that illustrate different interference mechanisms. Biotin (1) analogs such as 1a disrupt biotin-avidin complexes commonly used in assay designs (for example, PubChem AIDs 595 and 632). The imidazole (2) derivative 2a can coordinate with Ni2+ and interfere with polyhistidine-tagged proteins at µM concentrations. Nickel-chelated microspheres are used in some instances to tether polyhistidine-tagged proteins (for example, PubChem AIDs 595 and 632), and can thus be disrupted by compounds similar to 2a at typical screening concentrations. The luciferin (3) analog 3a is an inhibitor of the reporter luciferase. A major source of interference is compound aggregation (see 4), in which detergent-sensitive ‘promiscuous’ inhibitors block assays by forming target-sequestering/denaturing compound aggregates (4a)147.
+
+NATURE CHEMICAL BIOLOGY VOLUME 3 NUMBER 8 AUGUST 2007
+
+475
+
+REVIEW
+To provide experimental data on the fluorescent properties of the compounds screened in our center, we recently performed spectroscopic profiling of ~70,000 compounds from the Molecular Libraries Small Molecule Repository for eight common wavelengths (unpublished data; PubChem AIDs 587–592). For example, 4-methylumbelliferone (4-MU; excitation 385 nm, emission 502 nm) is a commonly used label in profluorescent substrates for a wide range of hydrolytic enzymes. We found ~2% of the library fluoresced at a level equivalent to at least 100 nM 4-MU, which indicates that a screen using this excitation wavelength would yield many false positives via this mechanism. Several approaches can minimize interference from fluorescent compounds, and should be used whenever possible. Separation-based formats such as ELISA offer an advantage over solution-phase assays, as compounds are removed before the detection step. However, the necessary separation steps can make ELISA difficult to miniaturize. For homogeneous assays, compound fluorescence can be reduced by using probes that use red-shifted fluorophores61, time-resolved lanthanidebased fluorescence25,26, pre-reads or multiple time points that permit background subtraction or rate determinations145. Technologies that in principle are minimally affected by compound fluorescence, such as fluorescence lifetime (FLT) spectroscopy146, are in development, but for now remain unproven in HTS. Signal attenuation or activation of assay signal can also be caused by compound aggregation, which can result in target denaturation, ligand sequestration or light scattering147 (Fig. 4c,d). Like the optical properties discussed above, aggregation often occurs within the concentration range of the expected biological response and so may be easily mistaken for true modulation of the target biology. Aggregation effects are most prevalent at concentrations >1 µM, the hallmark of which is the elimination of apparent compound activity by the addition of detergents such as Triton X-100, a disruptor of aggregate micellar structures. Such compounds may show steep Hill slopes, but this alone does not distinguish aggregation from biologically relevant, stoichiometric, or cooperative modulation of enzyme activity. The prevalence of aggregation-dependent enzyme inhibition has been observed to range from 2 to 10%, depending on the concentration of detergent and the chemical library tested147; importantly, no clear structure-activity relationship has been evident from these studies, making the establishment of aggregation behavior currently entirely empirical. Results of a large aggregation screen recently performed at our center can be found in PubChem (AIDs 585 and 584). Biological interferences are the second major source of compoundspecific assay artifacts (Fig. 4a). These are due to inhibition (or, less frequently, activation) of a detection component of the assay such as inhibitors of enzyme reporters (for example, luciferases or β-lactamases) or intermolecular interactions (for example, nickel chelate–polyhistidine tag, small-molecule antigen-antibody, biotin-streptavidin). As an example, inhibition of luciferase by library compounds is common and has been described for the well-publicized compound resveratrol148. A recent screen of P. pyrali luciferase showed between 2 and 3% of the library was capable of interfering with luciferase detection (unpublished data; PubChem AID 411). Summary Given the right compound library, assay design becomes the determining factor for identifying chemical probes using HTS. Before the selection of an assay format for HTS, thorough consideration of its advantages, limitations, and (when possible) prior application in HTS is recommended. The investigator’s familiarity with specific technologies should not form the basis of an assay strategy; rather, an unbiased assessment of key factors discussed here will increase the probability of a successful HTS assay. Assay sensitivity and susceptibility to compound interference must also be studied prospectively when designing assays for HTS and planning follow-up analysis of active samples. In general, the signal output of an assay should be assessed in conjunction with consequential controls. For example, protein-protein interaction assays using purified proteins may have suitable statistical performance factors but show poor sensitivity, which suggests that cellular assays with phenotypic outputs should be considered as alternatives. When investigating novel target biology, effort should be made to leverage existing well-developed technologies where possible. For instance, methods developed to detect ATP and ADP in protein kinase assays48,51,53 are also useful for lipid49 and metabolic kinases126. As HTS assay technologies, screening systems, and analytical instrumentation such as patch clamping and mass spectrometry evolve, the interfacing of large compound libraries with sophisticated assay and detection platforms will greatly expand the capability to identify chemical probes for the vast untapped biology encoded by genomes. The ramifications will allow a reinterpretation of the ‘druggable genome’.
+Note: Supplementary information is available on the Nature Chemical Biology website. ACKNOWLEDGMENTS We thank D. Leja and J. Fekces for illustrations. The authors are supported by the Molecular Libraries Initiative of the NIH Roadmap for Medical Research and the Intramural Research Program of the National Human Genome Research Institute, NIH. COMPETING INTERESTS STATEMENT The authors declare no competing financial interests.
+Published online at http://www.nature.com/naturechemicalbiology Reprints and permissions information is available online at http://npg.nature.com/ reprintsandpermissions
+
+1. 2.
+
+3. 4. 5.
+
+6.
+
+7.
+
+8. 9. 10. 11.
+
+12. 13.
+
+14.
+
+15.
+
+16.
+
+Zhang, R. et al. A continuous spectrophotometric assay for the hepatitis C virus serine protease. Anal. Biochem. 270, 268–275 (1999). McDonald, O.B. et al. A scintillation proximity assay for the Raf/MEK/ERK kinase cascade: high-throughput screening and identification of selective enzyme inhibitors. Anal. Biochem. 268, 318–329 (1999). Seville, M., West, A.B., Cull, M.G. & McHenry, C.S. Fluorometric assay for DNA polymerases and reverse transcriptase. Biotechniques 21, 664–672 (1996). Verma, R. et al. Ubistatins inhibit proteasome-dependent degradation by binding the ubiquitin chain. Science 306, 117–120 (2004). Ferrer, M. et al. A fully automated [35S]GTPgammaS scintillation proximity assay for the high-throughput screening of Gi-linked G protein-coupled receptors. Assay Drug Dev. Technol. 1, 261–273 (2003). Dinger, M.C. & Beck-Sickinger, A.G. in Molecular Biology in Medicinal Chemistry (eds. Dingermann, T., Steinhiber, D. & Folkers, G.) 73–94 (Wiley-VCH Verlag GmbH & Co., Weinheim, Germany, 2004). Hodder, P., Mull, R., Cassaday, J., Berry, K. & Strulovici, B. Miniaturization of intracellular calcium functional assays to 1536-well plate format using a fluorometric imaging plate reader. J. Biomol. Screen. 9, 417–426 (2004). Inglese, J. (ed.) Measuring Biological Responses with Automated Microscopy Vol. 414 (Elsevier Academic, San Diego, 2006). Taylor, D.L., Haskins, J.R. & Giuliano, K.A. (eds.) High Content Screening Vol. 356 (Humana, Totowa, New Jersey, 2006). Sever, J.L. Application of a microtechnique to viral serological investigations. J. Immunol. 88, 320–329 (1962). Carroll, S.S., Inglese, J., Mao, S.-S. & Olsen, D.B. in Molecular Cancer Therapeutics: Strategies for Drug Discovery and Development (ed. Prendergast, G.C.) 119–140 (John Wiley & Sons, Inc., Hoboken, New Jersey, USA, 2004). Wölcke, J. & Ullmann, D. Miniaturized HTS technologies - uHTS. Drug Discov. Today 6, 637–646 (2001). Karvinen, J. et al. Caspase multiplexing: simultaneous homogeneous timeresolved quenching assay (TruPoint) for caspases 1, 3, and 6. Anal. Biochem. 325, 317–325 (2004). Bandyopadhyay, S. et al. A high-throughput drug screen targeted to the 5′untranslated region of Alzheimer amyloid precursor protein mRNA. J. Biomol. Screen. 11, 469–480 (2006). Davis, R.E. et al. A cell-based assay for IkappaBalpha stabilization using a two-color dual luciferase-based sensor. Assay Drug Dev. Technol. 5, 85–104 (2007). O’Boyle, D.R. II et al. Development of a cell-based high-throughput specificity screen using a hepatitis C virus-bovine viral diarrhea virus dual replicon assay.
+
+476
+
+VOLUME 3 NUMBER 8 AUGUST 2007 NATURE CHEMICAL BIOLOGY
+
+REVIEW
+Antimicrob. Agents Chemother. 49, 1346–1353 (2005). Ross, S. et al. High-content screening analysis of the p38 pathway: profiling of structurally related p38alpha kinase inhibitors using cell-based assays. Assay Drug Dev. Technol. 4, 397–409 (2006). Iversen, P.W., Eastwood, B.J., Sittampalam, G.S. & Cox, K.L. A comparison of assay performance measures in screening assays: signal window, Z’ factor, and assay variability ratio. J. Biomol. Screen. 11, 247–252 (2006). Eastwood, B.J. et al. The minimum significant ratio: a statistical parameter to characterize the reproducibility of potency estimates from concentration-response assays and estimation by replicate-experiment studies. J. Biomol. Screen. 11, 253–261 (2006). Assay Guidance Manual Committee. Assay Guidance Manual Version 4.1 (Eli Lilly and Company and NIH Chemical Genomics Center, Bethesda, Maryland, 2005). Fluorescence Spectra Viewer (Invitrogen Corporation, Carlsbad, California, 2006). <http://probes.invitrogen.com/servlets/spectraviewer?fileid1=1304dna> Lakowicz, J.R. Principles of Fluorescence Spectroscopy (Springer, Berlin, 2006). Owicki, J.C. Fluorescence polarization and anisotropy in high throughput screening: perspectives and primer. J. Biomol. Screen. 5, 297–306 (2000). Jameson, D.M. & Croney, J.C. Fluorescence polarization: past, present and future. Comb. Chem. High Throughput Screen. 6, 167–176 (2003). Hemmila, I. & Laitala, V. Progress in lanthanides as luminescent probes. J. Fluoresc. 15, 529–542 (2005). Trinquet, E. & Mathis, G. Fluorescence technologies for the investigation of chemical libraries. Mol. Biosyst. 2, 380–387 (2006). Giepmans, B.N., Adams, S.R., Ellisman, M.H. & Tsien, R.Y. The fluorescent toolbox for assessing protein location and function. Science 312, 217–224 (2006). Haugland, R.P. The Handbook—A Guide to Fluorescent Probes and Labeling Technologies 10th edn. (Eugene, Oregon, 2006). Medintz, I.L., Uyeda, H.T., Goldman, E.R. & Mattoussi, H. Quantum dot bioconjugates for imaging, labelling and sensing. Nat. Mater. 4, 435–446 (2005). Haney, S.A., LaPan, P., Pan, J. & Zhang, J. High-content screening moves to the front of the line. Drug Discov. Today 11, 889–894 (2006). Bowen, W.P. & Wylie, P.G. Application of laser-scanning fluorescence microplate cytometry in high content screening. Assay Drug Dev. Technol. 4, 209–221 (2006). Fan, F. & Wood, K.V. Bioluminescent assays for high-throughput screening. Assay Drug Dev. Technol. 5, 127–136 (2007). Nakatsu, T. et al. Structural basis for the spectral difference in luciferase bioluminescence. Nature 440, 372–376 (2006). Blair, W.S. et al. A novel HIV-1 antiviral high throughput screening approach for the discovery of HIV-1 inhibitors. Antiviral Res. 65, 107–116 (2005). Hao, W. et al. Development of a novel dicistronic reporter-selectable hepatitis C virus replicon suitable for high-throughput inhibitor screening. Antimicrob. Agents Chemother. 51, 95–102 (2007). Zlokarnik, G. Fusions to beta-lactamase as a reporter for gene expression in live mammalian cells. Methods Enzymol. 326, 221–244 (2000). Kunapuli, P. et al. Development of an intact cell reporter gene beta-lactamase assay for G protein-coupled receptors for high-throughput screening. Anal. Biochem. 314, 16–29 (2003). Oosterom, J., van Doornmalen, E.J., Lobregt, S., Blomenrohr, M. & Zaman, G.J. High-throughput screening using beta-lactamase reporter-gene technology for identification of low-molecular-weight antagonists of the human gonadotropin releasing hormone receptor. Assay Drug Dev. Technol. 3, 143–154 (2005). Pfleger, K.D. & Eidne, K.A. Illuminating insights into protein-protein interactions using bioluminescence resonance energy transfer (BRET). Nat. Methods 3, 165–174 (2006). Remy, I. & Michnick, S.W. Mapping biochemical networks with protein-fragment complementation assays. Methods Mol. Biol. 261, 411–426 (2004). Wu, S. & Liu, B. Application of scintillation proximity assay in drug discovery. BioDrugs 19, 383–392 (2005). Lavery, P., Brown, M.J. & Pope, A.J. Simple absorbance-based assays for ultrahigh throughput screening. J. Biomol. Screen. 6, 3–9 (2001). Zuck, P. et al. Miniaturization of absorbance assays using the fluorescent properties of white microplates. Anal. Biochem. 342, 254–259 (2005). Zheng, C.J. et al. Therapeutic targets: progress of their exploration and investigation of their characteristics. Pharmacol. Rev. 58, 259–279 (2006). Fox, S. et al. High-throughput screening: update on practices and success. J. Biomol. Screen. 11, 864–869 (2006). Hopkins, A.L. & Groom, C.R. The druggable genome. Nat. Rev. Drug Discov. 1, 727–730 (2002). Pawson, T. & Scott, J.D. Protein phosphorylation in signaling—50 years and counting. Trends Biochem. Sci. 30, 286–290 (2005). Singh, P., Harden, B.J., Lillywhite, B.J. & Broad, P.M. Identification of kinase inhibitors by an ATP depletion method. Assay Drug Dev. Technol. 2, 161–169 (2004). Munagala, N. et al. Identification of small molecule ceramide kinase inhibitors using a homogeneous chemiluminescence high throughput assay. Assay Drug Dev. Technol. 5, 65–73 (2007). Lowery, R.G. & Kleman-Leyer, K. Transcreener: screening enzymes involved in covalent regulation. Expert Opin. Ther. Targets 10, 179–190 (2006). 51. Charter, N.W., Kauffman, L., Singh, R. & Eglen, R.M. A generic, homogenous method for measuring kinase and inhibitor activity via adenosine 5′-diphosphate accumulation. J. Biomol. Screen. 11, 390–399 (2006). Sportsman, J.R., Gaudet, E.A. & Boge, A. Immobilized metal ion affinity-based fluorescence polarization (IMAP): advances in kinase screening. Assay Drug Dev. Technol. 2, 205–214 (2004). Comley, J. Kinase screening and profiling-spoilt for choice. Drug Discov. World 7, 27–50 (2006). Morgan, A.G., McCauley, T.J., Stanaitis, M.L., Mathrubutham, M. & Millis, S.Z. Development and validation of a fluorescence technology for both primary and secondary screening of kinases that facilitates compound selectivity and site-specific inhibitor determination. Assay Drug Dev. Technol. 2, 171–181 (2004). Newbatt, Y. et al. Identification of inhibitors of the kinase activity of oncogenic V600E BRAF in an enzyme cascade high-throughput screen. J. Biomol. Screen. 11, 145–154 (2006). Osmond, R.I. et al. GPCR screening via ERK 1/2: a novel platform for screening G protein-coupled receptors. J. Biomol. Screen. 10, 730–737 (2005). Eglen, R.M. & Singh, R. Beta galactosidase enzyme fragment complementation as a novel technology for high throughput screening. Comb. Chem. High Throughput Screen. 6, 381–387 (2003). Zaman, G.J., van der Lee, M.M., Kok, J.J., Nelissen, R.L. & Loomans, E.E. Enzyme fragment complementation binding assay for p38alpha mitogen-activated protein kinase to study the binding kinetics of enzyme inhibitors. Assay Drug Dev. Technol. 4, 411–420 (2006). Barnett, S.F. et al. Identification and characterization of pleckstrin-homologydomain-dependent and isoenzyme-specific Akt inhibitors. Biochem. J. 385, 399–408 (2005). Leung, D., Abbenante, G. & Fairlie, D.P. Protease inhibitors: current status and future prospects. J. Med. Chem. 43, 305–341 (2000). Grant, S.K., Sklar, J.G. & Cummings, R.T. Development of novel assays for proteolytic enzymes using rhodamine-based fluorogenic substrates. J. Biomol. Screen. 7, 531–540 (2002). Auld, D. in Proteolytic Enzymes Tools: and Targets (eds. Stocker, W. & Sterchi, E. E.) 30–48 (Springer-Velag, Berlin Heidelberg, 1999). Ferrer, M. et al. Miniaturizable homogenous time-resolved fluorescence assay for carboxypeptidase B activity. Anal. Biochem. 317, 94–98 (2003). Jones, J., Heim, R., Hare, E., Stack, J. & Pollok, B.A. Development and application of a GFP-FRET intracellular caspase assay for drug screening. J. Biomol. Screen. 5, 307–317 (2000). Whitney, M. et al. A collaborative screening program for the discovery of inhibitors of HCV NS2/3 cis-cleaving protease activity. J. Biomol. Screen. 7, 149–154 (2002). Lee, J.C. et al. Development of a cell-based assay for monitoring specific hepatitis C virus NS3/4A protease activity in mammalian cells. Anal. Biochem. 316, 162–170 (2003). Li, Y., Liu, Y.W. & Cordell, B. Novel functional assay for proteases and modulators. Application in beta-secretase studies. Mol. Biotechnol. 18, 1–10 (2001). Olefsky, J.M. Nuclear receptor minireview series. J. Biol. Chem. 276, 36863– 36864 (2001). Zeh, K. et al. Gain-of-function somatic cell lines for drug discovery applications generated by homologous recombination. Assay Drug Dev. Technol. 1, 755–765 (2003). Sun, S., Almaden, J., Carlson, T.J., Barker, J. & Gehring, M.R. Assay development and data analysis of receptor-ligand binding based on scintillation proximity assay. Metab. Eng. 7, 38–44 (2005). Parker, G.J., Law, T.L., Lenoch, F.J. & Bolger, R.E. Development of high throughput screening assays using fluorescence polarization: nuclear receptor-ligandbinding and kinase/phosphatase assays. J. Biomol. Screen. 5, 77–88 (2000). Fung, P. et al. A homogeneous cell-based assay to measure nuclear translocation using beta-galactosidase enzyme fragment complementation. Assay Drug Dev. Technol. 4, 263–272 (2006). Mackem, S., Baumann, C.T. & Hager, G.L. A glucocorticoid/retinoic acid receptor chimera that displays cytoplasmic/nuclear translocation in response to retinoic acid. A real time sensing assay for nuclear receptor ligands. J. Biol. Chem. 276, 45501–45504 (2001). Wehrman, T.S., Casipit, C.L., Gewertz, N.M. & Blau, H.M. Enzymatic detection of protein translocation. Nat. Methods 2, 521–527 (2005). Gowda, K., Marks, B.D., Zielinski, T.K. & Ozers, M.S. Development of a coactivator displacement assay for the orphan receptor estrogen-related receptor-gamma using time-resolved fluorescence resonance energy transfer. Anal. Biochem. 357, 105–115 (2006). Zhu, Z. et al. Correlation of high-throughput pregnane X receptor (PXR) transactivation and binding assays. J. Biomol. Screen. 9, 533–540 (2004). Eglen, R.M., Bosse, R. & Reisine, T. Emerging concepts of guanine nucleotide-binding protein-coupled receptor (GPCR) function and implications for high throghput screening. Assay Drug Dev. Technol. 5, 425–451 (2007). Jacoby, E., Bouhelal, R., Gerspacher, M. & Seuwen, K. The 7 TM G-proteincoupled receptor target family. ChemMedChem 1, 761–782 (2006). Yu, N. et al. Real-time monitoring of morphological changes in living cells by electronic cell sensor arrays: an approach to study G protein-coupled receptors. Anal. Chem. 78, 35–43 (2006). Handl, H.L. & Gillies, R.J. Lanthanide-based luminescent assays for ligand-receptor interactions. Life Sci. 77, 361–371 (2005).
+
+17.
+
+52.
+
+18.
+
+53. 54.
+
+19.
+
+20.
+
+55.
+
+21. 22. 23. 24. 25. 26. 27.
+
+56. 57.
+
+58.
+
+59.
+
+60. 61.
+
+28. 29. 30. 31.
+
+62. 63. 64.
+
+32. 33. 34. 35.
+
+65.
+
+66.
+
+67. 68. 69.
+
+36. 37.
+
+38.
+
+70.
+
+71.
+
+39.
+
+72.
+
+40. 41. 42. 43. 44. 45. 46. 47. 48.
+
+73.
+
+74. 75.
+
+76. 77.
+
+78. 79.
+
+49.
+
+50.
+
+80.
+
+NATURE CHEMICAL BIOLOGY VOLUME 3 NUMBER 8 AUGUST 2007
+
+477
+
+REVIEW
+81. 82. Kenakin, T. Inverse, protean, and ligand-selective agonism: matters of receptor conformation. FASEB J. 15, 598–611 (2001). Behan, D.P. & Chalmers, D.T. The use of constitutively active receptors for drug discovery at the G protein-coupled receptor gene pool. Curr. Opin. Drug Discov. Devel. 4, 548–560 (2001). Labrecque, J. et al. The development of an europium-GTP assay to quantitate chemokine antagonist interactions for CXCR4 and CCR5. Assay Drug Dev. Technol. 3, 637–648 (2005). Chambers, C. et al. Measuring intracellular calcium fluxes in high throughput mode. Comb. Chem. High Throughput Screen. 6, 355–362 (2003). Williams, C. cAMP detection methods in HTS: selecting the best from the rest. Nat. Rev. Drug Discov. 3, 125–135 (2004). Reinscheid, R.K., Kim, J., Zeng, J. & Civelli, O. High-throughput real-time monitoring of Gs-coupled receptor activation in intact cells using cyclic nucleotidegated channels. Eur. J. Pharmacol. 478, 27–34 (2003). Adie, E.J. et al. CypHer 5: a generic approach for measuring the activation and trafficking of G protein-coupled receptors in live cells. Assay Drug Dev. Technol. 1, 251–259 (2003). Charest, P.G., Terrillon, S. & Bouvier, M. Monitoring agonist-promoted conformational changes of beta-arrestin in living cells by intramolecular BRET. EMBO Rep. 6, 334–340 (2005). Karlsson, A.M. et al. Biosensing of opioids using frog melanophores. Biosens. Bioelectron. 17, 331–335 (2002). Burstein, E.S. et al. Integrative functional assays, chemical genomics and high throughput screening: harnessing signal transduction pathways to a common HTS readout. Curr. Pharm. Des. 12, 1717–1729 (2006). Liu, A.M. et al. Galpha(16/z) chimeras efficiently link a wide range of G protein-coupled receptors to calcium mobilization. J. Biomol. Screen. 8, 39–49 (2003). Kostenis, E. Is Galpha16 the optimal tool for fishing ligands of orphan G-proteincoupled receptors? Trends Pharmacol. Sci. 22, 560–564 (2001). Trinquet, E. et al. D-myo-inositol 1-phosphate as a surrogate of D-myo-inositol 1,4,5-tris phosphate to monitor G protein-coupled receptor activation. Anal. Biochem. 358, 126–135 (2006). Hamdan, F.F., Audet, M., Garneau, P., Pelletier, J. & Bouvier, M. High-throughput screening of G protein-coupled receptor antagonists using a bioluminescence resonance energy transfer 1-based beta-arrestin2 recruitment assay. J. Biomol. Screen. 10, 463–475 (2005). Zheng, W., Spencer, R.H. & Kiss, L. High throughput assay technologies for ion channel drug discovery. Assay Drug Dev. Technol. 2, 543–552 (2004). McDonough, S.I. & Bean, B.P. in Voltage-Gated Ion Channels as Drug Targets Vol. 29 (eds. Triggle, D.J., Gopalakrishnan, M., Rampe, D. & Zheng, W.) 19–35 (Wiley-VCH, Weinheim, Germany, 2006). Gee, K.R. et al. Chemical and physiological characterization of fluo-4 Ca(2+)indicator dyes. Cell Calcium 27, 97–106 (2000). Gonzalez, J.E. & Maher, M.P. Cellular fluorescent indicators and voltage/ion probe reader (VIPR) tools for ion channel and receptor drug discovery. Receptors Channels 8, 283–295 (2002). Terstappen, G.C. Nonradioactive rubidium ion efflux assay and its applications in drug discovery and development. Assay Drug Dev. Technol. 2, 553–559 (2004). Finkel, A. et al. Population patch clamp improves data consistency and success rates in the measurement of ionic currents. J. Biomol. Screen. 11, 488–496 (2006). Wible, B.A. et al. HERG-Lite: a novel comprehensive high-throughput screen for drug-induced hERG risk. J. Pharmacol. Toxicol. Methods 52, 136–145 (2005). Schwab, D., Fischer, H., Tabatabaei, A., Poli, S. & Huwyler, J. Comparison of in vitro P-glycoprotein screening assays: recommendations for their use in drug discovery. J. Med. Chem. 46, 1716–1725 (2003). Henrich, C.J. et al. A high-throughput cell-based assay for inhibitors of ABCG2 activity. J. Biomol. Screen. 11, 176–183 (2006). Wieczorke, R., Dlugai, S., Krampe, S. & Boles, E. Characterisation of mammalian GLUT glucose transporters in a heterologous yeast expression system. Cell. Physiol. Biochem. 13, 123–134 (2003). Verkman, A.S. Drug discovery in academia. Am. J. Physiol. Cell Physiol. 286, C465–C474 (2004). Rubin, L.L. & de Sauvage, F.J. Targeting the Hedgehog pathway in cancer. Nat. Rev. Drug Discov. 5, 1026–1033 (2006). Massoud, T.F., Paulmurugan, R., De, A., Ray, P. & Gambhir, S.S. Reporter gene imaging of protein-protein interactions in living subjects. Curr. Opin. Biotechnol. 18, 31–37 (2007). MacDonald, M.L. et al. Identifying off-target effects and hidden phenotypes of drugs in human cells. Nat. Chem. Biol. 2, 329–337 (2006). Buttner, F.H., Kumpf, R., Menzel, S., Reulle, D. & Valler, M.J. Evaluation of the InteraX system technology in a high-throughput screening environment. J. Biomol. Screen. 10, 485–494 (2005). Wallrabe, H. & Periasamy, A. Imaging protein molecules using FRET and FLIM microscopy. Curr. Opin. Biotechnol. 16, 19–27 (2005). Marine, S. et al. A miniaturized cell-based fluorescence resonance energy transfer assay for insulin-receptor activation. Anal. Biochem. 355, 267–277 (2006). Wolff, M. et al. Automated high content screening for phosphoinositide 3 kinase inhibition using an AKT 1 redistribution assay. Comb. Chem. High Throughput Screen. 9, 339–350 (2006). 113. Almholt, D.L. et al. Nuclear export inhibitors and kinase inhibitors identified using a MAPK-activated protein kinase 2 redistribution screen. Assay Drug Dev. Technol. 2, 7–20 (2004). 114. Granas, C. et al. Identification of RAS-mitogen-activated protein kinase signaling pathway modulators in an ERF1 redistribution screen. J. Biomol. Screen. 11, 423–434 (2006). 115. Rickardson, L., Wickstrom, M., Larsson, R. & Lovborg, H. Image-based screening for the identification of novel proteasome inhibitors. J. Biomol. Screen. 12, 203–210 (2007). 116. Online Mendelian Inheritance of Man (OMIM). (Johns Hopkins University and National Center for Biotechnology Information, National Library of Medicine, 2007). <http://www.ncbi.nlm.nih.gov/omim/> 117. Habashi, J.P. et al. Losartan, an AT1 antagonist, prevents aortic aneurysm in a mouse model of Marfan syndrome. Science 312, 117–121 (2006). 118. Jarecki, J. et al. Diverse small-molecule modulators of SMN expression found by high-throughput compound screening: early leads towards a therapeutic for spinal muscular atrophy. Hum. Mol. Genet. 14, 2003–2018 (2005). 119. Welch, E.M. et al. PTC124 targets genetic disorders caused by nonsense mutations. Nature 447, 87–91 (2007). 120. Bernier, V., Lagace, M., Bichet, D.G. & Bouvier, M. Pharmacological chaperones: potential treatment for conformational diseases. Trends Endocrinol. Metab. 15, 222–228 (2004). 121. Sazani, P. et al. Nuclear antisense effects of neutral, anionic and cationic oligonucleotide analogs. Nucleic Acids Res. 29, 3965–3974 (2001). 122. Zhang, X. et al. A potent small molecule inhibits polyglutamine aggregation in Huntington’s disease neurons and suppresses neurodegeneration in vivo. Proc. Natl. Acad. Sci. USA 102, 892–897 (2005). 123. Kenakin, T. Predicting therapeutic value in the lead optimization phase of drug discovery. Nat. Rev. Drug Discov. 2, 429–438 (2003). 124. Van Der Hee, R.M., Deurholt, T., Gerhardt, C.C. & De Groene, E.M. Comparison of 3 AT1 receptor binding assays: filtration assay, ScreenReady Target, and WGA Flashplate. J. Biomol. Screen. 10, 118–126 (2005). 125. Wu, X., Glickman, J.F., Bowen, B.R. & Sills, M.A. Comparison of assay technologies for a nuclear receptor assay screen reveals differences in the sets of identified functional antagonists. J. Biomol. Screen. 8, 381–392 (2003). 126. Inglese, J. et al. Quantitative high-throughput screening: a titration-based approach that efficiently identifies biological activities in large chemical libraries. Proc. Natl. Acad. Sci. USA 103, 11473–11478 (2006). 127. Burlingham, B. & Widlanski, T. An intuitive look at the relationship of Ki and IC50: a more general use for the Dixon plot. J. Chem. Educ. 80, 214–218 (2003). 128. Copeland, R.A. Mechanistic considerations in high-throughput screening. Anal. Biochem. 320, 1–12 (2003). 129. Leff, P. & Dougall, I.G. Further concerns over Cheng-Prusoff analysis. Trends Pharmacol. Sci. 14, 110–112 (1993). 130. Wu, G., Yuan, Y. & Hodge, C.N. Determining appropriate substrate conversion for enzymatic assays in high-throughput screening. J. Biomol. Screen. 8, 694–700 (2003). 131. Knight, S.M., Umezawa, N., Lee, H.S., Gellman, S.H. & Kay, B.K. A fluorescence polarization assay for the identification of inhibitors of the p53–DM2 proteinprotein interaction. Anal. Biochem. 300, 230–236 (2002). 132. Kane, S.A. et al. Development of a binding assay for p53/HDM2 by using homogeneous time-resolved fluorescence. Anal. Biochem. 278, 29–38 (2000). 133. Zuck, P. et al. Ligand-receptor binding measured by laser-scanning imaging. Proc. Natl. Acad. Sci. USA 96, 11122–11127 (1999). 134. Zhang, R. et al. Fluorescence polarization assay and inhibitor design for MDM2/ p53 interaction. Anal. Biochem. 331, 138–146 (2004). 135. Parks, D.J. et al. 1,4-Benzodiazepine-2,5-diones as small molecule antagonists of the HDM2-p53 interaction: discovery and SAR. Bioorg. Med. Chem. Lett. 15, 765–770 (2005). 136. Inglese, J. Engaging science and technology for drug development. Assay Drug Dev. Technol. 1, 1 (2002). 137. Lundholt, B.K., Heydorn, A., Bjorn, S.P. & Praestegaard, M. A simple cell-based HTS assay system to screen for inhibitors of p53-Hdm2 protein-protein interactions. Assay Drug Dev. Technol. 4, 679–688 (2006). 138. Peppard, J. et al. Development of a high-throughput screening assay for inhibitors of aggrecan cleavage using luminescent oxygen channeling (AlphaScreen). J. Biomol. Screen. 8, 149–156 (2003). 139. DeForge, L.E. et al. Substrate capacity considerations in developing kinase assays. Assay Drug Dev. Technol. 2, 131–140 (2004). 140. Iyer, R., Barrese, A.A. III, Parakh, S., Parker, C.N. & Tripp, B.C. Inhibition profiling of human carbonic anhydrase II by high-throughput screening of structurally diverse, biologically active compounds. J. Biomol. Screen. 11, 782–791 (2006). 141. Comley, J. Assay Interference, a limiting factor in HTS? Drug Discov. World 4, 91–98 (2003). 142. Zheng, W. et al. Miniaturization of a hepatitis C virus RNA polymerase assay using a -102 degrees C cooled CCD camera-based imaging system. Anal. Biochem. 290, 214–220 (2001). 143. Rishton, G.M. Nonleadlikeness and leadlikeness in biochemical screening. Drug Discov. Today 8, 86–96 (2003). 144. Swift, K., Anderson, S.N. & Matayoshi, E.D. in Advances in Fluorescence Sensing Technology V, Proceedings of SPIE - The International Society for Optical
+
+83.
+
+84. 85. 86.
+
+87.
+
+88.
+
+89. 90.
+
+91.
+
+92. 93.
+
+94.
+
+95. 96.
+
+97. 98.
+
+99.
+
+100.
+
+101. 102.
+
+103. 104.
+
+105. 106. 107.
+
+108. 109.
+
+110. 111. 112.
+
+478
+
+VOLUME 3 NUMBER 8 AUGUST 2007 NATURE CHEMICAL BIOLOGY
+
+REVIEW
+Engineering 4252 47–58 (2001). 145. Porcari, V., Magnoni, L., Terstappen, G.C. & Fecke, W. A continuous timeresolved fluorescence assay for identification of BACE1 inhibitors. Assay Drug Dev. Technol. 3, 287–297 (2005). 146. Moger, J., Gribbon, P., Sewing, A. & Winlove, C.P. The application of fluorescence lifetime readouts in high-throughput screening. J. Biomol. Screen. 11, 765–772 (2006). 147. Feng, B.Y. et al. A high-throughput screen for aggregation-based inhibition in a large compound library. J. Med. Chem. 50, 2385–2390 (2007). 148. Bakhtiarova, A. et al. Resveratrol inhibits firefly luciferase. Biochem. Biophys. Res. Commun. 351, 481–484 (2006). 149. Ullman, E.F. et al. Luminescent oxygen channeling immunoassay: measurement of particle binding kinetics by chemiluminescence. Proc. Natl. Acad. Sci. USA 91, 5426–5430 (1994). Issad, T., Blanquart, C. & Gonzalez-Yanes, C. The use of bioluminescence resonance energy transfer for the study of therapeutic targets: application to tyrosine kinase receptors. Expert Opin. Ther. Targets 11, 541–556 (2007). Zlokarnik, G. et al. Quantitation of transcription and clonal selection of single living cells with beta-lactamase as reporter. Science 279, 84–88 (1998). Kumaraswamy, S. et al. Fluorescent-conjugated polymer superquenching facilitates highly sensitive detection of proteases. Proc. Natl. Acad. Sci. USA 101, 7511–7515 (2004). Kiss, L. et al. High throughput ion-channel pharmacology: planar-array-based voltage clamp. Assay Drug Dev. Technol. 1, 127–135 (2003).
+
+150.
+
+151. 152.
+
+153.
+
+NATURE CHEMICAL BIOLOGY VOLUME 3 NUMBER 8 AUGUST 2007
+
+479
+

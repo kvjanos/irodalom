@@ -1,0 +1,77 @@
+AutoTimeSerie Macro instructions:
+What this macro does
+The macro is especially useful to perform long term multi-location timelapses. It enables to keep the cells of interest in focus and track them if they move on the coverslip. Two versions of the macro have been developed, one for the LSM software 2.8 and the other for the LSM 3.2.
+
+Credit
+This macro has been developed by Gwénaël Rabut in Jan Ellenberg’s lab at the European Molecular Biology Laboratory (Heidelberg - Germany). Its main features have been published in: Rabut G. and J. Ellenberg (2004), Automatic real-time 3D cell tracking by fluorescence microscopy, Journal of Microscopy, in press You' be free to use the macro for research purposes, but we expect you to include a citation ll or acknowledgment whenever you present or publish results that were obtained using it.
+
+Macro requirements
+Microsoft Excel must be installed on the microscope computer to run the macro.
+
+Disclaimer
+This macro works on our LSM510 configuration. We cannot guarantee that it will work on other configuration and we do not take any responsibility for damage occurring during or after its use.
+
+How to install the macro
+1) Save the macro file somewhere on your computer (for instance in the AIM/Macros folder) 2) Start the Lsm510 software, Click the [macro] button, and again the [macro] button in the right bottom corner. 3) Select [Assign macro to button]. 4) Define the macro button: - select a button; - in the text field, write "AutoTime"; - use the […] button to select the macro file (which has been saved on the computer); - press [apply] and [close].
+
+How to use the macro
+1) Global view of macro interface
+
+2) Select single or multiple locations
+
+Function Single location button Multiple location button
+
+Autofocussing, tracking and image acquisition will be performed at the current stage position. Autofocussing, tracking and image acquisition will be performed at several stage positions. The different stage positions are determined by the user in the “Stage and focus control” window of the main LSM software
+
+Description
+
+3) Set autofocus track, mode and parameters Autofocussing track One of the tracks defined in the “Configuration control” window has to be selected for autofocussing. The tracks appear automatically when the macro is started and, if necessary, they can be reinitialized using the [Reinitialize] button.
+
+Autofocussing modes One of the two available autofocussing modes must be selected In this mode, one line (X direction) is scanned at different Z positions, producing a XZ image. The image is then analyzed automatically to determine the center of mass of the fluorescence intensity along the Z axis, which will be defined as the “focus” position. This mode is thus normally performed using a track that enables to image the reflexion of a laser at the glass/medium interface. In this mode, a full XY image is scanned at different Z positions, producing a Z stack of XY images. The stack is then analyzed automatically to determine the center of mass of the fluorescence intensity along the X, Y and Z axis. When a single cell is contained in the imaging field, this mode thus enables not only to focus on the cell along the Z axis, but also to track it in X and Y. It is normally performed using a track that enables to image a marker of the cell positions (e.g. Hoechst or GFP-Histone). If this mode is selected, the locations coordinates (XYZ) will be stored for each timepoint in an Excel workbook in the same folder as the image database. Autofocussing parameters
+Function HRZ checkbox ScanFrame mode: ScanLine mode:
+
+Zoom 1 checkbox Max Speed checkbox
+
+Inactivated checkbox Frame Size slider
+
+Z Offset slider Z Offset step slider
+
+Z Range slider Z Step slider
+
+Only available if the microscope is equipped with a fast Zscanning stage (HRZ). When checked, the HRZ is used rather than the focus wheel, which is especially useful (much faster) when using the ScanFrame mode. When checked, autofocussing is performed at Zoom 1, rather than at the zoom defined in the “Scan control” window. When checked, autofocussing is performed at the maximum scan speed available, rather than at the speed defined in the “Scan control” window. When checked, autofocussing is not performed before image acquisition. Only available for the ScanFrame mode. Defines the number of pixels in the X and Y directions of the image to be scanned for autofocussing. Defines how many µm above (or below) the focus plane the images should be acquired after autofocussing. Defines how much the Z Offset is changed when clicking on the arrows of the Z Offset slider. Useful for quick change of Z Offset while the macro is running. Defines the size along the Z axis of the image (ScanLine mode) or Z Stack (Scan Frame mode) used for autofocussing. Defines distance along the Z axis between two lines of the image (ScanLine mode) or two frames of the Z Stack (Scan Frame mode) used for autofocussing.
+
+Description
+
+Note that any of those parameters can be adjusted at any time, even once automatic image acquisition has been started.
+
+3) Select tracks for image acquisition
+
+Any combination of the tracks defined in the “Configuration control” window can be selected for image acquisition. The tracks appear automatically when the macro is started and, if necessary, they can be reinitialized using the [Reinitialize] button. The parameters for image acquisition (e.g. scan speed, zoom, number of pixels, detector gain…) are defined as usual in the “Scan Control” window from the LSM software. 4) Set post-acquisition tracking
+
+When using the ScanLine mode for autofocussing, it is still possible to track the cells in XY, using the “Post-acquisition tracking”. For this, press the [Track Location(s)] button, and select the acquisition channel to be used for fluorescence intensity mass center calculation. If post-acquisition tracking is performed, the locations coordinates (XYZ) will be stored for each timepoint in an Excel workbook in the same folder as the image database. 5) Set the time delay and number of image acquisition
+
+Function Delay slider
+
+Defines the time delay to be waited between two rounds of image acquisition. The time-lapse between images at a given location includes 1) the time delay defined with the slider PLUS 2) the time required to take images at all locations. Delay buttons Six time delay buttons can be defined and stored (as in the “Time Series Control” from the main LSM software). Useful for quick change of the time delay while the macro is running. Number of Acquisition Defines the number of images to be acquired for each stage slider position.
+
+Description
+
+Note that any of those parameters can be adjusted at any time, even once automatic image acquisition has been started.
+
+6) Set the database where to store image files
+
+It is possible to create a new database (highly recommended) or to use an existing database to automatically store images. The images for location “l” acquired at timpoint “t” are named “BaseFileName_Ll_Rt” and are saved in the database right after acquisition. Once image acquisition is finished, the “Concatenate” macro enables to automatically concatenate the images for each location into time stacks. 7) Action buttons
+Function Close button Get Z offset button Autofocus button Description
+
+Start button Start bleach button
+
+Pause button Stop button Extra bleach button
+
+Reinitialize button
+
+Closes the macro interface. Performs autofocussing at the current stage position to determine the Z offset of the current focus position. Performs autofocussing and acquires an image at the current stage position. Useful to check if the autofocussing and image acquisition parameters have been properly set. Starts automatic image acquisition. Starts automatic image acquisition, using the bleaching settings defined in the “Bleach Control” window from the LSM software. Pauses automatic image acquisition. It can then be resumed by clicking on the same button. Terminates automatic image acquisition. Once clicked, a bleach will be performed for each location before the next image acquisition. The bleaching settings are defined in the “Bleach Control” window from the LSM software. Updates tracks and reinitializes the macro parameters to their initial value.
+
+8) Information display
+
+The display gives information about the image acquisition status while running.
+

@@ -1,0 +1,231 @@
+Chapter 6
+Whole-Organism Screening: Plants
+April Agee and David Carter
+Summary
+The small plant Arabidopsis thaliana has been an indispensable tool for plant biologists working in fields that utilize cell biology, molecular biology, and genetics; these topics are almost universal in plant biology studies, ranging from genomics to ecology. In this chapter, we present a start-to-finish approach to high-throughput imaging of Arabidopsis that caters to two different audiences: those who are working with plants for the first time, and plant scientists looking to the apply high-throughput imaging to existing projects. Key words: Arabidposis, High-content screen, Plant screening, Whole organism.
+
+1. Introduction
+The small plant Arabidopsis thaliana (thale cress or mouse-ear cress) has been an indispensable tool for plant biologists working in fields that utilize cell biology, molecular biology, and genetics; these topics are almost universal in plant biology studies, ranging from genomics to ecology. The beneficial features of this organism are well-known in the plant community. Arabidopsis (now the common name) shares many of the qualities of other model organisms, such as a small genome, short generation time, prolific production of offspring, easy transformation, and, most importantly, similarity to other species with more direct applications, such as rice, soybean, maize, and cotton. Further, multinational research efforts have led to the full sequencing of the Arabidopsis genome, the production of extensive genetic and physical maps of all five chromosomes, and the generation and characterization of
+
+P.A. Clemons et al. (eds.), Cell-Based Assays for High-Throughput Screening, Methods in Molecular Biology, Vol. 486 © Humana Press, a part of Springer Science + Business Media, LLC 2009 DOI: 10.1007/978-1-60327-545-3_1
+
+77
+
+78
+
+Agee and Carter
+
+Table 1 Resources and suppliers of Arabidopsis materials
+The Arabidopsis Information Resource (TAIR, http://www.arabidopsis.org)
+TAIR Map Viewer (http://www.arabidopsis. org/servlets/mapper) The Institute for Genomic Research (TIGR, http://www.tigr.org/plantProjects.shtml) The Arabidopsis Biological Resource Center (ABRC, http://www.biosci.ohio-state.edu/ plantbio/Facilities/abrc/ abrchome.htm) The Nottingham Arabidopsis Stock Centre (NASC, http://arabidopsis.info) Salk Institute Genomic Analysis Laboratory (SIGnAL, http://signal.salk.edu/) The Arabidopsis Book (TAB, http://www.aspb. org/publications/arabidopsis/)
+
+Database of genetic and molecular biology data, including seed stocks from sources mentioned below
+Arabidopsis genome map viewer Genomic sequence data and annotation generated at TIGR and assemblies of Arabidopsis ESTs Arabidopsis seed stock center at Ohio State University
+
+European Arabidopsis seed stock center Sequence-Indexed Library of Insertion Mutations in the Arabidopsis Genome The American Society of Plant Biologists’ online information resource reviewing important topics in Arabidopsis research in detail
+
+Collection of T-DNA mutagenized Arabidopsis German Plant Genomics Program of BMBF lines Kölner Arabidopsis T-DNA lines (GABI-KAT, http://www.gabi-kat.de/) pEarleyGate Vectors (http://www.biology.wustl. Gateway (Invitrogen)-compatible vectors for edu/pikaard/pEarleyGate%20plasmid%20vecengineering and expressing epitope-tagged or tors/pEarleyGate%20homepage.html) fluorescent recombinant proteins in plants
+
+a large number of mutant lines, which are readily available from public stock centers (Table 1). Those new to Arabidopsis research will benefit from Detlef Weigel & Jane Glazebrook’s comprehensive laboratory manual for Arabidopsis, including sections on plant growth, genetic analysis, proteomics, and genomics (1). Visualization of protein localization within individual cells as well as protein expression within plant tissues can provide valuable information about molecular function. Proteins that colocalize to the same set of subcellular structures often have roles in similar biological processes, and localization in highly specialized tissues like pollen or guard cells may provide additional clues to functionality. Consortium efforts, including the National Science Foundation’s Arabidopsis 2010 project, which aims to determine the functions of all Arabidopsis proteins, have approached this daunting task by developing fluorescent fusion proteins for
+
+Whole-Organism Screening: Plants
+
+79
+
+Table 2 Typical timings for preparing and scanning Arabidopsis on plate lids
+Procedure
+Dispensing agar Dispensing seeds Incubation Scanning, Epson Scanning, Typhoon @ 50um Hit Picking, 48 wells Imaging DC-48 @ 5 hits/well Imaging lids @72–150/plate Quantifying seedling shape
+
+Time
+3–4 min 15 min 7 days 3 min 13 min ~15 min 32 min 200 hit sites per hour ~10 min for 48
+
+To minimize stress on the seedlings, all imaging is completed within 1 h of placing the cover glass. At a Typhoon resolution of 50 μm, five “hit” sites per seedling can be screened for all 48 seedlings. In mutant screens, seedlings can be grown at a density of 150 per plate, and mutants of interest can be rescued to agar, then soil
+
+known and unknown Arabidopsis proteins. These marker lines are now being used to answer more complex biological questions about compartments within plant cells, and are freely available at the Arabidopsis Biological Resource Center (ABRC; Table 1). The power of these new marker lines comes with the identification of genes or chemicals affecting marker localization; however, traditional microscopy is not suited for the immense number of images required for such studies. Therefore, this system for large-scale high-throughput confocal imaging of plants was developed (Table 2). It has already proven itself to be invaluable for determining localization of known marker proteins in response to mutations affecting vacuole structure, cell shape, endomembrane protein transport (2), and small-molecule response (3). As new marker lines are developed, a fast system for fluorescence screening has become even more essential for answering questions in both basic and applied plant biology. For a detailed review of GFP technology and a discussion of other reporter genes, we suggest Brandizzi and colleagues’ review (4). In short, reporter systems such as β-glucuronidase (GUS) and luciferase have been used with success in plant gene-expression studies, but both have serious limitations in high-throughput imaging for genetics and chemical-genomics applications. Although extremely precise, histochemical analysis of GUS expression is lethal
+
+80
+
+Agee and Carter
+
+to the plant, which limits its applications for genetics. Luciferinluciferase imaging allows for in vivo imaging of low-abundance gene expression in plants, but high-performance luminescence imagers are not widely available. Poor resolution and low signal strength have limited adoption of luminescence for large-scale and high-throughput imaging. In contrast, fluorescent markers such as the green fluorescent protein from the jellyfish Aequoria victoria (5) and its spectral derivatives required some initial tweaks for optimal expression in plants (6), but have emerged as the dominant technology in fusion-protein studies. This emergence is due to the rapid and accurate in vivo localization of chimeric proteins by confocal fluorescence microscopy. Choosing a stable, robust marker line whose protein localization has been confirmed is critical for any large-scale study of an organelle or tissue. Any chimeric protein has the potential to be mistargeted and thus to inaccurately represent the true localization of a protein of interest. Protein tags can obscure a targeting signal on the N- or C-terminus of the peptide (7), or lead to misfolding or novel intracellular interactions. In addition, strong constitutive promoters are often used to enhance visualization of proteins with low levels of expression, but this technique can lead to expression in novel tissues or organelles or, potentially worse, an overexpression phenotype. We mention this caveat to emphasize the importance of marker choice for high-throughput imaging studies. Sean Cutler and colleagues’ study (8) used random GFP:cDNA fusions under the control of the strong 35S promoter from cauliflower mosaic virus to examine subcellular protein localization in plants (Fig. 1). Over 100 lines expressed GFP in distinct compartments that were discernable from soluble GFP. These lines are publicly available from ABRC (Table 1), and at least one line has proven successful for high-throughput imaging of mutations which alter endomembrane-protein transport or vacuole structure (2). Although numerous robust organelle markers have originated from these cDNA fusions, later studies examined localization of native genes controlled by their own promoters using a technique known as Fluorescent Tagging of Full Length Proteins, or “FTFLP” (7, 9). FTFLP uses an internal fluorescent tag to minimize alteration of protein targeting by N- and C- terminal fusions. Forty distinct subcellular compartments have been identified in Arabidopsis with this technique, and projects are ongoing to predict localization based on existing data for known proteins and computational analysis (9). These marker lines are also available from ABRC (Table 1). Although the FTFLP (7) and random cDNA fusion (8) techniques have generated markers for almost all known plant cell compartments, researchers often want to study localization of a specific protein fusion. Either of these techniques can be duplicated; we have also found success with Keith Earley and colleagues’ (10) set of Gateway-compatible “pEarleyGate” vectors
+
+Whole-Organism Screening: Plants
+
+81
+
+Fig. 1. GFP marker lines are available which indicate a wide range of sub-cellular localizations: (A, B) cytosol, with nuclei; (C, H) cytosol, excluded from nuclei; (D) plasma membrane; (E) endoplasmic reticulum; (F) vacuolar membrane; (G) unknown cytosolic vesicles; (I) nuclei; (J) nucleoli; (K) chromosomes; (L, M) dots of unknown identity. Bars = 20 μm. Adapted with permission from (8).
+
+82
+
+Agee and Carter
+
+(Invitrogen) for functional genomics in plants. These vectors are available through ABRC, and detailed instructions for use are provided at the pEarleyGate webpage (see Note 1). The pEarleyGate vectors provide both native promoter constructs and fusions driven by the strong cauliflower mosaic virus 35S promoter (see Note 2), with GFP and derivates at both the 5´and 3´-end of the coding sequence of interest. Note that these fusions are more likely to have targeting or folding defects than genes cloned via FTFLP with internal GFP protein tags. GFP is an outstanding marker for localization of a single tagged protein, but it is not particularly well-suited for investigation of protein-protein interactions, due to an overlap in emission spectra with its most robust spectral variants, yellow- and cyanfluorescent proteins (YFP and CFP, respectively). The best spectral separation from GFP is in the red part of the spectrum, but we have not used the GFP-like proteins from tropical corals (Discosoma sp.) that emit in the orange-red region (DsRed), because of interference from chlorophyll autofluorescence, reduced fluorescence lifetime, and problematic formation of DsRed multimers in vivo (11). However, recent improvements of GFP-derived modified red-fluorescent protein (mRFP) have led to very bright, stable chromophores which do not form multimeric complexes in vivo (12). Although the new mRFP shows great promise, we have had success with simultaneous colocalization of Citrine YFP and CFP and continue to use these fluorophores. The CFP can be excited at 440 nm, which is too short a wavelength to excite YFP. An excitation wavelength of 514 nm will excite YFP, but cannot stimulate CFP. Accordingly, emission detection at 450–490 and 525–600 nm can be used without overlap [see (4) for a review of the applications of fluorescent proteins, including colocalization studies]. Multifluorescent plants have uses beyond simple co-localization, but many of these techniques are very involved and do not lend themselves to high-throughput imaging. However, improvements in techniques such as fluorescence resonance energy transfer (FRET) may eventually lead to increased capabilities for high-throughput protein-protein interaction assays. Fluorescence lifetime imaging microscopy (FLIM) is a promising new technique for resolving different fluorophores, which relies on the decay time rather than color to differentiate between FRET and normal emission (see Note 3). In this chapter, we present a start-to-finish approach to highthroughput imaging of Arabidopsis that caters to two different audiences: those who are working with plants for the first time, and plant scientists looking to apply high-throughput imaging to existing projects. The foremost web resource for the Arabidopsis community is The Arabidopsis Information Resource (TAIR; Table 1). Through TAIR, researchers can search genomic resources and find seed stocks for various marker lines, characterized mutants, and uncharacterized insertion lines for reverse genetics (see also 1).
+
+Whole-Organism Screening: Plants
+
+83
+
+2. Materials
+2.1. Storage and Sterilization
+
+1. Small coin envelopes (Office Max; Naperville, IL). 2. 0.1% Gelrite (Research Products International; Mt. Prospect, IL). 3. Ethanol sterilization solution: 95% ethanol, 0.1% Triton-X 100. 4. Bleach sterilization solution: 50% bleach, 0.1% Triton-X 100; made fresh each day to avoid detergent precipitation. 5. Ultra-pure water, autoclaved and deionized.
+
+2.2. Plate Preparation
+2.2.1. Petri Plates
+
+1. Petri plate. 2. Arabidopsis growth media (AGM): Murashige & Skoog salts for 1 L (bioWORLD; Dublin, OH), 20-g sucrose, ultra-pure water to 2 L (making the final mixture half-strength). Add 750mg Gelrite, or 1,500 mg of any appropriate agar, to each 250mL aliquot of liquid AGM. Autoclave 30 min. Sterile AGM can be stored in bottles at room temperature for up to 6 months if no contamination is evident, or on plates for up to one month. To use, microwave solid AGM for 5 min at a time on low power until completely melted. Carefully monitor and shake the bottle so that the media does not boil over. Cool the AGM in a 65°C water bath until the bottle is cool enough to handle. Use sterile technique at all times when handling and aliquotting AGM— bacteria and fungi thrive in this sucrose-based media. 3. Standard microscope slide and 24 mm × 50 mm cover glass. 4. Paper surgical tape.
+
+2.2.2. Rectangular Universal Lids
+
+1. Standard “universal” lid, 128 mm × 86 mm, no thatched corner (Corning Costar; Lowell, MA). 2. 120 × 75 #1 cover-glasses (Erie Scientific; Portsmouth, NH). 3. Arabidopsis growth media (AGM; see Subheading 2.2.1).
+
+2.2.3. Forty-Eight-Well Chemical Plates
+
+1. Standard “universal” lid, 128 mm × 86 mm, no thatched corner (Corning Costar). 2. Gasket sets (Grace Bio-labs; Bend, OR). 3. 120 mm × 75 mm # 11/2 cover glasses (Erie Scientific). 4. Arabidopsis growth medium (AGM; see Subheading 2.2.1)
+
+3. Methods
+3.1. Storage and Sterilization
+
+1. Due to their small size, huge numbers of Arabidopsis seeds can be stored in limited space; the most economical method of storage is in small coin envelopes.
+
+84
+
+Agee and Carter
+
+2. These envelopes can be stored upright in boxes or bags and should survive 2 years at room temperature (some mutants have decreased viability over time). 3. To prolong seed life, store seeds in airtight containers at 4°C with fresh silica gel desiccant as needed. 4. It is advisable to bulk a fresh stock and store at least 1,000 seeds from any new genotype in long-term refrigerated storage in dessicant. If possible, store permanent stocks away from the main lab area to protect against fire or vandalism. These seeds should be re-planted and bulked approximately every 2 years.
+3.1.1. Seed Bulking
+
+This procedure is used to propagate seeds for storage and future use in large quantities. After bulking, it is advisable to store at least 1,000 seeds in a 1.5-mL tube or small coin envelope at 4°C in a desiccated environment. 1. Examine plants phenotypically or genotype seedlings for transgenes or mutations to ensure that these traits are passed to progeny. 2. Transplant 10–20 genotyped individuals to soil. 3. If a population of dry seeds has been adequately verified, suspend several hundred vernalized seeds in 0.1% Gelrite or other agar in a 15-mL conical tube. 4. Shake and vortex the tube vigorously to separate and suspend seeds. 5. Use a transfer pipette or 1-mL micropipettor to distribute suspended seeds evenly across the soil surface. 6. Once siliques begin to dry and shatter, discontinue watering until plants are dry, and harvest seeds by gently tapping plants over a white piece of paper. 7. Shake seeds back and forth across the paper so that light chaff and plant material are easier to remove with fingers, tweezers, or by gently blowing debris off the paper. Take care to contain and autoclave all transgenic material.
+
+3.1.2. Seed Sterilization
+
+Since plant growth medium is also an ideal formula for the growth of bacteria and fungus, seeds must be thoroughly sterilized before planting. It is best to first use ethanol to eliminate fungal contaminants, followed by a bleach/detergent solution to kill bacteria and remaining fungus completely. In most cases, bleach alone is sufficient, but fungus can quickly ruin an experiment, so add the preliminary sterilization step if fungal contamination becomes problematic. 1. Sterilize all surfaces in a laminar flow hood with 70% ethanol and ensure that air flows unimpeded to the work area.
+
+Whole-Organism Screening: Plants
+
+85
+
+2. Aliquot the desired number of seeds (1 g = 50,000) into a 1.5-mL micro-centrifuge tube. 3. (optional) Add 1-mL ethanol sterilization solution to seeds. Shake the tube and rock or rotate for 5 min. Remove the ethanol and rinse seeds twice with sterile water. 4. Add 1-mL bleach sterilization solution to seeds. 5. Shake vigorously to eliminate seed clumps and rock or rotate for no more than 7 min. The bleach solution will begin to kill seeds after 10 min of exposure. Do not sterilize more than 20 tubes at a time so that seeds are not overexposed while you work. Seeds that have turned white in bleach solution are overexposed and will not germinate. 6. Centrifuge briefly at 7,000 rpm to settle seeds and clear bleach from tube lids. 7. Remove bleach solution using either a 1-mL pipette or a vacuum trap device with sterile 200-μL tips (see Note 4). 8. Add 1-mL ultra-pure water to each tube, taking care to dislodge clumps from the bottom for thorough rinsing. 9. Allow seeds to settle, and repeat steps 4–5 for a total of four changes of water to ensure that no bleach remains. Leave 1-mL water in each tube. 10. Seeds should then be cold-treated (vernalized) in sterile water to ensure even germination once they return to a warm environment. This can be done by placing tubes (each containing seeds and 1-mL sterile water) in a dark box at 4°C for 3–7 days.
+3.2. Plate Preparation
+
+Choosing a plate design that suits a particular experiment is critical for maximizing throughput. Thus, we sought to eliminate the most time-consuming, damaging step in traditional microscopy: transferring seedlings from growth media to microscope slides. Transfer time is minimal when a few seedlings are examined, but becomes significant when screening very large numbers of seedlings in applications such as map-based cloning or chemical genomics. To this end, we have developed two unique systems for high-throughput confocal imaging of Arabidopsis seedlings that practically eliminate plant handling during image collection. The traditional method for microscopic examination of Arabidopsis seedlings involves growth plants in Petri dishes (Fig. 2A), followed by transfer to microscope slides with cover glasses. This technique is relatively low-throughput and can cause tissue damage, but is discussed briefly here as a reference point for other higher-throughput methods. 1. Prepare Arabidopsis growth media. 2. Using sterile technique in a laminar flow hood, pipette or pour enough liquid media to cover the bottom of the plate to
+
+3.2.1. Petri Plates
+
+86
+
+Agee and Carter
+
+a depth of ~5 mm (30 mL for 3.5 in. round, 90 mL for 6 in. round, 40 mL for 3.5 in. square). 3. Place sterile vernalized seeds onto agar surface (see Subheading 3.3.1 and 3.3.2). 4. Seal plates with paper surgical tape. Do not use Parafilm or non-porous tape, which will prevent gas exchange necessary for photosynthesis. 5. Grow for 7–10 days in a growth chamber (see Subheading 3.4) before imaging. 6. To prepare for imaging, remove seedlings from agar media with sterile fine forceps and carefully lay them onto a glass slide. 7. Add a few drops of water and cover the seedlings with a 24 mm × 50 mm #1 1/2 cover glass see Subheading 3.5.2).
+3.2.2. Rectangular Universal Lids
+
+1. Prepare Arabidopsis growth media. 2. Using sterile technique in a laminar flow hood, pour just enough liquid media to cover the bottom of the plate, approximately 20 mL. 3. Place sterile seeds onto agar surface (see Subheading 3.3.1 and 3.3.2). 4. Assemble pairs of plates so that seedlings face inward, maintaining a sterile environment inside. To increase storage density, additional plates can be stacked facing inward onto the backs of the original pair for a total of up to five plates. 5. Seal plates with paper surgical tape. Do not use Parafilm or non-porous tape, which will prevent gas exchange necessary for photosynthesis. 6. Place plates vertically in a growth chamber (see Subheading 3.4.), and use racks or other devices as necessary to maintain vertical orientation. Roots will grow downward along the agar surface. 7. Grow seedlings for 2–10 days in a 22°C growth chamber on a 16/8-h light/dark cycle. 8. To prepare for imaging, remove tape and separate plates. Add a small amount of sterile water to the agar surface, taking care not to disturb the seedlings. 9. Gently press the large cover-glass onto one end of the plate and gradually lower the glass onto the agar surface over the seedlings. Add water and/or tap gently as necessary to eliminate bubbles. 10. Flip the plate quickly and allow excess water to drain onto a paper towel.
+
+Whole-Organism Screening: Plants
+
+87
+
+Fig. 2. (A) Square petri plates for growing Aribidopsis vertically or horizontally. (B) When used vertically, the plate pictured in (a) can be rotated to test gravitropism. In this example, response to salt stress is revealed by an absence of new root growth in a downward direction. (C) Universal plate lids covered with a thin skin of agar growth medium can be stacked together and sealed with paper tape for high-density seedling incubation. (D) The middle of a conventional flatbed document scanner gives excellent images of plated seedlings, which can be used as a reference map for semi-automated microscopy. Mapping accuracy depends on exactly matching the reference corner of the plastic plate to the scan area marquee (insert). (E) A silicone rubber gasket insert converts a universal lid into 48 wells for chemical screens. One layer of the gasket set is replaced with a large cover glass for mapping and microscopy of all tissues without the need to handle seedlings. (F) Fluorescence images from a gel scanner can also be used for mapping plates, with the advantage that GFP expression levels are recorded directly. Fluorescence appears dark on a white background. (G) The user annotates the map image with hit sites, which are converted by Point Picker into vector files for visiting those locations with the automated microscope. (H) A plate being scanned. Hit positions can be recorded with pen marks on the back of the plate.
+
+88
+
+Agee and Carter
+
+3.2.3. Forty-Eight-Well Chemical Plates
+
+Although this design requires a bit more time for plate preparation and greater expense than the other methods discussed, the 48-well plate setup allows for an isolated well for each seedling (Fig. 2E, F). This setup is particularly applicable to chemical-genomics screens, where users study the effects of thousands of different chemicals on experimental subjects such as Arabidopsis. In addition to the universal lids and large rectangular cover glasses used in the previous section, this design requires a silicone rubber gasket (Grace Biolabs, Berd, OR) set to create isolated wells for seedlings. 1. Prepare Arabidopsis growth media, but instead of cooling in a water bath as discussed previously, the agar must be very hot. 2. Prepare 48-well gasket plates using sterile technique in a laminar flow hood. Remove the paper backing from the adhesive side of the gasket set, then lower it middle-first onto a universal plate lid. There is a central hole, which can be lined up with the dimple of the plate center. Once the middle touches, make sure it is square, then lower both ends into the plate. Press the gasket all the way to the top and bottom edges (see Note 5). 3. Aliquot appropriate concentrations of library chemicals or drugs into wells using a robot or multichannel pipettor. 4. Using sterile technique, pipette 200 mL of very hot AGM into each chamber with a robot or multichannel pipettor (see Note 6). Tapping the bottom of the plate helps spread the liquid to wet all sides of each well uniformly. A plastic trough of freshly boiled agar will remain hot enough for several plates, but if it cools too much, the pipette tips will begin to clog and the media will not spread easily into each well. 5. Place a single sterile seed onto the agar surface (see Subheading 3.3.1 and 3.3.2) approximately **1/3 of the way from the top, to allow room for root growth. 6. Growth is improved by pushing a couple of crystals of ethylene absorber (see Note 7) between the gasket and the top rim of the plate. 7. Assemble pairs of plates so that seedlings face inward, maintaining a sterile environment inside. To increase storage density, additional plates can be stacked facing inward onto the backs of the original pair for a total of up to five plates (Fig. 2C). 8. Seal plates with paper surgical tape. Do not use Parafilm or non-porous tape, which will prevent gas exchange necessary for photosynthesis. 9. Place plates vertically in a 22°C growth chamber (see Subheading 3.4), and use racks or other devices as necessary
+
+Whole-Organism Screening: Plants
+
+89
+
+to maintain vertical orientation. Plants will grow within the chamber on top of the agar surface with roots growing downward. Growth of longer than 7 days will exceed the chamber capacity. 10. To prepare for imaging, separate taped plates and peel back the top layer of the silicone gasket. Take care that no roots are overhanging the agar pads, where they may be pulled off with the gasket. 11. Add a small amount of sterile water to the agar surface, taking care not to disturb the seedlings. 12. Gently press the large cover glass onto one end of the plate and gradually lay the glass onto the agar surface over the seedlings. Add water and tap gently as necessary to eliminate bubbles. 13. Quickly flip the plate over and remove excess water with a paper towel.
+3.3. Plating Seeds
+3.3.1. Plating Sterile Seeds with a Microchannel Pipettor
+
+Arabidopsis seeds are very small and thus single seeds cannot be placed by hand or with tweezers. There are many seed placement methods, but this technique allows for very fast and precise dispensation of Arabidopsis seed with minimal practice. 1. Sterile seeds (in water) are taken up into a 1-mL pipette, approximately 5–10 seeds at a time, in ~100-μL water. 2. The pipette should be set to maximum volume (1 mL), but the user should only use the last 10% of the volume range, so that the hand can relax on the pipette and not depress the plunger while working. 3. The seeds will slowly settle and line up at the tip of the pipette. They can be dispensed one at a time by gently touching the pipette tip to the surface of the agar. This technique is accomplished by using surface tension between the agar media and the water surrounding the seed in the pipette tip, not by plunging with the pipette (which is the intuitive method for most beginners). The key is that pressure on the plunger is not necessary, and will cause more than one seed at a time to leave the tip. 4. If multiple seeds are consistently dispensed at once as the tip touches the agar, reduce the number of seeds in the tip to 3–5. 5. Once the technique becomes more comfortable, increase the number of seeds to 10–20, and re-dip the tip into sterile water every few times the agar is touched. This replenishes the water in the tip and allows good contact between the seeds and the agar for easy dispensing.
+
+3.3.2. Automated Single Seed Placement
+
+We have also developed a successful prototype seed-placement approach, which lends itself to automation.
+
+90
+
+Agee and Carter
+
+1. A blunt ended 26-gauge needle (Small Parts Inc, Miramas, FL) will pick up a single seed when a vacuum is applied to it. 2. Releasing the vacuum leaves the seed held in place by surface tension, but when it is touched against an agar surface, the seed transfers to an exact position. 3. Rapid dip and place can be used to populate plates, using a vacuum pick-up system, modified to include a small water trap in the vacuum line. 4. Keller-Swartwood Engineering (Aurora, Oregon) developed this seed handling approach for us and we have a prototype pneumatic seed-placement robot head on a peg-board test rig. The head swings from vertical for pick-up to a 45° angle for dispensing onto an agar surface. The inclined angle makes vertical precision less important, since the needle flexes as it touches the agar and displaces the seed without burying it below the surface or forcing it back down the needle aperture. It has 100% pick-up reliability and placement accuracy to within one seed diameter.
+3.4. Growth Chamber Incubation
+
+1. Seedlings grown vertically under even light will grow uniformly on the surface of the agar growth media. 2. A CU-36L4 incubator (Percival; Perry, IA) has four lighted shelves, with sufficient space between for vertical highthroughput plate lids. 3. The more common five-shelf growth chamber brings the upper row of seedlings too close to the fluorescent tubes, which then have to be shaded with a loose sheet of cheesecloth.
+
+3.5. Imaging
+3.5.1. Choice of Instrument and Objective Lens
+
+There are many microscopy systems available for high-throughput screening, but most are designed for observation of adherent animal cells. We selected the BD Pathway HT system (BD Biosciences; Rockville, MD) as our primary instrument, because it is highly automated, camera-based, and has a spinning-disc confocal capability, which can be pulled out of the light path for conventional fluorescence imaging. It moves one objective lens around on linear motors under a stationary sample, which makes it uniquely amenable to non-adherent plant cell cultures, because the cells are not disturbed by movement of the plate. We have performed mutant screens on an upright Meridian InSight ocular viewing confocal microscope, using hand-eye coordination for rapid navigation across slide-mounted seedlings. This company no longer exists, but the BD Bioscience CARV 2 confocal imager is its closest modern equivalent, and can be used with inverted motorized stands. An upright stage can be used with high-throughput plates, but only half of the plate is accessible at a time. We also have a high-sensitivity Yokogawa CSU 10 confocal system, with an Optical Insights
+
+Whole-Organism Screening: Plants
+
+91
+
+DualView eyepiece, which can image CFP on one side of the camera and simultaneously capture YFP signal on the other. High numerical aperture (NA) objectives give the best confocal optical sectioning, and brightest fluorescence signal. However, bulky lenses are unable to approach the edge lip of a plate lid, eliminating two entire rows and columns from each plate. Olympus has a pair of very good 20×/0.75NA and 40×/0.9NA UApo340 lenses with tapered front ends, which can address all wells in a 96- or 384-well footprint. On an upright stand, any dipping objective should work fine. Ultra-long working distance lenses are also possibilities, but they tend to have much lower numerical apertures. For follow-up work, water-immersion lenses have the best combination of NA and working distance for plant work. The higher NA of oil objectives gives no real advantage in live samples, unless the point of interest in the sample is pressed against the cover glass.
+3.5.2. Observation Under Cover Glasses
+
+1. Additional 18 mm × 18 mm cover glasses can be used to make a bridge around larger seedlings which have their first true leaves. 2. As long as there is some air below the span, surface tension will pull down on the larger cover glass and prevent it from floating around. 3. Alternatively, strips of petroleum jelly extruded through a thick hypodermic needle can be used to mount a row of up to 10 seedlings under a 24 mm × 60 mm cover glass (see Note 8).
+
+3.5.3. Semi-automated Imaging
+
+1. We used an Epson Perfection 4180 Photo document scanner. 2. Scanning needs to be exactly parallel to the sides of the plate, so that distances from the reference corner are predictable enough to give a good placement of the hit site. 3. We found that the middle of the document area gives better results than one side, because it avoids the parallax of the scanner’s light path hitting a surface that is a bit above the glass surface. 4. Two sheets of knife-maker glass worked well as a spacer to bring the plate close to the middle. 5. To correlate scanner positions to those in the microscope, we made a reference plate containing EM grids. These are large enough for point-picking on the map image, and have a central check-mark, which precisely locates the grid center, for measuring the acquired position on the automated microscope.
+
+3.5.4. Semi-automated Imaging on a Gel Scanner
+
+1. The Typhoon 9400 system (Amersham Bioscience, Pittsburgh, PA) has various fluorescence settings for different sample types. It also allows scanning at 3 mm above the surface of the glass pattern. 2. Imaging can be performed at any resolution from 10 to 1,000 μm, at a cost of speed.
+
+92
+
+Agee and Carter
+
+3. We endeavored to keep the mapping and imaging process to under an hour, to minimize any stress effects on the seedling while it is under glass. 4. Use 200-μm pixels to preview and assure the image has enough brightness, but is not saturated, and then switch to either 25-μm, which takes 25 min, or 50-μm, which takes 13 min. Our Point Picker software has different calibrations for each scanner and scanner setting. We set up a separate calibration for each of the 48 wells, but this did not improve precision, which is mostly determined by care in clicking on positions of interest, and care in moving from scanner to microscope.
+3.5.5. Automated Imaging
+
+It is surprisingly difficult to develop software to detect features of interest in complex samples automatically, since software is easily distracted by irrelevant features like shadows, air bubbles, condensation, or scratches on the plate. However, a semi-automated approach, where the user clicks on a map of the sample, has proven to be quite effective in speeding up the imaging process. 1. Place the coverslipped plate lid sample on a calibrated flatbed scanner (see Subheading 3.5.3; Fig. 2D). Leave the lid open for a dark background and maximum contrast, to highlight light-colored plant tissues such as roots. 2. Take a preview scan, and then draw two marquees; one to cover the whole plate, and a second to cover a very small area around the reference corner of the plate. 3. Take a zoom image of the small marquee, and use this enlarged image to place the big marquee rectangle over the very edge of the plastic plate exactly (Fig. 2D, insert). The Epson software allows these marquees to be retained from one use to another, but they can easily be redrawn. 4. Switch to the big rectangle and make a high-resolution scan at 1,200 dpi. 5. A fluorescence plate imager, such as the Typhoon 9400 (Amersham Bioscience, Pittsburgh, PA) can be used instead of a flatbed scanner to give a map of fluorescence signal rather than just morphology (Fig. 2F). This may be useful in mutant screens where only a percentage of seedlings are correctly labeled, and the rest can be discounted at the map stage (see Subheading 3.5.4). 6. Point-picking software can now be used to annotate this map image with “hit” sites, and generate a series of visit coordinates for an automated microscope. We initially adapted Image J to perform this function, before writing our own software in Python for generating these tables (see Subheading 3.5.6). 7. Transfer the plate to the automated microscope, taking care to match the position of the reference corner with the reference corner of the plate holder in the imager.
+
+Whole-Organism Screening: Plants
+
+93
+
+8. Each “hit” point should be accessible to the microscope at a precision of <50 μm. You can select a location, and then navigate from the “hit” location to evaluate the tissue more thoroughly. Alternatively, a macro can be used to auto-focus, and snap an image at all locations in sequence (see Subheading 3.5.7).
+3.5.6. Point-Picking with Image Software
+
+Our Point Picker software is available for download at: http:// bioweb.ucr.edu/ChemMineV2/protocols. Alternatively, Image J is a freeware program, with a vibrant community of users who supply modules and plugins for a wide range of uses. We used plugin_to_handle_extra_file_types, specify_ROI, Time_Stamper, and Point_picker to enable us to convert the table generated by a series of clicks on the map image, so that it could feed our BD Pathway HT imager with the right format of x-y-z vector files. For seedlings, the auto-focus feature must be image-based, with the microscope moving through a range of focus levels and selecting the height with the greatest brightness and contrast. Laser-based autofocus bounces a beam off the cover glass, and then offsets a given distance, which is faster and more effective for cultured animal cells, but will not work on three-dimensional structures such as whole seedlings. Cameras can also auto-expose, to give an adequate image, even when some regions are very brightly stained and others quite dim.
+
+3.5.7. Auto-focus
+
+4. Notes
+1. pEarlyGate Vectors are available at: http://www.biology. wustl.edu /pikaard/pEarleyGate%20plasmid%20vectors/ pEarleyGate%20homepage.html. 2. The strong “constitutive” 35S promoter, although highly active in most tissues, has very little expression in Arabidopsis pollen. Alternatively, the LAT52 promoter has enhanced expression in mature pollen and throughout germination (13). 3. Fluorescence Lifetime Imaging Microscopy (FLIM) is explained (http://www.picoquant.com/_scientific.htm). 4. With minor customization, a side-arm flask is a convenient device for rapidly washing sterilized Arabidopsis seeds. In a sterile hood, attach a vacuum line to a stopper on the top of the flask, and run an additional hose from the side arm. A trimmed Pasteur pipette on the end of the side-arm vacuum line makes a convenient handle for sterile 200-μL tips, and can maintain a sterile environment for the seeds. For each sample, attach a new tip to the end of the Pasteur pipette and remove liquid under a gentle vacuum, taking care to leave seeds undisturbed at the bottom of the tube.
+
+94
+
+Agee and Carter
+
+5. A trimmed soft rubber print-roller works well for preparing 48-well plates (Electron Microscopy Science; Hatfield, PA). 6. Robotic dispensing of AGM: A BioTek Precision 2000 8-tip robot (BioTek; Winooski, VT) is sufficient for preparing assay plates with solid media. The instrument is simple and reliable, and is compact enough to be placed in a laminar flow hood for aseptic setup. We also use a large and more troublesome Biomek FXP robot (Beckman Coulter; Fullerton, CA), to which we have added a vinyl curtain and HEPA air blower (IQAir; Santa Fe Springs, CA) for sterility, and mounted a hot-plate stirrer (Corning) on the robot deck for maintaining agar. 7. Extend-a-Life Ethylene Absorber (Agraco; Normstown Hill, PA) consists of sachets of zeolite granules containing dry potassium permanganate and is used to preserve fruits, vegetables, and flower arrangements by removing ethylene, given off during normal ripening. It works to improve the uniformity and growth rate of Arabidopsis seedlings. This material does not work when wet, so push a couple of granules into the top corner of a 48-well gasket plate, where condensation will not drip down and spoil its activity. 8. Erie Scientific, (Portsmouth, NH) makes cover glasses and slides to almost any specification, and with less than 1-month lead time, provided they are ordered in bulk.
+
+Acknowledgments
+We wish to acknowledge the vision and leadership of Natasha Raikhel, who is director of the Center for Plant Cell Biology (CEPCEB), the Institute for Integrative Genome Biology (IIGB), and was instrumental in bringing chemical-genomics capability to UCRiverside. Matt Mason developed the ability to screen plate lids on the Pathway HT, and Anh Vu did all the coding for the Point Picker software.
+
+References
+1. Weigel, D. and Glazebrook, J. (eds.) (2002) Arabidopsis: A Laboratory Manual. Cold Spring Harbor Press, Cold Spring Harbor, NY. 2. Avila, E. L., Zouhar, J., Agee, A. E., Carter, D. G., Chary, S. N., and Raikhel, N. V. (2003) Tools to study plant organelle biogenesis. Point mutation lines with disrupted vacuoles and high-speed confocal screening of green fluorescent protein-tagged organelles. Plant Physiol. 133, 1673–1676. 3. Chary, S. N., Robert, S., Yang, Z., Raikhel, N. V., and Hicks, G. H. (2007) Chemical genomics of networks controlling vesicular trafficking in plant development. http://bioweb.ucr.edu/ChemMineV2/twentyten. 4. Brandizzi, F., Fricker, M., and Hawes, C. (2002) A greener world: The revolution in
+
+Whole-Organism Screening: Plants plant bioimaging. Nat. Rev. Mol. Cell Biol. 3, 520–530. Shimomura, O., Johnson, F. H., and Saiga, Y. (1962) Extraction, purification and properties of aequorin, a bioluminescent protein from the luminous hydromedusan. Aequorea. J. Cell. Comp. Physiol. 59, 223–239. Brandizzi, F., Irons, S. L., Johansen, J., Kotzer, A., and Neumann, U. (2004) GFP is the way to glow: Bioimaging of the plant endomembrane system. J. Microsc. 214, 138–158. Tian, G. W., Mohanty, A., Chary, S. N., Li, S., Paap, B., Drakakaki, G., Kopec, C. D., Li, J., Ehrhardt, D., Jackson, D., Rhee, S. Y., Raikhel, N. V., and Citovsky, V. (2004) Highthroughput fluorescent tagging of full-length Arabidopsis gene products in planta. Plant Physiol. 135, 25–38. Cutler, S. R., Ehrhardt, D. W., Griffitts, J. S., and Somerville, C. R. (2000) Random GFP: cDNA fusions enable visualization of subcellular structures in cells of Arabidopsis at a high frequency. Proc. Natl. Acad. Sci. USA 97, 3718–3723.
+
+95
+
+5.
+
+6.
+
+7.
+
+8.
+
+9. Li, S., Ehrhardt, D. W., and Rhee, S. Y. (2006) Systematic analysis of Arabidopsis organelles and a protein localization database for facilitating fluorescent tagging of full-length Arabidopsis proteins. Plant Physiol. 141, 527–539. 10. Earley, K. W., Haag, J. R., Pontes, O., Opper, K., Juehne, T., Song, K., and Pikaard, C. S. (2006) Gateway-compatible vectors for plant functional genomics and proteomics. Plant J. 45, 616–629. 11. Jakobs, S., Subramaniam, V., Schonle, A., Jovin, T. M., and Hell, S. W. (2000) EGFP and DsRed expressing cultures of Escherichia coli imaged by confocal, two-photon and fluorescence lifetime microscopy. FEBS Lett. 479, 131–135. 12. Jach, G., Pesch, M., Richter, K., Frings, S., and Uhrig, J. F. (2006) An improved mRFP1 adds red to bimolecular fluorescence complementation. Nat. Methods 3, 597–600. 13. Eady, C., Lindsey, K., and Twell, D. (1993) Differential activation and conserved vegetative cell-specific activity of a late pollen promoter in species with bicellular and tricellular pollen. Plant J. 5, 543–550.
+

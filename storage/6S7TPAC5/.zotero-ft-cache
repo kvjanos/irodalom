@@ -1,0 +1,390 @@
+Towards an Optimized Illumina Microarray Data Analysis Pipeline
+Pan Du, Simon Lin Robert H. Lurie Comprehensive Cancer Center, Northwestern University Oct 01, 2007
+
+Outline
+• Introduction of Illumina Beadarray technology • Lumi package overview • nuID and related annotation packages • VST (variance stabilizing transform) • RSN (robust spline normalization)
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+2
+
+Illumina BeadArray Technology
+Uniform pits are etched into the surface of each substrate to a depth of approximately 3 microns prior to assembly. Each type of bead has about 30 technique replicates on average Beads are randomly assembled and held in these microwells Multiple arrays on the same slide Cost: < $200
+Bead: 3 µm
+10/1/07 Bioconductor 2007, Chicago 3
+
+Slide: 2 x 7cm
+
+Each array is different
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+4
+
+(Previous) Concerns
+Challenges
+• Uneven distribution of BG (air bubble and washing) • Contamination of debris • Scratches on the surface Spot morphology and uniformity Array manufacturing defect Failure in labeling of mRNA Scanning conditions Probe Specificity Normalization issues
+10/1/07
+
+Illumina Solutions
+• Larger number of beads • Random distribution of beads
+
+Coated beads instead of printing Tested in the decoding process Labeling control on array Still a concern ? 50-mer design 6 to 12 arrays on the same slide
+
+Bioconductor 2007, Chicago
+
+5
+
+Affymetrix vs. Illumina
+Affymetrix
+Redundancy Probe location Probe length Probe vs. gene Array layout
+10/1/07
+
+Illumina
+High (tens of replicates) Random 50 mer probe  gene Multiple arrays per chip
+6
+
+Low (usually one) Fixed 25 mer probe  probe-set  gene One array per chip
+Bioconductor 2007, Chicago
+
+Overview of lumi package
+
+Design Objectives of lumi Package
+• To provide algorithms uniquely designed for Illumina • To best utilize the existing functionalities by following the class infrastructure and identiﬁer management framework in Bioconductor
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+8
+
+Object Models
+• Design based on the S4 Classes. • One major class: lumiBatch • Compatible with other Bioconductor packages;
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+9
+
+Analysis Pipeline
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+10
+
+Example Code
+> # load the library > library(lumi) > # specify the file name output from Bead Studio > fileName <- 'Barnes_gene_profile.txt' > # Read the data and create a LumiBatch object
+
+> example.lumi <- lumiR(fileName, lib=‘lumiHumanV1’)
+> ## summary of data > example.lumi > ## summary of quality control information > summary(example.lumi, QC ) > ## preprocessing and quality control after normalization
+
+> lumi.N.Q <- lumiExpresso(example.lumi)
+> ## summary of quality control information after preprocessing > summary(lumi.N.Q, QC ) > ## plot different plots > pairs(lumi.N.Q) > plot(lumi.N.Q, what=‘sampleRelation’) > boxplot(lumi.N.Q) > # Extract expression data for further processing > dataMatrix <- exprs(lumi.N)
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+11
+
+nuID and Illumina Annotation Packages
+
+What is nuID
+• nuID is the abbreviation of Nucleotide Universal Identifier • nuID is a novel identifier for oligos, ideal for oligonucleotide-based microarrays
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+13
+
+Microarray Information Flow
+GO:0051301 Cell Division function
+
+entrezID: 19645 symbol: Rb1
+
+retinoblastoma 1
+1 ggccgggcgc gtccggtttt cctcggggga gttcccatta tttttgtaac gggantcggg 61 tgaggagggg gcgtgccccg cgtgcgcgcg cgaccgcccg cctccccgcg cgcctccctc 121 ggctgctcgc gccggcccgc gctgcgcgtc atgccgccca aagccccgcg cagagccgcg 181 gccgccgagc ccccgccacc gccgccgccg ccgcctcggg aggacgaccc cgcgcaggac 241 agcggccccg aagagctgcc cctggccagg cttgagtttg aagaaattga agaacccgaa 301 tttattgcat tatgtcaaaa gttaaaggta cccgatcatg tcagagaaag agcttggcta ...
+
+gene
+
+ID: ??
+10/1/07
+
+ggtacccgatcatgtcagagaa
+Bioconductor 2007, Chicago
+
+probe
+14
+
+observed Probe 1 Probe 2 Probe 3 Probe 4 Probe 5 ... Probe N dynamic Gene M dynamic inferred Gene 1 Gene 2 Gene 3 ... dynamic GO 2 ... GO P dynamic inferred GO 1
+
+stable
+
+Entity Mapping
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+15
+
+For Illumina microarrays, TargetID was used as the primary ID in the NCBI GEO database.
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+16
+
+Challenges of Target IDs
+• Not unique: “GI_28476905” and “scl0076846.1_142” are the same gene on Mouse_Ref-8_V1 chip. -- Synonyms. Not stable over time: “GI_21070949-S” in the Mouse_Ref-8_V1 chip but as “scl022190.1_154-S” in the later Mouse-6_V1 chip. -- IDs can be recycled or retired. Not universal across manufacturers -- Homonyms. Not interpretable without metadata: However, metadata (lookup table) is not always available in reality.
+Bioconductor 2007, Chicago 17
+
+•
+
+• •
+
+10/1/07
+
+How to ensure one ID per item?
+– How to enforce 1:1 mapping? – How can it be globally unique? – How can it be permanent?
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+18
+
+Solution I: Central Authority
+• GenBank/ EMBL / DDBJ • May help enforcing 1:1 mapping of an ID and an entity
+– HUGO Nomenclauter Committee – “Givining unique and meaningful names to every human gene”
+
+• May be infeasible either technically or socially
+10/1/07 Bioconductor 2007, Chicago 19
+
+Solution II: nuID
+• Unique, guaranteed
+– Each name identifies only one entity – Inherently enforces 1:1 mapping – Uniquely resolvable
+
+•
+
+Globally unique, guaranteed
+– Decentralized – No ID registry necessary
+
+• •
+
+Permanent, guaranteed Carries information about the entity
+– White box – no need for a lookup table
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+20
+
+nuID: the idea
+• Sequence itself as the ID • Combined with the following four features
+– Compression: make it shorter – Checksum
+• Prevent transmission error • Provide self-identification
+
+– Encryption: in cases where the sequence identity is proprietary – Digital watermark: identify issuer
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+21
+
+How does nuID work?
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+22
+
+Example of nuID
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+23
+
+Performance of checksum
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+24
+
+Implementation of nuID
+• We have build nuID based annotation packages for all Illumina expression chips. • We have set up a website for nuID conversion and check latest annotation for the probe. • The implementation is also included in the lumi package.
+10/1/07 Bioconductor 2007, Chicago 25
+
+Illumina Annotation Packages
+• Produced nuID indexed annotation packages for all Illumina expression chips. (named as lumiHumanV1, …) • In the future, the packages will be based on the most updated RefSeq matches with nuID and their annotations.
+10/1/07 Bioconductor 2007, Chicago 26
+
+Summary
+• For microarray reporting: Probe-level data is preferred over gene-level data. • nuID is universal, globally unique, and permanent. • Do not need a central authority to issue nuID.
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+27
+
+Variance Stabilization Transformation
+
+Variance Stabilization
+• General assumption of statistical tests to microarray data: variance is independent of intensity • In reality, larger intensities tend to have larger variations • Current implementation:
+– Log2 transform is widely used
+
+• Variance stabilization through a generalized log transformation
+10/1/07 Bioconductor 2007, Chicago 29
+
+Example of Mean and Variance Relation
+(A) Raw
+
+(B) Log2 transformed
+10/1/07 Bioconductor 2007, Chicago 30
+
+Variance Stabilization
+• Mathematical model
+(1)
+
+• Asymptotic variance-stabilizing transformation • Mean and variance relation
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+31
+
+VSN (Variance Stabilizing Normalization)
+• Estimation the mean and variance relation based on limited technique replicates • Combines variance stabilizing and normalization based on the limited replicates across chips • Assumption: most genes are not differentially expressed • Sometimes unstable due to the above reasons.
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+32
+
+Variance Stabilizing Transformation (VST)
+Illumina BeadArray technology enables better variance stabilizing Better ﬁt the relations between mean and standard deviation Relations between log2 and VST (arcsinh)
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+33
+
+Variance Stabilization of the Technical Replicates
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+34
+
+Comparison of Log2, VSN and VST
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+35
+
+Robust Spline Normalization
+
+Robust Spline Normalization (RSN)
+• Quantile normalization:
+– Pros: computational efﬁciency, preserves the rank order – Cons: The intensity transformation is discontinuous
+
+•
+
+Loess and other curve-ﬁtting based normalization:
+– Pros: continuous – Cons: cannot guarantee the rank order. Strong assumption (majority genes unexpressed and symmetric distributed)
+
+• RSN combines the good features of the quanitle and loess normalization
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+37
+
+Comparison of curve fitting and quantile normalization
+Curve fitting based normalization
+Assumption
+Most genes are not differentially expressed.
+
+Quantile normalization
+All samples have the same distribution. Replaced by the average of the probes with the same rank Will lose small difference between samples, and the change is unrecoverable. Normalize across all samples, memory intensive. Rank invariant Computationally efficient
+
+Approximation Based on curve fitting Problems
+Does not work well when lots of genes are differentially expressed.
+
+Strengths
+
+The value mapping is continuous. Normalize in pairwise, memory save.
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+38
+
+Robust Spline Normalization (RSN)
+• Combining the strength of curve fitting and quantile normalization
+– Continuous mapping – Rank invariant – Insensitive to differentially expressed genes.
+
+• Basic Ideas of RSN
+– Perform a quantile normalization of the entire microarray dataset for the purpose of estimating the fold-changes between samples – Fit a weighted monotonic-constraint spline by Gaussian window to down-weight the probes with high fold-changes – Normalize each microarray against a reference microarray
+10/1/07 Bioconductor 2007, Chicago 39
+
+Algorithms Evaluation
+
+Evaluation Data Sets
+• Barnes data: (Barnes, M., et al., 2005)
+– measured a dilution series (two replicates and six dilution ratios: 100:0, 95:5, 75:25, 50:50, 25:75 and 0:100) of two human tissues: blood and placenta.
+
+10/1/07
+
+Bioconductor 2007, Chicago
+
+41
+
+Performance Evaluation
+Based on Barnes titration data
+
+VST improves the concordance between the expression profiles and the real dilution ratio profiles
+10/1/07 Bioconductor 2007, Chicago 42
+
+Conclusions and Future Plan
+• Lumi package provides a pipeline of Illumina microarray preprocessing and annotation • Provide algorithms uniquely designed for Illumina • Options to use other traditional algorithms and compatible with other Bioconductor packages • In the future,
+– enhance the quality control part – extend the lumi package to other Illumina data:
+• DNA copy number analysis • Methylation profiling • SNP and genotyping
+10/1/07 Bioconductor 2007, Chicago 43
+
+Acknowledgements
+• Robert H. Lurie Comprehensive Cancer Center, Northwestern University
+– Warren A. Kibbe and other members in the Bioinformatics group – Nadereh Jafari, microarray core
+
+• European Bioinformatics Institute, UK
+– Wolfgang Huber
+
+• The Walter and Eliza Hall Institute of Medical Research, Australia
+– Gordon Smyth
+10/1/07 Bioconductor 2007, Chicago 44
+

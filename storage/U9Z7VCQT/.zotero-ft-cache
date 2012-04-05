@@ -1,0 +1,419 @@
+Object-Oriented Software for Quadratic Programming
+E. MICHAEL GERTZ and STEPHEN J. WRIGHT University of Wisconsin-Madison
+
+The object-oriented software package OOQP for solving convex quadratic programming problems (QP) is described. The primal-dual interior point algorithms supplied by OOQP are implemented in a way that is largely independent of the problem structure. Users may exploit problem structure by supplying linear algebra, problem data, and variable classes that are customized to their particular applications. The OOQP distribution contains default implementations that solve several important QP problem types, including general sparse and dense QPs, bound-constrained QPs, and QPs arising from support vector machines and Huber regression. The implementations supplied with the OOQP distribution are based on such well known linear algebra packages as MA27/57, LAPACK, and PETSc. OOQP demonstrates the usefulness of object-oriented design in optimization software development, and establishes standards that can be followed in the design of software packages for other classes of optimization problems. A number of the classes in OOQP may also be reusable directly in other codes. Categories and Subject Descriptors: G.1.6 [Numerical Analysis]: Optimization—Quadratic Programming Methods; G.4 [Mathematical Software]: Algorithm Design and Analysis; D.2.2 [Software Engineering]: Design Tools and Techniques Additional Key Words and Phrases: Quadratic Programming, Object-Oriented Software, InteriorPoint Methods
+
+1.
+
+INTRODUCTION
+
+Convex quadratic programming problems (QPs) are optimization problems in which the objective function is a convex quadratic and the constraints are linear. They have the general form
+1 min 2 xT Qx + cT x s.t. Ax = b, Cx ≥ d, x
+
+(1)
+
+where Q is a symmetric positive semideﬁnite n × n matrix, x ∈ Rn is a vector of I unknowns, A and C are (possibly null) matrices, and b and d are vectors of approAuthor addresses: E. M. Gertz, Computer Sciences Department, University of Wisconsin-Madison, 1210 W. Dayton Street, Madison, WI 53706 and Mathematics and Computer Science Division, Argonne National Laboratory, Argonne, IL 60439; gertz@mcs.anl.gov. S. J. Wright, Computer Sciences Department, University of Wisconsin-Madison, 1210 W. Dayton Street, Madison, WI 53706; swright@cs.wisc.edu. Permission to make digital/hard copy of all or part of this material without fee for personal or classroom use provided that the copies are not made or distributed for proﬁt or commercial advantage, the ACM copyright/server notice, the title of the publication, and its date appear, and notice is given that copying is by permission of the ACM, Inc. To copy otherwise, to republish, to post on servers, or to redistribute to lists requires prior speciﬁc permission and/or a fee. c 2003 ACM 1529-3785/2003/0700-0001 $5.00
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003, Pages 1–0??.
+
+2
+
+·
+
+E. Michael Gertz and Stephen J. Wright
+
+priate dimensions. The constraints Ax = b are referred to as equality constraints while Cx ≥ d are known as inequality constraints. QPs arise directly in such applications as least-squares regression with bounds or linear constraints, robust data ﬁtting, Markowitz portfolio optimization, data mining, support vector machines, and tribology. They also arise as subproblems in optimization algorithms for nonlinear programming (in sequential quadratic programming algorithms and augmented Lagrangian algorithms) and in stochastic optimization (regularized decomposition algorithms). The data objects that deﬁne these applications exhibit a vast range of properties and structures, and it is desirable—often essential—to exploit the structure when solving the problem computationally. The wide variety of structures makes it diﬃcult to provide a single piece of software that functions eﬃciently on any given QP application. In this paper, we describe the next-best thing: an object-oriented software package called OOQP that includes the following features: - Interior-point algorithms that are implemented in a structure-independent way, permitting reuse of the optimization-related sections of OOQP across the whole application space. - Isolation of structure-dependent operations and storage schemes into classes that can be customized by the user to ﬁt particular applications. - A linear algebra layer that can be used to assemble solvers for speciﬁc problem structures. - Implementations of solvers for general large, sparse QPs and several other generic problem types. - Implementations of solvers for several special problem types, including Huber regression and support vector machines, to demonstrate customization of the package to speciﬁc applications. - A variety of interfaces to the bundled implementations that allow problem deﬁnition and data entry via ASCII ﬁles, MPS format, the AMPL modeling language, and MATLAB. The larger goal of OOQP is to demonstrate the usefulness of object-oriented design principles in the context of optimization software. Although this design methodology has become one of the central concepts in modern software development, it has rarely been used in the design of optimization codes. Such codes have tended to be stand-alone packages, useful for solving problems posed in one of the standard formulations (linear programming, nonlinear programming, semidefinite programming), but not readily adaptable to classes of problems with special structure. Moreover, these software packages usually include their own tightly integrated linear algebra code, and are diﬃcult to modify for anyone but their original authors. Since many new and interesting applications of optimization involve structured problems, whose structure must be exploited in order to solve the problems eﬃciently, we believe that new codes should be easily customizable to particular problem structures. We believe too that optimization codes should be able to take advantage of new developments in linear algebra software, in particular, software for sparse systems and for parallel environments, without requiring substantial rewriting of the code. Further, we believe that other researchers should
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+
+Object-Oriented Software for Quadratic Programming
+
+·
+
+3
+
+be able to experiment with variations of the software (trying diﬀerent algorithmic heuristics, diﬀerent linear algebra routines, diﬀerent problem structures, diﬀerent data structures) by modifying a relatively small, easily identiﬁable piece of the code. By addressing the particular case of an interior-point algorithm for QP, we attempt to show in this paper that an object-oriented approach may be the right way to achieve these goals. In the remainder of this introduction, we ﬁrst outline the basic design rationale of OOQP, then discuss related eﬀorts in object-oriented numerical codes, particularly codes related to optimization. 1.1 OOQP Design Rationale
+
+The algorithms implemented in OOQP are of the primal-dual interior-point type. These methods are well suited for structured problems, mainly because the linear systems that must be solved to compute the step at each iteration retain the same dimension and structure throughout the computation. When this linear system is sparse, it may not be necessary to perform storage allocation and ordering for a direct factorization anew at each iteration, but possibly just once at the initial solve. The coding eﬀort involved in setting up and solving the linear system eﬃciently is typically much less than for the rival active-set approach, in which the matrix to be factored grows and shrinks as the computation progresses. Interior-point algorithms are well suited to object-oriented implementation because the best heuristics, devices, and parameter settings used in these algorithms are largely independent of the underlying problem structure. Mehrotra’s heuristics (see [24]) for choosing the centering parameter, step length, and corrector terms give signiﬁcant improvements over standard path-following algorithms regardless of whether we are solving a linear program or a sparse structured QP. Gondzio’s multiple correctors [17] also yield improvements across a wide range of problem types. Object-oriented design allows the classes that implement the interior-point algorithms to be written in a way that is independent of the problem structure. Users who wish to implement a customized version of OOQP for their problem type need not concern themselves with the interior-point sections of the code at all, but rather can focus on constructing classes to store data and variables and to perform the various linear algebra operations required by the interior-point algorithm. The code that implements the core of the algorithm, including all its sophisticated heuristics, can be reused across the entire space of problem structures and applications. Codes that simply target general QP formulations (of the form (1), for instance) may not be able to solve all QPs eﬃciently, even if they exploit sparsity in the objective Hessian and constraint matrices. A dramatic example of a situation in which a generic solver would perform poorly is described by Ferris and Munson [12], who solve a QP arising from support-vector machine computations in which the Hessian has the form Q = D + V V T, (2)
+
+where D is a diagonal matrix with positive diagonal elements and V is a dense n × m matrix, where n m. This Q is completely dense, and a generic dense implementation would solve an n × n dense matrix at each interior-point iteration to ﬁnd the step. Such an approach is doomed to failure when n is large (of the
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+
+4
+
+·
+
+E. Michael Gertz and Stephen J. Wright
+
+order of 106 , for example). OOQP includes an implementation speciﬁcally tailored to his problem structure, in which we store V rather than Q and use specialized factorization routines based on judicious block elimination to perform the linear algebra eﬃciently. A similar approach is described by Ferris and Munson [12]. As well as being useful for people who want to develop eﬃcient solvers for structured problems, the OOQP distribution contains shrink-wrapped solvers for general QPs and for certain structured problems. We provide an implementation for solving sparse general QPs that can be invoked by procedure calls from C or C++ code; as an executable with an input ﬁle that deﬁnes the problem in MPS format extended appropriately for quadratic programming (Maros and M´sz´ros [23]); or e a via invocations from the higher-level languages AMPL and MATLAB. The distribution also includes an implementation of a solver for QPs arising from support vector machines and from Huber regression. Both these implementations accept input either from an ASCII ﬁle or through a MATLAB interface. The code is also useful for optimization specialists who wish to perform algorithm development, experimenting with variants of the heuristics in the interior-point algorithm, diﬀerent choices of search direction and step length, and so on. Such researchers can work with the C++ class that implements the algorithm, without concerning themselves with the details associated with speciﬁc problem types and applications. In addition, encapsulation of the linear algebra operations allows users of the code to incorporate alternative linear algebra packages as they become available. In OOQP’s implementation of the solver for sparse general QPs, the MA27 code from the HSL Library [11; 19] for sparse symmetric indeﬁnite systems is used as the engine for solving the linear systems that arise at each interior-point iteration. We have implemented solvers based on other codes, including Oblio [10], HSL’s MA57, and SuperLU [7]. These solvers diﬀer from the distributed version only in the methods and classes speciﬁc to the linear algebra. The classes that deﬁne the interior-point algorithm, calculate the residuals, deﬁne the data, store and operate on the variables, and read the problem data from an input ﬁle are unaﬀected by the use of diﬀerent linear solvers. We chose to write OOQP in the C++ programming language. The objectoriented features of this language make it possible to express the design of the code in a natural way. Moreover, C++ is a well-known language for which stable, eﬃcient compilers are available on a wide range of hardware platforms. 1.2 Related Work
+
+Several other groups have been working on object-oriented numerical software in a variety of contexts in optimization, linear algebra, and diﬀerential equations. We mention some of these eﬀorts here. The Hilbert Class Library (HCL) (Gockenbach and Symes [16]) is a collection of C++ classes representing vectors, linear and nonlinear operators, and functions, together with a collection of methods for optimization and linear algebra that are implemented in terms of these abstract classes. Particular characteristics of HCL include an ability to handle large data sets and linear operators that are not deﬁned explicitly in terms of matrices. The philosophy of OOQP is similar to that of HCL, though our more speciﬁc focus on structured quadratic programs distinguishes our
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+
+Object-Oriented Software for Quadratic Programming
+
+·
+
+5
+
+eﬀort. The rSQP++ package (Bartlett [2]) is a C++ package that currently implements reduced-space SQP methods for nonlinear programming. Basic components of the algorithm are abstracted, such as computation of the null space and the quasiNewton update. In structuring the package, particular attention is paid to the linear algebra layer and interfaces to it. The COOOL package (Deng, Gouveia, and Scales [8]) is another collection of C++ classes and includes implementations of a wide variety of algorithms and algorithm components. The code OOPS, decribed by Gondzio and Sarkissian [18], is an object-oriented C code for linear programming. The design goals of OOPS and OOQP appear to be quite diﬀerent. OOPS uses an object-oriented design to create a system for modeling and solving block structured problems. The code provides classes for representing the coeﬃcient matrix of the linear program and the operations performed with that matrix in the interior-point method. This matrix is assembled via the (possibly recursive) use of block classes applied to a set of elementary matrix classes representing sparse, dense, and network matrices. Linear algebra software for manipulating and factorizing the sparse and dense matrix blocks was written by the authors of OOPS and apparently forms an integral part of the code. OOQP’s design, in contrast, does not focus on the solution of block-structured problems. OOQP uses object-oriented principles comprehensively, applying them to the code that deﬁnes the algorithm, the problem formulation, and the lowerlevel linear algebra, as well as to the code that forms and solves the linear systems. Unlike OOPS, OOQP makes no assumptions about how the problem data is stored, making it possible to represent data and variables in a form that is speciﬁc to a particular class of problems or to a particular linear algebra package. (This feature of OOQP allowed us to incorporate it in the TAO package mentioned below by adopting TAO’s data structures, rather than copying between local data structure and those required by TAO.) Through its use of a linear algebra layer, OOQP can make use of a variety of linear algebra packages to perform sparse and dense matrix operations; it is not tied to a particular set of matrix manipulation and factorization routines. Finally, we note that it would be possible to incorporate the innovations of OOPS into OOQP, by deﬁning OOPS’ matrix classes as part of a problem formulation layer for linear programming problems with block-structured coeﬃcient matrices. The PETSc project (Balay et al. [1]) focuses on the development of software components for large-scale linear algebra, allowing data-structure-independent implementation of solvers for partial diﬀerential equations and nonlinear equations, on serial and parallel architectures. Although PETSc is implemented chieﬂy in C, its follows object-oriented design principles. PETSc solvers and design conventions are used in the TAO package (Benson, Curfman McInnes, and Mor´ [3]), which e currently implements solvers for large-scale unconstrained and bound-constrained optimization problems on parallel platforms. An object-oriented direct solver for sparse linear algebra problems is discussed by Dobrian, Kumfert, and Pothen [9]; we have used their Oblio package [10] in implementations of OOQP for solving general sparse QPs. Object-oriented eﬀorts in numerical software outside the ﬁeld of optimization inACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+
+6
+
+·
+
+E. Michael Gertz and Stephen J. Wright
+
+clude that of Chow and Heroux [5], who focus on preconditioning of iterative solvers for linear systems. They describe a C++ package for that allows implementation of block preconditioners in a way that is independent of the storage scheme for the submatrix blocks. The Diﬀpack code of Bruaset and Langtangen [4] is a C++ object-oriented implementation of iterative solvers for sparse linear systems. 1.3 Outline of This Paper
+
+Section 2 of this paper describes the primal-dual interior-point algorithms that are the basis of OOQP. The layered structure of the code and its major classes are outlined in Section 3, where we also illustrate each class by discussing its implementation for the particular formulation (1). Section 3.6 outlines the linear algebra layer of OOQP, showing how abstractions of the important linear algebra objects and operations can be used in the higher layers of the package, while existing software packages can be used to implement these objects and operations. Other signiﬁcant classes in OOQP are discussed in Section 4. Section 5 further illustrates the usefulness of the object-oriented approach by describing three QPs with highly specialized structure and outlining how each is implemented eﬃciently in the OOQP framework. In Section 6, we outline the contents of the OOQP distribution ﬁle. Further information on OOQP can be found in the OOQP User Guide [15], which is included in the distribution and can also be obtained from the OOQP web site, www.cs.wisc.edu/∼swright/ooqp. 2. PRIMAL-DUAL INTERIOR-POINT ALGORITHMS
+
+In this section we describe brieﬂy the interior-point algorithms implemented in OOQP. For concreteness, we focus our discussion on the formulation (1). 2.1 Optimality Conditions
+
+The optimality conditions for (1) are that there exist Lagrange multiplier vectors y and z and a slack vector s such that the following relations hold: Qx − AT y − C T z = −c, Ax = b, Cx − s = d, z ≥ 0 ⊥ s ≥ 0. (3a) (3b) (3c) (3d)
+
+The last row indicates that we require z and s to be complementary nonnegative variables, that is, we require z T s = 0 in addition to z ≥ 0, s ≥ 0. We assume that A and C have mA and mC rows, respectively, so that y ∈ RmA and z ∈ RmC . I I Primal-dual interior-point algorithms generate iterates (x, y, z, s) that are strictly feasible with respect to the inequality constraints, that is, (z, s) > 0. The complementarity measure µ deﬁned by µ = z T s/mC (4)
+
+is important in measuring the progress of the algorithm, since it measures violation of the complementarity condition z T s = 0. In general, each iterate will also be infeasible with respect to the equality constraints (3a), (3b), and (3c), so our optimality measure also takes into account violation of these constraints.
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+
+Object-Oriented Software for Quadratic Programming
+
+·
+
+7
+
+2.2
+
+Mehrotra Predictor-Corrector Algorithm
+
+We implement two algorithms: Mehrotra’s predictor-corrector method [24] and Gondzio’s higher-order corrector method [17]. (See also [27, Chapter 10] for a detailed discussion of both methods.) These algorithms have proved to be the most eﬀective methods for linear programming problems and in our experience are just as eﬀective for QP. Mehrotra’s algorithm is outlined below. Algorithm MPC (Mehrotra Predictor-Corrector) Given starting point (x, y, z, s) with (z, s) > 0, parameter τ ∈ [2, 4]; repeat Set µ = z T s/mC ; Solve for (∆xaﬀ , ∆y aﬀ , ∆z aﬀ , ∆saﬀ ):  ∆xaﬀ Q −AT −C T 0 A 0   ∆y aﬀ 0 0   C 0 0 −I   ∆z aﬀ 0 0 S Z ∆saﬀ  where S = diag(s1 , s2 , . . . , smC ), Z = diag(z1 , z2 , . . . , zmC ), rQ = Qx + c − A y − C z, rA = Ax − b, rC = Cx − s − d. Compute αaﬀ = arg max {(z, s) + α(∆z aﬀ , ∆saﬀ ) ≥ 0};
+α∈(0,1] T T
+
+ rQ     = −  rA  ,   rC  ZSe  
+
+(5)
+
+(6a) (6b) (6c) (6d) (6e)
+
+Set µaﬀ = (z + αaﬀ ∆z aﬀ )T (s + αaﬀ ∆saﬀ )/mC ; Set σ = (µaﬀ /µ)τ ; Solve for (∆x, ∆y, ∆z, ∆s):     rQ ∆x Q −AT −C T 0   A 0 rA 0 0   ∆y      , C 0   ∆z  = −   rC 0 −I aﬀ aﬀ ∆s 0 0 S Z ZSe − σµe + ∆Z ∆S e  where ∆Z aﬀ and ∆S aﬀ are deﬁned in an obvious way; Compute αmax = arg max {(s, z) + α(∆s, ∆z) ≥ 0};
+α∈(0,1]
+
+(7)
+
+Choose α ∈ (0, αmax ) according to Mehrotra’s heuristic; Set
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+
+8
+
+·
+
+E. Michael Gertz and Stephen J. Wright
+
+(x, y, z, s) ← (x, y, z, s) + α(∆x, ∆y, ∆z, ∆s); until convergence or infeasibility test satisﬁed. The direction obtained from (7) can be viewed as an approximate second-order step toward a point (x+ , y + , z + , s+ ) at which the conditions (3a), (3b), and (3c) + are satisﬁed and, in addition, the pairwise products zi s+ are all equal to σµ. The i heuristic for σ yields a value in the range (0, 1), so the step usually produces a reduction in the average value of the pairwise products from their current average of µ. Gondzio’s approach [17] follows the Mehrotra algorithm in its computation of directions from (5) and (7). It may then go on to enhance the search direction further by solving additional systems similar to (7), with variations in the last mC components of the right-hand side. Successive corrections are performed so long as (i) the length of the step αmax that can be taken along the corrected direction is increased appreciably; and (ii) the pairwise products si zi whose values are either much larger than or much smaller than the average are brought into closer correspondence with the average. The maximum number of corrections is dictated by the ratio of the time taken to factor the coeﬃcient matrix in (7) to the time taken to solve the system using these factors for a given right-hand side. When the cost of the solve is small relative to the cost of factorization, we allow more correctors to be calculated, up to a limit of 5. The algorithm uses the steplength heuristic described in Mehrotra [24, Section 6], modiﬁed slightly to ensure that the same step lengths are used for both primal and dual variables. 2.3 Convergence Conditions
+def
+
+We use convergence criteria similar to those of PCx [6]. To specify these, we use (xk , y k , z k , sk ) to denote the primal-dual variables at iteration k, and µk = k k k (z k )T sk /mC to denote the corresponding value of µ. Let rQ , rA , and rC be the values of the residuals at iteration k, and let gapk be the duality gap at iteration k, which is deﬁned by gapk = (xk )T Qxk − bT y k + cT xk − dT z k .
+def
+
+(8)
+
+(It can be shown that gapk = mC µk when (xk , y k , z k , sk ) is feasible with respect to the conditions (3a), (3b), (3c), and (3d).) We deﬁne the quantity φk as φk =
+def k k k (rQ , rA , rC ) ∞ + gapk , (Q, A, C, c, b, d) ∞
+
+where the denominator is simply the element of largest magnitude in all the data quantities that deﬁne the problem (1). Note that φk = 0 if and only if (xk , y k , z k , sk ) is optimal. Given parameters tolµ and tolr (both of which have default value 10−8 ), we declare successful termination when µk ≤ tolµ ,
+k k k (rQ , rA , rC ) ∞
+
+≤ tolr (Q, A, C, c, b, d)
+
+∞.
+
+(9)
+
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+
+Object-Oriented Software for Quadratic Programming
+
+·
+
+9
+
+We declare the problem to be probably infeasible if φk > 10−8 and φk ≥ 104 min φi .
+0≤i≤k
+
+(10)
+
+We terminate with status “unknown” if the algorithm appears to be making slow progress, that is, k ≥ 30 and
+0≤i≤k
+
+min φi ≥
+
+1 min φi , 2 1≤i≤k−30
+
+(11)
+
+or if the ratio of infeasibility to the value of µ appears to be blowing up, that is,
+k k k (rQ , rA , rC ) ∞
+
+> tolr (Q, A, C, c, b, d) ≥ 10
+8
+
+∞
+
+(12a) (12b)
+
+and
+
+k k k (rQ , rA , rC ) ∞ /µk
+
+0 0 0 (rQ , rA , rC ) ∞ /µ0 .
+
+We also terminate when the number of iterations exceeds a speciﬁed maximum. 2.4 Major Arithmetic Operations
+
+We can now identify the key arithmetic operations to be performed at each iteration of the interior-point algorithm. Computation of the residuals rQ , rA , and rC from the formulae (6c), (6d), and (6e) is performed once per iteration. Solution of the systems such as (5) and (7), which have the same coeﬃcient matrix but diﬀerent right-hand sides, is performed between two and six times per iteration. Inner products are needed in the computation of µ and µaﬀ . Componentwise vector operations are needed to determine αmax , and “saxpy” operations are needed to take the step. The implementation of all these operations depends heavily on the storage scheme used for the problem data and variables, on the speciﬁc structure of the problem data, and on the choice of algorithm for solving the linear systems. The interior-point algorithm does not need to know about these details, however, so it can be implemented in a way that is independent of these considerations. This observation is the basis of our design of OOQP. 3. LAYERED DESIGN OF OOQP AND MAJOR CLASSES
+
+OOQP derives much of its ﬂexibility from a layered design in which each layer is built from abstract operations deﬁned by the layer below it. Those who wish to create a specialized solver for a certain type of QP may customize one of the three layers. In this section, we outline the layer structure and describe brieﬂy the major classes within these layers. The top layer is the QP solver layer, which consists of the interior-point algorithms and heuristics for solving QPs. The OOQP distribution contains two implementations of the Solver class in this layer, one for Mehrotra’s predictor-corrector algorithm and one for Gondzio’s variant. Immediately below the solver layer is the problem formulation layer, which deﬁnes classes with behavior of immediate interest to interior-point QP solvers. Included are classes with methods to store and manipulate the problem data (Q, A, C, c, b, d), the current iterate (x, y, z, s), and the residuals (rQ , rA , rC ), as well as classes with methods for solving linear systems such as (5) and (7). The major classes in this layer—Data, Variables, Residuals, and LinearSystem—are discussed below. We indicate brieﬂy how these classes would be implemented for the particular case of
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+
+10
+
+·
+
+E. Michael Gertz and Stephen J. Wright
+
+the formulation (1) in which Q, A, and C are dense matrices. (This formulation appears in the OOQP distribution in the directory src/QpExample.) The lowest layer of OOQP is the linear algebra layer. This layer contains code for manipulating linear algebra objects, such as vectors and matrices, that provides behavior useful across a variety of QP formulations. 3.1 Solver Class The Solver class contains methods for monitoring and checking the convergence status of the algorithm, methods to determine the step length along a given direction, methods to deﬁne the starting point, and the solve method that implements the interior-point algorithm. The solve method for the two derived classes MehrotraSolver and GondzioSolver implements the algorithms described in Section 2 and stores the various parameters used by these algorithms. For instance, the parameter τ in Algorithm MPC is ﬁxed to a default value in the constructor routines for MehrotraSolver, along with a tolerance parameter to be used in termination tests, a parameter indicating maximum number of iterations allowed, and so on. Even though some fairly sophisticated heuristics are included directly in the solve code (such as Gondzio’s rules for additional corrector steps), the code implementing solve contains fewer than 150 lines of C++ in both cases. Key operations—residual computations, saxpy operations, linear system solves—are implemented by calls to abstract classes in the problem formulation layer, making our implementation structure independent. Apart from solve, the other important methods in Solver include the following. . start: Implements a default starting-point heuristic. While interior-point theory places fairly loose restrictions on the choice of starting point, the choice of heuristic can signiﬁcantly aﬀect the robustness and eﬃciency of the algorithm. The heuristic implemented in the OOQP distribution is described further in Section 3.7. . finalStepLength: Implements a version of Mehrotra’s starting point heuristic [24, Section 6], modiﬁed to ensure identical steps in the primal and dual variables. . doStatus: Tests for termination. Unless the user supplies a speciﬁc termination routine, this method calls another method defaultStatus, which performs the tests (9), (10), (11), and (12) and returns a code indicating the current convergence status. 3.2 Data Class The Data class stores the data deﬁning the problem and provides methods for performing the operations with this data required by the interior-point algorithms. These operations include assembling the linear systems (5) and (7), performing matrix-vector operations with the data, calculating norms of the data, reading input into the data structure from various sources, generating random problem instances, and printing the data. Since both the data structures and the methods implemented in Data depend so strongly on the structure of the problem, the parent class is almost empty. Our derived class of Data for the formulation (1) deﬁnes the vectors c, b, and d and the matrices A, C, and Q to be objects of the appropriate type from the linear algebra
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+
+Object-Oriented Software for Quadratic Programming
+
+·
+
+11
+
+layer. The dimensions of the problem (n, mA , and mC ) would be stored as integer variables. Following (5) and (7), the general form of the linear system to be solved at each iteration is      ∆x rQ Q −AT −C T 0  A 0  0 0   ∆y     = −  rA  , (13)  rC  C 0 0 −I   ∆z  ∆s rz,s 0 0 S Z for some choice of rz,s . Since the diagonal elements of Z and S are strictly positive, we can do a step of block elimination to obtain the following equivalent system:      ∆x −rQ Q AT CT A 0   −∆y  =  , −rA 0 (14a) −1 −1 −∆z −rC − Z rz,s C 0 −Z S ∆s = Z −1 (−rz,s − S∆z). (14b)
+−1
+
+Because of its symmetric indeﬁnite form and the fact that formation of Z S is trivial, the system (14a) is convenient to solve in general. (Further reduction is possible for QPs with special structures, as we discuss in Section 5.) Storage for the matrix in (14a) is allocated in the LinearSystem class, but the methods for placing Q, A, and C into this data structure are implemented in the Data class. 3.3 Variables Class The methods in the Variables class are deﬁned as pure virtual functions because they strongly depend on the structure of the variables and the problem. They are essential in the implementation of the algorithms. The derived Variables class for the formulation (1) contains int objects that store the problem dimensions n, mA , and mC and vector objects from the linear algebra layer that store x, y, z, and s. Methods in the Variables class include a method for calculating the complementarity gap µ (in the case of (1), this is deﬁned by µ = z T s/mC ); a method for adding a scalar multiple of a given search direction to the current set of variables; a method for calculating the largest multiple of a given search direction that can be added before violating the nonnegativity constraints; a method for printing the variables in some format appropriate to their structure; and methods for calculating various norms of the variables. 3.4 Residuals Class The Residuals class calculates and stores the quantities that appear on the righthand side of the linear systems such as (5) and (7) that arise at each interior-point iteration. These residuals can be partitioned into two categories: the components arising from the linear equations in the KKT conditions, and the components arising from the complementarity conditions. For the formulation (1) and linear system (13), the components rQ , rA , and rC from (6) belong to the former class, while rz,s belongs to the latter. The main methods in the Residuals class are a method for calculating the “linear equations” residuals; a method for calculating the current duality gap (which for the formulation (1) is deﬁned by (8)); a method for calculating the residual
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+
+12
+
+·
+
+E. Michael Gertz and Stephen J. Wright
+
+norm; methods for zeroing the residual vectors; and methods for calculating and manipulating the “complementarity” residuals as required by the interior-point algorithm. 3.5 LinearSystem Class The major operation at each iteration, computationally speaking, is the solution of a number of linear systems to obtain the predictor and corrector steps. For the formulation (1), these systems have the form (13). At each iteration of the interiorpoint method, such systems need to be solved two to six times, for diﬀerent choices of the right-hand side components but the same coeﬃcient matrix. Accordingly, it makes sense to separate logically the operations of factoring this matrix and solving for a speciﬁc right-hand side. We use the term “factor” in a general sense, to indicate the part of the solution process that is independent of the right-hand side. The factor method could involve certain block-elimination operations on the coeﬃcient matrix, together with an LU , LDLT , or Cholesky factorization of a reduced system. Alternatively, when an iterative solver is used, the factor operation could involve computation of a preconditioner. The factor method may need to store data, such as a permutation matrix, triangular factors of a reduced system, or preconditioner information, for use in subsequent solve operations. We use the term “solve” to indicate that part of the solution process that takes a speciﬁc right-hand side and produces a result. Usually, the results of the “factor” method are used to facilitate or speed the solve process. Depending on the algorithm we employ, the solve method could involve triangular back-and-forward substitutions, matrix-vector multiplications, applications of a preconditioner, or permutation of vector components. We describe possible implementations of factor for the formulation (1). One possibility is to apply a symmetric indeﬁnite factorization routine directly to the formulation (14a). The solve would use the resulting factors and the permutation matrices to solve (14a) and then substitute into (14b) to recover ∆s. Another possible approach is to perform another step of block elimination and obtain a further reduction to the form Q + C T ZS −1 C AT A 0 ∆x −∆y = −rQ − C T S −1 (ZrC + rz,s ) . −rA (15)
+
+Again, factor could apply a symmetric indeﬁnite factorization procedure to the coeﬃcient matrix in this system. This variant is less appealing than the approach based on (14a), however, since the latter approach allows the factorization routine to compute its own pivot sequence, while in (15) we have partially imposed a pivot ordering on the system by performing the block elimination. However, if the problem (1) contained no equality constraints (that is, A and b null), the approach (15) might make sense, as it would allow a symmetric positive deﬁnite factorization routine to be applied to the matrix Q + C T ZS −1 C. An alternative approach would be to apply an iterative method such as QMR [13; 14] or GMRES [26] (see also Kelley [20]) to the system (14a). Under this scenario, the role of the factor routine is limited to choosing a preconditioner. Since some elements of the diagonal matrix Z −1 S approach zero while others approach ∞, a diagonal scaling that ameliorates this eﬀect should be part of the preconditioning
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+
+Object-Oriented Software for Quadratic Programming
+
+·
+
+13
+
+strategy. The arguments of factor include instances of Variables and Data, which suﬃce to deﬁne the matrix fully. The information generated by factor is stored in the LinearSystem class, to be used subsequently by the solve method. The solve method accepts as input a Data object, a Variables object containing the current iterate, and a Residuals object containing the right-hand side of the linear system to be solved. It uses the information generated by factor to solve the linear system and returns an instance of Variables that contains the solution. Both factor and solve are pure virtual functions; their implementation is left to the derived class, since they depend strongly on the problem structure. 3.6 Linear Algebra Classes
+
+In the preceding section, we discussed the structure-independent algorithmic classes of the QP solver layer and the structure-dependent problem-speciﬁc classes of the problem formulation layer. None of these classes, however, supplies the behavior that allows the user to perform the linear algebra operations needed to solve an optimization problem. These classes are supplied by the linear algebra layer. The problem formulations supplied with OOQP are written entirely in terms of abstract operation of this layer. The same basic requirements for linear algebra operations and data structures recur in many diﬀerent problem formulations. Regardless of the origin of the QP, the Variable, Data, and LinearSystem classes need to perform saxpy, dot product, and norm calculations. Furthermore, many sparse problems need to store and operate on matrices in a Harwell-Boeing format. If we chose to reimplement these linear algebra operations and operations and data structures inside each of the problemdependent classes wherever they were needed, we would have faced an explosion in the size and complexity of our code. Our approach to the linear algebra classes is to identify the basic operations that are used repeatedly in our problem-dependent implementations and provide these as methods. As far as possible, we use existing packages such as BLAS, LAPACK, MA27, and PETSc to supply the behavior needed to implement these methods. We are not striving to provide a complete linear algebra package, merely one that is useful in implementing interior-point algorithms. For this reason, we do not implement many BLAS operations, whereas certain operations common to interior-point algorithms, but rare elsewhere, are given equal status with the BLAS-type routines. The primary abstract classes in the linear algebra layer are OoqpVector, GenMatrix, and SymMatrix, which represent mathematical vectors, matrices, and symmetric matrices, respectively. The DoubleLinearSolver class, which represents linear equation solvers, is also part of this layer. Because most of the methods of these classes represent mathematical operations and are named according to the nature of the operation, the interested reader can learn about the range of implemented methods by referring to the source code. We have provided concrete implementations of the linear algebra layer that perform operations on a single processor, using both dense and sparse representations of matrices, and an implementation that uses PETSc to represent vectors and matrices as objects on a distributed system.
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+
+14
+
+·
+
+E. Michael Gertz and Stephen J. Wright
+
+3.7
+
+Use of Classes and Layers in OOQP: An Illustration
+
+We now give a speciﬁc example of how the three layers in OOQP interact with each other. The start method of the Solver class implements a heuristic to determine the starting point. Since this particular heuristic has proven to be eﬀective regardless of the speciﬁc problem structure, it is part of the QP solver layer—the top layer. The code used to implement this method is as follows. void Solver::start( Variables * iterate, Data * prob, Residuals * resid, Variables * step ) { double sdatanorm = sqrt(prob->datanorm()); /* 1 */ double a = sdatanorm, b = sdatanorm; /* 2 */ iterate->interiorPoint( a, b ); resid->calcresids( prob, iterate ); resid->set_r3_xz_alpha( iterate, 0.0 ); sys->factor( prob, iterate ); sys->solve( prob, iterate, resid, step ); step->negate(); iterate->saxpy( step, 1.0 ); double shift = 1.e3 + 2*iterate->violation(); iterate->shiftBoundVariables( shift, shift ); } We describe each line in this code by referring to the way in which it would be implemented for the particular formulation (1). We emphasize, however, that the matrices Q, A, and C speciﬁc to this formulation appear nowhere in the code for the start method. Rather, they are represented by the prob variable of the Data class. Likewise, this code does not refer to the residuals rQ , rA , and rC but rather has a variable resids that represents the residuals with some unspeciﬁed structure. Lines 1 and 2 set the scalar variables a and b to be the square root of the norm of the data. The norm of the data is computed by invoking the datanorm method on prob. For formulation (3) the data norm is deﬁned to be magnitude of the largest element in the matrices Q, A, and C and the vectors c, b, and d. In line 3, we invoke the interiorPoint method in iterate to ﬁx an initial point that satisﬁes the nonnegativity constraints strictly. For formulation (1), this method sets x and y to zero, all the components of z to a, and all the components of s to b. The call to calcresids in line 4 calculates the value of the residuals of the primaldual system, through formulae similar to (6c)–(6e). Line 5 sets the complementarity part of the residuals to their aﬃne scaling value, and lines 6–8 solve the aﬃne scaling system, which for (1) has the form (5). We next invoke the saxpy method on iterate to take the full aﬃne scaling step, in other words to compute (x, y, z, s) ← (x, y, z, s) + (∆xaﬀ , ∆y aﬀ , ∆z aﬀ , ∆saﬀ ).
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+
+/* 3 /* 4 /* 5 /* 6 /* 7 /* 8
+
+*/ */ */ */ */ */
+
+/* 9 */ /* 10 */ /* 11 */
+
+Object-Oriented Software for Quadratic Programming
+
+·
+
+15
+
+This step is likely to result in an iterate that is infeasible. The violation method in line 10 calculates the amount by which the variables violate their bounds; for (1) the formula is maxi=1,2,...,mC max(−zi , −si , 0). We calculate a shift large enough to make the iterate feasible, and apply this shift by invoking the shiftBoundVariables method, for formulation (1) setting z ← z + shift and s ← s + shift. All the operations used in the start method are part of the abstract problem formulation layer. They refer to operations in the problem formulation layer, avoiding altogether references to the speciﬁc problem structure. The problem formulation layer is in turn built upon the abstract operations in the linear algebra layer. Take, for example, the implementation of the negate method for the formulation (1), which is deﬁned as follows: void QpExampleVars::negate() { x->negate(); y->negate(); z->negate(); s->negate(); } This method speciﬁcally references the fact that the variables have an x, y, z and s component. On the other hand, it makes no reference to how these variables are stored on a computer. They may be all in the core memory of a single processor or distributed across many processors. Managing such low-level details is the responsibility of the linear algebra layer. The problem formulation layer need only invoke abstract operations from this layer, in this case the negate method of the OoqpVector class. 4. OTHER CLASSES
+
+In this section, we describe some useful classes, also provided with OOQP, that don’t ﬁt into the framework described in the preceding section. 4.1 Status and Monitor Classes
+
+OOQP is designed to operate both in a stand-alone context and as part of a larger code. Since diﬀerent termination criteria and diﬀerent amounts of intermediate output are appropriate to diﬀerent contexts, we have designed the code to be ﬂexible in these matters. An abstract Monitor class is designed to monitor the algorithm’s progress, and an abstract Status class tests the status of the algorithm after each iteration, checking whether the termination criteria are satisﬁed. The two implementations of the Solver class in OOQP each provide their own defaultMonitor and defaultStatus methods. Users who wish to modify the default functionality can simply create a subclass of the Solver class that overrides these default implementations. However, since OOQP delegates responsibility for these functions to Monitor and Status classes, an alternative mechanism is available. Users can create subclasses of Monitor and Status, redeﬁning the doIt method in these classes to carry out the functionality they need. 4.2 MpsReader Class The MPS format has been widely used since the 1950s to deﬁne linear programming problems. It is an ASCII ﬁle format that allows naming of the variables, constraints,
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+
+16
+
+·
+
+E. Michael Gertz and Stephen J. Wright
+
+objectives, and right-hand sides in a linear program, and assignment of numerical values that deﬁne the data objects. Extensions of the format to allow deﬁnition of quadratic programs have been proposed by various authors, most notably Maros and M´sz´ros [23]. The key extension is the addition of a section to the MPS e a ﬁle that deﬁnes elements of the Hessian. Though primitive by the standards of modeling languages, MPS remains a popular format for deﬁning linear programming problems, and many test problems are speciﬁed in this format. OOQP includes an MpsReader class that reads MPS ﬁles. The main input method in the MpsReader class is readQpGen, which reads a ﬁle in the extended MPS format described in [23] into the data structures of the class QpGenData, a derived class of Data for general sparse quadratic programs. The names assigned to primal and dual variables in the MPS input ﬁle are stored for later use in the output method printSolution. 5. IMPLEMENTING DERIVED CLASSES FOR STRUCTURED QPS
+
+In this section, we illustrate the use of the OOQP framework in implementing eﬃcient solvers for some highly structured quadratic programming applications. We give a brief description of how some of the derived classes for Data, Variables, Residuals, and LinearSystem are implemented in a way that respects the structure of these problem types. 5.1 Huber Regression
+
+Given a matrix A ∈ R ×n and a vector b ∈ R , we seek the vector x ∈ Rn that I I I minimizes the objective function ρ((Ax − b)i ),
+i=1
+
+(16)
+
+where ρ(t) = |t| ≤ τ, τ |t| − 1 τ 2 , |t| > τ, 2
+1 2 2t ,
+
+where τ is a positive parameter. The function behaves like a least-squares loss function for small values of the residuals and like the more robust 1 function for larger residuals, so its minimizer is less sensitive to “outliers” in the data than is the least-squares function. By setting the derivative of (16) to zero, we can formulate this problem as a mixed monotone linear complementarity problem by introducing variables w, λ1 , λ2 , γ 1 , γ 2 ∈ R and writing I w − Ax + b + λ2 − λ1 = 0, A w = 0, γ 1 = w + τ e, γ 2 = −w + τ e, γ ≥ 0 ⊥ λ ≥ 0, γ ≥ 0 ⊥ λ ≥ 0.
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003. 2 2 1 1 T
+
+(17a) (17b) (17c) (17d) (17e) (17f)
+
+Object-Oriented Software for Quadratic Programming
+
+·
+
+17
+
+Mangasarian and Musicant [22, formula (9)] show that the conditions (17) are the optimality conditions of the following quadratic program:
+1 min 2 wT w + τ eT (λ1 + λ2 ),
+
+(18a)
+2
+
+subject to w − Ax + b + λ − λ = 0, λ ≥ 0, λ ≥ 0. Li and Swetits [21] derive an alternative quadratic program that yields the optimality conditions (17), namely, min 1 wT w + bT w, 2 subject to − AT w = 0, −τ e ≤ w ≤ τ e. (19)
+
+2
+
+1
+
+1
+
+Both forms and their relationship are discussed by Wright [28]. Obviously, both have a highly speciﬁc structure: The Hessian is simply the identity matrix, the constraint matrix in (18) is sparse and structured, and the bounds in (19) can all be deﬁned by a scalar τ . OOQP contains an implementation of a solver for this problem in the directory src/Huber. The HuberData class, derived from Data, contains the dimensions of the matrix A and storage for τ as well as A and b. (The structures for both A and b are dense, since these quantities are expected to be dense in most applications.) The HuberData class also contains a method textInput that reads the contents of A and b from a ﬁle in a simple format. For benchmarking purposes, it also contains a method datarandom for deﬁning a problem of speciﬁed dimensions with random data. The HuberVars structure, which derives from Variables, contains vectors of doubles to store w, z, λ1 , λ2 , γ 1 and γ 2 . The methods for HuberVars are deﬁned in a way appropriate to the data structures; for example, µ is calculated as (λ1 )T γ 1 + (λ2 )T γ 2 /(2 ). In the Residual class HuberResiduals, four vectors are deﬁned to hold the residuals corresponding to the ﬁrst four equations in (17), while two more vectors 1 hold residuals corresponding to the complementarity conditions λ1 γi = 0, i = i 2 2 1, 2, . . . , and λi γi = 0, i = 1, 2, . . . , , respectively. The linear systems to be solved at each iteration of the primal-dual algorithm applied to this problem have the following general form:      I −A −I I 0 0 ∆w rw  AT 0 0 0 0 0   ∆x   rx        −I 0 0 0 I 0   ∆λ1   rλ1  =   .  I 0 0 0 0 I   ∆λ2   rλ2        0 0 Γ1 0 Λ1 0   ∆γ 1   rγ1  ∆γ 2 rγ2 0 0 0 Γ2 0 Λ2 By performing block elimination, we can reduce to a much smaller system of the form AT I + (Γ1 )−1 Λ1 + (Γ2 )−1 Λ2
+−1
+
+A∆x = rx . ¯
+
+(20)
+
+(Note that the matrix I + (Γ1 )−1 Λ1 + (Γ2 )−1 Λ2 is diagonal and therefore easy to form and invert.) The factor method in the derived class HuberLinsys forms the coeﬃcient matrix in (20) and performs a Cholesky factorization, storing the triangular factor L. The solve method performs the corresponding block eliminations
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+
+18
+
+·
+
+E. Michael Gertz and Stephen J. Wright
+
+on the right-hand side vector to obtain rx in (20), solves this system to obtain ∆x, ¯ and then recovers the other components of the solution. The cost of each factor is O(n2 + n3 ), while the cost of each solve is O(n ). Since n is typically small, both operations are economical. 5.2 Support Vector Machines
+
+The following problem that arises in machine learning (Vapnik [25, Chapter 5]): Given a set of points xi ∈ Rn , i = 1, 2, . . . , , where each point is tagged with a I label yi that is either +1 or −1, we seek a hyperplane such that all points with label yi = +1 lie on one side of the hyperplane while all points labeled with −1 lie on the other side. That is, we would like the following properties to hold for some w ∈ Rn and β ∈ R: I I yi = +1 ⇔ wT xi − β > 0; yi = −1 ⇔ wT xi − β < 0, or, equivalently, yi (wT xi −β) > 0, i = 1, 2, . . . , . By scaling w and β appropriately, we see that if such a hyperplane exists, we have without loss of generality that yi (wT xi − β) ≥ 1, i = 1, 2, . . . , . (21)
+
+If such a plane exists, the data is said to be separable. For nonseparable data, one may still wish to identify the hyperplane that minimizes the misclassiﬁcation in some sense; we would like to have not too many points lying on the wrong side of the hyperplane. One formulation of this problem is as follows [25, p. 137]: min 1 wT w + CeT ξ, subject to 2 yi (wT xi − β) ≥ 1 − ξi , ξi ≥ 0, i = 1, 2, . . . , . (22a) (22b)
+
+The unknowns are the hyperplane variables (w, β) and the vector ξ ∈ R that meaI sures violation of the condition (21). The positive parameter C weighs our desire to minimize the classiﬁcation violations against a desire to keep w of reasonable size. In a typical problem, the dimension n of the space in which each xi lies is not very large (10–100, say), while the number of points can be quite large (103 –107 ). Hence, the problem (22) can be a very large, highly structured quadratic program. Denoting Y = [yi xi ]i=1 , we can rewrite (22) as follows:
+w,β,ξ
+
+b = [yi ]i=1 ,
+
+min
+
+1 T w w + CeT ξ subject to Y w + ξ − βb ≥ e, ξ ≥ 0. 2
+
+(23)
+
+By writing the optimality conditions for this system and applying the usual derivation of the primal-dual equations, we arrive at the following general form for the linear system to be solved at each interior-point iteration.      ∆w rw I −Y T Y I −I 0 −b   ∆v   rβ          ∆ξ   rC  −I −I =       ∆s   rb  . bT         ∆t   rSV  S V rT Ξ ∆β T Ξ
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+
+Object-Oriented Software for Quadratic Programming
+
+·
+
+19
+
+By performing successive block eliminations in the usual style, we arrive at a reduced system in the variables ∆w and ∆β alone, with the following coeﬃcient matrix: I + Y T DY −Y T Db , −bT DY bT Db where D = (V −1 S + T −1 Ξ)−1 .
+
+This matrix has dimension n + 1 and requires O(n2 ) operations to form. It takes O(n3 + n ) operations to solve the reduced system and to recover the eliminated components. The OOQP distribution contains an implementation of an SVM solver in directory src/Svm. The SvmData class, a subclass of Data, stores the dimensions hyperplanedim (n) and nobservations ( ), the objects Y and b stored as a dense matrix [Y | b], the object b stored as a vector, and the penalty constant C. It also contains methods to multiply given vectors by [Y | b] and its transpose, a method to read input from an ASCII ﬁle in a simple format, a method to form the inner product of a given vector with b, and methods to generate random data and to print the data objects. The subclass SvmVars of Variables consists of dense vectors containing w, β, ξ, v, s, and t, together with a method to print the solution, a method to print just the interesting part of the solution (w and β), and the pure virtual methods required by the parent Variables class. The subclasses SvmResiduals (of Residuals) and SvmLinsys (of LinearSystem) are deﬁned in such as way as to facilitate the approach described in the previous paragraph for solving the linear systems. 5.3 Convex Quadratic Programming with Bound Constraints
+
+Consider the following convex QP in which the only constraints are upper and lower bounds on selected variables: minx
+1 T 2 x Qx
+
++ cT x subject to xi ≤ ui , i ∈ U,
+
+(24a) (24b)
+
+xi ≥ li , i ∈ L,
+
+where L and U are subsets of {1, 2, . . . , n}. We deﬁne the following row submatrices of I, corresponding to the constraint index sets L and U: EL = eT i
+i∈L
+
+,
+
+EU = eT i
+
+i∈U
+
+,
+
+where ei is the vector whose only nonzero element is a “1” in position i. Introducing slack variables si , i ∈ L for the lower bounds and ti , i ∈ U for the upper bounds, and Lagrange multipliers vi and zi for the lower and upper bounds, respectively, we obtain the following optimality conditions:
+T T Qx − EL v + EU z = −c, EL x − s = l,
+
+EU x + t = u, s ≥ 0 ⊥ v ≥ 0, t ≥ 0 ⊥ z ≥ 0, where l = [li ]i∈L , v = [vi ]i∈L , and so on. By writing the general form of the primaldual linear system and performing the now familiar block elimination process, we
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+
+20
+
+·
+
+E. Michael Gertz and Stephen J. Wright
+
+arrive at a reduced system in the step ∆w whose coeﬃcient matrix is
+T T ¯ def Q = Q + EL S −1 V EL + EU T −1 ZEU .
+
+(25)
+
+The second and third terms are diagonal matrices with nonzero elements occurring at diagonal locations corresponding to L (for the second term) and U (for the third term). The matrix (25) is symmetric and positive semideﬁnite. One possibility therefore is to solve it with a sparse Cholesky factorization code, modiﬁed to allow for small pivots. A second possibility is to apply an iterative method, most suitably a preconditioned conjugate gradient approach. Some of the diagonals in the second and third terms of (25) approach ∞ as the algorithm approaches the solution, and the preconditioner should at a minimum improve the conditioning of the system solved. Speciﬁcally, deﬁning a diagonal preconditioner D as follows: Dii = max
+def T T EL S −1 V EL + EU T −1 ZEU ii
+
+,1 ,
+
+and applying the preconditioner symmetrically to obtain ¯ D−1/2 QD−1/2 ,
+
+(26)
+
+we would obtain a matrix that approaches a symmetric permutation of the following: ˆ Q 0 , 0 I ˆ where Q is the reduced Hessian (the submatrix of Q corresponding to the components of x that are away from their bounds at the solution). An additional level of preconditioning (for example, incomplete Cholesky) could be applied to the matrix in (26) to further enhance the convergence properties of conjugate gradient. The OOQP distribution contains an implementation of a solver for (24) for a dense Hessian. The QpBoundData subclass of Data stores Q as a SymMatrix object, and c, l, and u as SimpleVector objects containing n elements—the bound vectors store even their zero elements. Two other SimpleVector objects index lower and index upper of length n represent the information in L and U; they contain nonzero elements in locations corresponding to the elements of L and U, respectively. Note that the class QpBoundData itself does not mandate a dense storage scheme; only when an instance of this class is created by the method QpBoundDense::makeData() is the storage scheme for Q actually deﬁned to be dense. (We could implement an alternative method QpBoundSparse::makeData() that uses the same deﬁnition of QpBoundData but uses a sparse storage scheme for Q instead.) The QpBoundData class also contains a datarandom() method to generate a random problem with speciﬁed dimension. The QpBoundVars subclass of Variables stores x, s, t, v, and z as OoqpVector objects of size n and uses the index lower and index upper vectors from the QpBoundData class to indicate which elements of s, t, v, and z are of real interest. QpBoundResiduals is a subclass of Residuals that implements the pure virtual methods in a straightforward way, while the QpBoundLinsys subclass of LinearSystem sets up the matrix (25) as a dense symmetric matrix and uses the LAPACK implementation of Cholesky factorization to solve it.
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+
+Object-Oriented Software for Quadratic Programming
+
+·
+
+21
+
+We have also implemented a solver for a sparse version of (24) that uses iterative methods from the PETSc library to solve the main linear system at each iteration. The PETSc version uses the same problem formulation classes as the dense version: QpBoundData, QpBoundResiduals, QpBoundVars, and QpBoundLinsys. It uses, however, a completely diﬀerent linear algebra layer (see Section 3). 6. OOQP DISTRIBUTION
+
+The OOQP distribution archive can be obtained from http://www.cs.wisc.edu/∼swright/ooqp/ To install OOQP on a Unix system, follow the download procedure to obtain a gzipped tar ﬁle, and unpack to obtain a directory OOQP. Refer to the ﬁle INSTALL in this directory for information on setting up the environment required by OOQP (for example, ensuring that a BLAS library is available and obtaining the MA27 package from the HSL Archive) and building OOQP executables for the various solvers. The README ﬁle contains basic information about the contents of the distribution directory, the problems solved, and locations of the documentation. In particular, by pointing a browser at the ﬁle doc/index.html, one can obtain pointers to comprehensive documentation of various types. By default, the conﬁgure-make process builds executables for the following solvers: —two solvers for general sparse QPs, using Mehrotra’s original algorithm and Gondzio’s variant, respectively, and solving linear equations with MA27 in both cases; —two solvers for general dense QPs, using Mehrotra’s original algorithm and Gondzio’s variant, respectively; —a solver for the QP with bounds described in Section 5.3, with dense Hessian; —a solver for Huber regression, described in Section 5.1; —a solver for QPs arising from support vector machines, described in Section 5.2. Interfaces that make some of the functionality of these solvers available via the AMPL modeling language and MATLAB are also included in the distribution but are not conﬁgured in the default build process. For AMPL, a solver for general sparse QP is available; instructions for building this solver are included in the INSTALL ﬁle. The OOQP distribution provides MATLAB functionality for reading MPS input ﬁles, calling a solver for general sparse QP, and calling solvers for SVM and Huber regression problems. Instructions for building the MATLAB interface can be found in the ﬁle README Matlab. Acknowledgments We thank Jeﬀ Linderoth, who collaborated on this project during his time at Argonne in 1998–2000, and Nate Brixius and Bjarni Halldorsson, who contributed to the early stages of this project in the summer of 1999. We also thank Iain Duﬀ for his advice regarding the MA27 and MA57 codes, Alex Pothen for supplying Oblio, and Hans Mittelmann for his eﬀorts in benchmarking this and many other optimization codes.
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+
+22
+
+·
+
+E. Michael Gertz and Stephen J. Wright
+
+This research was supported by the Mathematical, Information, and Computational Sciences Division subprogram of the Oﬃce of Advanced Scientiﬁc Computing Research, U.S. Department of Energy, under Contract W-31-109-Eng-38; and by the National Science Foundation Grants CDA-9726385 and ACI-0082065.
+REFERENCES S. Balay, W. Gropp, L. Curfman McInnes, and B. Smith. PETSc Users Manual. Mathematics and Computer Science Division, Argonne National Laboratory, 9700 S. Cass Avenue, Argonne, Ill. 60439, April 2001. R. Bartlett. An introduction to rSQP++: An object-oriented framework for reduced-space successive quadratic programming. Report, Department of Chemical Engineering, Carnegie Mellon University, Pittsburgh, Penn., October 1996. S. Benson, L. Curfman McInnes, and J. J. Mor´. TAO users manual. Technical Memorandum e ANL/MCS-TM-249, Argonne National Laboratory, Argonne, Ill. 60439, March 2001. A. M. Bruaset and H. P. Langtangen. Object-oriented design of preconditioned iterative methods in Diﬀpack. ACM Transactions on Mathematical Software, 23(1):50–80, 1997. E. Chow and M. A. Heroux. An object-oriented framework for block preconditioning. ACM Transactions on Mathematical Software, 24(2):159–183, 1998. J. Czyzyk, S. Mehrotra, M. Wagner, and S. J. Wright. PCx: An interior-point code for linear programming. Optimization Methods and Software, 11/12:397–430, 1999. J. W. Demmel, J. R. Gilbert, and X. S. Li. SuperLU User’s Guide, 1999. Available from www.nersc.gov/ xiaoye/SuperLU/. H. L. Deng, W. Gouveia, and J. Scales. The CWP object-oriented optimization library. Technical report, Center for Wave Phenomena, Colorado School of Mines, June 1994. F. Dobrian, G. Kumfert, and A. Pothen. The design of sparse direct solvers using objectoriented techniques. In A. M. Bruaset, H. P. Langtangen, and E. Quak, editors, Modern Tools in Scientiﬁc Computing. Springer-Verlag, 2000. F. Dobrian and A. Pothen. Oblio: A sparse direct solver library for serial and parallel computations. Technical report, Department of Computer Science, Old Dominion University, 2000. Iain S. Duﬀ and J. K. Reid. MA27 – A set of Fortran subroutines for solving sparse symmetric sets of linear equations. Technical Report AERE R10533, AERE Harwell Laboratory, London, England, 1982. M. C. Ferris and T. S. Munson. Interior-point methods for massive support vector machines. Data Mining Institute Technical Report 00-05, Computer Sciences Department, University of Wisconsin, Madison, May 2000. R. Freund. A transpose-free quasi-minimal residual algorithm for non-Hermitian linear systems. SIAM Journal on Scientiﬁc Computing, 14:470–482, 1993. R. Freund and N. Nachtigal. QMR: A quasi-minimal residual method for non-Hermitian linear systems. Numerische Mathematik, 60:315–339, 1991. E. M. Gertz and S. J. Wright. OOQP User Guide. Mathematics and Computer Science Division, Argonne National Laboratory, Argonne, Ill., September 2001. Available from http://www.cs.wisc.edu/∼swright/OOQP/. M. Gockenbach and W. Symes. An overview of HCL1.0. ACM Transactions on Mathematical Software, 25:191–212, 1999. J. Gondzio. Multiple centrality corrections in a primal-dual method for linear programming. Computational Optimization and Applications, 6:137–156, 1996. J. Gondzio and R. Sarkissian. Parallel interior-point solver for structured linear programs. Technical Report MS-2000-025, Department of Mathematics and Statistics, The University of Edinburgh, December 2000. Revised November 2002. HSL: A collection of Fortran codes for large scale scientiﬁc computation, 2000. Full details in http://www.numerical.rl.ac.uk/hsl. C. T. Kelley. Iterative Methods for Linear and Nonlinear Equations. Number 16 in Frontiers in Applied Mathematics. SIAM Publications, Philadelphia, 1995.
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+
+Object-Oriented Software for Quadratic Programming
+
+·
+
+23
+
+W. Li and J. J. Swetits. The linear 1 estimator and the Huber M-estimator. SIAM Journal on Optimization, 8:457–475, 1998. O. L. Mangasarian and D. R. Musicant. Robust linear and support vector machines. IEEE Transactions on Pattern Analysis and Machine Intelligence, 22(9):1–6, 2000. I. Maros and C. M´sz´ros. A repository of convex quadratic programming problems. Optimizae a tion Methods and Software, 11 and 12:671–681, December 1999. S. Mehrotra. On the implementation of a primal-dual interior point method. SIAM Journal on Optimization, 2:575–601, 1992. V. N. Vapnik. The Nature of Statistical Learning Theory. Statistics for Engineering and Information Science. Springer, second edition, 1999. H. Walker. Implementation of the GMRES method using Householder transformations. SIAM Journal on Scientiﬁc and Statistical Computing, 9:815–825, 1989. S. J. Wright. Primal-Dual Interior-Point Methods. SIAM Publications, Philadelphia, 1997. S. J. Wright. On reduced convex QP formulations of monotone LCPs. Mathematical Programming, 90:459–473, 2001.
+
+ACM Transactions on Computational Logic, Vol. xx, No. xx, xx 2003.
+

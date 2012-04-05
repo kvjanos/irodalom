@@ -1,0 +1,627 @@
+Journal of Biomolecular Screening
+http://jbx.sagepub.com/ DetecTiff©: A Novel Image Analysis Routine for High-Content Screening Microscopy
+Daniel F. Gilbert, Till Meinhof, Rainer Pepperkok and Heiko Runz J Biomol Screen 2009 14: 944 originally published online 29 July 2009 DOI: 10.1177/1087057109339523 The online version of this article can be found at: http://jbx.sagepub.com/content/14/8/944
+
+Published by:
+http://www.sagepublications.com
+
+On behalf of:
+
+Society for Biomolecular Sciences
+
+Additional services and information for Journal of Biomolecular Screening can be found at: Email Alerts: http://jbx.sagepub.com/cgi/alerts Subscriptions: http://jbx.sagepub.com/subscriptions Reprints: http://www.sagepub.com/journalsReprints.nav Permissions: http://www.sagepub.com/journalsPermissions.nav Citations: http://jbx.sagepub.com/content/14/8/944.refs.html
+
+Downloaded from jbx.sagepub.com at UCL Library Services on August 4, 2010
+
+DetecTiff : A Novel Image Analysis Routine for High-Content Screening Microscopy
+DANIEL F. GILBERT,1 TILL MEINHOF,2 RAINER PEPPERKOK,1,3 and HEIKO RUNZ2,3
+
+in this article, the authors describe the image analysis software detectiff , which allows fully automated object recognition and quantification from digital images. the core module of the labView-based routine is an algorithm for structure recognition that employs intensity thresholding and size-dependent particle filtering from microscopic images in an iterative manner. detected structures are converted into templates, which are used for quantitative image analysis. detectiff enables processing of multiple detection channels and provides functions for template organization and fast interpretation of acquired data. the authors demonstrate the applicability of detectiff for automated analysis of cellular uptake of fluorescencelabeled low-density lipoproteins as well as diverse other image data sets from a variety of biomedical applications. moreover, the performance of detectiff is compared with preexisting image analysis tools. the results show that detectiff can be applied with high consistency for automated quantitative analysis of image data (e.g., from large-scale functional rnai screening projects). (Journal of Biomolecular Screening 2009:944-955) Key words: cholesterol; high-content screening microscopy; image analysis software; labView; membrane trafficking; rnai
+
+iological data acquired by microscopic imaging are often complex and difficult to interpret. With the increasing availability of functional high-throughput microscopic imaging technology, enormous amounts of digital image data are being generated, ranging up to thousands of images for a single assay. to efficiently make use of the wealth of information within such images, automatic, computerized image-handling tools for processing, evaluating, and organizing such data are indispensable.1-3 compared with pure visual inspection, automated systems for the acquisition and analysis of phenotypic data offer important advantages such as a high reproducibility of structure recognition and interpretation, extraction of quantitative parameters, as well as high-throughput performance. However, automated image interpretation constitutes the bottleneck for most high-throughput microscopic experiments. often,
+
+B
+
+INTRODUCTION
+
+1 2
+
+cell biology/biophysics unit, embl, Heidelberg, germany.
+
+institute of Human genetics, university of Heidelberg, Heidelberg, germany.
+
+3 molecular medicine partnership unit, university of Heidelberg/embl, Heidelberg, germany.
+
+received sept 19, 2008, and in revised form apr 30, 2009. accepted for publication may 4, 2009. Journal of biomolecular screening 14(8); 2009 doi: 10.1177/1087057109339523
+
+the chief limiting task therein is to find the biological objects of interest in an image. generating efficient algorithms for this step is difficult, and available software tools are challenged by variation not only in the signal-to-noise ratio but also in the heterogeneity of both signal intensities and morphology of the biological objects of interest. a typical way to overcome the problem of structure recognition is to preprocess the image by noise filtering, normalization of intensities, and image segmentation, which aims at defining the boundaries of the objects of interest.4-8 However, these methods predominantly follow either an intensity-based or a morphology-based definition of an object, which relies on global thresholds that have to be predefined manually by the user and that are applied on all the images, thereby not taking into account the often enormous variation within biological samples. more recent methods that compensate well for sample heterogeneity are typically restricted to custom applications,9-13 require time-intensive adaptation or parameterization of open-source or commercial software,3,14 or need extensive segmentation time per fluorescence channel.11,15 a fast and easy-to-use object-based structure recognition tool that, upon initial teaching by the user, consistently recognizes the objects of interest irrespective of phenotypic variation is therefore desired. detectiff is a structure-recognition algorithm that uses an iterative procedure to reliably recognize objects of interest from microscopic images. For this, a combined approach of dynamic intensity thresholding and size-dependent particle filtering is applied. by integrating intensity as well as
+
+944
+
+www.sbsonline.org
+Downloaded from jbx.sagepub.com at UCL Library Services on August 4, 2010
+
+© 2009 Society for Biomolecular Sciences
+
+DetecTiff © , a Novel Image Analysis Software structure-based information for object recognition, the software allows extraction of precise quantitative information from analyzed images. the high accuracy of the algorithm is validated here by comparing detectiff to manual image analysis using metamorph and imageJ software as well as to cellprofiler, an alternative open-source software for automated identification and quantification of cell phenotypes.3 the broad applicability of detectiff is demonstrated by using the software for structure recognition from tissues or primary cell cultures, for structure-activity correlations in live-cell experiments exploring glycine- or gabaa-receptor function,16,17 as well as for analysis of large image data sets acquired fully automatically from cell arrays and multiwell plates. our results show that detectiff is a highly reliable analysis tool that is well suited for large-scale image analysis (e.g., in high-throughput rnai screening projects). MATERIALS AND METHODS LabView programming detectiff source code was written in labView 7.0 (national instruments, austin, tX) with the optional Vision development module in the microsoft Windows Xp professional platform. labView is a graphical programming language with applications called virtual instruments (Vis) that are composed of a front panel, the user interface (Fig. 1), and a hidden block diagram that represents the program structure and may run within the labView development environment or as stand-alone applications. detectiff is a software package consisting of 108 sub-Vis (components in the diagram of a higher level Vi: 75 are for image processing, 12 for quantification data handling and report generation, 8 for error handling, and 13 for other applications). detectiff-Vis are organized in 11 hierarchical levels. the methodology and structure-recognition principle presented here can be easily customized for other bioassays to address a variety of experimental applications. Cell culture, siRNA transfection, and biological assays unless denoted otherwise, material was purchased from sigma (taufkirchen, germany). Hela cells were plated at a density of 5 × 105 cells on chambered glass slides (Fisher scientific, nidderau, germany) or 96-well or 384-well black clear-bottom culture dishes (corning costar, cat. no. 3603) and cultured as described.18 reverse sirna transfection by lipofectamine2000 (invitrogen, carlsbad, ca) was performed with sirnas against ldlr (nm_000527; ambion sirna no. 3921) or nonsilencing control sirna neg-1 (ambion sirna no. 103860) according to protocols described previously.19 cells were incubated for 32 h in dmem (life technologies)/2 mm l-glutamine/100 iu/ml penicillin/100 µg/ml streptomycin/5% fetal calf serum. For analysis of cellular fluorescence-labeled low-density lipoprotein (dii-ldl) uptake, medium was then exchanged for dmem/2 mm l-glutamine/100 iu/ml penicillin/ 100 µg/ml streptomycin/0.2% (w/v) bovine serum albumin (bsa). Forty-eight hours after sirna transfection, cells were exposed for 45 min to 1% (w/v) 2-hydroxy-β-cyclodextrin/0.2% (w/v) bsa before washing cells with ice-cold imaging solution (mem without phenol red, supplemented with 30 mm Hepes, and 0.5 g/l sodium bicarbonate, pH 7.4; invitrogen)/0.2% (w/v) bsa and labeling with dii-ldl (50 µg/ml; molecular probes, carlsbad, ca) for 30 min at 4 °c. dii-ldl uptake was stimulated for 20 min at 37.5 °c. cells were washed briefly in imaging solution at pH 3.5, fixed in 3% paraformaldehyde, and counterstained with nuclear marker draq5 (biostatus, leicestershire, uK) and er-tracker dpX (molecular probes). For estimation of perinuclear cholesterol levels, cells cultivated on 96-well plates were fixed, stained with 50 µg/ml Filipin in phosphate-buffered saline from a stock solution of 1 mg/ml in dimethyl formamide, and counterstained with nuclear marker draq5. Image acquisition and alternative image analysis images were acquired on an automated screening epifluorescence microscope (scan^r system; olympus soft imaging solutions, münster, germany)4,8 using 10× or 20× microscope objectives (olympus europe) and filter sets for Hoechst, cy3, and cy5 (chroma inc.). For comparison of detectiff to alternative image analysis tools, indicated numbers of automatically acquired images with visually varying fluorescence signal intensities in the cy3-channel (corresponding to dii-ldl signal) were selected. the circumference of every individual cell out of the approximately 450 cells within 1 image was manually determined using the Hoechst channel (representing er-tracker dpX signal) by means of the software metamorph 5.0 (universal imaging corporation, downington, pa). using this manually generated cell mask on 16-bit tiff images, parameters, number of cells, and cell area (in pixels) and for functional analysis of cellular dii-ldl uptake total cell-associated dii-ldl fluorescence intensity were quantified. For comparison of detectiff with alternative automated image analysis tools, the software package cellprofiler (vs 1.0.6031)3 was applied. For extraction of number, size, and intensity information, the cellprofiler examples “fruit fly cells” and “speckle counting” were downloaded from http://www.cellprofiler .org/examples.htm, combined as 1 pipeline (see supplemental information at http://jbx.sagepub.com/supplemental/), and used on the selected images. Gene expression analysis sirna-knock-down efficiency was validated by isolating rnas from transfected Hela cells (rneasy protocol; qiagen,
+
+Journal of Biomolecular Screening 14(8); 2009
+Downloaded from jbx.sagepub.com at UCL Library Services on August 4, 2010
+
+www.sbsonline.org
+
+945
+
+Gilbert et al. Venlo, the netherlands). upon reverse transcription with superscript rna polymerase ii (invitrogen), cdna levels were quantified by performing quantitative reverse transcriptase polymerase chain reaction in an abi7500 real time thermal cycler (applied biosystems, Foster city, ca). the following primer pairs were used: CGCGAGAAGATGACCCAGAT and TCACCGGAGTCCATCACGAT for human beta-actin (actb; nm_001101); ACCCCAATGAGACCAATGAAAT and CAGCC CATCTTTGATGAGCTT for human ribosomal protein l19 (rpl19; nm_000981); and AGTGTGACCGGGAATATGACT and CCGCTGTGACACTTGAACTT for human low density lipoprotein receptor (ldlr; nm_000527). RESULTS For structure recognition DetecTiff © combines dynamic intensity thresholding and size-dependent particle filtering the iterative procedure of detectiff’s object recognition algorithm is shown in Figure 2. the current version of detectiff allows uploading of the file formats bmp, Jpg, png, tiFF, and text images (e.g., labView 16-bit file format; Fig. 2A). if only part of the images are to be analyzed (e.g., a circular region; see also Fig. 3), detectiff offers the possibility to manually predefine this region within an image, which is then applied to all subsequent images of an image series. For structure recognition, the original image is 1st filtered by a median filter to remove speckle noise from the image (Fig. 2B). of this filtered original image, a copy is generated, which is temporarily saved in 256 gray-level image file format (corresponding to an 8-bit tiff format). that image is used by detectiff’s structure-recognition algorithm to generate masks for subsequent quantitative analyses from the original images. to the gray-level images, a series of brightness thresholds is applied in an iterative manner (Fig. 2C). the 1st recognizes all pixels with intensities above a certain intensity threshold. this initial intensity threshold should be predefined manually by the user when starting the software for the 1st time. it serves as a starting point for the subsequent iteration procedure, as areas with signal intensities falling below this threshold are neglected by the software. as a result of this step, a black-and-white image (bw-image) is generated (Fig. 2D): pixels showing intensities exceeding the initial threshold are assigned the intensity 255 (white = objects), pixels below this intensity are defined as containing no signal (intensity 0, black = background). this intensity-based structure-recognition algorithm is now followed by an area-based structure recognition algorithm. For this, the bw-image is analyzed by particle filtering for objects that fall into a predefined size range within which objects will be accepted and kept for further processing. all objects that are out of range are discarded, and the resulting bw-image is saved. Following this 1st cycle of structure recognition, automated iterations of structure recognition are initiated that apply automatically generated lower-intensity thresholds to the 8-bit copy of the original image; that is, in subsequent cycles, darker structures will be recognized and added to the bw-images of the respective previous cycle of structure recognition (Fig. 2B-D). in a final step, object detection is followed by segmentation of the image (Fig. 2E). For this, detected objects are dilated; that is, the shape of the “real” object is extrapolated based on information from the original image(s). the total number of iterations for structure recognition can be predefined by the user. by default, the maximum of 255 iterations are performed. detectiff’s iterative image analysis approach results in a final template that defines the areas in the source image or any other image in an image series from which quantitative information can be extracted. alternatively, detectiff provides the option that this template can now be applied as a source for detection of another morphological readout (e.g., the detection subcellular structures within a cell template; see also Fig. 4), and an additional iterative image analysis procedure with alternative parameter settings is initiated (Fig. 2F). DetecTiff © handling and user interface upon setup of the software, the user is invited to define parameter settings at detectiff’s user interface (Fig. 1) according to individual needs. once fixed, these settings will allow fully automated analysis of desired structures. it is obligatory to define the number of images per frame (e.g., different fluorescence detection channels) in the image source directory (1) (at present, a maximum of 3 channels per frame may be processed) and the number of channels (2) and their order (3) per frame in the image source directory. For optimized object recognition, the threshold from which iterative structure recognition is initiated (4), the number of desired iteration cycles (intensity reduction factor) (5), and the range of the accepted object area (lower and upper value in pixels) (6) can be defined. moreover, the user interface allows the user to adjust a median filter (7) for removal of speckle noise from the source image (by defining the number of pixels in X and y to be processed at the same time) and provides a function to reduce contrast (‘order#’). if detectiff’s template is to be used for recognition of fluorescence signal within subobjects (e.g., signal intensities in subcellular organelles within a cell template), representative values for upper-intensity threshold, intensity reduction factor, and median filter accordingly need to be defined for such objects in the checkbox “readout” (8). For better user friendliness, additional settings can be adjusted according to one’s individual needs, such as the size of an image window display during ongoing image analysis (9), selection of the channel from which background intensities should be determined (10), or to which extend detected objects should be dilated after iterative thresholding (11). For each image series, detectiff generates
+
+946
+
+www.sbsonline.org
+Downloaded from jbx.sagepub.com at UCL Library Services on August 4, 2010
+
+Journal of Biomolecular Screening 14(8); 2009
+
+DetecTiff © , a Novel Image Analysis Software
+
+15 1 2 3 9 10 11 12 13 14 4 5 6 7 8
+
+FIG. 1. detectiff user interface. see text for details.
+
+a number of 8-bit images and quantification data files, which are saved in a subdirectory of the image source directory. the name of this subdirectory can be assigned at the user interface (12). selecting a pinhole (13) enables or disables definition of a region of interest (roi) in case only parts of the source image are to be analyzed. once defined, this roi is applied to all images in the image source directory undergoing quantitative image analysis. a number of region tools are available to define the shape of this roi (14). upon starting the software (15), the user is asked to define the location of the source image folder for each series of images. during analysis, a window showing an overlay picture allows real-time observation of the ongoing image analysis for quality control. after initial configuration, detectiff allows processing of single images or a series of images in a fully automated manner and creates templates that can be used for quantitative data extraction. For every readout image, up to 3 different quantification masks (e.g., defining image segments for single cell outlines, intracellular structures, and background) are generated during image processing. these image masks are saved as 8-bit 256 gray value tiff images in the source image folder (e.g., as cell_mask_***.tif, endo_mask_***.tif, and bg_mask_***.
+
+tif) and can easily be reused for visual interpretation or manual quantitative analysis. moreover, readout images, in which the detected structures are highlighted by different colors, are saved in the image source directory as overlay_***.jpg, which makes quality control of numerical data easily possible. numerical results for each individual cell in every single readout image are saved in a text file (cellquant.txt), providing information such as the name of the processed image, number of detected structures, mean pixel intensities, or areas of detected structures. For fast interpretation of quantification results, a meta file (metaquant.txt) is generated for every readout image, which contains compiled information of the data generated from a respective image that may be used for subsequent statistical analysis. DetecTiff © can be used for image analysis in a variety of biomedical applications detectiff’s structure-recognition algorithm may work independently of subsequent image analysis procedures. because of its labView-based modular structure, however, the strength of the software is that it can be easily implemented
+
+Journal of Biomolecular Screening 14(8); 2009
+Downloaded from jbx.sagepub.com at UCL Library Services on August 4, 2010
+
+www.sbsonline.org
+
+947
+
+Gilbert et al.
+
+A
+
+median filter
+
+B
+
+channel1
+
+upload image(s)
+channel2
+
+C
+
+F
+
+iterative application for detection of sub-objects
+
+channel3
+
+object dilation + background substraction
+
+iterative thresholding
+
+E
+...
+
+D
+
+extraction of quantitative information
+
+object detection
+
+FIG. 2. detectiff  workflow. For structure recognition, 1 or more channels of the original image are uploaded (A). background signal intensities can be subtracted either manually or automatically at later stages of the image processing (F). images filtered by a median filter and saved in an 8-bit tiff format (B) then undergo iterative cycles of combined intensity- and area-based structure recognition. objects of a size (area) within a predefined range (“in range,” green) contribute to a mask, whereas objects out of this range are discarded (red) (C). this allows extraction of a maximum of morphological and intensity information from the source image (D). dilation of the resulting objects leads to a template (E), which can then be used for an iterative detection of subobjects within this mask (F) or extraction of quantitative parameters from the source images. excessive dilation and inversion of the template shown in panel E (frontmost image) leads to a mask for background subtraction (E, backmost image).
+
+into preexisting user-defined or newly generated image analysis packages written in labView. examples for the applicability of detectiff for quantitative image analysis of dose-response experiments, analysis of (sub)cellular morphology, discriminative cell detection, or microscope-based high-content screening in multiwell plates are provided in box 1. an important application for detectiff is the consistent interpretation of multiple images acquired automatically by high-content screening microscopy. a frequent application for microscopic imaging in biomedicine is the study of endocytosis, a biological process by which cells internalize pathogens and nutrients, initiate signal transduction, or regulate the molecular composition of the plasma membrane.20 We decided to study this process by automated microscopy and subsequent image analysis using detectiff. For this, we established an
+
+assay that allows systematic quantification of the uptake of dii-ldl21 into Hela cells cultured on chambered glass slides under high-throughput conditions. upon fixation, dii-ldl internalizing cells were counterstained for nuclei (Fig. 5A) and er membranes (Fig. 5B), which allowed us to reliably count cell number and determine cellular morphology. images were acquired automatically on a high-content screening microscopy platform described previously.4,8 detectiff was parameterized to extract information from all 3 fluorescence channels to generate a cell template (Fig. 5C) within which intensity- and object-based measurements could be performed (Fig. 5E-I). to assess the accuracy of image analysis with our software, we first compared certain parameters obtained by detectiff analysis with results determined either by manual evaluation of the image data or by automated feature extraction with the
+
+948
+
+www.sbsonline.org
+Downloaded from jbx.sagepub.com at UCL Library Services on August 4, 2010
+
+Journal of Biomolecular Screening 14(8); 2009
+
+DetecTiff © , a Novel Image Analysis Software
+A B
+Intensity/cell type
+1500
+
+Capsaicin
+neuronal cells
+
+1500
+
+Capsaicin
+non-neuronal cells
+
+1000
+
+1000
+
+500
+
+500
+
+0
+
+0
+
+2
+
+4 6 8 Time (s)
+
+10
+
+0
+
+0
+
+2
+
+4 6 8 Time (s)
+
+10
+
+original image
+C
+
+Cell-Mask
+D
+Count
+20 15 10 5 0
+
+0
+
+50
+
+100 150 200 250
+
+Area (pixels)
+
+original image
+E
+
+Endo-Mask
+MFICell (stimulated)
+
+F
+
+2500 2000 1500 1000 500 0
+
+n = 504
+
+0
+
+500
+
+1000
+
+1500
+
+2000
+
+2500
+
+MFICell (unstimulated)
+
+unstimulated Cell-Mask
+G
+
+stimulated Cell-Mask
+H
+1 1 2 3 4 1 1 2 3 4 5 6 7 8 9 10 2 3 4 5 6 7 8 9 10 11 12
+
+average cell count [no./well]
+
+A
+
+200
+
+400
+
+N N
+11 12
+
+600 7500
+
+average cell area [pixels]
+
+2 3 4 1 2 3 4 5 6 7 8 9 10
+
+10000
+
+N N
+11 12
+
+12500 2000
+
+Cell-Mask/ Endo-Mask J
+0min
+
+average perinuclear filipin intensity/well [arb.]
+
+1 2 3 4
+
+3000
+
+N N
+
+4000
+
+10min K
+rel. endo somal Dil-LDL signal [arb.]
+1.0
+
+Dil-LDL uptake
+DetecTiff CellProfiler 37 °C
+
+0.5 4 °C 0.0 0 10 20 30 60
+
+30min
+
+60min
+
+DiI-LDL uptake
+
+Time [min.]
+
+BOX 1. examples for the use of detectiff  in a variety of biological applications. (A, B) dose-response experiments: Fluo-4, am-labeled co-culture of mouse primary dorsal root ganglia neurons (large cells) and nonneuronal cells (small cells), 4 days in culture on 384-well clear-bottom culture dishes (A). cell template (B, manually false-color coded, single time point) demonstrates the applicability of detectiff  for discriminative quantitative analysis of intracellular calcium levels of neuronal (red) and nonneuronal cells (blue) over time (graphs) upon application of a single dose of capsaicin at a saturating concentration. (C, D) analysis of (sub)cellular morphology: nicotinic acetylcholine receptor clustering (C, labeled with tetramethylrhodamine-conjugated alpha-bungarotoxin) in c2c12 mouse skeletal muscle cells following differentiation into myoblasts. image segmentation by detectiff  (D) allows determination of cluster size frequency distribution (graph). (E, F) discriminative cell detection: increase of intracellular calcium in HeK293 cells cultured on 384-well clear-bottom culture dishes upon activation of transiently transfected trpV1 before (E) and after (F) application of capsaicin, visualized with Fluo-4, am. quantification of signal intensities from single cells allows discrimination between transfected and nontransfected cells. mFi, mean Fluo-4, am signal intensity. (G, H) microscope-based high-content screening: Hela cells cultured on glass-bottom 96-well plates were fixed and stained with the cholesterol binding dye filipin (G). detectiff  cell- and endo-masks were used to automatically determine “average cell count/well” (H, upper panel), “average cell area” (H, middle panel), and “average perinuclear filipin intensity/well” (H, lower panel). each square in the heat maps represents the respective means from 5 images/well from a total of 48 wells displayed. n, unstained control wells. (J, K) dose-response experiments: endosomal fluorescence-labeled low-density lipoprotein (dii-ldl) signal in Hela cells exposed to 50 µg/ml dii-ldl for indicated time points at either 37.5 °c or 4 °c as analyzed by detectiff  or cellprofiler. points in the graph represent data from 2 independent experiments with 10 images/ time point.
+
+Journal of Biomolecular Screening 14(8); 2009
+Downloaded from jbx.sagepub.com at UCL Library Services on August 4, 2010
+
+www.sbsonline.org
+
+949
+
+Gilbert et al.
+control siRNA LDLR siRNA
+
+A
+Nuclei
+
+B
+
+C
+
+D
+
+E
+DiI-LDL
+
+F
+
+G
+Cell-Mask
+
+H
+
+Endosome-Mask
+
+J
+
+K
+
+image analysis software cellprofiler.3 For this, 9 images were chosen in which the number of cells per image and the circumference of each cell were determined independently by each of the 3 analysis strategies (Fig. 5C, D). then, dii-ldl fluorescence intensity was quantified within these cell areas. our algorithm was able to recognize 97.2% (432 ± 64 cells/ image) of all cells identified by visual inspection (444 ± 105 cells/image) and 89.2% of the cells recognized by cellprofiler (484 ± 107 cells/image), which, under the given settings, slightly overestimated the number of structures visually identified as cells (108.6%; n = 9 images; Fig. 5E). these moderate discrepancies in cell number were mainly due to few cells in the images that were undergoing mitosis or apoptosis and were critical to define even visually. also, the parameter “average cell size” showed a high degree of concordance among the 3 analysis strategies: When quantified by detectiff, the average size of 1 cell was 95.3% (1419 ± 33 pixels/cell) of that determined manually (1489 ± 248 pixels/cell) and 102.3% of that identified by cellprofiler (1388 ± 100 pixels/cell; Fig. 5F). in comparison, cellprofiler recognized 93.2% of the average cell size as determined manually. by applying the detectiff cell mask on the dii-ldl image, it is possible to quantify total cellular dii-ldl signal intensities within each of the ∼450 cells of a single image. detectiff determined the average dii-ldl fluorescence signal intensity per cell with an accuracy of 98% (321 ± 25 fluorescence units) compared with the average cellular dii-ldl intensity determined manually (327 ± 26 fluorescence units) and 99.6% of the dii-ldl intensity quantified by cellprofiler (322 ± 4 fluorescence units). such substantially precise concordance of manual and automated image analysis results was maintained even when cellular dii-ldl signal intensities were varying considerably between single images. this can be seen from the correlation graphs in Figure 5H, I, where manual with detectiff results (R2 = 0.98) as well as cellprofiler with detectiff results (R2 = 0.99) were compared for each of the 9 individual images. DetecTiff © allows automated feature extraction from subcellular structures ldl-particles are taken up by cells upon binding to the ldlr and clathrin-mediated endocytosis, followed by distribution to the endosomal system where fluorescence of newly internalized diildl is highest.21 We were therefore interested to specifically measure the dii-ldl signal within endosomal compartments, which impress as dotted structures scattered all over the cytoplasm (Figs. 3 and 4). as the detectiff algorithm uses intensity as well as area information, endosomal structures can reliably be recognized by our software (Fig. 4A). For this, detectiff parameters were adjusted to settings that described visually defined
+
+ER
+FIG. 3. detectiff  allows structure recognition in sirna knockdown cells. (A-K) Hela cells plated on cultured glass slides were reverse transfected with an sirna against the low-density lipoprotein receptor (ldlr; B, D, F, H, K) or control sirna (A, C, E, G, J) and cultured under low-sterol conditions. Fluorescence-labeled low-density lipoprotein (dii-ldl) internalization (E, F) was stimulated before fixation and staining with nuclear marker draq5 (A, B) and er-tracker dpX (C, D). images were acquired automatically on a high-content screening microscopy platform. For sirnatransfected cells (within blue circles), dii-ldl signal per cell was quantified by detectiff  within either a cell mask (G, H) or an endosome mask (J, K).
+950 www.sbsonline.org
+
+Journal of Biomolecular Screening 14(8); 2009
+Downloaded from jbx.sagepub.com at UCL Library Services on August 4, 2010
+
+DetecTiff © , a Novel Image Analysis Software
+
+A
+
+B
+
+DetecTiff Endosome-Mask C
+average endosome count/cell [No.]
+20
+
+CellProfiler Endosome-Mask
+average endosomal Dil-LDL signal/cell [arb.]
+
+D
+average endosomal area/cell [pixels]
+
+12 10 8 6 4 2 0
+
+E
+
+700 600 500 400 300 200 100 0 DetecTiff CellProfiler
+
+15
+
+B
+
+10
+
+5
+
+0 DetecTiff CellProfiler
+
+DetecTiff CellProfiler
+
+FIG. 4. detectiff  is useful for automated detection and analysis of subcellular structures. (A, B) templates of fluorescence-labeled lowdensity lipoprotein (dii-ldl) signal detected as associated with endosome-like subcellular structures (white) after using either detectiff  (A) or cellprofiler (B) for automated object identification. insets show magnified areas within the respective image. (C-E) parameters “average endosome count/cell” (C), “average endosomal area/cell” (D), and “average endosomal dil-ldl signal/cell” (E) were quantified using either detectiff  or cellprofiler. shown are means ± sd from 9 images.
+
+cytosolic dii-background fluorescence) was reliably excluded from subsequent image analysis. the average number and size of endosomes as well as endosome-associated dil-ldl signal intensities were then quantified and compared with cellprofiler, with which a similar mask representing subcellular endosome-like structures could be generated (Fig. 4B). Within the 9 selected images, our algorithm recognized 90.6% (11.7 ± 3 endosomes/ cell) of the number of endosomes counted by cellprofiler (12.9 ± 4 endosomes/cell; Fig. 4C). the parameter “average endosomal area” as determined by detectiff, however, was only 77% (8.5 ± 1.2 pixels) of that determined by cellprofiler (10.9 ± 0.4; Fig. 4E, D). this discrepancy between the 2 automated analysis strategies in number and size of detected endosome-like particles is reflected by increased endosomal dii-ldl signal intensities when images were analyzed by detectiff (576 ± 97) relative to
+
+analysis with cellprofiler (470 ± 40; detectiff v. cellprofiler: 122.6%; Fig. 4F, E). this indicated a tendency of the detectiff algorithm to accurately identify smaller structures with brighter pixel intensities, which well reflected the appearance of true endosomes. in summary, these comparisons show that our algorithm is able to reliably recognize and quantify objects of interest at a cellular as well as a subcellular level and suggest that detectiff is well suited for a consistent analysis of large image data sets (e.g., image series acquired by high-content screening microscopy). DetecTiff © efficiently analyzes functional siRNA knockdown experiments to make use of detectiff’s accurate image analysis capabilities, we tested whether the software was able to reliably
+
+Journal of Biomolecular Screening 14(8); 2009
+Downloaded from jbx.sagepub.com at UCL Library Services on August 4, 2010
+
+www.sbsonline.org
+
+951
+
+Gilbert et al.
+
+A
+
+B
+
+DRAQ5
+
+ER-tracker DPX
+
+C
+
+D
+
+DetecTiff Cell-Mask
+
+CellProfiler Cell-Mask
+
+E 600
+500
+
+F
+average cell area [pixels/cell]
+
+G 400
+average Dil-LDL signal/cell [arb.]
+
+1500
+
+average cell count [No.]
+
+300
+
+400 300 200 100 0
+
+1000
+
+200
+
+500
+
+100
+
+manual
+
+DetecTiff CellProfiler
+
+0
+
+manual
+
+DetecTiff CellProfiler
+
+0
+
+manual
+
+DetecTiff CellProfiler
+
+H
+average I Dil-LDL (DetecTiff)/cell [arb.]
+
+380 360 340 320 300 280
+
+I
+average I Dil-LDL (DetecTiff)/cell [arb.]
+
+380 360 340 320 300 280
+
+R2= 0.9821 280 300 320 340 360 380
+
+R2= 0.9920 280 300 320 340 360 380
+
+average I Dil-LDL (manual)/cell [arb.]
+
+average I Dil-LDL (CellProfiler)/cell [arb.]
+
+FIG. 5. detectiff  is useful for automated cell detection and analysis. (A-D) Hela cells cultured under sterol-depleted conditions were labeled with fluorescence-labeled low-density lipoproteins (dii-ldl). cellular dii-ldl internalization was stimulated for 20 min at 37 °c before fixation and staining with nuclear marker draq5 (A) and er-tracker dpX (B). outlines of the cells were determined from microscopic images with masks generated by detectiff  (C), by cellprofiler (D), or upon manual outlining of individual cells (not shown). insets show magnified areas within the respective image. in (C), extracellular background regions automatically determined by detectiff are shown (blue). (E-G) parameters “average cell count” (E), “average cell area” (F), and “average dii-ldl signal/cell” (G) were quantified either manually using metamorph or automatically using detectiff  or cellprofiler. shown are means ± sd from 9 images. (H, I) scattergraphs showing the correlation of “average dil-ldl signal/cell” within the individual 9 images as quantified by detectiff  (y-axis) relative to manual quantification within masks generated with metamorph (H) or automated quantification with cellprofiler (I).
+
+952
+
+www.sbsonline.org
+Downloaded from jbx.sagepub.com at UCL Library Services on August 4, 2010
+
+Journal of Biomolecular Screening 14(8); 2009
+
+DetecTiff © , a Novel Image Analysis Software
+
+A
+LDLR siRNA treated/scrambled [fold-expression]
+
+1.2 1.0 0.8 0.6 0.4 0.2 0.0
+
+Gene expression
+
+F
+
+0.15 control siRNA (n = 1515 cells) LDLR siRNA (n = 1349 cells) 0.10
+
+***
+
+rel. frequency of IDiI-LDL /cell [0..1]
+
+control
+
+actin
+
+LDLR
+
+0.05
+
+B
+rel. Dil-LDL signal/cell [arb.]
+
+1.4 1.2
+
+DetecTiff
+
+C
+rel. Dil-LDL signal/cell [arb.]
+
+1.4 1.2 1.0 0.8 0.6 0.4 0.2
+
+CellProfiler
+
+1.0 0.8 0.6 0.4 0.2 0.0
+
+0.00
+
+0
+
+25
+
+50
+
+75
+
+100
+
+**
+
+IDiI-LDL /cell [% IDiI-LDL(total)]
+
+***
+
+G
+rel. frequency of IDiI-LDL /endosomes [0..1]
+
+0.25 control siRNA (n = 1112 cells) LDLR siRNA (n = 958 cells)
+
+control LDLR siRNA
+
+0.0
+
+0.20
+
+control LDLR siRNA
+
+D
+rel. endosomal Dil-LDL signal/cell [arb.]
+
+1.4 1.2 1.0 0.8 0.6 0.4 0.2 0.0
+
+DetecTiff
+
+E
+rel. endosomal Dil-LDL signal/cell [arb.]
+
+1.4 1.2 1.0 0.8 0.6 0.4 0.2 0.0
+
+CellProfiler
+
+0.15
+
+0.10
+
+0.05
+
+***
+
+***
+
+0.00
+control LDLR siRNA
+
+0
+
+25
+
+50
+
+75
+
+100
+
+control LDLR siRNA
+
+IDiI-LDL /endosomes [% IDiI-LDL(total)]
+
+FIG. 6. detectiff  allows automated quantification of sirna knockdown effects in cultured cells. (A) relative mrna levels of beta-actin and low-density lipoprotein receptor (ldlr) in Hela cells treated with either sirna against LDLR or nonsilencing control sirna. shown are reverse transcriptase polymerase chain reaction results (means ± sd) from 5 independent experiments (***p < 0.001) normalized to the expression of ribosomal protein l19 (RPL19). (B-E) Functional analysis of fluorescence-labeled low-density lipoprotein (dii-ldl) uptake into Hela cells as quantified by detectiff  (B, D) or cellprofiler (C, E). shown are relative dii-ldl fluorescence signal intensities (mean ± sd) per cell (B, C) or within endosomes (D, E) of Hela cells transfected with either ldlr or control sirna. (F, G) Frequency distribution of relative dii-ldl signal intensity per cell (F) or within endosome-like structures (G) as quantified by detectiff . intensities of the brightest signals were set to 100; step size is 3.3%; n, total number of cells per condition.
+
+endosomal structures most adequately, and iterative detection was repeated only within those areas in which in a previous detection cycle had been recognized as cells. detectiff generated templates for automated quantification of endosomal dii-ldl signal (endo masks) with high accuracy; in contrast, dii-ldl signal irrelevant for the biological process under investigation (e.g.,
+
+distinguish between control cells and cells in which uptake of dii-ldl had been compromised by targeted knockdown of the ldlr. For this, we reversely transfected Hela cells cultured on chambered glass slides19 with either sirna targeting ldlr or nonsilencing control sirna. subsequently, cellular diildl uptake was analyzed, and automatically acquired images
+
+Journal of Biomolecular Screening 14(8); 2009
+Downloaded from jbx.sagepub.com at UCL Library Services on August 4, 2010
+
+www.sbsonline.org
+
+953
+
+Gilbert et al. were analyzed by detectiff (Fig. 3A-K) or cellprofiler. in cells transfected with sirna against ldlr for 48 h under lowsterol conditions,18 mrna levels of ldlr were 44% that of controls (0.44 ± 0.08; p < 0.0001; Fig. 6A). this indicated efficient down-regulation of ldlr gene expression under our experimental settings to levels that correspond to ldlr levels in patients suffering from heterozygous familial hypercholesterolemia.22 consequently, dii-ldl signal in endosome-like compartments was strongly reduced in ldlr knockdown cells relative to controls (Fig. 3E, F, blue circles). using detectiff, average cellular dii-ldl signal intensities in ldlr knockdown cells were reduced to 42% of that of controls (0.42 ± 0.11; p < 0.0001; n = 7 images/condition; in total, dii-ldl signals from 1515 control cells and from 1349 ldlr knockdown cells were quantified; Fig. 6B). analyzing the identical image data set with cellprofiler resulted in a reduction of total cellular dii-ldl signal upon ldlr knockdown to 58% that of controls (0.58 ± 0.15; p < 0.001; Fig. 6C). the marked difference between ldlr knock-down and control cells was even more pronounced when only dii-ldl signal within endosome masks was analyzed. endosome-associated dii-ldl signal in ldlr knockdown cells was reduced to 21% that of controls (0.21 ± 0.10; p < 0.0001) when images were analyzed with detectiff (0.21 ± 0.10; Fig. 6D) and 34% (0.34 ± 0.08; p < 0.0001) when cellprofiler was applied (Fig. 6E). dii-ldl signal intensity distribution in control cells as analyzed by detectiff followed a gaussian distribution around a median intensity of 50% to 60% of the maximal fluorescence intensity (Fig. 6F). in contrast, the majority of ldlr knockdown cells showed dii-ldl signal intensities of less than 20% of the maximal intensity, indicating a significantly reduced diildl uptake when ldlr was silenced. When detectiff was used to quantify dii-ldl fluorescence from endosome-like structures alone, control sirna-transfected cells showed a broad distribution of fluorescence intensities. in contrast, 56.7% of cells exposed to ldlr sirna showed fluorescence intensities of less than 10% of the intensity spectrum (Fig. 6G), whereas this holds true for only 9.9% of control cells. these results show that the detectiff algorithm reliably distinguishes cells with comprised cellular uptake of dii-ldl and thus is a reliable tool for automated microscope-based screening for factors that influence cellular internalization of ldl particles. DISCUSSION our results show that detectiff allows systematic, standardized, objective, fast, and fully automated image analysis that is able to reliably recognize and quantify objects from microscopic images. the central structure-recognition algorithm of the software uses iterative thresholding of both intensity and object size information. this combined approach provides consistent structure recognition despite the profound signal heterogeneity with which image acquisition from biological samples is often confronted.2,3 Here, detectiff was used to analyze microscopic images from multiple biological applications for diverse applications such as dose-response experiments, discriminative object detection, or automated high-content screening. this indicates that the algorithm, given adequate parametrization, is well suited for a reliable automated analysis of complex cell biological systems. overall, our data suggest that quantification results obtained with detectiff compare to a high degree with data obtained from either manual image analysis upon visual inspection of the image data or with results of automated image processing with established automated cell analysis tools; that is, automated determination of cell outlines by detectiff was in good accordance with what was determined manually or by the use of cellprofiler software.3 However, this concordance was reduced when complex subcellular structures were to be analyzed: on average, when compared with cellprofiler, detectiff counted lower numbers of endosome-like particles with smaller particle size and brighter signal intensities of internalized dii-ldl. although there is little doubt that further optimization of the cellprofiler pipelines applied here may lead to higher concordance rates, our findings could also be due to detectiff’s unique structure-recognition algorithm, as the iterative intensity thresholding and sizedependent particle filtering may add a particular strength to well distinguish particles of only few pixels with heterogeneous pixel intensities. this reliable quantification of fluorescence intensities even from heterogeneous subcellular compartments such as endosomes and over a broad spectrum of different signal intensities make detectiff ideally suited for analysis of large image data sets, as they are typically acquired in large-scale cell-based rnai screening experiments. this applicability is supported by the considerable speed of the software; for example, on a laptop computer with standard cpu equipment (Windows Xp, 1.86 gHz, 3 gb ram), the processing time of 960 images (corresponding to one 96-well plate with 10 sites/well with a 10× objective) with a resolution of 1344 × 1024 pixels and 3 channels/image (i.e., 2880 images in total) was 220 min. For the quantification of dii-ldl uptake as described in the article, the algorithm needed 5 to 15 s per image (depending on the number of detected particles within the 400-500 cells per image) compared with 160 to 210 s when using cellprofiler. notably, image processing time could be even further reduced when using high-end pc equipment. the simple program architecture of detectiff and its intuitive user interface allow short training periods and an easy reconfiguration for various biological applications. because of its labView-based modular structure, the software can be easily implemented into preexisting user-defined or newly
+
+954
+
+www.sbsonline.org
+Downloaded from jbx.sagepub.com at UCL Library Services on August 4, 2010
+
+Journal of Biomolecular Screening 14(8); 2009
+
+DetecTiff © , a Novel Image Analysis Software generated image analysis packages written in labView. these features make detectiff a versatile tool to extract quantitative information with high performance from images in diverse fields of biomedical research. ACKNOWLEDGMENTS We thank H. erfle for help with reverse sirna transfection. u. liebel (Karlsruhe, germany), ch. conrad (embl), and the advanced light microscopy Facility team (almF, embl) are acknowledged for helpful discussions. We thank shyuan ngo (brisbane, australia) for images. support to the almF by carl Zeiss and olympus soft imaging solutions is acknowledged. the work was supported by fellowships of the landesstiftung baden-Württemberg to H.r. and r.p. REFERENCES
+1. 2. 3. swedlow Jr, goldberg i, brauner e, sorger pK: informatics and quantitative analysis in biological imaging. Science 2003;300:100-102. pepperkok r, ellenberg J: High-throughput fluorescence microscopy for systems biology. Nature Rev Mol Cell Biol 2006;7:690-696. carpenter ae, Jones tr, lamprecht mr, clarke c, Kang iH, Friman o, et al: cellprofiler: image analysis software for identifying and quantifying cell phenotypes. Genome Biol 2006;7:r100. liebel u, pepperkok r: Vollautomatisches High content screeningsystem zur funktionellen zellbasierten genomanalyse. Transkript Laborwelt 2002;1:4-8. baatz m, schape a, athelogou m: objektorientierte bildanalyse von strukturen in Zell-und gewebebildern. Transkript Laborwelt 2004; 5:17-20. biberthaler p, athelogou a, langer s, luchting b, leiderer r, messmer K: evaluation of murine liver transmission electron micrographs by an innovative object-based image analysis system (cellenger). Eur J Med Res 2003;8:275-282. schiffmann da, dikovskaya d, appleton pl, newton ip, creager da, allan c, et al: open microscopy environment and Findspots: integrating image informatics with quantitative multidimensional image analysis. Biotechniques 2006;41:199-208. simpson Jc, cetin c, erfle H, Joggerst b, liebel u, ellenberg J, et al: an rnai screening platform to identify secretion machinery in mammalian cells. J Biotechnol 2007;129:352-365. Wang m, Zhou X, li F, Huckins J, King rW, Wong st: novel cell segmentation and online sVm for cell cycle phase identification in automated microscopy. Bioinformatics 2007;24:94–101. 10. Wang J, Zhou X, bradley pl, chang sF, perrimon n, Wong st: cellular phenotype recognition for high-content rna interference genome-wide screening. J Biomol Screen 2008;13:29-39. gudla pr, nandy K, collins J, meaburn KJ, misteli t, locket sJ: a highthroughput system for segmenting nuclei using multiscale techniques. Cytometry A 2008;73a:451-466. stacy dW, Hitomi m: cell cycle studies based upon quantitative image analysis. Cytometry A 2008; 73a:270-278. yan p, Zhou X, shah m, Wong st: automatic segmentation of highthroughput rnai fluorescent cellular images. IEEE Trans Information Technol Biomed 2008;12:109-117. narayan pJ, gibbons Hm, meec eW, Faull rl, dragunow m: High throughput quantification of cells with complex morphology in mixed cultures. J Neurosci Methods 2007;164:339-349. benchaouir r, picot J, greppo n, rameau p, stockholm d, garcia l, et al: combination of quantification and observation methods for study of “side population” cells in their “in vitro” microenvironment. Cytometry A 2007;71a:251-257. gilbert dF, esmaeili a, lynch JW: optimizing the expression of recombinant αβγgabaa receptors in HeK293 cells for high-throughput screening. J Biomol Screen 2009;14:86-91. gilbert dF, Wilson Jc, nink V, lynch JW, osborne gW: multiplexed labeling of viable cells for high-throughput analysis of glycine receptor function using flow cytometry. Cytometry A 2009;75:440-449. runz H, miura K, Weiss m, pepperkok r: sterols regulate er-export dynamics of secretory cargo protein ts-o45-g. EMBO J 2006;25:2953-2965. erfle H, neumann b, liebel u, rogers p, Held m, Walter t, et al: reverse transfection on cell arrays for high content screening microscopy. Nat Protoc 2007;2:392-399. polo s, diFiore pp: endocytosis conducts the cell signaling orchestra. Cell 2006;124:897-900. ghosh rn, gelman dl, maxfield Fr: quantification of low density lipoprotein and transferrin endocytic sorting in Hep2 cells using confocal microscopy. J Cell Sci 1994;107:2177-2189. brown ms, goldstein Jl: receptor-mediated control of cholesterol metabolism. Science 1976;191:150-154.
+
+11.
+
+12. 13.
+
+14.
+
+15.
+
+16.
+
+17.
+
+18. 19.
+
+4.
+
+20. 21.
+
+5.
+
+6.
+
+22.
+
+7.
+
+8.
+
+address correspondence to: Heiko Runz or Daniel Gilbert Institute of Human Genetics University of Heidelberg INF 366 69120 Heidelberg, Germany E-mail: heiko.runz@med.uni-heidelberg.de or gilbert@detectiff.com
+
+9.
+
+Journal of Biomolecular Screening 14(8); 2009
+Downloaded from jbx.sagepub.com at UCL Library Services on August 4, 2010
+
+www.sbsonline.org
+
+955
+

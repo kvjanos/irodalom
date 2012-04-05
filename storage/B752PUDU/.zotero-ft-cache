@@ -1,0 +1,201 @@
+~_.~__~
+
+February 1995
+
+Pattern Recognition Letters
+El ~qEVIER Pattern Recognition Letters 16 ( 1995) 201-206
+
+Influence of segmentation over feature measurement
+Yu Jin Zhang
+Image ProcessingSection, Department of Electronic Engineering, Tsinghua University,Beijing 100084, People'sRepublic of China Received 1 March 1994; revised 23 August 1994
+
+Abstract The influence of image segmentation over the measurement accuracy of object features is studied. Seven features are examined under different image conditions by using a common segmentation procedure. The results indicate that accurate measures of image properties profoundly depend on the quality of image segmentation. Keywords: Image analysis; Image segmentation; Feature extraction; Measurementaccuracy
+
+I. Introduction
+
+2. Method description To study the dependence of object feature measurements on the quality of image segmentation, the test images, segmentation procedure, test object features and criteria for judging the goodness of measurements are needed to be first selected. We describe them separately in the following. 2.1. Test images Since synthetic images have the advantage that they can easily be manipulated, i.e., conditions can be precisely controlled and experiments can be easily repeated, synthetically generated test images are used in this study. They are produced by using the system for generating synthetic images as described in (Zhang and Gerbrands, 1992a). In this system, a set of synthetic images is produced in several steps. First an image that serves as a basis for all other images is designed, which is a realization of a simple model of application. Starting from this basic image, other images can be obtained by alternating the objects contained in the basic image with respect to different
+
+"Image analysis is concerned with the extraction of information from an image; an image in yields data out" (Young, 1988). Here the out data are the measurements of image properties. In most image analysis applications, the interest is only in parts of images - the objects are extracted and their properties are measured. The process of extracting objects from the background is called image segmentation. It is obvious that the measurement of object features depends upon object extraction and that the quality of the segmentation process will affect the final measurement results. In this paper, we investigate how the results of object feature measurement are affected by image segmentation. A number of controlled tests are carried out to examine the dependence of feature measurements on the quality of segmented images. In the next section, the method employed for such a study is described. Experimental results and the result analysis are presented in Section 3. Finally, some concluding remarks are given in Section 4. Elsevier Science B.V. SSDI 0167-8655 ( 94 )00083-2
+
+202
+
+Y.Z Zhang/Pattern RecognitionLetters 16 (1995)201-206
+belled images. Then one opening process is applied to each labelled image to reduce random noise effects. Finally the biggest object is selected in each image and the holes inside are filled. Such a procedure is simple but is also effective in practice.
+
+shape and size and/or by incorporating the various distortion phenomena, such as noise and blur. The combination of object variation and distortion factors finally produces images that approximate different real-world scenes. In practice, the blurring effect can be obtained by filtering images with low-pass filters. Noisy images can be simulated by adding zeromean white Gaussian noise. The standard deviation of noise can be varied to provide images of different Signal to Noise Ratio (SNR) which is defined as (Kitchen and Rosenfeld, 1981 ):
+
+2.3. Testfeatures
+In various image analysis applications geometric features are commonly employed (Mui and Fu, 1980). Seven geometric features will be considered here. These are the area (A), perimeter (P), form factor (F), sphericity (S), eccentricity (E), normalized mean absolute curvature (N) and bending energy (B) of objects. Area and perimeter are self-explaining. The others are shortly described as follows. The form factor is derived from the area and perimeter: p2 F = 4n.A" (2)
+
+SNR = (contrast betweenrobjectuand d. ) . b a .c k . g . o. .n standard deviation of noise
+
+•
+
+2
+
+.
+
+(1)
+In this study, we use images of 256X256 pixels, with 256 gray-levels. The basic image is composed of a centered circular disc object (diameter 128) with gray-level 144 on a homogeneous background of graylevel 112. Test images generated from this basic image will be described in the next section along with the experiments.
+
+2.2. Segmentation procedure
+As will be made clear in the next section, a segmentation procedure that can provide gradually changing segmented images and which is relatively independent of the shape/size of objects in images is useful for our study. A large number of segmentation algorithms have been proposed in the literature (Fu and Mui, 1981; Haralick and Shapiro, 1985; Sahoo et al., 1988). Among them, thresholding techniques are popularly employed (Sahoo et al., 1988). The global thresholding techniques differ mainly in the way they determine the threshold values. To make the study more general, not a specific thresholding technique is used but many different threshold values are applied. The goal of this study is not to compare different thresholding techniques but to investigate the dependence of feature measurements on the threshold value, so on the segmentation procedure. In order to obtain a group of gradually changing segmented images, the test images are first multiply thresholded with a sequence of values. These threshold values are taken from the original gray-levels between that of object and background. This gives us a series of la-
+
+The sphericity is determined from two circles, whose centers are located at the object's center-ofmass: S= radius of inscribed circle radius of circumscribed circle • (3)
+
+The eccentricity is obtained on the basis of fitting an ellipse to the object boundary: E - major axis length of fitting ellipse minor axis length of fitting ellipse" (4)
+
+The normalized mean absolute curvature is proportional to the average of the absolute values of the curvature function K ( m ) of an object contour:
+M
+
+Noc ~
+m=l
+
+IK(m)[
+
+(5)
+
+where M is the number of points on the object contour and K(m) can be expressed with the chain code C(" ) of the object contour by
+
+C(m)-C(m-1) K(m)= L[C(m) ]+L[C(m-1) ] '
+the L (.) is the half-length of the curve segments surrounding the contour point (Bowie and Young, 1977)•
+
+Y.J. Zhang / PatternRecognitionLetters 16 (1995)201-206 Finally, the bending energy is proportional to the sum of the squared curvature around an object contour (Bowie and Young, 1977)
+M
+
+203
+
+Boc ~ K2(rn).
+m=l
+
+(6)
+
+Having obtained the contour of an object, formulas (2) to (6) can be directly applied.
+
+2.4. Measurement judging criteria
+In image analysis the goodness of object feature measurements can be assessed by their accuracy. Since the object feature measurement is often the ultimate goal of analysis, the accuracy can be called Ultimate Measurement Accuracy (UMA) (Zhang and Gerbrands, 1992b). This accuracy is expressed by the difference between the feature values of generated objects and segmented objects. The Relative UMA of a featuref(RUMAf) is given by:
+
+RUMAf= JOf-Mfl × 100%.
+
+ol
+
+(7)
+
+In (7), the original feature value (Of) is directly obtained from the image generation process and the measured feature value (My) is derived from the segmentation result. The RUMA represents the disparity between true and segmented objects. The smaller the value, the better is the segmentation accuracy.
+
+As an example, we show in Fig. 1 the results obtained from one image that contains the same object as in the basic image. The SNR of this image is 16. The resulted values of different features have been normalized for the purpose of comparison. Three points can be remarked from Fig. 1. The first is that all curves have a local minimum located at the inner region between the gray-levels of object and background, and have higher values at the two sides. Intuitively, this implies that the measurement accuracy of those features is connected to the quality of segmented images. The second, however, is that those minima are not located at the same place. This means there exists no unique best segmented image with respect to all these features. The third is that the seven curves have different forms. The A curve has a deeper valley and decreases or increases around the valley quite consistently. In other words, it steadily follows the change of the threshold values. Other features are not always so sensitive to such a change. We can say that the accurate measurement of object area depends more upon the segmentation procedure than that of other features. The measurement accuracy is a function of segmentation and the measurement accuracies of different features are different functions of segmentation.
+
+3.2. SNR influence
+The second experiment is to look at the dependence of RUMA on segmentation when images have various SNR levels. Four test images with different SNR levels are generated by adding Gaussian noise
+100 RUMA
+
+3. Experiments and results
+The following four quantitative experiments have been carried out to study the dependence of RUMA on image segmentation. The test images will be described along with each experiment. Some test results are presented in the related figures. Since the segmented images are indexed by the threshold values used for obtaining the respective images, we plot the RUMA of features as the function of the threshold values used in the segmentation procedure.
+
+I0
+
+3.1. Featuredifference
+The first experiment is to compare the RUMA of these seven features for the same segmented images.
+I 112 116 120 124 128 132 136
+
+P S 140
+
+Fig. 1. E x p e r i m e n t a l results a b o u t feature difference.
+
+204
+
+Y.J. Zhang /Pattern Recognition Letters 16 (1995.) 201-206
+
+with standard deviations 4, 8, 16 and 32. According to formula ( 1 ), the SNR levels are 64, 16, 4, and 1, respectively. These values cover the range of many applications and they are compatible with other studies (Kitchen and Rosenfeld, 1981 ). These four images contain the same object as in the basic image. In Fig. 2, the RUMA curves of three features, namely A, E and P are presented. The noise influences on the results are quite different as can be seen from Fig. 2. The A curves are gradually shifted to the left as the SNR level decreases, though their forms remain likewise. It is thus possible, by choosing the appropriate values of algorithm parameters, to obtain a similar measurement accuracy from images of different SNR levels. On the contrary, the E and P curves are gradually moved up as the SNR level decreases. In other words, the best measurement accuracy of E and P is associated with the SNR level of images. The bigger the SNR level, the better is the expected measurement accuracy. In figs. 2 (B) and 2 (C), the E curves are jagged, whereas the P curves are more smooth. This implies that E is more sensitive to the variation of segmented objects due to noise. Among other features, the B, N and F curves are also smooth like the P curves, while the S curves show some jags as the E curves.
+
+iment. Four test images with objects of different sizes are generated. Their diameters are 128, 90, 50 and 28, respectively. The SNR of these images is fixed to 64 to eliminate the influence of SNR. The results for three features, namely A, B and F are shown in Fig. 3. In Figs. 3(A) and 3(B), the measurement accuracy of A and that of B show opposite tendency with respect to the change of object size. When the images to be segmented contain smaller objects, the expected measurement accuracy for A becomes worse while the expected measurement accuracy for B becomes better. Among other features, E and S exhibit similar tendency as A but less significantly, while the Ncurves are more comparable with the B curves. Not all features show clear relations with object size, for example, the four F curves in Fig. 3(C) are mixed. The P curves also have similar behavior.
+
+3.4. Object shape influence
+The fourth experiment is made to examine how the dependence of RUMA on segmentation is affected by object shape. Four test images containing elliptical objects of different eccentricity ( E = 1.0, 1.5, 2.0, 2.5 ) are generated. Though the shapes of these four objects are quite distinct, we demand these objects have similar sizes (as the object size in the basic image) to avoid the influence of object size. This was achieved by adjusting both the long and short axes of these ellipses. In Fig. 4, the results obtained from these four images with SNR = 64 for three features, A, N and S are given.
+
+3.3. Object size influence
+In real applications, the objects of interest contained in images can have different shapes a n d / o r sizes. The size of objects can affect the dependence of RUMA on segmentation, as shown in the third exper-
+
+100HLMA of A
+
+1~0IKI~A of E
+
+100~ l ~ A o f P
+
+\/
+Qo 116 120 124 12~
+
+..._ s , ~
+~ S'~4 .e_ sS~=l II 1~ 136 tD ..~ Stt=4 ~ Nll=l ~ NIl=!
+116 ~ 124 128 L~
+
+(A)
+
+(n) Fig. 2. Experimental results about SNR influence.
+
+(c)
+
+Y.J. Zhang /Pattern Recognition Letters 16 (1995) 201-206 1® I~-IVIA A of l O n - ~ of B 1 1UVIAof F
+
+205
+
+-o-d---~ ...i.-d=~ ..,h-d='~0-u-d=l~ 0.01
+
+ll~ i~o 0A m (A)
+
+m
+
+!~6 14o
+
+l~
+
+I~
+
+!~.4 !~
+
+B2 B6 140
+
+(B) Fig. 3. Experimental results about object size influence.
+
+(c)
+
+l®l~N4Aof A ll__o_~10 +E=I5 _.~..E,--""~.a-E=25
+
+I®BUMAof N
+
+1®RLMAof S ~-~ lO .~.-1~15 - ~ - ~ ..D-E=25
+
+]~b ~
+
+]7.4 1~ D'2 156 1
+(B)
+
+lb
+
+1211 IZ4 IZ8 !~
+(C)
+
+156
+
+(A)
+
+Fig. 4. Experimental results about object shape influence.
+
+The difference among the four curves of a same feature in Fig. 4 is less notable than that in Fig. 3. In Fig. 4 (A), for example, the four A curves are almost overlapped with each other. This means that the influence of object shape on the measurement accuracy is much less important than that of object sizes. Other feature curves, except the B curves, have similar behavior as the S curves in Fig. 4 (C), while the B curves are more like the N curves in Fig. 4(B).
+
+4. D i s c u s s i o n
+
+Young (1988) has pointed out that "The ability to derive accurate measures of image properties is profoundly affected by a number of issues". This study shows that the quality of image segmentation is one of such issues. The quality of image segmentation, in
+
+turn, is determined by the performance of the segmentation techniques applied to get segmented images. In this study, the segmentation procedure takes all possible values as threshold to segment images. This is equivalent to using various thresholding algorithms because they are all covered by this procedure. The results show that the influence of algorithms over the measurement of certain features (for example, A) is quite considerable. The accuracy of feature measurements can be seriously reduced by a tiny degradation of algorithm performance. To obtain accurate measurements of these features, selecting appropriate segmentation techniques is primary. In addition, various factors have also influences over the relation between segmentation of objects and measurement of different features. In this study, the influences of SNR level, the object size and shape are separately investigated. If we look at Figs. 2 (A), 3 (A)
+
+206
+
+Y.J. Zhang /Pattern Recognition Letters 16 (1995) 201-206
+
+and 4 (A) together, for example, we see that the S N R level has more influences than the object shape over the measurement of feature A. Results of other features also give similar appearance. The difference gives us indications that some factors are more important than others to feature measurements. In practice, one should reduce these influences to achieve feasible measurements. If more attention were paid to these factors, it would be possible to obtain better results with fewer efforts. Many features can be used as descriptors of object properties. Various features can be ranked according to their power in discriminating object shape. For instance, it has been shown that B and N are superior over the F in describing (segmented) objects of different shapes (Young et al., 1974). When the segmentation phase is to be taken into account, the feature ranking must be reconsidered due to the different dependence of the feature measurement accuracy over image segmentation. As can be seen from Figs. 3 (B) and 4 (B), the expected measurement accuracy of B and N is relatively lower (under the present segmentation scheme), so their form description power in such cases would be reduced. In conclusion, the capability of useful features in describing and classifying objects also depends on the accuracy of their measurements from segmented images. Acknowledgments We thank Prof. Young and Dr. Gerbrands for their advice and insight over the year. The initial work has
+
+been partially supported by The Netherlands' Project Team for Computer Science Research (SPIN), Threedimensional Image Analysis Project. We are grateful to the referees for their comments to improve the presentation of this paper.
+
+References Bowie, J.E. and I.T. Young (1977). An analysis technique for biologicalshape - II. Acta Cytologica 21,455-464. Fu, K.S. and J.K. Mui ( 1981). A surveyon imagesegmentation. Pattern Recognition 13, 3-16. Haralick, R.M. and L.G. Shapiro (1985). Image segmentation techniques. Computer Vision, Graphics, and Image Processing 29, 100-132. Kitchen, L. and A. Rosenfeld ( 1981). Edgeevaluationusinglocal edge coherence. IEEE Trans. Syst. Man Cybernet. 11, 597605. Mui, J.K. and K.S. Fu (1980). Automated classification of nucleatedbloodcellsusinga binarytree classifier. IEEE Trans. Pattern Anal. Machine Intell. 2, 429-443. Sahoo, P.K. et al. (1988). A survey of thresholding techniques. Computer Vision, Graphics, and Image Processing 41,233260. Young, I.T. (1988). Sampling density and quantitative microscopy. Analytical and Quantitative Cytology and Histology, 10, 269-275. Young, I.T. et al. (1974). An analysis technique for biological shape I. Information and Control 25, 357-370. Zhang, Y.J. and J.J. Gerbrands (1992a). On the design of test images for segmentation evaluation. In: J. Vandewalle et al., Eds., Signal Processing V/, Vol. l, 551-554. Zhang,Y.J. and J.J. Gerbrands ( 1992b). Segmentationevaluation using ultimate measurement accuracy.In: J.R. Sullivanet al., Eds., SPIE 1657, 449-460.
+

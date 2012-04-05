@@ -1,0 +1,101 @@
+Automated 5-D Analysis of Cell Migration and Interaction from Multi-spectral Multi-dimensional Image Series
+Ying Chen1, Ena Ladi2, Paul Herzmark2, Ellen Robey2, and Badrinath Roysam1 Department of Electrical, Computer, and System Engineering, Rensselaer Polytechnic Institute, Troy, NY 12180, USA 2 Division of Immunology, Department of Molecular and Cell Biology, University of California, Berkeley, Berkeley, CA 94720, USA This paper presents an automated method to analyze fluorescently labeled thymocytes and dendritic cells (DC) in mouse thymic cortex from 5-D ( x, y, z, t , λ ) images acquired by two-photon laser scanning microscopy (TPLSM). Importantly, we study migration patterns and dynamic phenomenon of motile thymocytes and quantify thymocyte contacts with stationary DCs. Prior study [1], based on manual inspection and measurements, was labor intensive, time costly, and error-prone. To overcome these limitations and set the stage for large-scale quantitative multi-spectral multidimensional studies of cell dynamics and interactions, software was developed for efficient inspection, validation and corrective editing. Results from our automated analysis agreed with manually generated measurements to within 7%. Our method entails four steps as shown in Fig. 1. First, two-photon laser scanning microscopy was performed at mouse thymic cortex over 20~40 minutes at 37-second intervals, with a resolution 164×164×40 µms or 256×256×21 voxels at 8 bits at each time point. Fig. 1-A shows sample images of DCs and wild type thymocytes at two successive time points. Second, after un-mixing spectral overlapping across GFP and YFP channels, cells were delineated via mean-shift clustering [2], as displayed in Fig. 1-B. Segmentation outputs were used to measure geometric features of each thymocyte, such as centroid, volume, and radius. Third, thymocytes were traced over time using multiple hypothesis tracking [3]. Tracked cells were consistently numbered and color-coded in Fig. 1-C. Finally, a rich set of dynamic features (e.g. speed, displacement, and directionality index), were computed from tracking results to quantify motility patterns of thymocytes, and duration of thymocyte-DC contacts undergoing signal selection events (Fig. 1-D). To ensure the validity of machine-generated outputs, we developed a Matlab-based tool (Fig. 1-E) to automatically evaluate and high-light statistical outliers for further inspection and editing. References 1. Robey, EA, Bousso, P., Immunological Reviews, 195:51-57. 2. Comaniciu, D., et. al., IEEE Trans. on PAMI, 24: 5, pp: 603-619, 2002. 3. Al-Kofahi, O., et. al., Cell Cycle, 5: 3, pp: 327-335, 2006. 4. Supported by Gordon-CenSSIS under NSF ERC (EEC-9986821).
+1
+
+Figure 1. Schematic of steps involved in 5-D automatic study of cell dynamics and interactions.
+
+A
+……
+
+T
+
+T+1
+
+E B
+1
+Percentile of Normalized Center−to−Edge Distance
+40
+
+90% 80% 70% 60% 50% 40% 30% 20% 10% 0 0.5 1
+
+wild type thymocytes P14 positive thymocytes
+Average Normalized T Cell-DC Distance
+
+Wild Type 20
+
+0 40
+
+0
+
+2
+
+4
+
+6
+
+8
+
+10
+
+12
+
+14
+
+16
+
+18
+
+20
+
+P14 Positive 20
+
+0 40
+
+0
+
+2
+
+4
+
+6
+
+8
+
+10
+
+12
+
+14
+
+16
+
+18
+
+20
+
+D C
+
+P14 Negative 20
+
+1.5 2 2.5 3 3.5 4 Normalized Center−to−Edge Distance d
+
+4.5
+
+5
+
+0
+
+0
+
+2
+
+4 6 8 10 12 14 16 Average Instantaneous Speed Tpye I (um/min)
+
+18
+
+20
+
+T
+
+T+1
+

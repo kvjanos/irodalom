@@ -1,0 +1,2642 @@
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Part 1. Supplementary Methods
+Data Processing and Analysis. Mass spectral data was processed using CompPASS, as previously described1 with modifications discussed below. Briefly, Sequest summary files were processed into a high threshold dataset based on a 2% protein false-positive rate by keeping the XCorr thresholds for each charge state constant while varying the ΔCn (thresholds: XCorr 2+ ≥ 2.5; XCorr 3+ ≥ 3.2; XCorr 4+ ≥ 3.5; +1 charge states were not collected). These processed data sets were merged for each duplicate run and used to populate a “stats table” consisting of each dataset for the AIN as well as 102 unrelated proteins (Dubs and their selected HCIPs1; N https://harper.hms.harvard.edu/CompPASS_Dubs.html). The D -score and Z-score are calculated from total spectral counts (TSCs) for each protein found in association with each bait. Because CompPASS was originally designed for analysis of mostly non-reciprocal datasets, we devised a new weighted DN-score (WDN-score) (Supplementary Fig. S2), which aids in the identification of HCIPs that are associated with multiple baits in a network. WDN-scores were calculated as:
+
+where ωj is the weight factor for interactor j (Eq. 3), σj is the standard deviation of the TSCs for interactor j and the raw WD-score is divided by the threshold WD-score determined in the same manner as for the D-score described previously 1. The previously described D-score is Eq. 1 without ωj. The analyzed files, the primary output from CompPASS, were used for all analysis described here. As described below, we found significant interconnectivity in the network. Proteins identified in each LC-MS/MS experiment with a WDN-scores ≥ 1 and a p-value ≤ 4.9 x10-6 are considered HCIPs. Comparison of HCIP abundance. In order to compare the abundance of HCIPs found in the wild type and mutant ATG8 protein IP-MS/MS experiments we used the normalized spectral abundance factor (NSAF) approach previously applied to determine the abundance of proteins found in IP-
+
+2
+
+www.nature.com/nature
+
+1
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+MS/MS datasets2. For each interactor in each IP-MS/MS experiments, the NSAF was calculated and then difference in NSAF values for that protein in wild type control and mutant experiment was determined. In order to plot the data using the log2 values of this difference while maintaining the proper sign of the value (positive for increase and negative for decrease), the conventional NSAF was multiplied by 100,000 so that each value was ≥ 1 before taking the log2 of the difference. Gene Ontology Analysis of the AIN and ATG8 networks. Gene Ontology (GO) process analysis was performed on both the HCIPs (WDN-score > 1.0) from the AIN and separately for the HCIPs from the ATG8 sub network using inhouse software. GO process terms were manually grouped into 25 broad categories for simplicity (Supplemental Table S7). HCIPs from each IP-MS/MS experiment were assigned a broad GO category where a single HCIP could have multiple category assignments, but only 1 per category. A final table of broad GO terms (Using the March 6, 2010 release) and their percentage found across all HCIPs was generated. This was repeated for non-HCIP proteins as well and was used to generate a mean and standard deviation for each broad GO category, representing the values found for each in the background protein dataset. GO term values for HCIPs were compared to these background values and p-values were calculated (Supplemental Fig. S5a). We feel that this method better reflects the enrichment of GO terms in our data rather than using the distributions for GO terms found across the entire human proteome because our IPMS/MS procedure does not truly randomly sample all proteins in the proteome. Indeed, inspection of GO enrichment for background proteins shows that GO terms relating to canonical background proteins (such as “folding”, “translation”, and “cytoskeleton”) are significantly enriched in our background data when compared to the expected values for the human proteome (Supplemental Fig. S5a). Figure S1. Autophagy proteins and yeast autophagy signaling modules. a, Primary and secondary baits examined in this study organized by functional class. b-e, Diagrams of central signaling pathways in the autophagy system in budding yeast, including the Atg1 pathway (b), the Vps34 lipid kinase pathway (c), the UBL (Atg8/Atg12) conjugation pathway (d), and the vesicle recycling complex involving the transmembrane protein Atg9 and the peripheral membrane proteins Atg18, Atg2, and Atg27 (e). Yeast proteins are indicated by symbols. Mammalian orthologs for Atg8 are indicated. Adapted from: Levine, B. and Kroemer, G. (2008) Cell 132, 161. Figure S2. Development of a weighted DN-score for analysis of proteomic data within a collection of overlapping sub-networks. To better determine likely interacting proteins that are abundant across IP-MS/MS datasets, we developed a weighted DN-score (WDN-score) based on the observation that the standard deviation of the TSCs for known common interactors was much higher than that of known background proteins (expressed as %σ in panel a) (see Detailed Methods). b, A closer look at the distribution of proteins with %σ ≥ 100% versus those with %σ < 100% shows that proteins in this former category are rarely found in multiple IP-MS/MS experiments. c, Examples of proteins known to be background (FUS and ALDH1B1) versus proteins known to be true interactors (VCP and CUL3) shows the differences in the TSC distributions and the large %σ for the known interactors. d, Incorporating this information into the weighted DN-score (see Detailed Methods) allows for 11% more proteins to be considered HCIPs versus using the previously describe DN-score 1 indicating that most
+www.nature.com/nature
+3
+
+Part 2. Supplementary Figure Legends
+
+2
+
+Table	  S5.	  siRNA	  and	  RT-­PCR	  primer	  sequences	  used	  in	  this	  study.	  
+doi: 10.1038/nature09204 SUPPLEMENTARY INFORMATION Table	  S6.	  Normalized	  average	  intensity	  spot	  signals/cell	  for	  the	  RNAi	  
+
+autophagosome	  formation	  screen.	   Table	  S7.	  Curation	  of	  Genes	  lacking	  Gene	  Ontology	  Process	  descriptors	  (Sheet	   2),	  as	  well	  as	  the	  GO	  categories	  employed	  for	  this	  analysis	  (Sheet	  1).	   	   	  
+References 1. 2. Sowa, M. E., Bennett, E. J., Gygi, S. P. & Harper, J. W. Defining the human deubiquitinating enzyme interaction landscape. Cell 138, 389-403 (2009). Sardiu, M. E. et al. Probabilistic assembly of human protein interaction networks from label-free quantitative proteomics. Proc Natl Acad Sci U S A 105, 14541459 (2008).
+
+	  
+
+7
+
+www.nature.com/nature
+
+3
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S1
+
+a
+
+Prim ary bait
+
+Secondary bait C12orf44 CAMKK2 FOXO3A GBL KIAA0652 PRKAA1 PRKAA2 PRKAB1 PRKAB2 PRKAG1 PRKAG2 RB1CC1 STK11
+
+b
+
+Regulation of induction
+Rapamycin
+P P ATG13 P
+
+c
+
+Autophagosome nucleation
+PI(3)K complex III
+Atg14 Atg6 Vps15 Vps34 PtdIns3P (phosphatidylinositol -3-phosphate)
+
+mTOR
+P ATG13 Vps38 Atg6 Vps15 Vps34
+
+ULK1 kinase netw ork
+
+ULK1 ULK2
+
+P ATG13 ATG1 Kinase
+
+ATG17 ULK1
+
+PtdIns3P (phosphatidylinositol -3-phosphate)
+
+PIK3C3BECN1 netw ork
+
+stimulates Autophagy DDA1 KIAA0831 NRBF2 MS/MS datasets2. For each interactor in each KLHDC10 SH3GLB1 SH3GLB1 calculated and then difference in NSAF values SH3GLB2 netw ork
+
+ATG18 ATG2 house software. GO process terms were manually grouped into 25 broad categories for P ATG9 FYCO1 UBL ATG8 MAP1LC3A GBAS simplicity (Supplemental Table S7). MAP1LC3B HCIPs from each IP-MS/MS experiment were MAP1LC3C GABARAP KBTBTD7 assigned a broad GO category where a single HCIP could have multiple category GABARAPL1 NEK9 GABARAP assignments, but only 1 per category. GABARAPL2 table of broad GO terms (Using the March A final NSMAF GABARAPL1 PIK3C2A 6, 2010 release) and their percentage found across all HCIPs was generated. This was GABARAPL2 Hum an PIK3CG repeated for non-HCIP proteins as well and was used to generate a mean and standard MAP1LC3A ATG8's RABGAP1 MAP1LC3B deviation for each broad GO category, representing the values found for each in the RASSF5 MAP1LC3C SQSTM1 background protein dataset. GO term values for HCIPs were compared to these STK3 background values and p-values were calculated (Supplemental Fig. S5a). We feel that STK4 this method better reflects the enrichment of GO terms in our data rather than using the UBA5 distributions for GO terms found across the entire human proteome because our IPCLN3 MS/MS procedure does not truly randomly sample all proteins in the proteome. Indeed, GOSR1 Vesicle NSF trafficking inspection of GO enrichment for background proteins shows that GO terms relating to RAB24 canonical background proteins (such as “folding”, “translation”, and “cytoskeleton”) are DDIT3 significantly enriched in our background data when compared to the expected values for HIF1A Miscellaneous the human proteome (Supplemental Fig. S5a). PDPK1
+
+ATG16 ATG16 ATG4B ATG10 E2 ATG12 ATG5 ATG5 ATG27 ATG9 ATG4C ATG5 UBL Gene Ontology Analysis of the AIN and ATG8 networks. UBL ATG12 ATG12 ATG12 ATG2 ATG11 ATG5 TECPR1 conjugation E1 ATG7 ATG5 ATG7 system ATG8 Gene ATG10 Ontology (GO) process analysis was performed on phosphatidyl-the HCIPs (WDN-score > ATG8 PE both ethanolamine ATG12 1.0) from the AIN and separately for the ATG3 E2 from the ATG8 sub network using inHCIPs ATG1 ATG4 Dub ATG16L1
+
+IP-MS/MS experiments, the NSAF was for that protein in wild type control and ATG2A ATG2-mutant experiment was determined. In order to plot the data using the log2 values of this Vesicle elongation Membrane retrieval WIPI1 WDR45 WIPI difference while maintaining the proper sign of the value (positive for increase and ATG12 ATG12 WIPI2 netw ork negative for decrease), the conventional NSAF was multiplied by 100,000 so that each ATG5 ATG5 ATG16 ATG3 ATG16 ATG16 value was ≥ 1 before taking the log2 of the difference.
+
+PIK3C3 BECN1 UVRAG AMBRA
+
+Endosomal Fusion
+
+Autophagy
+
+d
+
+e
+
+TRAF2
+
+Figure S1. Autophagy proteins and yeast autophagy signaling modules. a, Primary and secondary baits examined in this study organized by functional class. b-e, Diagrams of central signaling pathways in the autophagy system in budding yeast, including the Atg1 pathway (b), the Vps34 lipid kinase pathway (c), the UBL (Atg8/Atg12) conjugation pathway (d), and the vesicle recycling complex involving the transmembrane protein Atg9 and the peripheral membrane proteins Atg18, Atg2, and Atg27 (e). Yeast proteins are indicated by symbols. Mammalian orthologs for Atg8 are indicated. Adapted from: Levine, B. and Kroemer, G. (2008) Cell 132, 161. Figure S2. Development of a weighted DN-score for analysis of proteomic data within a collection of overlapping sub-networks. To better determine likely 8 interacting proteins that are abundant across IP-MS/MS datasets, we developed a weighted DN-score (WDN-score) based on the observation that the standard deviation of the TSCs for known common interactors was much higher than that of known background proteins (expressed as %σ in panel a) (see Detailed Methods). b, A closer look at the distribution of proteins with %σ ≥ 100% versus those with %σ < 100% shows that proteins in this former category are rarely found in multiple IP-MS/MS experiments. c, Examples of proteins known to be background (FUS and ALDH1B1) versus proteins known to be true interactors (VCP and CUL3) shows the differences in the TSC distributions and the large %σ for the known interactors. d, Incorporating this information into the weighted DN-score (see Detailed Methods) allows for 11% more proteins to be N 1 www.nature.com/nature considered HCIPs versus using the previously describe D -score indicating that most
+
+Part 2. Supplementary Figure Legends
+
+4
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S2 a
+450 400 350 300 % σ (σ/Ave) 250
+500
+
+b
+Number of Proteins
+
+250 200 150 100 50 0 10 20 30 40 50 60 70 80 % IP MS/MS Experiments 90 100
+
+%σ ≥ 100
+
+200
+Number of Proteins
+
+450 400 350
+
+%σ < 100
+
+150 100 50 0
+
+0
+
+300 MS/MS datasets2. For each interactor in each IP-MS/MS experiments, the NSAF was 250 calculated and then difference in NSAF values for that protein in wild type control and 200 mutant experiment was determined. In order to plot the data using the log2 values of this 150 100 difference while maintaining the proper sign of the value (positive for increase and negative for decrease), the conventional NSAF was multiplied50by 100,000 so that each 0 value was ≥ 1 before taking the log2 of the difference. 20 40 60 80 100 10 20 30 40 50 60 70 80
+
+90
+
+100
+
+Gene Ontology Analysis of the AIN and ATG8 networks.
+
+% IP MS/MS Experiments
+
+% IP MS/MS Experiments
+
+c
+# of IP-MS/MS
+
+50 45 40 35 30 25 20 15 10 5 0 1
+
+40 35
+# of IP-MS/MS
+
+25 20 15 10 5 0 1
+
+10
+
+15
+
+20
+
+25
+
+30
+
+35
+
+40
+
+45
+
+50
+
+5
+
+More
+
+# of IP-MS/MS
+
+30
+
+e
+
+d Gene Ontology (GO) process analysis was performed on both the HCIPs (WDN-score > 35 Ave. TSC = 16.5 30 Total HCIPs σ AIN and separately for the HCIPs Ave. TSC = 2.9 TSC = 9.1 1.0) from the from= 1.8 ATG8 sub network using inthe σ TSC % σ = 55.2% 25 % σ = 63.4% house software. GO process terms were manually grouped into 25 broad categories for 20 simplicity (Supplemental Table S7). HCIPs from each IP-MS/MS experiment were 15 11% 10 assigned a broad GO category where a single HCIP could have multiple category 5 assignments, but only 1 per category. A final table of broad GO terms (Using the March 0 6, 2010 release) and their percentage found across all HCIPs was generated. This was repeated for non-HCIP proteins as well and was used to generate a mean and standard VCP CUL3 deviation for each broad GO 30category, representing the values found for each in the 89% Ave. TSC 9.9 Ave.protein dataset. GO term values for = HCIPs were compared to these TSC = 11.9 background σ TSC = 43.6 25 σ TSC = 21.8 20 % σ = 366.7% background values and p-values were calculated (Supplemental Fig. S5a). We feel that % σ = 220.4% this method better reflects the 15enrichment of GO terms in our data rather than using the 10 distributions for GO terms found across the entire human proteome because our IP= D-score 5 MS/MS procedure does not truly randomly sample all proteins in the proteome. Indeed, 0 = WD -score “rescued” inspection of GO enrichment for background proteins shows that GO terms relating to canonical background proteins (such as “folding”, “translation”, and “cytoskeleton”) are significantly enriched in our background data when compared to the expected values for the human proteome (Supplemental Fig. S5a).
+ALDH1B1
+10 15 20 25 30 35 40 45 50 More
+# of IP-MS/MS
+
+FUS
+
+5
+
+10
+
+15
+
+20
+
+25
+
+30
+
+35
+
+40
+
+45
+
+50
+
+1
+
+5
+
+TSC
+
+TSC
+
+1
+
+5
+
+10
+
+15
+
+20
+
+25
+
+30
+
+35
+
+40
+
+45
+
+50
+
+TSC
+
+TSC
+
+Figure S2. Development of a weighted DN-score for analysis of proteomic data within a collection of overlapping sub-networks. To better determine likely interacting proteins that are abundant across IP-MS/MS datasets, we developed a weighted DN-score (WDN-score) based on the observation that the standard deviation of 9 the TSCs for known common interactors was much higher than that of known background proteins (expressed as %σ in panel a) (see Detailed Methods). b, A closer look at the distribution of proteins with %σ ≥ 100% versus those with %σ < 100% shows that proteins in this former category are rarely found in multiple IP-MS/MS experiments. c, Examples of proteins known to be background (FUS and ALDH1B1) versus proteins known to be true interactors (VCP and CUL3) shows the differences in the TSC distributions and the large %σ for the known interactors. d, Incorporating this information into the weighted DN-score (see Detailed Methods) allows for 11% more proteins to be considered HCIPs versus using the previously describe DN-score 1 indicating that most abundant proteins remain designated as background. e, The total spectal counts (orange) for autophagy network bait proteins are plotted together with the number of HCIPs for each bait (in green) based on WDN-score.
+3
+
+www.nature.com/nature
+
+Figure S3. Global analysis of the autophagy interaction network. a, Heat map generated from hierarchical clustering of the 2553 proteins identified by LC-MS/MS for 65 autophagy network components without filtering via CompPASS	   1. The color of the interacting protein in the plot corresponds to its WDN-score. b, Hierarchical clustering of 763 high-confidence interacting proteins after processing via CompPASS. Figure S4. Development of a module within CompPASS to collapse networks using available protein interaction databases and its application to the autophagy
+
+PIK3CG UBA5 NSF ATG4B FYCO1 PIK3C3 STK4 ATG7 RB1CC1 ATG2A TECPR1 NRBF2 ATG4C SH3GLB1 NSMAF NEK9 FOXO3A TRAF2 CAMKK2 SH3GLB2 GABARAP ATG16L1 SQSTM1 RABGAP1 STK3 ATG3 BECN1 AMBRA1 PRKAB2 ULK1 UVRAG RASSF5 MAP1LC3C WDR45 STK11 PRKAA2 GBAS RAB24 C12orf44 ATG5 KBTBD7 PRKAB1 WIPI2 ATG10 PRKAG1 KIAA0652 MAP1LC3A MAP1LC3B CLN3 PDPK1 GABARAPL2 KIAA0831 PRKAA1 WIPI1 ULK2 HIF1A KLHDC10 GBL GABARAPL1 PIK3C2A GOSR1 DDA1 PRKAG2 DDIT3 ATG12
+
+900 800 700 600 500 400 300 200 100 0
+
+TSC Figure S1. Autophagy proteins and yeast autophagy signaling modules. a, Primary and secondary baits examined in this study organized by functional class. b-e, Diagrams of central signaling pathways in the autophagy system in budding yeast, including the Atg1 pathway (b), the Vps34 lipid kinase pathway (c), the UBL (Atg8/Atg12) conjugation pathway (d), and the vesicle recycling complex involving the transmembrane protein Atg9 and the peripheral membrane proteins Atg18, Atg2, and Atg27 (e). Yeast proteins are indicated by symbols. Mammalian orthologs for Atg8 are indicated. Adapted from: Levine, B. and Kroemer, G. (2008) Cell 132, 161.
+
+Part 2. Supplementary Figure Legends
+
+More
+
+More
+
+HCIPs
+
+45 40 35 30 25 20 15 10 5 0
+
+# of HCIPs
+
+TSC
+
+5
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S3 a
+All interacting proteins
+
+Baits
+
+WDN-score
+
+b High-confidence interacting proteins (HCIPs)
+
+0
+
+≥20
+DDIT3 HIF1A STK11 GBL GOSR1 NSF RAB24 ATG4C PDPK1 KLHDC10 SH3GLB1 SH3GLB2 RABGAP1 KBTBD7 GABARAPL1 NSMAF PIK3CG FOXO3A GBAS GABARAP SQSTM1 NEK9 GABARAPL2 UBA5 ATG2A WDR45 WIPI1 DDA1 AMBRA1 NRBF2 BECN1 KIAA0831 PIK3C3 UVRAG TRAF2 ATG16L1 ATG12 ATG3 ATG5 TECPR1 ATG10 MAP1LC3C ATG7 PIK3C2A FYCO1 MAP1LC3B MAP1LC3A RASSF5 STK3 STK4 CLN3 CAMKK2 ATG4B PRKAA1 PRKAA2 PRKAB2 PRKAB1 PRKAG1 PRKAG2 ULK1 C12orf44 KIAA0652 RB1CC1 ULK2 WIPI2
+
+Baits
+
+PRKAG2
+
+PRKAG1
+
+PRKAA2
+
+PRKAB2
+
+PRKAA1
+
+ATG7 ATG3 ATG12 ATG3 STIM2 SH3PXD2A MAST3 GFPT1 BAIAP2L1 MAP3K6 GYG1 MAP3K5 GYS1 TECPR1 ATG10 MAP1LC3C ATG7 PIK3C2A PRKAA2 PRKAB2 MAP1LC3B MAP1LC3A
+
+UVRAG KIAA0226 PIK3R4 BECN1 KIAA0831 PIK3C3 CLPTM1L NRBF2
+
+BECN1 KIAA0831 PIK3C3 UVRAG
+
+PRKAA1 PRKAA2 PRKAB2 PRKAB1 PRKAG1 PRKAG2 ULK1
+
+TECPR1 ATG5 ATG12 ATG16L1 ATG12 ATG3 ATG5 TECPR1 TMPO SEC24B SEC23B RPA3 MON1B MAP4 LMNA KIF5B KIF23 FOXK1 EMD CCAR1 C7orf26A C18orf8 FYCO1 RPA2 RPA1
+
+ZNF24 VANGL2 TJP2 TJP1 RBM26 POLRMT PIK4CB NUP155 MTM1 MRPL45 KIAA1967 IQGAB17 GBF1 ERC1 EIF4B C18ORF22 C17ORF42 BRSK2 KBTBD6 KBTBD7 CUL3 NSUN4 GTF3C1 LLGL
+
+USP7 KLHDC10 CUL2 NUDCD1 SH3GLB2 SH3GLB1
+
+TMEM160 PRKCI HADHB HADHA KEAP1 SQSTM1 NIPSNAP1 GBAS
+
+KBTBD7 GABARAPL1
+
+KLHDC10 SH3GLB1 SH3GLB2
+
+MAP1LC3B MAP1LC3A
+
+FYCO1 MAP1LC3B MAP1LC3A
+
+SAFB2 RAB3GAP2 RAB3GAP1 LOC652191 CLTC CLTA MAP1LC3A MAP1B MAP1A CLINT1
+
+TAOK1 RASSF4 RASSF1 STK4 RASSF2 SAV1 STK3 PLK1 FREM1 CACYBP
+
+MAP1LC3B abundant proteins remain designated as background. e, The total spectal counts MAP1LC3A RASSF5 MAP1LC3B STK3 (orange) for autophagy network bait proteins are plotted together with the number of GABARAP NSF RASSF5 STK4 N HCIPs for each bait (in green) based on WD -score.
+
+MAP1LC3A
+
+Figure S3. Global analysis of the autophagy interaction network. a, Heat map generated from hierarchical clustering of the 2553 proteins identified by LC-MS/MS for 65 autophagy network components without filtering via CompPASS	   1. The color of the interacting protein in the plot corresponds to its WDN-score. b, Hierarchical clustering of 10 763 high-confidence interacting proteins after processing via CompPASS. Figure S4. Development of a module within CompPASS to collapse networks using available protein interaction databases and its application to the autophagy interaction network (AIN). a, Since the nature of the interactions identified in our IPMS/MS data cannot be determined to be either direct or indirect, we chose to analyze these interactions at a more conservative level by collapsing known multimeric protein complexes (present in BIOGRID, MINT and STRING) into a single representative node. For example, if the 6 proteins known to form a complex are found as HCIPs for a given bait, it cannot be determined to which of these 6 the bait directly interacts. Therefore, rather than reporting 6 interactions for this bait, we report a single interaction to a known protein complex comprised of those 6 interacting proteins. In this manner, we feel that we are not over-representing the number of interactions and can also better report www.nature.com/nature associations with known protein complexes. b, Summary of novel and known interactions found using the Network Collapse function in CompPASS (panel a). Figure S5. Functional and structural analysis of the autophagy interaction
+
+VTI1B STX8 STX7 STX6 STX5 STX12 SNAP29 SNAP23 NAPG NAPA CSNK1G3 NSF LOC651907
+
+GABARAP TBC1D15 PI4KII NCOA7 KIAA0329 FNBP1 RANBP5 NEDD4 STBD1 DYX1C1
+
+6
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S4
+
+a
+
+Raw
+Total # of associations Total # of known complexes Total # of known bait-prey associations Total # of novel bait-prey associations 10 2 5 5
+
+Known association
+
+Adjusted
+Total # of associations 4 2 2 2 Total # of known complexes
+
+Novel association
+
+Novel association
+
+Total # of known bait-prey associations Total # of novel bait-prey associations
+
+Known association
+= PPI database interaction (MINT, BioGRID, STRING) = MS/MS association
+
+Collapse Network using known protein complexes
+
+= MS/MS bait = HCIP for bait
+
+b
+
+abundant proteins remain designated as background. e, The total spectal counts (orange) for autophagy network bait proteins are plotted together with the number of HCIPsoffor each bait (in green) based on WDN-score. Type Interaction Total Number
+751 Figure S3. Global analysis of the autophagy interaction network. a, Heat map Raw Network 84 generated from hierarchical clustering of the 2553 proteins identified by LC-MS/MS for 40 65 Total Associations network 497 autophagy components without filtering via CompPASS	   1. The color of the Collapsed Network Known Bait-HCIP/KPCprotein in the plot corresponds to its WDN-score. b, Hierarchical clustering of Associations 68 interacting Novel Bait-HCIP Associations 429 763 high-confidence interacting proteins after processing via CompPASS. HCIPs Known Protein Complexes (KPC) Known Bait-KPC Interactions
+
+} }
+
+Figure S4. Development of a module within CompPASS to collapse networks using available protein interaction databases and its application to the autophagy interaction network (AIN). a, Since the nature of the interactions identified in our IPMS/MS data cannot be determined to be either direct or indirect, we chose to analyze these interactions at a more conservative level by collapsing known multimeric protein complexes (present in BIOGRID, MINT and STRING) into a single representative node. For example, if the 6 proteins known to form a complex are found as HCIPs for a given bait, it cannot be determined to which of these 6 the bait directly interacts. Therefore, rather than reporting 6 interactions for this bait, we report a single interaction to a known protein complex comprised of those 6 interacting proteins. In this manner, we feel that we are not over-representing the number of interactions and can also better report associations with known protein complexes. b, Summary of novel and known interactions found using the Network Collapse function in CompPASS (panel a). Figure S5. Functional and structural analysis of the autophagy interaction network. a, Enrichment of Gene Ontology (GO) process descriptors for HCIPs (WDNscore ≥1.0, p < 10-5) in the autophagy interaction network (AIN, left panel), the ATG8 sub-network (center panel), and proteins with WDN-scores ≥ 1.0 (right panel). Enrichments were determined as described in the Supplemental Methods section. b, Hierarchical clustering of proteins found associated with 65 bait proteins, with the number of PFAM domains present indicated by the heat map. c, Distribution of PFAM domains found among baits (red bars) and HCIPs (blue bars). d, Analysis of hubs in the AIN. Hubs were identified based on their presence as HCIPs in IP-MS/MS experiments from 3 different baits with WDN-Score ≥3 each and an average WDN-Score ≥2 acrcoss all IP-MS/MS experiments in which a hub candidate was present based on TSCs. 11 Primary and secondary bait refers to the classification in Fig 1. Figure S6. Summary of reciprocal interactions for the AIN and analysis of previously reported interactions for the UBL conjugation system. a, Summary of the LC-MS/MS data for the UBL conjugation system showing the number of HCIPs, number of known interacting proteins in BIOGRID and MINT, and the number of reciprocal interactions observed. b, Summary of previously reported interaction for the UBL conjugation system. c, Summary of reciprocal interactions in the networks presented in Fig. 2 and Fig. 3 determined by LC-MS/MS. d, Merged interaction maps of HCIPs found in ≥ 2 IP-MS/MS experiments among indicated baits. Common interacting proteins with sub-threshold WDN-scores were included if HCIP criteria were fulfilled in ≥ www.nature.com/nature 1 IP-MS/MS experiment. e, Individual interaction maps showing all the HCIPs identified for primary and secondary baits examined in this study. Dotted lines indicate interactions found in BIOGRID, MINT, and STRING protein interaction databases. f, IP-Western
+
+7
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S5 a
+Complete AIN Network
+Broad GO Category Process DNA Damage DNA Replication GTPase Signaling Ion/AA Transport Macroscopic Cellular Response OTHER Protein/AA modifiction RNA Processing apoptosis biosynthetic chromatin cytoskeleton development folding metabolism & catabolism mitosis morphogenesis phosphorylation protein localization and transport proteolysis signal transduction transcription translation ubiquitin vesicle transport significant increase significant decrease no significant change AIN HCIPs % found 1.99% 0.71% 0.90% 0.76% 4.84% 5.32% 2.47% 1.90% 4.99% 6.08% 1.38% 1.99% 7.79% 3.13% 8.07% 4.23% 1.85% 5.46% 8.02% 4.27% 6.74% 4.84% 2.23% 2.71% 7.31% Background % found 2.93% 0.91% 0.43% 1.24% 5.63% 10.24% 1.06% 8.45% 4.55% 4.05% 1.71% 2.37% 8.41% 4.54% 7.25% 5.13% 1.05% 1.83% 7.03% 1.46% 4.07% 4.61% 7.57% 1.15% 2.34% Proteins σ 0.52% 0.90% 0.39% 0.58% 0.70% 0.87% 0.89% 2.83% 0.64% 1.22% 0.54% 0.45% 1.16% 1.04% 1.83% 0.59% 0.36% 0.64% 0.71% 0.59% 0.64% 1.00% 2.37% 1.07% 0.86% p-value 3.57E-02 4.14E-01 1.14E-01 2.03E-01 1.28E-01 6.86E-09 5.73E-02 1.02E-02 2.47E-01 4.82E-02 2.70E-01 2.00E-01 2.95E-01 8.77E-02 3.26E-01 6.37E-02 1.25E-02 5.59E-09 8.11E-02 1.02E-06 1.36E-05 4.09E-01 1.23E-02 7.41E-02 3.39E-09
+
+ATG8 Sub-Network
+Broad GO Category Process DNA Damage DNA Replication GTPase Signaling Ion/AA Transport Macroscopic Cellular Response OTHER Protein/AA modifiction RNA Processing apoptosis biosynthetic chromatin cytoskeleton development folding metabolism & catabolism mitosis morphogenesis phosphorylation protein localization and transport proteolysis signal transduction transcription translation ubiquitin vesicle transport significant increase significant decrease no significant change ATG8 Network HCIPs % found 0.76% 0.00% 2.04% 0.76% 5.34% 4.33% 4.33% 0.25% 5.85% 5.60% 0.00% 2.54% 6.87% 0.51% 6.87% 1.78% 1.78% 4.83% 11.45% 6.11% 6.87% 4.58% 0.00% 4.83% 11.70% Background Proteins % found σ 2.93% 0.52% 0.91% 0.90% 0.43% 0.39% 1.24% 0.58% 5.63% 0.70% 10.24% 0.87% 1.06% 0.89% 8.45% 2.83% 4.55% 0.64% 4.05% 1.22% 1.71% 0.54% 2.37% 0.45% 8.41% 1.16% 4.54% 1.04% 7.25% 1.83% 5.13% 0.59% 1.05% 0.36% 1.83% 0.64% 7.03% 0.71% 0.59% 1.46% 4.07% 0.64% 4.61% 1.00% 7.57% 2.37% 1.15% 1.07% 2.34% 0.86% p-value 1.48E-05 1.56E-01 2.18E-05 2.05E-01 3.38E-01 4.49E-12 1.28E-04 1.87E-03 2.08E-02 1.02E-01 7.56E-04 3.49E-01 9.16E-02 5.05E-05 4.18E-01 7.39E-09 2.05E-02 1.14E-06 2.96E-10 2.22E-15 5.50E-06 4.87E-01 7.15E-04 3.03E-04 0.00E+00
+
+AIN Network Background Proteins*
+Broad GO process Category DNA Damage DNA Replication GTPase Signaling Ion/AA Transport Macroscopic Cellular Response OTHER Protein/AA modifiction RNA Processing apoptosis biosynthetic chromatin cytoskeleton development folding metabolism & catabolism mitosis morphogenesis phosphorylation protein localization and transport proteolysis signal transduction transcription translation ubiquitin vesicle transport significant increase significant decrease no significant change Background Proteins %Found 2.95% 0.86% 0.43% 1.22% 5.63% 10.32% 1.04% 8.62% 4.59% 4.01% 1.72% 2.39% 8.38% 4.61% 7.21% 5.16% 1.03% 1.80% 6.99% 1.41% 3.97% 4.64% 7.68% 1.12% 2.22% Whole Proteome s %Found 1.67% 0.57% 0.38% 0.13% 2.33% 0.79% 2.54% 0.86% 6.78% 2.31% 27.40% 9.32% 0.78% 0.27% 2.00% 0.68% 2.71% 0.92% 2.24% 0.76% 0.83% 0.28% 1.06% 0.36% 12.03% 4.09% 0.77% 0.26% 5.99% 2.04% 4.39% 1.49% 1.38% 0.47% 2.26% 0.77% 2.90% 0.99% 0.56% 1.65% 7.00% 2.38% 6.52% 2.22% 0.80% 0.27% 1.03% 0.35% 2.57% 0.87% p-value 1.21E-02 1.08E-04 8.17E-03 6.33E-02 3.09E-01 3.34E-02 1.59E-01 0.00E+00 2.05E-02 1.01E-02 7.98E-04 1.11E-04 1.86E-01 0.00E+00 2.75E-01 3.04E-01 2.30E-01 2.73E-01 1.71E-05 3.38E-01 1.02E-01 1.98E-01 0.00E+00 3.94E-01 3.44E-01
+N
+
+*background proteins have a WD -score < 1 and a TSC p-value > 3E-5
+
+b
+ATG5 TECPR1 HIF1A FYCO1 ATG2A KIAA0652 ATG10 ATG12 ATG3 AMBRA1 ATG4B ATG7 MAP1LC3C FOXO3A NRBF2 GOSR1 NSF DDIT3 PIK3CG NSMAF RAB24 SH3GLB1 SH3GLB2 ATG16L1 KBTBD7 GABARAP GABARAPL1 GABARAPL2 MAP1LC3B MAP1LC3A SQSTM1 KLHDC10 TRAF2 PDPK1 RB1CC1 PRKAA2 PRKAB2 STK11 NEK9 RABGAP1 STK3 CAMKK2 RASSF5 STK4 PRKAA1 PRKAG1 PRKAG2 PRKAB1 ULK1 ULK2 WDR45 WIPI1 ATG4C BECN1 GBL KIAA0831 PIK3C3 UVRAG C12orf44 DDA1 GBAS PIK3C2A UBA5 CLN3 WIPI2
+
+Pfam domains
+
+Baits
+
+2
+
+1
+
+Baits
+
+NRBF2
+
+0
+
+≥3
+
+NSMAF
+
+1 Pfam domain
+
+NSF
+
+2 Baits
+
+Pkinase
+
+ATG16L1 KBTBD7 GABARAP GABARAPL1 GABARAPL2 MAP1LC3B MAP1LC3A SQSTM1 KLHDC10
+
+c
+30
+
+# of Baits
+
+25 20 15 10 5 0
+
+# of baits with interactors containing indicated Pfam domain # of interactors containing indicated Pfam domain
+
+MAP1_LC3 Peptidase_C54 Autophagy_C Autophagy_N ThiF Cullin C2 BTB BACK Kelch_1 CS HECT WW RIIa cNMP_binding
+70 60 50 40 30 20 10 0
+
+GABARAPL1 GABARAPL2 MAP1LC3B MAP1LC3A SQSTM1
+
+# Pfam domains present
+SH3GLB2 ATG16L1
+
+TRAF2 PDPK1 RB1CC1 PRKAA2 PRKAB2 STK11 NEK9 RABGAP1 STK3 CAMKK2 RASSF5 STK4 PRKAA1 PRKAG1 PRKAG2 PRKAB1 ULK1
+
+Pfam domains
+
+# of HCIPs
+
+www.nature.com/nature
+
+Pkinase WD40 PI3_PI4_kinase TPR_1 HEAT MAP1_LC3 Peptidase_C54 BTB Autophagy_C Autophagy_N FKBP_C ThiF Peptidase_M24 PGK PI3K_C2 PI3Ka 3HCDH 3HCDH_N AAA ECH FAT FATC HGTP_anticodon MAP1B_neuraxin tRNAsynt_2bBACK CBS FYVE Kelch_1 NUC194 ZZ AMPKBI APG5 ATG16 C1_1 Filament NIPSNAP PB1 SH3_1 TGS Thiolase_C Thiolase_N tRNA_SAD UCH WW Ank RRM_1 C2 CH CS Cullin DUF1875 GRAM PI3K_rbd Pkinase_C RA SMC_hinge SMC_N Aldedh APG12 Beach CDC48_2 CDC48_N DUF1055 Fork_head Glyco_hydro_31 MATH PDZ Peptidase_M1 RCC1 Anticodon_1 Arm Asn_synthase Cadherin Cadherin_pro CDC37_C CDC37_M CDC37_N Coatomer_WDAD DEAD DnaJ DnaJ_C efhand EMP24_GP25L ENTH ETF ETF_alpha Filamin GATase_2 GDE_C Glycogen_syn HECT Helicase_C IQ LLGL MCM NTF2 PFK PH
+
+12
+
+8
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S5d
+
+PDPK1
+
+RAB24
+
+NSF
+
+GOSR1
+
+WIPI1
+
+GYS1
+STK11
+
+ATG2A
+
+WDR45 WIPI2
+
+HIF1A
+
+DDIT3
+
+TRAF2
+
+PRKAA2 PRKAA1 PRKAG2
+CAMKK2
+
+ULK1
+
+KIAA0652
+
+ULK2 GBL
+
+KIAA0265 SH3GLB1 SH3GLB2 DDA1
+
+RB1CC1
+
+PRKAG1 PRKAB2
+
+PRKAB1
+
+PIK3CG C12orf44
+
+MAP1LC3A
+
+RASSF5
+
+CLN3
+
+GABARAPL2 FOXO3A PIK3C2A
+
+ATG4B
+
+STK4 GBAS
+GABARAP
+
+STK3
+
+UBA5
+ATG4C AMRA1 KIAA0831
+
+NEDD4 NBR1
+
+ANKFY1 ATG7 NRBF2 BECN1
+ATG3
+
+NIPSNAP1
+MAP1LC3B FYCO1
+
+STBD1 MAP1B ATG5 ATG12
+GABARAPL1
+
+PIK3R4
+
+SQSTM1
+
+PIK3C3
+UVRAG
+
+ATG16L1
+RABGAP1 ATG10
+
+TECPR1
+MAP1LC3C NEK9
+
+KBTBD6 NSMAF
+
+TMEM160
+
+KBTBD7
+
+PDPK1
+
+RAB24
+
+NSF
+
+GOSR1
+
+WIPI1
+
+GYS1
+STK11
+
+ATG2A
+
+WDR45 WIPI2
+
+HIF1A
+
+DDIT3 ULK1
+
+TRAF2
+
+ULK2 GBL
+
+PRKAA2 PRKAA1
+
+PRKAG2
+CAMKK2
+
+KIAA0652 RB1CC1
+
+KIAA0265 SH3GLB1
+
+PRKAG1
+
+PRKAB1
+
+PRKAB2 abundant proteins remain designated as background. e, The total spectal counts SH3GLB2 PIK3CG RASSF5 MAP1LC3A (orange) for autophagy network bait proteins are plotted together with CLN3 number of the DDA1 HCIPs for each bait (in green) basedC12orf44 WDN-score. on
+
+Figure S3. Global analysis of the autophagyATG4B interaction network. a, Heat map PIK3C2A FOXO3A STK4 STK3 generated from hierarchical clustering GBASthe 2553 proteins identified by LC-MS/MS for of UBA5 1 NEDD4 NIPSNAP1 65 autophagy network components without filtering via CompPASS	   . The color of the MAP1LC3B GABARAP ANKFY1 FYCO1 ATG4C NBR1 interacting protein in the plot corresponds to its WDN-score. b, Hierarchical clustering of AMRA1 STBD1 MAP1B ATG7 KIAA0831 763 high-confidence interacting proteins after processing via CompPASS. NRBF2 ATG5 PIK3R4
+GABARAPL2
+
+SQSTM1
+
+ATG12 GABARAPL1 BECN1 Figure S4. PIK3C3 Development of a module within CompPASS to collapse networks ATG3 UVRAG using available protein interaction databases and its application to the autophagy KBTBD6 TMEM160 ATG16L1 TECPR1 interaction network (AIN). a, Since the nature of the interactions identified in our IPKBTBD7 RABGAP1 MS/MS data cannot be determined to be ATG10 either MAP1LC3C NEK9 indirect, we chose to analyze direct or NSMAF these interactions at a more conservative level by collapsing known multimeric protein complexes (present in BIOGRID, MINT and STRING) into a single representative node. For example, ifPrimary baitbait hub the 6 hub proteins known to form a complex are found as HCIPs for a given Secondary bait, it cannot be hub HCIP determined to which of these 6 the bait directly interacts. Therefore, HCIP hub 6 rather than reportingedgeinteractions for this bait, we report a single interaction to a known Subthreshold HCIP hub protein complex comprised edge those 6 interacting proteins. In this manner, we feel that of Primary bait we are not over-representing the number of interactions and can also better report HCIP HCIP associations withedge known protein complexes. b, Summary of novel and known interactions found using the Network Collapse function in CompPASS (panel a).
+
+Figure S5. Functional and structural analysis of the autophagy interaction network. a, Enrichment of Gene Ontology (GO) process descriptors for HCIPs (WDNscore ≥1.0, p < 10-5) in the autophagy interaction network (AIN, left panel), the ATG8 sub-network (center panel), and proteins with WDN-scores13 ≥ 1.0 (right panel). Enrichments were determined as described in the Supplemental Methods section. b, Hierarchical clustering of proteins found associated with 65 bait proteins, with the number of PFAM domains present indicated by the heat map. c, Distribution of PFAM domains found among baits (red bars) and HCIPs (blue bars). d, Analysis of hubs in the AIN. Hubs were identified based on their presence as HCIPs in IP-MS/MS experiments from 3 different baits with WDN-Score ≥3 each and an average WDN-Score ≥2 acrcoss all IP-MS/MS experiments in which a hub candidate was present based on TSCs. Primary and secondary bait refers to the classification in Fig 1. Figure S6. Summary of reciprocal interactions for the AIN and analysis of previously reported interactions for the UBL conjugation system. a, Summary of the LC-MS/MS data for the UBL conjugation system showing the number of HCIPs, number of known interacting proteins in BIOGRID and MINT, and the number of www.nature.com/nature reciprocal interactions observed. b, Summary of previously reported interaction for the UBL conjugation system. c, Summary of reciprocal interactions in the networks presented in Fig. 2 and Fig. 3 determined by LC-MS/MS. d, Merged interaction maps of
+
+9
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S6 a
+Bait ATG3 ATG4B ATG5 ATG7 ATG10 ATG12 ATG16L1 TECPR1 Total HCIPs 15 6 7 6 18 11 8 12 83 Total know n # of know n PPIs Novel PPIs for bait identified in this PPIs (MINT/BioGRID) study by LC-MS/MS 3 4 2 1 1 14 2 27 3 3 1 1 0 3 1 12 12 3 6 5 18 8 7 12 71 Reciprocal PPIs Potential reciprocal PPIs 10 7 5 8 7 6 6 3 52 Observed reciprocal PPIs 7 4 4 6 0 3 1 3 28
+
+UBL conjugation system
+
+b
+Bait ATG16L ATG16L ATG12 ATG12 ATG12 ATG12 ATG12 ATG12 ATG12 ATG12 ATG12 ATG12 ATG12 ATG12 ATG12 ATG3 ATG3 ATG3 ATG7 ATG10 ATG5 ATG5 ATG4B ATG4B ATG4B ATG4B ATG4B Interactor IKBKG ATG12 SF3A1 AUP1 ATG16L SF3B1 ATG3 ATG10 ATG5 PTK2 KRTAP4-12 MDFI DHX36 OTUD4 PLSCR1 ATG12 ATG7 GABARAPL2 atg3 ATG12 ATG12 IMPDH2 GABARAPL2 fbxw11 GABARAP MAP1LC3B C14orf139 Method Reference HT-AC-MS Bouwmeester 2004 HT-AC-MS HT-AC-MS HT-AC-MS HT-AC-MS HT-AC-MS AC-W HT-AC-MS HT-AC-MS Y2H Y2H Y2H HT-AC-MS HT-AC-MS Y2H AC-W AC-W HT-AC-MS AC-W HT-AC-MS HT-AC-MS HT-AC-MS HT-AC-MS HT-AC-MS Y2H Y2H Y2H Ewing 2008 Ewing 2008 Ewing 2008 Ewing 2008 Ewing 2008 Tanida 2002 Ewing 2008 Ewing 2008 Rual 2005 Rual 2005 Rual 2005 Ewing 2008 Ewing 2008 Rual 2005 Tanida 2002 Tanida 2002 Ewing 2008 Tanida 2002 Ewing 2008 Ewing 2008 Ewing 2008 Ewing 2008 Sowa 2009 Steizl 2005 Steizl 2005 Steizl 2005
+
+AC-W: affinity capture-western Y2H: yeast 2 hybrid HT-AC-MS: High-throughput affinity capture mass spec
+
+c
+Netw ork UBL conjugation system ULK1 kinase PIK3C3-BECN1 SH3GLB1 ATG2-WIPI Total Potential reciprocal PPIs 44 35 11 2 2 94 Observed reciprocal PPIs 21 17 7 1 1 47
+
+www.nature.com/nature
+
+14
+
+10
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S6d
+NEK9
+CHEK1 NEK7 DYNLL1 CMYA3 ZNF24 GTF3C1 KIAA1967 OBSL1 PIK4CB NSUN4 NUP155 VANGL1 RBM26 C18orf22 GBF1 MTM1 IQGAP1 BRSK2 TJP2 MRPL45 POLRMT EIF4B ERC1 TJP1 CLTC
+
+GABARAP GABARAPL1 GABARAPL2 MAP1LC3A
+MAP1LC3B
+
+NSMAF
+TMEM160 PRKCI PTPLAD1 KBTBD6 USP11 LLGL1 HADHA
+
+KBTBD7
+
+CUL3 C17orf42 BRWD2 SAFB2
+
+MAP1LC3C
+
+STK3
+FREM1 PLK1 KCTD12 SAV1 FLNC
+
+GABARAP GABARAPL1 GABARAPL2 MAP1LC3A
+MAP1LC3B
+
+RASSF5
+
+CLTC MAP1B CUL3
+
+MAP1S AGL RASSF1
+
+TXNDC4 RASSF4
+
+CACYBP GYS1 RASSF2
+
+MAP1LC3C
+TAOK1
+
+STK4
+
+GABARAPL2
+
+GABARAP
+
+GABARAPL2
+EIF3S10 PA2G4 SQSTM1 PFKP
+
+GABARAP
+
+MAP1LC3A
+
+RCN2 HADHB PTPLAD1 HADHA STK4 LLGL1 MRPS9 VIM CTNND1 OSBPL8 STK3 CLTC NBR1 GBAS ATG4B KEAP1
+
+MAP1LC3A
+SQSTM1
+
+FKBP4 CLTC PDCD6IP RAB3GAP2 RCN2
+
+TARS PARP1 PGK1 ANKFY1 HADHA PFAS NIPSNAP1 HADHB GYS1
+
+GBAS
+
+MAP1LC3B
+
+GPC4
+
+ASPH NIPSNAP1 TMEM160 USP11 PRKCI
+
+MAP1LC3B
+
+STK4 MAP1B
+
+GABARAPL1
+
+MAP1LC3C
+
+GABARAPL1
+
+MAP1LC3C
+
+Primary bait (color coded) Secondary bait (color coded) HCIP PPI database interaction
+
+15
+
+www.nature.com/nature
+
+11
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S6e (Part 1)
+ATG5 ATG16L1 TECPR1 MAP1LC3B WDR45 GABARAP GABARAPL2
+
+SPTLC1 SMC1A
+DDA1
+MAP1B
+
+C8orf30A
+
+PHB2
+
+DNAJC7
+
+ATG12
+
+AMBRA1
+ATG4B ATG3
+
+ATG2B
+
+ATG3
+
+ATG4B
+ATG12 GABARAPL1 GABARAPL2
+
+USP11
+
+PRKDC
+
+ATG4C
+PSMD2 PSMC4
+
+ATG16L1
+
+TECPR1
+
+ATG2A
+SMC1A DNAJB1 MAGED2
+
+ATG4B GABARAP
+
+ATG5
+TKT
+
+DDB1
+
+ANXA1
+ATG7
+OBSL1 MAP1B
+
+PSMC1 PSMC5 PSMC2
+
+GABARAPL1 GABARAPL2
+
+MAP1B
+
+ATG7 ATG16L1 ATG3
+
+ATG5 TECPR1 ATG5
+SMC3 TRABD SEH1L
+
+ZWINT
+
+SMC1A
+
+PRKDC
+
+UVRAG KIAA0831
+
+CCT7 CCT3 AGPS
+
+ATG7
+MAP1LC3C ATG3
+
+MAP1LC3B
+
+BECN1
+
+AMBRA1
+AFG3L2 SLC27A4 GSPT1 TSC1
+
+ATG4B
+
+ATG10
+
+RBBP7
+
+ATG4B
+
+ATG12
+
+ATG3
+
+ATG16L1
+CCT2 GAN SNAPC4
+
+NRBF2
+PTOV1 C13orf18 TP53BP2 DZIP3
+
+HAT1
+GABARAP ATG7 GABARAP
+
+USP7
+
+USP11
+
+ADSS
+
+MAP1B
+
+PIK3C3
+PIK3R4
+
+KIAA0226 TBC1D7
+
+ARG1 FKBP4 COPA LRPPRC COPG DSC1 HADHB HADHA PRKDC ASNS LARS ETFA CBR1
+
+LONP1 CDC37
+
+RPA1 VARS
+
+GANAB KIAA0368 XPO1
+
+PRKDC ABCD3 SLC25A22 RPN2 ILVBL HSD17B12 CYC1 SFXN4 NUP93 GCN1L1 AFG3L2 IRAK1
+
+KIAA0652
+HK1
+
+PRKAA2
+PRKDC
+
+CALM1
+
+IRAK1 FAM62B IQGAP2
+
+CKAP4 IMMT OPRS1 VDAC2 NPEPPS
+
+UBA5
+MYH4 PFKL
+
+SMC1A SMC3 XPOT GCN1L1 FLNC
+
+PRKAG1
+FLNA SLC25A11 KIAA1794 MAPK14 OBSL1
+
+CCDC47 PHB TRIP13 GEMIN4 DDOST DDX20 RIF1
+
+C12orf44
+
+MYH2 SSRP1 PDHA1
+
+CAMKK2
+
+CLN3
+
+XPOT TMPO TELO2 NUP205 SLC25A10
+
+FOXO3A
+ALDH9A1 TARS ANKFY1 PGK1 PA2G4
+
+ATG4B
+
+ATG7
+
+CPT1A SEC61A2 CAND1 AUP1 COX15 KIAA1794 UNC45A FAM62B SLC25A11
+
+PRKDC ASNS VPRBP ECHS1 DDB1 MCM2 SHMT2 WDTC1 LARS ETFA CBR1 NANS WDR22 ALDH7A1 C2orf37 LAP3 TARS GMPS
+
+PBEF1 HADHA HADHB COPB2 WARS COPA SRM FKBP4 EIF5 ESD
+AMBRA1
+YWHAE YWHAB
+
+RPA1 RPA3
+
+FOXK1
+
+FNBP1
+
+TBC1D15
+
+EMD TMPO
+
+KIAA0329 NCOA7 DYX1C1 STBD1
+
+KEAP1 IPO5
+
+LDOC1L
+
+RPA2 SEC24B
+
+LMNA
+
+GBAS
+NEDD4
+
+DDA1
+
+ALDH9A1 SEPT9 PA2G4 ADSL CAND1 DDB2
+PRKAA1
+
+C14orf80
+
+CEBPB
+
+FOXO3A
+FKBP4 PGK1 YWHAH
+
+C18orf8 SEC23B
+
+DDIT3
+
+FYCO1
+MAP4 KIF5B C7orf28A
+
+PI4K2A
+
+GABARAP
+
+SQSTM1
+
+CCAR1
+
+ATG3 ATG7 ATG4B
+ANKFY1
+
+MON1B KIF23
+
+NBR1 FKBP4
+
+GABARAPL2
+
+FARSB PGK1 ANKFY1 IDH3A WDR23 LTA4H
+
+PRKAR1A
+
+BRWD2 LLGL1
+
+NEK9
+NIPSNAP1
+
+STBD1 DYX1C1 HADHA HADHB TMEM160 TBC1D2B
+
+GABARAPL2
+
+STBD1
+NEK9
+
+KEAP1
+
+HADHA IPO5 HADHB
+GBAS
+
+PBEF1 DDX39 GANAB HADHA ALDH9A1
+
+GABARAP
+
+RABGAP1 PIK3CG
+
+NIPSNAP1
+UBA5
+
+FOXO3A
+LARS
+
+PFAS PA2G4
+
+NEDD4
+SQSTM1
+
+CCT2
+WARS
+
+ATG3
+
+NPEPPS NIPSNAP1 PFKP HK1 TARS LONP1 ANKFY1 FKBP4
+
+FRAP1
+
+KIAA1303
+
+GABARAPL1
+ATG7
+
+GYS1 NEDD4 CUL3
+
+TMEM160 PRKCI
+ATG3 ATG7 ATG4B
+
+GABARAPL2
+
+PTPLAD1 RCN2 WDR62
+
+GBAS
+
+PRKDC PARP1 MTA2 PGK1
+
+GBL
+
+ATG4B
+
+KEAP1 KBTBD6
+
+CUL3
+
+NBR1
+
+SQSTM1
+PRKCI
+
+IPO5
+
+ATG2A GBAS KBTBD7 NSMAF CLINT1
+
+Bait (size proportional to expression) HCIP PPI database interaction -0.03
+
+Edge color 12.88
+
+Edge thickness 1 40
+
+Z-Score
+
+WDN-Score
+
+www.nature.com/nature
+
+12
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S6e (Part 2)
+C18orf22 POLRMT GTF3C1
+SCFD1
+
+BRSK2
+
+C17orf42 IQGAP1 ERC1 TJP1 TJP2 MRPL45 NUP155
+
+GBF1
+ARNT BANP
+
+NRBF2
+
+NSF
+
+KLHDC10 KIAA0652
+RB1CC1 C12orf44 PIK3C3 BECN1
+CUL2 NUDCD3 USP7
+
+GOSR1
+DSC1 PKP1
+
+MTM1 CUL3 KBTBD6 LLGL1 TMEM160 OBSL1 NSMAF ZNF24
+
+SEC22B
+
+HIF1A
+
+KBTBD7
+
+KIAA1967 RBM26 EIF4B PIK4CB NSUN4
+
+KIAA0831
+PIK3R4
+
+VANGL1
+
+STK3 STK4
+MAP1A MAP1B HADHB
+
+RASSF5
+
+RAB3GAP2 RAB3GAP1 CLTA CLTC
+
+MAP1A
+GBAS
+
+STK4
+
+STK3
+
+SQSTM1 RASSF5 ATG3
+USP11
+
+HADHB CLINT1
+ATG5
+
+DOCK1
+MAP1LC3A
+
+PIK3C2A
+SAFB2
+
+GABARAP GABARAPL2 RB1CC1 ATG5
+
+DYNLL1 NEK7 CHEK1
+
+NSMAF
+CLINT1
+
+KEAP1
+
+MAP1LC3A
+
+PDCD6IP
+
+GBAS
+PRKCI
+
+MAP1B
+NIPSNAP1
+
+MAP1LC3B
+
+HADHA
+ATG3
+
+MAP1LC3C
+TFCP2
+
+NEK9
+
+SQSTM1
+KEAP1
+
+PRKCI
+ATG4B ATG7
+
+ATG7 FYCO1 GABARAP ATG16L1
+
+SF3A1
+
+ATG4B
+TMEM160
+
+ATG7
+
+FYCO1 ATG3
+
+HADHA
+
+TMEM160 ATG16L1 NIPSNAP1
+
+MLF2 STIM2
+
+MAST3
+
+PARS2
+
+ACACA
+
+FLCN
+
+PRKAG2 PRKAA1
+
+NAPG
+PGK1
+
+VTI1B
+
+STX8 STX7 STX12
+NEK9
+CMYA3
+
+STIM1
+
+SND1
+
+PARP1 SUPT16H PA2G4
+
+GFPT1 SMC1A FNIP1
+
+PRKAG1
+
+STX5
+
+PRKAB2
+
+CPVL
+
+PA2G4
+
+NSF
+CSNK1G3 NAPA
+
+PRKAB2
+
+G3BP1
+
+RB1CC1 ULK1
+DNAJB1
+
+NRBF2
+FKBP4
+
+NSMAF
+PRKAB1
+
+PRKAG1
+
+PRKAA1
+FXR2
+
+FMR1
+
+PRKAA2
+
+SH3PXD2A BAIAP2L1 KIAA0284 AMOT
+
+SNAP29
+
+STX6
+
+SNAP23 SCFD1
+
+RPL35
+
+EIF5B
+
+DFFA
+
+MAP3K5 MAP3K6
+
+AGL
+
+PIK3CG
+
+GYS1
+
+GYG1
+
+MAP3K15
+PRKAG2 PRKAA1 PRKAB2
+
+GFPT1
+
+PRKAA2 PRKAA1 PRKAG2 PRKAG2 PRKAA1 PRKAB1 PRKAB1
+
+PRKAA2
+
+PRKDC NET1 GYS1
+
+PRKAB2
+
+PRKAA1 MAP1LC3A
+MAP1A MAP1B
+
+PRKAG1
+
+PRKAG1 PRKAA2 PRKAG1
+
+AGL GYG1 GCN1L1
+
+PRKAB1
+CASP14 DSC1 TGM3 CBR1
+
+PRKAB2
+
+BAIAP2L1 SH3PXD2A STIM2
+
+PRKAA2
+
+PRKAB2
+
+FKBP4
+
+PRKAG1
+
+PRKAG2
+
+PGK1 TARS
+
+PGK1 PA2G4 TARS FKBP4 MCM2
+
+MAST3
+RB1CC1
+
+MAP3K5
+
+MAP3K6
+
+KIAA1794
+
+GANAB EIF3S10 PFAS ASNS GMPS
+
+EIF3S10
+TBL2 G3BP1 SND1
+
+TARS FKBP4
+KIAA0831 USP11 UVRAG
+
+MAP1LC3A
+
+PIK3C2A
+ATG7
+
+PIK3CG
+ANKFY1
+NRBF2 BECN1
+
+GDI1
+
+RABGAP1L
+
+NSF
+UTRN
+GDI2
+
+PDPK1
+PA2G4
+
+PIK3C3
+CLPTM1L KIAA0226 PIK3R4
+
+PRMT7
+
+RAB24
+
+RABGAP1
+
+PA2G4
+
+TKT PGK1
+
+Bait (size proportional to expression) HCIP PPI database interaction -0.03
+
+Edge color 12.88
+
+Edge thickness 1 40
+
+Z-Score
+
+WDN-Score
+
+17
+
+www.nature.com/nature
+
+13
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S6e (part 3)
+KIAA0652
+
+MAP1B FLNC TXNDC4
+RPA1 YLPM1
+STK3
+
+RPA2 SAFB SAFB2
+KIAA0265
+
+CACYBP
+
+USP7
+
+UBE1DC1
+
+FKBP4
+
+PLK1
+
+MAP1S
+
+SH3GLB1
+CUL2
+PA2G4
+
+SH3GLB2
+PGK1
+
+ATG4B
+
+RASSF2
+
+RASSF5
+TBK1
+STK4
+
+RB1CC1
+SMCR8
+C12orf44
+
+STK3
+STK4
+SAV1 FREM1
+
+RBMX
+
+SQSTM1 SH3GLB2 SH3GLB1
+
+KCTD12 AGL
+
+HSBP1
+
+LLGL1 MRPS9 OSBPL8
+
+NEFM GBAS GTF3C3 NBR1 EPPK1 PEO1 INA GLG1 ENPP1 ANXA1 CEP78
+ATG12
+TTC15 FLJ12716
+
+MAP1B TAOK1 RASSF4
+ALS2CR2
+
+FKBP5 CAB39L
+
+EMILIN3 TCEAL2 HADHB
+
+ATG3
+
+GSK3B
+
+HTRA2
+
+BIRC3
+
+PTPLAD1 VIM
+
+STK3
+
+RASSF5
+
+STK11
+LYK5 CDC37 CAB39
+
+TECPR1
+ATG5
+C10orf119
+
+GPC4 MUTED CTNND1 MRPL38 ASPH PRKCI DIP2B TMEM160 EFHA1 ABHD10 NSUN4 PARS2
+
+DIABLO
+
+TBK1
+
+STK4
+RASSF1 SAV1 RASSF2
+
+SQSTM1
+
+NIPSNAP1 KEAP1 GTF3C1 FLJ20628 RAD54L2 HADHA
+COL18A1 PLOD3
+
+TRAF2
+GOLGA3 BIRC2 TANK
+
+KIAA1012
+
+NARG1 DDX39 FARSB LTA4H
+
+HSP90B1 HADH PGM1
+
+PDCD6IP PGK1 SFXN1 ALDH2 UFC1 UFM1 SARS
+PIK3R4 VPS18 VPS33A
+
+CDC37
+
+PRKAB2 PRKAG1
+
+MCM2 LAP3
+
+GABARAPL2
+
+ATG4B
+
+PRKAA1
+
+ULK2
+
+RB1CC1
+
+ALDH7A1 PSMD2
+
+PIK3C3
+
+UVRAG
+
+TGFBRAP1
+
+ULK1
+RB1CC1
+
+G3BP1 USP10
+
+UBA5
+
+GSTO1 HSD17B4 PA2G4 SND1 GANAB
+
+KIAA0226 PTPRA
+
+TARS COPB2 CBR1
+GABARAPL2
+
+BECN1
+
+SHMT2
+
+ETFA ECHS1 FKBP4
+
+EIF3S10
+
+HNRPA3P1
+
+FLNC DNAJB1
+
+GCN1L1
+
+ATG2A
+
+ATG2B
+
+WIPI1
+ATG2A
+PKP1 LGALS7
+
+NUDC
+
+WDR45
+
+WIPI2
+PFKP DNM2 BTBD8
+
+Bait (size proportional to expression) HCIP PPI database interaction -0.03
+
+Edge color 12.88
+
+Edge thickness 1 40
+
+Z-Score
+
+WDN-Score
+
+18
+
+www.nature.com/nature
+
+14
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S6f
+10% input Flag-HA-EGFP + + Flag-HA-TECPR1 Empty vector + + Myc-ATG10 Myc-ATG5 + + + + + + + + + + + + + IP:Myc + + + + + + Mock Flag-HA-EGFP Flag-HA-ATG5 Flag-HA-ATG3 Empty vector Myc-TECPR1 49 IB:Myc 26 10% input IB:HA 26 + + + + + + + + + + + + +
+
++
+
++
+
+49
+
+IP:Myc IB:HA 49 IB:HA 26 115 115 10% input IB:Myc IP:Myc IB:Myc
+
+Mock Flag-HA-EGFP Flag-HA-ULK1 Flag-HA-KIAA0652 Flag-HA-C12orf44 Empty vector Myc-ULK1 Myc-RB1CC1 Myc-C12orf44 Myc-KIAA0652 Rapamycin 115
+
++ +
+
+abundant proteins remain designated as background. e, The total spectal counts + + + + + + + + + + (orange) + autophagy network bait + proteins are plotted +together with+ the number of + for + + N +HCIPs+ for each bait + + + + + (in green) based on WD -score. + + + + + + + +
++ + + + + + + + Figure S3. Global analysis of the+ autophagy interaction network. a, Heat +map + + + + + + + + + + + + + + + + generated from hierarchical clustering of the 2553 proteins identified by LC-MS/MS + for + + + + + + + + + + + + 65 autophagy network components without filtering via+ CompPASS	  +1. The + color of the + + + + + + + + + + interacting protein in the plot corresponds to its WDN-score. b, Hierarchical clustering of 26 64 26 763 high-confidence interacting proteins after processing via CompPASS. + + + + + + + +
+
++
+
++
+
++
+
++
+
++
+
++
+
++
+
++
+
+10% input IB:HA IP:Myc IB:HA
+
+115
+
+115 64
+
+26
+
+115 64
+
+26
+
+Figure S4. Development of a module within CompPASS to collapse networks using available protein interaction databases and its application to the autophagy interaction network 115 (AIN). a, Since the nature of the interactions identified115in our IP115 MS/MS data cannot be determined to be either direct or indirect, we chose to analyze 64 64 64 these interactions at a more conservative level by collapsing known multimeric protein complexes (present in26BIOGRID, MINT and STRING) into a single representative node. 26 26 For example, if the 6 proteins known to form a complex are found as HCIPs for a given bait, it cannot be determined to which of these 6 the bait directly interacts. 115 Therefore, 115 115 rather than reporting 6 interactions for this bait, we report a single interaction to a known 64 64 64 protein complex comprised of those 6 interacting proteins. In this manner, we feel that we are not over-representing the number of interactions and can also better report 26 26 26 associations with known protein complexes. b, Summary of novel and known interactions found using the Network Collapse function in CompPASS (panel a).
+26
+
+64
+
+26
+
+10% input IB:Myc
+
+IP:Myc IB:Myc
+
+Figure S5. Functional and structural analysis of the autophagy interaction network. a, Enrichment of Gene Ontology (GO) process descriptors for HCIPs (WDNscore ≥1.0, p < 10-5) in the autophagy interaction network (AIN, left panel), the ATG8 sub-network (center panel), and proteins with WDN-scores ≥ 1.0 (right panel). Supplementary Fig. S6g Enrichments were determined as described in the Supplemental Methods section. b, Hierarchical clustering of proteins found associated with 65 bait proteins, with the number of PFAM domains present indicated by the heat map. c, Distribution of PFAM domains found among baits (red bars) and HCIPs (blue bars). d, Analysis of hubs in the AIN. Hubs were identified based on their presence as HCIPs in IP-MS/MS experiments from 3 different baitsLC3-I WDN-Score ≥3 each and an average WDN-Score ≥2 acrcoss with 293T all IP-MS/MS experiments in which a hub candidate was present based on TSCs. LC3-II Primary and secondary bait refers to the classification in Fig 1.
+Torin1+BafA
+
+Figure S6. Summary of reciprocal interactions for the AIN and analysis of previously reported interactions for the UBL conjugation system. a, Summary of the LC-MS/MS data for the UBL conjugation system showing the number of HCIPs, number of known interacting proteins in19BIOGRID and MINT, and the number of reciprocal interactions observed. b, Summary of previously reported interaction for the UBL conjugation system. c, Summary of reciprocal interactions in the networks presented in Fig. 2 and Fig. 3 determined by LC-MS/MS. d, Merged interaction maps of HCIPs found in ≥ 2 IP-MS/MS experiments among indicated baits. Common interacting proteins with sub-threshold WDN-scores were included if HCIP criteria were fulfilled in ≥ 1 IP-MS/MS experiment. e, Individual interaction maps showing all the HCIPs identified for primary and secondary baits examined in this study. Dotted lines indicate interactions found in BIOGRID, MINT, and STRING protein interaction databases. f, IP-Western validation. Myc-tagged interactors indicated were transfected into 293T cells with stable expression of indicated Flag-HA-bait or Flag-HA-GFP. Lysates were immunoprecipitated with anti-myc resin and immunoblotted with either HA or anti-MYC antibodies. g, α-LC3 blot of 293T cells in the absence and present of Torin1 (200 nM, 3h), Rapamycin (200nM, 3h) and Bafilomycin (100 nM, 3h). Figure S7. Summary of core interactions 4in the budding yeast autophagy system. All network data is based on BIOGRID and MINT databases. a, UBL conjugation www.nature.com/nature system. b, Vps34p lipid kinase network. c, Atg1p protein kinase network. d, Atg2p membrane trafficking network. The corresponding human proteins are identified on the right of each panel. The color code indicates the type of interaction data.
+
+Rap+BafA
+
+Untreated
+
+Torin1
+
+BafA
+
+Rap
+
+15
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S7 a
+Atg3p
+
+Atg4p
+
+Atg3p
+
+Atg17p
+
+Atg11p
+
+ATG3 ATG4B ATG4C
+
+Affinity Capture MS Affinity Capture Western Biochemical Activity Co-crystal Structure Co-fractionation Reconstituted Complex Co-localization Synthetic Rescue
+
+Atg4p
+
+Atg5p
+
+ATG5
+
+Atg8p
+
+Atg7p
+
+Atg12p
+
+Atg7p
+
+ATG7 GABARAP, GABARAPL1, GABARAPL2 MAP1LC3A, MAB1LC3B, MAP1LC3C ATG12
+
+Synthetic Lethality Synthetic Growth Defect Dosage Rescue Phenotypic Enhencement Phenotypic Suppression PCA Two Hybrid
+
+Atg8p
+
+Atg12p
+
+Atg19p
+
+Atg10p
+
+Atg16p
+
+Atg5p
+
+Atg16p
+
+ATG16L1
+
+b
+Vps15p
+
+Atg8p
+
+Vps15p PIK3R4
+
+Vps34p PIK3C3
+
+Atg14p
+
+Vps34p
+Vps30p BECN1
+
+Vps38p UVRAG
+
+Vps38p
+
+Vps30p
+
+c
+
+Atg13p
+
+Atg1p
+
+ULK1 ULK2
+
+Atg11p
+
+RB1CC1
+
+Cis1p
+
+Atg29p
+
+Atg17p
+
+Snx4p
+
+Atg13p
+
+KIAA0652
+
+Atg8p
+
+Atg1p
+
+Atg11p
+
+Atg20p
+
+Atg21p
+
+Atg18p
+
+Atg9p
+
+Atg19p
+
+d
+
+Atg27p
+
+Atg23p Atg1p
+
+Atg18p WIPI1
+
+Atg21p WIPI2
+
+Atg2p
+
+ATG2A
+
+Atg11p
+
+Atg9p
+
+Atg18p
+
+Atg21p
+
+with anti-myc resin and immunoblotted with either HA or anti-MYC antibodies. g, α-LC3 Atg2p blot of 293T cells in the absence and present of Torin1 (200 nM, 3h), Rapamycin (200nM, 3h) and Bafilomycin (100 nM, 3h). Figure S7. Summary of core interactions in the budding yeast autophagy system. All network data is based on BIOGRID and MINT databases. a, UBL conjugation system. b, Vps34p lipid kinase network. c, Atg1p protein kinase network. d, Atg2p membrane trafficking network. The corresponding human proteins are identified on the right of each panel. The color code indicates the type of interaction data. Figure S8. Summary of LC-MS/MS data and 20 comparison to existing protein interaction data for the core autophagy signaling systems, as well as for the ATG8 sub-network. a, The bait, number of HCIPs, number of novel interactions found, ratio of known and total interactions found, and the results of reciprocal LC-MS/MS of selected interacting proteins is shown for the ATG8 network. b, PFAM analysis of the ATG8 subnetwork. Proteins containing the indicated PFAM protein interaction domains are shown. Figure S9. Association of GST-ATG8 proteins with MYC-tagged interacting proteins. a-b, Vectors expressing the indicated MYC-tagged HCIPs for the ATG8 network were transfected into 293T cells and subsequently tested for interaction with www.nature.com/nature GST-ATG8 proteins. After extensive washing of GST-ATG8 resin, associated proteins were detected by immunoblotting with anti-MYC antibodies. c, Ex vivo validation. MYCtagged proteins in extracts from 293T cells were tested for GST-ATG8 binding in vitro
+
+16
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S8 a
+Bait HCIPs GABARAPL1 GABARAPL2 Hum an ATG8's GABARAP MAP1LC3A MAP1LC3B MAP1LC3C Total 40 31 27 35 34 15 182 48 10 Total know n # of know n PPIs Novel PPIs for bait identified in this PPIs (MINT/BioGRID) study by LC-MS/MS 3 22 13 7 3 1 5 1 2 1 39 26 26 33 33 15 172 Reciprocal PPIs Potential Observed reciprocal PPIs reciprocal PPIs 10 10 12 11 13 9 65 4 7 6 4 4 1 26 HCIPs found in biological replicate 26 26 19 22 29 13 135
+
+b
+WD40 Pkinase BTB
+
+Pfam dom ain BRWD2 NEK9 ANKFY1 PIK3CG KBTBD6 KBTBD6 SQSTM1 PIK3CG PIK3CG TBC1D15 NIPSNAP1 SQSTM1 RASSF5 HADHA ANKFY1 DYX1C1 PIK3CG DOCK1 DYX1C1 STK4 RANBP5 ATG4B HADHA HADHA PIK3C2A PRKCI HADHB HADHB CLINT1 NSMAF NEDD4 NEDD4 NSMAF CUL3 MAP1B RASSF5 NEK9 SQSTM1 ANKFY1 PDCD6IP CLTC CLTA CLTC CLTC PRKAR1A TFCP2 FNBP1 FKBP4 GYS1 KIAA0329 LLGL1 NCOA7 PIK3C2A PRKAR1A SAFB2 SAFB2 SF3A1 NCOA7 SF3A1 USP11 DOCK1 PTPLAD1 STBD1 FYCO1 TBC1D15 USP11 UBE1DC1 FYCO1 PTPLAD1 PIK3C2A FNBP1 FKBP4 STK3 PIK3R4 NSMAF STK4 KBTBD6 PIK3C3 KBTBD7 KBTBD7 NBR1 PIK3C3 PIK3C3 TBC1D2B GBAS NBR1 PRKCI MAP1_LC3
+
+Gene Sym bol WDR62 STK3 KBTBD7 PIK3C2A KEAP1 KEAP1 PRKCI PIK3C2A PIK3C2A RABGAP1 PIK3R4 PRKCI KEAP1 PI4K2A LLGL1 PIK3R4 ATG16L1 GABARAP GABARAPl1 GABARAPL2 MAB1LC3B MAB1LC3C MAP1LC3A
+
+PI3_PI4_kinase BACK Kelch_1 PB1 PI3K_C2 PI3Ka TBC NIPSNAP ZZ C1_1 ECH FYVE CS PI3K_rbd SH3_1 TPR_1 Mst1_SARAH HEAT Peptidase_C54 3HCDH 3HCDH_N C2 Pkinase_C Thiolase_C Thiolase_N ENTH GRAM HECT WW Beach Cullin MAP1B_neuraxin RA RCC1 UBA Ank BRO1 Clathrin Clathrin_lg_ch Clathrin_propel Clathrin-link cNMP_binding CP2 FCH FKBP_C Glycogen_syn Hyd_WA LLGL LysM PX RIIa RRM_1 SAP Surp TLD ubiquitin UCH Ded_cyto PTPLA CBM_20 RUN domain DUF354 DUSP ThiF
+
+SF3A1 with anti-myc resin and PRP21_like_P ATG2A immunoblotted with either HA or anti-MYC antibodies. g, α-LC3 ATG_C Autophagy_N ATG3 blot of 293T cells in Autophagy_act_C ATG3 and present of Torin1 (200 nM, 3h), Rapamycin the absence Autophagy_Cterm ATG3 (200nM, 3h) and Bafilomycin (100 nM, 3h). ATG11 RB1CC1 RABGAP1 Figure S7. Summary of PID core interactions in the budding yeast autophagy system. Cullin_Nedd8 CUL3 All network data is based on ATG5 BIOGRID and MINT databases. a, UBL conjugation APG5 ThiF ATG7 system. b, Vps34p lipidATG16 kinase network. c, Atg1p protein kinase network. d, Atg2p ATG16L1 PH membrane trafficking No Domain annotation TMEM160 corresponding human proteins are identified on the network. TBC1D2B MAP1A RCN2 RAB3GAP2 RAB3GAP1 The right of each panel. The color code indicates the type of interaction data. DUF3694 RABGAP1
+
+Figure S8. Summary of LC-MS/MS data and comparison to existing protein interaction data for the core autophagy signaling systems, as well as for the ATG8 sub-network. a, The bait, number of HCIPs, number of novel interactions found, ratio of known and total interactions found, and the results of reciprocal LC-MS/MS of selected interacting proteins is shown for the ATG8 network. b, PFAM analysis of the ATG8 subnetwork. Proteins containing the indicated PFAM protein interaction domains are shown. Figure S9. Association of GST-ATG8 proteins with MYC-tagged interacting proteins. a-b, Vectors expressing the indicated MYC-tagged HCIPs for the ATG8 network were transfected into 293T cells and subsequently tested for interaction with GST-ATG8 proteins. After extensive washing of GST-ATG8 resin, associated proteins were detected by immunoblotting with anti-MYC antibodies. c, Ex vivo validation. MYCtagged proteins in extracts from 293T cells were tested for GST-ATG8 binding in vitro (Panel a). Green: binding. Red: no binding observed. Extracts from 293T cells transiently www.nature.com/nature expressing the indicated Mys-tagged ATG8 interacting protein were lysed and extracts subjected to in vitro binding with the indicated GST-ATG8 isoform purified from bacteria. Washed complexes were subjected to SDS-PAGE, and immunoblotted using anti-MYC
+
+17
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S9
+Mock DYX1C1 HADHB STBD1 HADHA SF3A1 TBC1D15 TBC1D2B ANKFY1 FNBP1 KIAA0329 SAFB2 GYS1 IPO5 RASSF1 ULK1 ULK2 RABGAP1 ATG2A ATG5 Mock FYCO1 STK3 RASSF5 STK4 GBAS NEK9 UBA5 KBTBD6 KBTBD7 KIAA0652 C12orf44
+
+a
+
+b
+
+Input
+
+Input
+
+GST
+
+GST
+
+GSTGABARAPL1
+
+GSTGABARAPL1
+
+GSTGABARAPL2
+
+GSTGABARAPL2
+
+GSTGABARAP
+
+GSTGABARAP
+
+GSTMAP1LC3B
+
+GSTMAP1LC3B
+
+GSTMAP1LC3C
+
+GSTMAP1LC3C
+
+Anti-myc
+
+Coomassie
+
+Anti-myc
+
+Coomassie
+
+c
+RASSF5 FYCO1
+
+STK4 STK3 SAFB2 RASSF5 FYCO1
+
+STK4 STK3 SAFB2 RASSF5 FYCO1
+
+STK4 STK3 SAFB2
+
+MAP1LC3B
+
+FNBP1 TBC1D15 ANKFY1 KIAA0329
+
+with anti-myc resin and immunoblotted with either HA or anti-MYC antibodies. g, α-LC3 blot of 293T cells in the absence and present of Torin1 (200 nM, 3h), Rapamycin GABARAPL2 (200nM, 3h) and Bafilomycin (100 nM, 3h). GABARAP
+ATG5 ATG2A ATG5 ATG2A ATG5 HADHA GBAS KBTBD7 GYS1 FNBP1 TBC1D15 HADHA GBAS KBTBD7 GYS1 FNBP1 TBC1D15 HADHA GBAS STBD1 DYX1C1 ANKFY1 KIAA0329 STBD1 DYX1C1 ANKFY1 KIAA0329 STBD1
+
+ATG2A KBTBD7 GYS1
+
+DYX1C1 IPO5 RABGAP1 KBTBD6
+
+Figure S7. Summary of core interactions in the budding yeast autophagy system. All network data is based on BIOGRID and MINT databases. a, UBL conjugation d system. b, Vps34p lipid kinase network. c, Atg1p protein kinase network. d, Atg2p membrane trafficking network. The corresponding human proteins are identified on the right of each panel. The color code indicates the type of interaction data.
+UBA5 UBA5 UBA5 STK4 STK4 STK3 STK3 RASSF5 SAFB2 RASSF5 SAFB2 FYCO1 FYCO1
+
+NEK9 TBC1D2B
+
+IPO5 RABGAP1 KBTBD6
+
+NEK9 TBC1D2B
+
+IPO5 RABGAP1 KBTBD6
+
+NEK9 TBC1D2B
+
+FNBP1 TBC1D15 ANKFY1 KIAA0329
+
+MAP1LC3C Figure S8. Summary of LC-MS/MS data and comparison to existing protein GABARAPL1 interaction data for the core autophagy signaling systems, as well as for the ATG8 sub-network. a, The bait, number of HCIPs, number of novel interactions found, ratio of known and total interactions found, and the results of reciprocal LC-MS/MS of selected interacting proteins is shown for the ATG8 network. b, PFAM analysis of the ATG8 sub22 network. Proteins containing the indicated PFAM protein interaction domains are shown.
+ATG5 ATG2A ATG5 ATG2A HADHA GBAS KBTBD7 GYS1 FNBP1 TBC1D15 HADHA GBAS KBTBD7 GYS1 STBD1 DYX1C1 ANKFY1 KIAA0329 STBD1 DYX1C1 UBA5 NEK9 TBC1D2B IPO5 RABGAP1 KBTBD6 UBA5 NEK9 TBC1D2B IPO5 RABGAP1 KBTBD6
+
+Interactor FNBP1 TBC1D15 ANKFY1 KIAA0329 ATG5 HADHA GBAS RASSF5 FYCO1 UBA5 STK4 STK3 SAFB2 ATG2A KBTBD7 GYS1 DYX1C1 STBD1 NEK9 TBC1D2B IPO5 RABGAP1 KBTBD6
+
+GABARAP YES YES NO NO YES NO NO YES YES YES YES YES YES YES YES NO NO YES YES YES YES YES YES
+
+GABARAPL1 YES YES YES YES YES YES YES YES YES YES YES YES YES YES YES NO NO YES YES YES YES YES YES
+
+GABARAPL2 YES YES YES YES YES YES YES YES YES YES YES YES YES YES YES YES YES YES YES YES YES YES YES
+
+MAP1LC3B NO YES YES YES NO NO YES YES YES YES YES YES YES YES YES NO NO YES YES YES YES YES YES
+
+MAP1LC3C YES YES YES YES NO NO YES YES YES YES YES YES YES YES YES YES NO YES YES YES YES NO YES
+
+Figure S9. Association of GST-ATG8 proteins with MYC-tagged interacting proteins. a-b, Vectors expressing the indicated MYC-tagged HCIPs for the ATG8 network were transfected into 293T cells and subsequently tested for interaction with GST-ATG8 proteins. After extensive washing of GST-ATG8 resin, associated proteins were detected by immunoblotting with anti-MYC antibodies. c, Ex vivo validation. MYCtagged proteins in extracts from 293T cells were tested for GST-ATG8 binding in vitro (Panel a). Green: binding. Red: no binding observed. Extracts from 293T cells transiently expressing the indicated Mys-tagged ATG8 interacting protein were lysed and extracts subjected to in vitro binding with the indicated GST-ATG8 isoform purified from bacteria. Washed complexes were subjected to SDS-PAGE, and immunoblotted using anti-MYC antibodies. d, Summary of binding data. Figure S10. Association of GST-ATG8 proteins with in vitro translated interacting proteins. a, The indicated HCIPs for ATGs were translated and 35S-methionine-labelled in vitro using reticulocyte extracts. b, Five µl of translation product was incubated in 150 www.nature.com/nature µl of binding buffer containing 2 µg of the indicated GST-ATG8 protein bound to 10 µl of GSH-Sepharose beads. After incubation for 1 hour, beads were washed 5 times with 1 ml of binding buffer. Associated proteins were separated by SDS-PAGE, stained with
+
+18
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S10
+PRKAR1A KIAA0652 ATG16L1 TBC1D15 PDCD6IP PIK3C2A SQSTM1 C12orf44 RASSF5 KBTBD6 KBTBD7 DYX1C1 NSMAF CLINT1 HADHA NCOA7 FYCO1 ATG4B ATG2A ATG10 STBD1 TFCP2 SF3A1 FNIP1 PRKCI GYS1 KIAA0329 TBC1D2B RASSF3 RASSF1 ANKFY1 NEDD4 FNBP1 LLGL1 GBAS ATG3 ATG5 ATG7 ULK1 NEK9 UBA5 STK3 STK4 GFP IPO5 NBR1
+
+c
+
+a
+
+kDa 64 26
+
+Interactor ATG16L1 TBC1D15 KIAA0329 RASSF5 FYCO1 NEDD4 ATG4B STK3 STK4 ATG7 NBR1 SQSTM1 ATG3 GBAS UBA5 PRKC1 CLINT1 DYX1C1 STBD1 NEK9 NSMAF ATG2A KBTBD7 GYS1 PRKAR1A NCOA7 IPO5 KBTBD6
+
+GABARAP YES YES YES YES YES YES NO YES YES YES YES YES YES YES YES YES YES YES YES YES YES YES YES NO YES YES YES YES
+
+GABARAPL1 YES YES YES YES YES YES NO YES YES YES YES YES YES YES YES YES YES YES YES YES YES YES YES NO YES YES YES YES
+
+GABARAPL2 YES YES YES YES YES YES NO YES YES YES YES YES YES YES YES YES YES YES YES YES YES YES YES NO YES YES YES YES
+
+MAP1LC3B YES YES YES NO YES YES YES YES YES YES YES YES NO YES YES YES YES NO YES YES YES YES YES NO YES YES NO YES
+
+MAP1LC3C YES YES YES NO YES YES YES YES YES YES YES YES NO YES YES YES YES NO YES YES YES YES YES NO YES YES YES YES
+
+Autoradiogramm
+
+GFP NCOA7 TBC1D15 GYS1 NEDD4 PRKAR1A IPO5 RASSF3 RASSF1 TBC1D2B KIAA0329
+
+Input
+
+GST
+
+with anti-myc resin and immunoblotted with either HA or anti-MYC antibodies. g, α-LC3 blot of 293T cells in the absence and present of Torin1 (200 nM, 3h), Rapamycin (200nM, 3h) and Bafilomycin (100 nM, 3h).
+GSTGABARAPL1
+
+GSTGABARAPL2
+
+Figure S7. Summary of core interactions in the budding yeast autophagy system. All network data is based on BIOGRID and MINT databases. a, UBL conjugation system. b, Vps34p lipid kinase network. c, Atg1p protein kinase network. d, Atg2p membrane trafficking network. The corresponding human proteins are identified on the right of each panel. The color code indicates the type of interaction data. Figure S8. Summary of LC-MS/MS data and comparison to existing protein interaction data for the core autophagy signaling systems, as well as for the ATG8 sub-network. a, The bait, number of HCIPs, number of novel interactions found, ratio of known and total interactions found, and the results of reciprocal LC-MS/MS of selected interacting proteins is shown for the ATG8 network. b, PFAM analysis of the ATG8 subnetwork. Proteins containing the indicated PFAM protein interaction domains are shown. Figure S9. Association of GST-ATG8 proteins with MYC-tagged interacting proteins. a-b, Vectors expressing the indicated MYC-tagged HCIPs for the ATG8 network were transfected into 293T cells and subsequently tested for interaction with GST-ATG8 proteins. After extensive washing of GST-ATG8 resin, associated proteins were detected by immunoblotting with anti-MYC antibodies. c, Ex vivo validation. MYCtagged proteins in extracts from 293T cells were tested for GST-ATG8 binding in vitro (Panel a). Green: binding. Red: no binding observed. Extracts from 293T cells transiently expressing the indicated Mys-tagged ATG8 interacting protein were lysed and extracts subjected to in vitro binding with the indicated GST-ATG8 isoform purified from bacteria. Washed complexes were subjected to SDS-PAGE, and immunoblotted using anti-MYCCoomassie Autoradiogramm Coomassie Autoradiogramm Coomassie Autoradiogramm antibodies. d, Summary of binding data. Figure S10. Association of GST-ATG8 proteins with in vitro translated interacting proteins. a, The indicated HCIPs for ATGs were translated and 35S-methionine-labelled in vitro using reticulocyte extracts. b, Five µl of translation product was incubated in 150 µl of binding buffer containing 2 µg of the indicated GST-ATG8 protein bound to 10 µl of GSH-Sepharose beads. After incubation for 1 hour, beads were washed 5 times with 1 ml of binding buffer. Associated proteins were separated by SDS-PAGE, stained with Coomassie, and subjected to autoradiography. c, Summary table indicating the proteins that interact with each ATG8 ortholog in vitro.
+
+GSTGABARAP
+
+GSTMAP1LC3B
+
+GSTMAP1LC3C
+
+Figure S11. LIR-dependence of interactions between GST-ATG8 proteins and in vitro translated HCIPs. a, Immobilized GST (lane 1), GST-GABARAP (lane 2), GSTGABARAP Y49A/L50A (lane 3) or GST-GABARAP R70A (lane 4) were analyzed for binding with the indicated HCIPs as described in Figure S10. b, Immobilized GST (lane 1), GST-MAP1LC3B (lane 2), GST-MAP1LC3B F52A/L53A (lane 3) or GST-MAP1LC3B R70A (lane 4) were analyzed for binding with the indicated HCIPs as described in Figure S10. c, Structure of the SQSTM1 (p62) LIR-motif (cyan) bound to the LDS of MAP1LC3B (green) (pdb code: 2K6Q). Mutations employed in the experiments in panel b are shown: R70A (yellow), F52A (red), L53A (purple). d, Effect of the R70A mutation in www.nature.com/nature MAP1LC3B on interaction with the ATG8 sub-network. Red edges, no interaction; green edges, interaction unaffected; blue edges, interaction reduced or eliminated. e, Phylogenetic tree for Atg18p and Atg21p related proteins from humans (Hs), S. pombe
+
+SQSTM1 NBR1 FYCO1 STK3 RASSF5 STK4 NSMAF GBAS NEK9 UBA5 KBTBD6 KBTBD7 KIAA0652 C12orf44 ATG2A
+
+GFP ATG3 ATG10 ATG7 ATG4B ATG16L1 ULK1 FNIP1 STBD1 PRKCI PDCD6IP DYX1C1 CLINT1
+
+b
+
+19
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S11a
+SQSTM1 kDa 1 2 3 4 1 ATG5 2 3 4 1 ATG16 2 3 4 1 ATG7 2 3 4 1 ATG3 2 3 4 1 ATG10 2 3 4 1 ATG4B 2 3 4 1 NCOA7 2 3 4 1 KIAA0652 2 3 4 1 C12orf44 2 3 4 1 ULK1 2 3 4 1 ATG2A 2 3 4 1 PRKCI 2 3 4 1 TFCP2 2 3 4
+
+Autoradiogramm
+
+64
+
+Coomassie
+
+49
+
+26
+
+kDa
+
+1
+
+TBC1D15 2 3 4
+
+1
+
+GYS1 2 3 4
+
+1
+
+NEDD4 2 3 4
+
+1
+
+KIAA0329 2 3 4
+
+PRKAR1A 1 2 3 4
+
+1
+
+TBC1D2B 2 3 4
+
+1
+
+ANKFY1 2 3 4
+
+1
+
+FNBP1 2 3 4
+
+1
+
+KBTBD6 2 3 4
+
+1
+
+KBTBD7 2 3 4
+
+1
+
+STBD1 2 3 4
+
+1
+
+CLINT1 2 3 4
+
+1
+
+RASSF5 2 3 4
+
+1
+
+HADHA 2 3 4
+
+Autoradiogramm
+
+64
+
+Coomassie
+
+49 26
+
+kDa
+
+1
+
+RASSF3 2 3 4
+
+1
+
+RASSF1 2 3 4
+
+1
+
+IPO5 2 3
+
+4
+
+1
+
+GFP 2 3
+
+4
+
+1
+
+NEK9 2 3 4
+
+1
+
+NSMAF 2 3 4
+
+1
+
+UBA5 2 3 4
+
+1
+
+STK3 2 3 4
+
+1
+
+GBAS 2 3 4
+
+1
+
+FYCO1 2 3 4
+
+1
+
+FNIP1 2 3 4
+
+1
+
+STK4 2 3 4
+
+1
+
+DYX1C1 2 3 4
+
+1
+
+SF3A1 2 3 4
+
+Autoradiogramm
+
+64
+
+Coomassie
+
+49 26
+
+www.nature.com/nature
+
+20
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S11b
+SQSTM1 kDa 1 2 3 4 1 ATG5 2 3 4 1 ATG16 2 3 4 1 ATG7 2 3 4 1 ATG3 2 3 4 1 ATG10 2 3 4 1 ATG4B 2 3 4 1 NCOA7 2 3 4 1 KIAA0652 2 3 4 1 C12orf44 2 3 4 1 ULK1 2 3 4 1 ATG2A 2 3 4 1 PRKCI 2 3 4 1 TFCP2 2 3 4
+
+Autoradiogramm
+
+64
+
+Coomassie
+
+49
+
+26 TBC1D15 2 3 4 GYS1 2 3 4 NEDD4 2 3 4 KIAA0329 2 3 4 PRKAR1A 1 2 3 4 TBC1D2B 2 3 4 ANKFY1 2 3 4 FNBP1 2 3 4 KBTBD6 2 3 4 KBTBD7 2 3 4 STBD1 2 3 4 CLINT1 2 3 4 RASSF5 2 3 4 HADHA 2 3 4
+
+kDa
+
+1
+
+1
+
+1
+
+1
+
+1
+
+1
+
+1
+
+1
+
+1
+
+1
+
+1
+
+1
+
+1
+
+Autoradiogramm
+
+64
+
+IPO5
+
+Coomassie
+
+49 26 RASSF3 kDa 1 2 3 4 1 RASSF1 2 3 4 1 2 3 4 1 GFP 2 3 4 1 NEK9 2 3 4 1 NSMAF 2 3 4 1 UBA5 2 3 4 1 STK3 2 3 4 1 GBAS 2 3 4 1 FYCO1 2 3 4 1 FNIP1 2 3 4 1 STK4 2 3 4 1 DYX1C1 2 3 4 1 SF3A1 2 3 4
+
+Autoradiogramm
+
+64
+
+Coomassie
+
+49 26
+
+www.nature.com/nature
+
+21
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S11c
+
+F52 R70
+
+p62 LIR
+
+L53
+
+MAP1LC3B
+Supplementary Fig. S11d
+with anti-myc resin and immunoblotted with either HA or anti-MYC antibodies. g, α-LC3 Y52A/L53A RASSF5 MAP1LC3B FYCO1 blot of 293T cells in the absence and present of Torin1 (200 nM, 3h), Rapamycin ATG3 DYX1C1 (200nM, 3h) and Bafilomycin (100 nM, 3h). KBTBD6
+NEDD4 NEDD4 Figure S7. Summary ATG16L1 interactions in the budding yeast autophagy system. of core ATG7 NSMAF PRKCI TFCP2 All network data is based on BIOGRID and MINT databases. a, UBL conjugation TBC1D15 NSMAF ATG5 CLINT1 NEK9 system. b, Vps34p lipid kinase network. c, Atg1p protein ATG2A kinase network. d, Atg2p SF3A1 SQSTM1 MAP1LC3B SQSTM1 ATG4B membrane trafficking network. The corresponding human proteins are identified on the HADHA KBTBD7 ATG3 right of each panel. The FNBP1 codeGBAS color indicates the type of interaction data. GYS1 PRKAR1A Figure S8. SummaryANKFY1 LC-MS/MS data and comparison to existing protein of STBD1 DYX1C1 KIAA0329 NCOA7 interaction data for the core autophagy signaling systems, as well as for the ATG8 UBA5 NEK9 IPO5 sub-network. a, The bait, number of HCIPs, number of novel interactions found, ratio of TBC1D2B KBTBD6 known and total interactions found, and the results of reciprocal LC-MS/MS of selected Supplementary Fig. is shown for the ATG8 network. b, PFAM analysis of the ATG8 subinteracting proteins S11e network. Proteins containing the indicated PFAM protein interaction domains are shown. TBC1D15
+KBTBD7
+
+STK4 STK3
+
+Binding dependent on R70A ATG3 DYX1C1 KBTBD6 KBTBD7 NEDD4 NSMAF TBC1D15
+
+ATG16L1 ATG2A FYCO1 GBAS HADHA KIAA0329 PRKCI STK3 STK4 TBC1D2B UBA5
+
+Figure S9. Association of GST-ATG8 proteins with MYC-tagged interacting Dm CG8678 Ce Atg-18 proteins. a-b, Vectors expressing the indicated MYC-tagged HCIPs for the ATG8 network were Atg-18 subsequently Dm transfected into 293T cells andSp Mug179 tested for interaction with GST-ATG8 proteins. After extensive washing of GST-ATG8 resin, associated proteins were detected by immunoblotting with anti-MYC antibodies. c, Ex vivo validation. MYCHs WIPI2 tagged proteins in extracts from 293T cells were Sc Atg18p GST-ATG8 binding in vitro tested for (Panel a). Green: binding. Red: no binding observed. Extracts from 293T cells transiently Hs WIPI1 expressing the indicated Mys-tagged ATG8 interacting protein were lysed and extracts subjected to in vitro binding with the indicated GST-ATG8 isoform purified from bacteria. Sp Atg18 Washed complexes were subjected to SDS-PAGE, and immunoblotted using anti-MYC antibodies. d, Summary of binding data. Figure S10. Association of GST-ATG8 proteins with in vitro translated interacting Sc Atg21p proteins. a, The indicated HCIPs for ATGs were translated and 35S-methionine-labelled Hs WIPI3 in vitro using reticulocyte extracts. b, Five µl of translation product was incubated in 150 µl of binding buffer containing 2 µg of the indicated CG11975 protein bound to 10 µl of Dm GST-ATG8 Sp NP_594700.1 GSH-Sepharose beads. After incubation for 1 hour, beads were washed 5 times with 1 ml of binding buffer. Associated proteins were separated by SDS-PAGE, stained with Hs WIPI4 Coomassie, and subjected to autoradiography. c, Summary table indicating the proteins Ce Y39A1A.1 that interact with each ATG8 ortholog in vitro. Figure S11. LIR-dependence of interactions between GST-ATG8 proteins and in vitro translated HCIPs. a, Immobilized GST (lane 1), GST-GABARAP (lane 2), GSTGABARAP Y49A/L50A (lane 3) or GST-GABARAP R70A (lane 4) were analyzed for binding with the indicated HCIPs as described in Figure S10. b, Immobilized GST (lane 1), GST-MAP1LC3B (lane 2), GST-MAP1LC3B F52A/L53A (lane 3) or GST-MAP1LC3B R70A (lane 4) were analyzed for binding with the indicated HCIPs as described in Figure S10. c, Structure of the SQSTM1 (p62) LIR-motif (cyan) bound to the LDS of MAP1LC3B (green) (pdb code: 2K6Q). Mutations employed in the experiments in panel b are shown: R70A (yellow), F52A (red), L53A (purple). d, Effect of the R70A mutation in MAP1LC3B on interaction with the ATG8 sub-network. Red edges, no interaction; green edges, interaction unaffected; blue edges, interaction reduced or eliminated. e, Phylogenetic tree for Atg18p and Atg21p related proteins from humans (Hs), S. pombe (Sp), C. elegans (Ce), Drosophila (Dm), and S. cerevisiae (Sc).
+
+www.nature.com/nature
+5
+
+22
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S12
+
+Delta Glycine HCIP/BAIT ANKFY1 ATG16L1 ATG3 ATG4B ATG5 ATG7 BRWD2 CLINT1 CLTA CLTC CUL3 DYX1C1 FYCO1 GABARAP GABARAPL2 GBAS GYS1 HADHA HADHB KBTBD6 KEAP1 LLGL1 MAP1A MAP1B MAP1LC3A MAP1LC3B MAP1LC3C NBR1 NCOA7 NEDD4 NEK9 NIPSNAP1 NSMAF PDCD6IP PIK3C3 PIK3R4 PRKCI PTPLAD1 RAB3GAP1 RAB3GAP2 RANBP5 RASSF5 RB1CC1 RCN2 SAFB2 SF3A1 SQSTM1 STBD1 STK3 STK4 TBC1D15 TBC1D2B TFCP2 TMEM160 UBA5 WDR62 GABARAP GABARAPL1 GABARAPL2 MAP1LC3B MAP1LC3A -4.68 -5.68 -8.16 -7.76 -9.87
+
+-7.72 11.60 -10.97
+
+-7.89 12.95 -10.74 -4.92
+
+-10.09 -6.45 -9.94
+
+-8.02 9.64 -10.56 5.06 8.03 7.54 8.85 5.73 10.37 -8.44 -8.44 9.47
+
+6.26 -6.01 -4.36
+
+-5.23 -6.60
+
+-5.75 -3.51
+
+-5.61
+
+10.32 5.82 -9.70 -8.11 -9.70 -9.85 2.29 -7.87 -4.95 -8.16 9.51 7.87 -3.38 -4.79 -6.09 -8.82 -4.79 4.51 6.50 -5.79 -7.71 7.04 2.93 5.25 7.41 4.59 4.69 7.68 7.95 -6.13 -8.84 -7.21 -6.54 -5.75 8.24 -4.22 -5.30 -8.12 -5.93 7.52 6.19 -7.42 -6.56 6.22 -6.28 -8.18 8.67 8.48
+
+9.35 9.33 7.50
+
+9.20 8.74 6.42 5.26 -6.99 8.57
+
+8.49
+
+7.35 6.38 7.16 7.06 -5.54
+
+-5.64 -8.05 -5.57 -8.31
+
+4.64 -7.96
+
+5.74 6.83
+
+8.20 7.10
+
+7.09 9.09 5.36 9.63
+
+-8.22
+
+-7.19 -5.53
+
+-7.97
+
+-7.80
+
+-2.32 -6.49 -7.74 -4.68 8.60 -10.19 -7.39
+
+-10.72
+
+-9.00
+
+-8.00
+
+9.89 -5.22 -7.59
+
+-5.58 -6.47 -10.63 -8.83 -5.16 8.89 6.94 8.52 6.90 10.57
+
+Figure S12. Proteomic analysis of the ATG8 sub-network: Effect of C-terminal glycine on protein interactions in vivo. Effect of deletion of the C-terminal glycine residue from ATG8 proteins. The primary data is provided in Supplemental Table S3a and S3b. The indicated ATG8 proteins or their C-terminal ΔGly counterparts, were purified from 293T cells and subjected to LC-MS/MS. TSCs were used to calculate differential interaction scores using a modified version of the NSAF method (see Detailed Methods for method of the scoring). Only scores for proteins that passed the stringent threshold for statistical significance are highlighted (red, increased abundance; blue, decreased abundance). Figure S13. RNAi analysis of genes in the autophagy interaction network. a, Representative images of GFP-MAPLC3B expressing U2OS cells after transfection with the indicated siRNAs in the presence and absence of Rapamycin (200 nM, 6h). DRAQ5 is used to mark nuclei. The GFP images are the same as those used in Fig. 5a in the main paper. b, Normalized integrated spot signal per cell (N-ISSC) for U2OS cells expressing GFP-MAP1LC3B either alone or 6 h after treatment with rapamycin or Torin1 (200 nM). c, α-LC3 blot of U2OS cells with the indicated treatments. d, Representative images of GFP-GABARAP expressing U2OS cells after transfection with the indicated siRNAs in the presence. DRAQ5 is used to mark nuclei. e, ISSC values for cells transfected with 296 siRNAs targeting 74 genes. f, Normalized ISSC (N-ISSC) for GFPGABARAP with or without Rapamycin (6 h) (4 siRNAs/gene). Unless noted otherwise, p www.nature.com/nature < 0.01 using Students T-test; *, p<0.05; white rectangles, p>0.05. g, Quantitative RTPCR results for depletion of the indicated genes in U2OS cells. Error bars, Standard Deviation, n = 3. h, Validation of siRNA mediated depletion of CDC37, PDCD6IP,
+
+23
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S13 a
+siCK GFP-MAP1LC3B siRB1CC1 #1 siWDR45 #3 siCK siRB1CC1 #1 siWDR45 #3
+3 N-ISSC 2 1 0
+
+b
+
+DRAQ5
+
+Torin1+BafA
+
+c
+
+Untreated
+
+Rap
+
+Torin1
+
+Rap+BafA LC3-I LC3-II
+
+Untreated
+
+Torin1
+
+Untreated
+
+Rapamycin
+siC12orf44 #1 siATG5 #1 siATG12 #1 siWDR45 #2
+
+U2OS
+
+d
+GFP-GABARAP
+
+siCK
+
+siRB1CC1 #1
+
+siGBAS #1
+
+siBRWD2 #1
+
+BafA
+
+Rap
+
+siKBTBD6 #1
+
+e
+ISSC
+
+DRAQ5
+12 10 8 6 4 2 0 siCK
+
+296 siRNAs
+
+f
+
+WDR45 KIAA0265 GBAS USP10 USP11 SNAP29 NIPSNAP1 C13orf18 KBTBD6 TTC15 BRWD2 STK3 DYX1C1 TECPR1 TBC1D15 WIPI1 GABARAPL1 KBTBD7 FNBP1 FNIP1 PRKAA2 C7orf28A SLC27A4 PI4K2A UBA5 C18orf8 PTOV1 TSC1 ANKFY1 STK4 TBC1D2B CDC37 FUNDC1 DDA1 TMEM160 RASSF5 ATG2A PEBP1 RABGAP1 NEDD4 WDR45L MAP1B CLINT1 PDCD6IP PRKAA1 FLJ12716 ULK2 C12orf44 RB1CC1 FYCO1 TBC1D9B ATG9A DOCK1 ATG10 TRAPPC5 WDR62 PIK3C3 ATG9B NSMAF KIAA0652 KIAA0329 ATG5 ZWINT NEK9 VPS13D SSSCA1 NBR1 WIPI2 PIK3C2A ATG7 ATG3 SAV1 ATG12
+
+*
+
+* *
+
+*
+
+* *
+
+* * *
+
+* * * *
+
+*
+
+* * *
+
+*
+
+*
+
+N-ISSC
+
+0.7
+
+1
+
+1.3
+
+www.nature.com/nature
+
+24
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S13g
+PTOV1 ATG5 ATG12 C18orf8
+
+Relative mRNA abundance
+
+140 120 100 80 60 40 20 0
+
+120 100 80 60 40 20 0
+
+140 120 100 80 60 40 20 0
+
+300 250 200 150 100 50 0
+
+siCK #1 #2 #3 #4
+PTOV1 siRNA
+
+siCK #1 #2 #3 #4
+ATG5 siRNA
+
+siCK #1 #2 #3 #4
+ATG12 siRNA
+
+siCK #1 #2 #3 #4
+C18orf8 siRNA
+
+Relative mRNA abundance
+
+140 120 100 80 60 40 20 0
+
+RB1CC1
+
+120 100 80 60 40 20 0
+
+FNBP1
+
+120 100 80 60 40 20 0
+
+NEK9
+
+180 160 140 120 100 80 60 40 20 0
+
+PIK3C2A
+
+siCK #1 #2 #3 #4
+RB1CC1 siRNA
+
+siCK #1 #2 #3 #4
+FNBP1 siRNA
+
+siCK #1 #2 #3 #4
+NEK9 siRNA
+
+siCK #1 #2 #3 #4
+PIK3C2A siRNA
+
+Relative mRNA abundance
+
+140 120 100 80 60 40 20 0
+
+WDR45
+
+160 140 120 100 80 60 40 20 0
+
+KIAA1012
+
+140 120 100 80 60 40 20 0
+
+C7orf28A
+
+180 160 140 100 80 60 40 20 0
+
+KBTBD6
+
+siCK #1 #2 #3 #4
+WDR45 siRNA
+
+siCK #1 #2 #3 #4
+KIAA1012 siRNA
+
+siCK #1 #2 #3 #4
+C7orf28A siRNA
+
+siCK #1 #2 #3 #4
+KBTBD6 siRNA
+
+Relative mRNA abundance
+
+140 120 100 80 60 40 20 0
+
+GABARAP
+
+140 120 100 80 60 40 20 0
+
+RABGAP1
+
+100 80 60 40 20 0
+
+GABARAPL1
+
+140 120 100 80 60 40 20 0
+
+SNAP29
+
+siCK #1 #2 #3 #4
+GABARAP siRNA
+
+siCK #1 #2 #3 #4
+RABGAP1 siRNA
+
+siCK #1 #2 #3 #4
+GABARAPL1 siRNA
+
+siCK #1 #2 #3 #4
+SNAP29 siRNA
+
+Relative mRNA abundance
+
+120 100 80 60 40 20 0
+
+WIPI2
+
+120 100 80 60 40 20 0
+
+CCAR1
+
+120 100 80 60 40 20 0
+
+TTC15
+
+120 100 80 60 40 20 0
+
+CDC37
+
+siCK #1 #2 #3 #4
+WIPI2 siRNA
+
+siCK #1 #2 #3 #4
+CCAR1 siRNA
+
+siCK #1 #2 #3 #4
+TTC15 siRNA
+
+siCK #1 #2 #3 #4
+CDC37 siRNA
+
+160 140 120 100 80 60 40 20 0
+
+KLHDC10
+
+Relative mRNA abundance
+
+140 120 100 80 60 40 20 0
+
+VPS13D
+
+120 100 80 60 40 20 0
+
+TBC1D9B
+
+140 120 100 80 60 40 20 0
+
+NRBF2
+
+siCK #1 #2 #3 #4
+KLHDC10 siRNA
+
+siCK #1 #2 #3 #4
+VPS13D siRNA
+
+siCK #1 #2 #3 #4
+TBC1D9B siRNA
+
+siCK #1 #2 #3 #4
+NRBF2 siRNA
+
+29
+
+www.nature.com/nature
+
+25
+
+doi: 10.1038/nature09204
+
+SUPPLEMENTARY INFORMATION
+
+Supplementary Fig. S13h
+
+CDC37 siRNA siCK #1 #2 #3 #4 kDA kDA 82 49 37 26 CDC37 64 37
+
+PDCD6IP siRNA siCK #1 #2 #3 #4 kDA
+
+PI4K2A siRNA siCK #1 #2 #3 #4
+
+PDCD6IP
+
+49 37
+
+PI4K2A
+
+37 26
+
+PCNA
+
+37 26
+
+PCNA
+
+37 26
+
+PCNA
+
+ATG12 siRNA siCK #1 #2 #3 #4 kDA # 64 49 37 kDA # 64 49 37
+
+ATG5 siRNA siCK #1 #2 #3 #4 kDA 115 64 37
+
+NEDD4 siRNA siCK #1 #2 #3 #4
+
+*
+ATG5
+
+ATG12
+
+NEDD4
+
+37 26 # ATG12-ATG5
+
+PCNA
+
+37 26
+
+PCNA
+
+37 26
+
+PCNA
+
+* full length
+
+Supplementary Fig. S13i
+Empty
+300
+
+GFP-LC3 MFI (x104)
+
+25 20
+
+Figure S12. Proteomic analysis of the ATG8 sub-network: Effect of C-terminal glycine on protein interactions in 15 vivo. Effect of deletion of the C-terminal glycine 200 residue from ATG8 proteins. The primary data is provided in Supplemental Table S3a 10 and S3b. The indicated ATG8 proteins or their C-terminal ΔGly counterparts, were 5 100 purified from 293T cells and subjected to LC-MS/MS. TSCs were used to calculate 0 differential interaction scores using a modified version of the NSAF method (see 0 Detailed Methods 2for 3 104 105of the scoring). Only scores for proteins that passed the method 0 10 10 stringent threshold for statistical significance are highlighted (red, increased abundance; FITC-A blue, decreased abundance).
+Count
+Untreated Torin1
+
+Figure S13. RNAi analysis of genes in the autophagy interaction network. a, Representative images of GFP-MAPLC3B expressing U2OS cells after transfection with the indicated siRNAs in the presence and absence of Rapamycin (200 nM, 6h). DRAQ5 is used to mark nuclei. The GFP images are the same as those used in Fig. 5a in the main paper. b, Normalized integrated spot signal per cell (N-ISSC) for U2OS cells expressing GFP-MAP1LC3B either alone or 6 h after treatment with rapamycin or Torin1 (200 nM). c, α-LC3 blot of U2OS cells with the indicated treatments. d, Representative images of GFP-GABARAP expressing U2OS cells after transfection with the indicated siRNAs in the presence. DRAQ5 is used to mark nuclei. e, ISSC values for cells transfected with 296 siRNAs targeting 74 genes. f, Normalized ISSC (N-ISSC) for GFPGABARAP with or without Rapamycin (6 h) (4 siRNAs/gene). Unless noted otherwise, p < 0.01 using Students T-test; *, p<0.05; white rectangles, p>0.05. g, Quantitative RT30 PCR results for depletion of the indicated genes in U2OS cells. Error bars, Standard Deviation, n = 3. h, Validation of siRNA mediated depletion of CDC37, PDCD6IP, PI4K2A, ATG12, ATG5, and NEDD4. Four siRNAs targeting the indicated genes were transfected into U2OS cells and after 72 h, cells were lysed and probed with antibodies against the indicated proteins. Blots were re-probed with PCNA as a loading control. All antibodies were from Cell Signaling Technologies, with the exception of anti-PI4K2A, which was from Novus. i, Validation of flow cytometry flux assay. Color-coding for histogram and bar-graph correspond. GFP-MAP1LC3B U2OS cells or empty U2OS cells were subjected to flow cytomety. The mean fluorescence intensity (MFI) was determined using FLOWJO. Torin1 activated flux through the autophagy pathway and this was reversed by BafA1 treatment. Error bars, Standard Deviation, n = 2.
+
+www.nature.com/nature
+
+Torin1&BafA1
+
+BafA1
+
+26
+
