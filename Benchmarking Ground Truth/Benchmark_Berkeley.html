@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title></title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<font color="#000080"><b>About the Benchmark</b></font> <br>
+<b>"When you can measure what you are speaking about and express it in
+numbers,
+you know something about it; but when you cannot measure it, when you
+cannot
+express it in numbers, your knowledge is of the meager and
+unsatisfactory
+kind."</b> --Lord Kelvin
+<br>
+<p>The goal of the benchmark is to produce a score for an algorithm's
+boundaries
+for two reasons:&nbsp; (1) So that different algorithms can be compared
+to each
+other, and (2) So that progress toward human-level performance can be
+tracked
+over time.&nbsp; We have spent a great deal of time working on a
+meaningful
+boundary detection benchmark, which we will explain briefly here.&nbsp;
+See our <a
+ href="http://www.cs.berkeley.edu/projects/vision/grouping/papers/mfm-nips02.pdf"><b>NIPS
+2002</b></a>
+and <a
+ href="http://www.cs.berkeley.edu/projects/vision/grouping/papers/mfm-pami-boundary.pdf"><b>PAMI</b></a>
+papers for additional details.&nbsp; Note that the methodology we have
+settled
+on may be applied to any boundary dataset -- not just our dataset of
+human
+segmented natural images.&nbsp;&nbsp;</p>
+<p>The setup is as follows.&nbsp; The human segmented images provide
+our ground
+truth boundaries.&nbsp; We consider any boundary marked by a human
+subject to be
+valid.&nbsp; Since we have multiple segmentations of each image by
+different
+subjects, it is the collection of these human-marked boundaries that
+constitutes
+the ground truth.&nbsp; We are then presented the output of some
+algorithm for
+an image.&nbsp; Let us assume that this output is a soft boundary map
+with one
+pixel wide boundaries, valued from zero to one where high values
+signify greater
+confidence in the existence of a boundary.&nbsp; Our task is to
+determine how
+well this soft boundary map approximates the ground truth boundaries.</p>
+<p>Traditionally, one would "binarize" the boundary map by choosing
+some threshold.&nbsp; There are two problems with thresholding a
+boundary map:
+(1) The optimal threshold depends on the application, and we would like
+the
+benchmark to be useful across different applications, and (2)
+Thresholding a
+low-level feature like boundaries is likely to be a bad idea for most
+applications, since it destroys much information.&nbsp; For these
+reasons, our
+benchmark operates on a non-thresholded boundary map.&nbsp;&nbsp;</p>
+<p>Nevertheless, we do need to threshold the boundary map in order to
+compare it
+to the ground truth boundaries, but we do so at many levels, e.g.
+30.&nbsp; At
+each level, we compute two quantities -- <b>precision</b> and <b>recall</b>
+--
+and in this manner produce a precision-recall curve for the
+algorithm.&nbsp;
+Precision and recall are similar to but different from the axes of ROC
+curves.&nbsp; Precision is the probability that a machine-generated
+boundary
+pixel is a true boundary pixel.&nbsp; Recall is the probability that a
+true
+boundary pixel is detected.&nbsp; We consider these axes to be sensible
+and intuitive.&nbsp;
+Precision is a measure of how much noise is in the output of the
+detector.&nbsp;
+Recall is a measure of how much of the ground truth is
+detected.&nbsp;&nbsp; The
+curve shows the inherent trade-off between these two quantities -- the
+trade-off
+between misses and false positives -- as the detector threshold changes.</p>
+<p>Although the precision-recall curve for an algorithm is a rich
+descriptor of
+its performance, it is still desirable to distill the performance of an
+algorithm into a single number.&nbsp; This is possible to do in a
+meaningful way
+for algorithms whose curves do not intersect and are roughly
+parallel.&nbsp;
+When two precision-recall curves do not intersect, then the curve
+furthest from
+the origin dominates the other.&nbsp; The summary statistic that we use
+is a
+measure of this distance.&nbsp; It is the <b>F-measure</b>, which is
+the
+harmonic mean of <b>precision</b> and <b>recall</b>.&nbsp; The
+F-measure is
+defined at all points on the precision-recall curve.&nbsp; We report
+the maximum
+F-measure value across an algorithm's precision-recall curve as its
+summary
+statistic.</p>
+<p><i>Why do we use precision-recall curves instead of ROC curves?&nbsp;</i>&nbsp;</p>
+<p>Receiver operating characteristic (ROC) curves show, qualitatively,
+the same
+trade-off between misses and false positives that precision-recall
+curves
+show.&nbsp; However, ROC curves are not appropriate for quantifying
+boundary
+detection.&nbsp; The axes for an ROC curve are <b>fallout</b> and <b>recall</b>.&nbsp;
+Recall is the same as above, and is also called <b>hit rate</b>.&nbsp;
+Fallout,
+or <b>false alarm rate</b>, is the probability that a true negative
+was labeled
+a false positive.&nbsp; This is not a meaningful quantity for a
+boundary
+detector since it is not independent of the image resolution.&nbsp;
+If we reduce the radius of the pixels by a factor of <i>n</i> so that
+the number
+of pixels grows as <i>n^2</i>, then the number of true negative will
+grow
+quadratically in <i>n</i> while the number of true positives will grow
+only
+linearly in <i>n</i>.&nbsp; Since boundaries are 1D objects, the
+number of false
+positives is most likely to also grow linearly in <i>n</i>, and so the
+fallout
+will decline by a factor of <i>1/n</i>.&nbsp; Precision does not have
+this
+problem, since instead of being normalized by the number of true
+negatives, it
+is normalized by the number of positives.&nbsp; <br>
+</p>
+</body>
+</html>
